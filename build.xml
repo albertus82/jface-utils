@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="Utils" default="jar">
+<project name="Utils" default="jars">
 
 	<property file="build.properties" />
 	<property file="build.properties.default" />
@@ -24,8 +24,9 @@
 		<javac srcdir="src" destdir="${build.dir}/classes" source="1.6" target="1.6" />
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jars" depends="compile">
 		<jar destfile="${build.dir}/dist/albertus-${project.name.lowercase}-${version.number}.jar" basedir="${build.dir}/classes" level="9" />
+		<jar destfile="${build.dir}/dist/albertus-${project.name.lowercase}-${version.number}-sources.jar" basedir="src" level="9" includes="**/*.java" />
 	</target>
 
 </project>

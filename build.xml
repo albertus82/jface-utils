@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="Utils" default="jar">
+
+	<property file="build.properties" />
+	<property file="build.properties.default" />
+
+	<property file="src/version.properties" />
+
+	<scriptdef language="javascript" name="lower">
+		<attribute name="string" />
+		<attribute name="to" />
+		project.setProperty(attributes.get("to"), attributes.get("string").toLowerCase());
+	</scriptdef>
+
+	<lower string="${ant.project.name}" to="project.name.lowercase" />
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${build.dir}/classes" />
+		<javac srcdir="src" destdir="${build.dir}/classes" source="1.6" target="1.6" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${build.dir}/dist/albertus-${project.name.lowercase}-${version.number}.jar" basedir="${build.dir}/classes" level="9" />
+	</target>
+
+</project>

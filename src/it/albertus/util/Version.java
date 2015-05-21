@@ -13,10 +13,13 @@ public class Version {
 	private final Properties properties = new Properties();
 	private final String fileName;
 
-	private static final Version version = new Version();
-
+	// Lazy initialization...
+	private static class Singleton {
+		private static final Version version = new Version();
+	}
+	
 	public static Version getInstance() {
-		return version;
+		return Singleton.version;
 	}
 
 	protected Version() {

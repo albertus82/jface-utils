@@ -52,4 +52,9 @@ public class Version {
 		return properties.getProperty(KEY_VERSION_DATE);
 	}
 
+	@Override
+	public String toString() {
+		return properties.toString();
+	}
+
 }

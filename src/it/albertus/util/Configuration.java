@@ -192,4 +192,9 @@ public abstract class Configuration {
 		return properties.get(key) != null;
 	}
 
+	@Override
+	public String toString() {
+		return properties.toString();
+	}
+
 }

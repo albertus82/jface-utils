@@ -5,8 +5,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
+/**
+ * Classe astratta da estendere con una classe <b>Singleton</b> che richiami il
+ * costruttore {@link #Configuration(String)} passando come parametro il nome
+ * del file di configurazione da caricare.
+ */
 public abstract class Configuration {
 
 	private final Properties properties = new Properties();
@@ -52,7 +59,7 @@ public abstract class Configuration {
 	}
 
 	public Boolean getBoolean(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Boolean.valueOf(value.trim());
 		}
@@ -60,7 +67,7 @@ public abstract class Configuration {
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Boolean.parseBoolean(value.trim());
 		}
@@ -68,7 +75,7 @@ public abstract class Configuration {
 	}
 
 	public Long getLong(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Long.valueOf(value);
 		}
@@ -76,7 +83,7 @@ public abstract class Configuration {
 	}
 
 	public long getLong(String key, long defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Long.parseLong(value);
 		}
@@ -84,7 +91,7 @@ public abstract class Configuration {
 	}
 
 	public Integer getInt(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Integer.valueOf(value);
 		}
@@ -92,7 +99,7 @@ public abstract class Configuration {
 	}
 
 	public int getInt(String key, int defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Integer.parseInt(value);
 		}
@@ -100,7 +107,7 @@ public abstract class Configuration {
 	}
 
 	public Short getShort(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Short.valueOf(value);
 		}
@@ -108,7 +115,7 @@ public abstract class Configuration {
 	}
 
 	public short getShort(String key, short defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Short.parseShort(value);
 		}
@@ -116,7 +123,7 @@ public abstract class Configuration {
 	}
 
 	public Byte getByte(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Byte.valueOf(value);
 		}
@@ -124,7 +131,7 @@ public abstract class Configuration {
 	}
 
 	public byte getByte(String key, byte defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Byte.parseByte(value);
 		}
@@ -132,7 +139,7 @@ public abstract class Configuration {
 	}
 
 	public Float getFloat(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Float.valueOf(value);
 		}
@@ -140,7 +147,7 @@ public abstract class Configuration {
 	}
 
 	public float getFloat(String key, float defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Float.parseFloat(value);
 		}
@@ -148,7 +155,7 @@ public abstract class Configuration {
 	}
 
 	public Double getDouble(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Double.valueOf(value);
 		}
@@ -156,7 +163,7 @@ public abstract class Configuration {
 	}
 
 	public double getDouble(String key, double defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return Double.parseDouble(value);
 		}
@@ -164,7 +171,7 @@ public abstract class Configuration {
 	}
 
 	public Character getChar(String key) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return parseChar(value);
 		}
@@ -172,7 +179,7 @@ public abstract class Configuration {
 	}
 
 	public char getChar(String key, char defaultValue) {
-		String value = getString(key);
+		final String value = getString(key);
 		if (value != null) {
 			return parseChar(value);
 		}
@@ -194,6 +201,10 @@ public abstract class Configuration {
 
 	@Override
 	public String toString() {
+		final Map<String, String> properties = new TreeMap<String, String>();
+		for (final Object key : this.properties.keySet()) {
+			properties.put((String) key, this.properties.getProperty((String) key));
+		}
 		return properties.toString();
 	}
 

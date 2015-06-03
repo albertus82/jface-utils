@@ -20,7 +20,7 @@ public enum NewLine {
 	 * 
 	 * @return l'array di caratteri che rappresenta il ritorno a capo.
 	 */
-	public char[] getCharacters() {
+	public char[] toCharArray() {
 		return characters;
 	}
 
@@ -30,7 +30,7 @@ public enum NewLine {
 	 * 
 	 * @return la stringa che rappresenta il ritorno a capo.
 	 */
-	public String getString() {
+	public String toString() {
 		return string;
 	}
 
@@ -38,17 +38,16 @@ public enum NewLine {
 	 * Restituisce l'<b>enum</b> corrispondente al tipo di ritorno a capo
 	 * desiderato.
 	 * 
-	 * @param type
-	 *            una stringa tra "CR" (Macintosh), "LF" (Unix) e "CRLF"
-	 *            (DOS/Windows).
+	 * @param characters
+	 *            una stringa tra "CR", "\r" (Macintosh), "LF", "\n" (Unix),
+	 *            "CRLF", "\r\n" (DOS/Windows).
 	 * @return l'<b>enum</b> corrispondente al tipo di ritorno a capo passato
-	 *         come parametro.
+	 *         come parametro, oppure null se non riconosciuto.
 	 */
-	public static NewLine getEnum(String type) {
-		if (type != null && type.trim().length() != 0) {
-			type = type.trim().toUpperCase();
+	public static NewLine getEnum(String characters) {
+		if (characters != null && characters.length() != 0) {
 			for (NewLine newLine : NewLine.values()) {
-				if (newLine.name().equals(type)) {
+				if (newLine.toString().equals(characters) || newLine.name().equalsIgnoreCase(characters.trim())) {
 					return newLine;
 				}
 			}

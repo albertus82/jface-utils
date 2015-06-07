@@ -3,30 +3,27 @@
 <project name="Utils" default="jars">
 
 	<property file="build.properties" />
-	<property file="build.properties.default" />
 
-	<property file="src/version.properties" />
-
-	<scriptdef language="javascript" name="lower">
-		<attribute name="string" />
-		<attribute name="to" />
-		project.setProperty(attributes.get("to"), attributes.get("string").toLowerCase());
-	</scriptdef>
-
-	<lower string="${ant.project.name}" to="project.name.lowercase" />
+	<property file="${build.resourcesDirectory}/version.properties" />
 
 	<target name="clean">
-		<delete dir="${build.dir}" />
+		<delete dir="${build.directory}" />
 	</target>
 
 	<target name="compile" depends="clean">
-		<mkdir dir="${build.dir}/classes" />
-		<javac srcdir="src" destdir="${build.dir}/classes" source="1.6" target="1.6" debug="true" />
+		<mkdir dir="${build.outputDirectory}" />
+		<javac srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory}" source="1.6" target="1.6" debug="true" />
 	</target>
 
-	<target name="jars" depends="compile">
-		<jar destfile="${build.dir}/dist/albertus-${project.name.lowercase}-${version.number}.jar" basedir="${build.dir}/classes" level="9" />
-		<jar destfile="${build.dir}/dist/albertus-${project.name.lowercase}-${version.number}-sources.jar" basedir="src" level="9" includes="**/*.java" />
+	<target name="resources">
+		<copy todir="${build.outputDirectory}">
+			<fileset dir="${build.resourcesDirectory}" />
+		</copy>
+	</target>
+
+	<target name="jars" depends="compile, resources">
+		<jar destfile="${build.distDirectory}/albertus-utils-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
+		<jar destfile="${build.distDirectory}/albertus-utils-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
 	</target>
 
 </project>

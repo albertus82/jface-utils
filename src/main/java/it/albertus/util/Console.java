@@ -34,22 +34,29 @@ public class Console {
 		column = 0;
 	}
 
-	private void updatePosition(CharSequence cs) {
-		Character last = null;
+	private void updatePosition(final CharSequence cs) {
+		char last = '\0';
 		for (int index = 0; index < cs.length(); index++) {
-			last = evaluateCharacter(last, cs.charAt(index));
+			final char current = cs.charAt(index);
+			evaluateCharacter(last, current);
+			last = current;
 		}
 	}
 
-	private void updatePosition(char[] c) {
-		Character last = null;
+	private void updatePosition(final char[] c) {
+		char last = '\0';
 		for (int index = 0; index < c.length; index++) {
-			last = evaluateCharacter(last, c[index]);
+			final char current = c[index];
+			evaluateCharacter(last, current);
+			last = current;
 		}
 	}
 
-	private char evaluateCharacter(Character last, char current) {
-		if (current == '\r' || (current == '\n' && last != null && last != '\r')) {
+	private char evaluateCharacter(final char last, final char current) {
+		if (current == '\n' && last == '\r') {
+			column = 0;
+		}
+		else if (current == '\n' || current == '\r') {
 			newLine();
 		}
 		else if (current == '\b' && column != 0) {
@@ -58,49 +65,48 @@ public class Console {
 		else {
 			column++;
 		}
-		last = current;
-		return last;
+		return current;
 	}
 
-	public void print(String s) {
-		if (s == null) {
-			s = String.valueOf(s);
+	public void print(String value) {
+		if (value == null) {
+			value = String.valueOf(value);
 		}
-		out.print(s);
-		updatePosition(s);
+		out.print(value);
+		updatePosition(value);
 	}
 
-	public void print(Object o) {
-		print(String.valueOf(o));
+	public void print(Object value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(boolean b) {
-		print(String.valueOf(b));
+	public void print(boolean value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(char c) {
-		print(String.valueOf(c));
+	public void print(char value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(int i) {
-		print(String.valueOf(i));
+	public void print(int value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(long l) {
-		print(String.valueOf(l));
+	public void print(long value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(float f) {
-		print(String.valueOf(f));
+	public void print(float value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(double d) {
-		print(String.valueOf(d));
+	public void print(double value) {
+		print(String.valueOf(value));
 	}
 
-	public void print(char s[]) {
-		out.print(s);
-		updatePosition(s);
+	public void print(char array[]) {
+		out.print(array);
+		updatePosition(array);
 	}
 
 	public void println() {
@@ -108,48 +114,48 @@ public class Console {
 		newLine();
 	}
 
-	public void println(String s) {
-		out.println(s);
+	public void println(String value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(Object o) {
-		out.println(o);
+	public void println(Object value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(boolean b) {
-		out.println(b);
+	public void println(boolean value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(char c) {
-		out.println(c);
+	public void println(char value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(int i) {
-		out.println(i);
+	public void println(int value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(long l) {
-		out.println(l);
+	public void println(long value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(float f) {
-		out.println(f);
+	public void println(float value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(double d) {
-		out.println(d);
+	public void println(double value) {
+		out.println(value);
 		newLine();
 	}
 
-	public void println(char c[]) {
-		out.println(c);
+	public void println(char array[]) {
+		out.println(array);
 		newLine();
 	}
 
@@ -169,130 +175,130 @@ public class Console {
 		format(format, args);
 	}
 
-	public void printOnNewLine(String s) {
-		if (column != 0) {
+	public void print(String value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(s);
+		print(value);
 	}
 
-	public void printOnNewLine(Object o) {
-		if (column != 0) {
+	public void print(Object value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(o);
+		print(value);
 	}
 
-	public void printOnNewLine(boolean b) {
-		if (column != 0) {
+	public void print(boolean value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(b);
+		print(value);
 	}
 
-	public void printOnNewLine(char c) {
-		if (column != 0) {
+	public void print(char value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(c);
+		print(value);
 	}
 
-	public void printOnNewLine(int i) {
-		if (column != 0) {
+	public void print(int value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(i);
+		print(value);
 	}
 
-	public void printOnNewLine(long l) {
-		if (column != 0) {
+	public void print(long value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(l);
+		print(value);
 	}
 
-	public void printOnNewLine(float f) {
-		if (column != 0) {
+	public void print(float value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(f);
+		print(value);
 	}
 
-	public void printOnNewLine(double d) {
-		if (column != 0) {
+	public void print(double value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(d);
+		print(value);
 	}
 
-	public void printOnNewLine(char c[]) {
-		if (column != 0) {
+	public void print(char array[], boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		print(c);
+		print(array);
 	}
 
-	public void printlnOnNewLine(String s) {
-		if (column != 0) {
+	public void println(String value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(s);
+		println(value);
 	}
 
-	public void printlnOnNewLine(Object o) {
-		if (column != 0) {
+	public void println(Object value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(o);
+		println(value);
 	}
 
-	public void printlnOnNewLine(boolean b) {
-		if (column != 0) {
+	public void println(boolean value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(b);
+		println(value);
 	}
 
-	public void printlnOnNewLine(char c) {
-		if (column != 0) {
+	public void println(char value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(c);
+		println(value);
 	}
 
-	public void printlnOnNewLine(int i) {
-		if (column != 0) {
+	public void println(int value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(i);
+		println(value);
 	}
 
-	public void printlnOnNewLine(long l) {
-		if (column != 0) {
+	public void println(long value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(l);
+		println(value);
 	}
 
-	public void printlnOnNewLine(float f) {
-		if (column != 0) {
+	public void println(float value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(f);
+		println(value);
 	}
 
-	public void printlnOnNewLine(double d) {
-		if (column != 0) {
+	public void println(double value, boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(d);
+		println(value);
 	}
 
-	public void printlnOnNewLine(char c[]) {
-		if (column != 0) {
+	public void println(char array[], boolean onNewLine) {
+		if (onNewLine && column != 0) {
 			println();
 		}
-		println(c);
+		println(array);
 	}
 
 }

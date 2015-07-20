@@ -1,21 +1,11 @@
 package it.albertus.util;
 
-import java.io.PrintStream;
 import java.util.Locale;
 
-public class Console {
+public abstract class Console {
 
-	private static class Singleton {
-		private static final Console console = new Console(System.out);
-	}
-
-	public static Console getInstance() {
-		return Singleton.console;
-	}
-
-	private final PrintStream out;
-	private int row = 0;
-	private int column = 0;
+	protected int row = 0;
+	protected int column = 0;
 
 	public int getRow() {
 		return row;
@@ -25,16 +15,12 @@ public class Console {
 		return column;
 	}
 
-	private Console(PrintStream printStream) {
-		out = printStream;
-	}
-
-	private void newLine() {
+	protected void newLine() {
 		row++;
 		column = 0;
 	}
 
-	private void updatePosition(final CharSequence cs) {
+	protected void updatePosition(final CharSequence cs) {
 		char last = '\0';
 		for (int index = 0; index < cs.length(); index++) {
 			final char current = cs.charAt(index);
@@ -43,7 +29,7 @@ public class Console {
 		}
 	}
 
-	private void updatePosition(final char[] c) {
+	protected void updatePosition(final char[] c) {
 		char last = '\0';
 		for (int index = 0; index < c.length; index++) {
 			final char current = c[index];
@@ -52,7 +38,7 @@ public class Console {
 		}
 	}
 
-	private char evaluateCharacter(final char last, final char current) {
+	protected char evaluateCharacter(final char last, final char current) {
 		if (current == '\n' && last == '\r') {
 			column = 0;
 		}
@@ -68,237 +54,86 @@ public class Console {
 		return current;
 	}
 
-	public void print(String value) {
-		if (value == null) {
-			value = String.valueOf(value);
-		}
-		out.print(value);
-		updatePosition(value);
-	}
+	public abstract void print(String value);
 
-	public void print(Object value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(Object value);
 
-	public void print(boolean value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(boolean value);
 
-	public void print(char value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(char value);
 
-	public void print(int value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(int value);
 
-	public void print(long value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(long value);
 
-	public void print(float value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(float value);
 
-	public void print(double value) {
-		print(String.valueOf(value));
-	}
+	public abstract void print(double value);
 
-	public void print(char array[]) {
-		out.print(array);
-		updatePosition(array);
-	}
+	public abstract void print(char array[]);
 
-	public void println() {
-		out.println();
-		newLine();
-	}
+	public abstract void println();
 
-	public void println(String value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(String value);
 
-	public void println(Object value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(Object value);
 
-	public void println(boolean value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(boolean value);
 
-	public void println(char value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(char value);
 
-	public void println(int value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(int value);
 
-	public void println(long value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(long value);
 
-	public void println(float value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(float value);
 
-	public void println(double value) {
-		out.println(value);
-		newLine();
-	}
+	public abstract void println(double value);
 
-	public void println(char array[]) {
-		out.println(array);
-		newLine();
-	}
+	public abstract void println(char array[]);
 
-	public void format(Locale l, String format, Object... args) {
-		print(String.format(l, format, args));
-	}
+	public abstract void format(Locale l, String format, Object... args);
 
-	public void format(String format, Object... args) {
-		print(String.format(format, args));
-	}
+	public abstract void format(String format, Object... args);
 
-	public void printf(Locale l, String format, Object... args) {
-		format(l, format, args);
-	}
+	public abstract void printf(Locale l, String format, Object... args);
 
-	public void printf(String format, Object... args) {
-		format(format, args);
-	}
+	public abstract void printf(String format, Object... args);
 
-	public void print(String value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(String value, boolean onNewLine);
 
-	public void print(Object value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(Object value, boolean onNewLine);
 
-	public void print(boolean value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(boolean value, boolean onNewLine);
 
-	public void print(char value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(char value, boolean onNewLine);
 
-	public void print(int value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(int value, boolean onNewLine);
 
-	public void print(long value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(long value, boolean onNewLine);
 
-	public void print(float value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(float value, boolean onNewLine);
 
-	public void print(double value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(value);
-	}
+	public abstract void print(double value, boolean onNewLine);
 
-	public void print(char array[], boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		print(array);
-	}
+	public abstract void print(char array[], boolean onNewLine);
 
-	public void println(String value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(String value, boolean onNewLine);
 
-	public void println(Object value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(Object value, boolean onNewLine);
 
-	public void println(boolean value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(boolean value, boolean onNewLine);
 
-	public void println(char value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(char value, boolean onNewLine);
 
-	public void println(int value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(int value, boolean onNewLine);
 
-	public void println(long value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(long value, boolean onNewLine);
 
-	public void println(float value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(float value, boolean onNewLine);
 
-	public void println(double value, boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(value);
-	}
+	public abstract void println(double value, boolean onNewLine);
 
-	public void println(char array[], boolean onNewLine) {
-		if (onNewLine && column != 0) {
-			println();
-		}
-		println(array);
-	}
+	public abstract void println(char array[], boolean onNewLine);
 
 }

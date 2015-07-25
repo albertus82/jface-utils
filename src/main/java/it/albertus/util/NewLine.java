@@ -6,6 +6,8 @@ public enum NewLine {
 	LF('\n'),
 	CRLF('\r', '\n');
 
+	public static final String SYSTEM_LINE_SEPARATOR = System.getProperty("line.separator");
+
 	private final char[] characters;
 	private final String string;
 

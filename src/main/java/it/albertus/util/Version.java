@@ -15,11 +15,11 @@ public class Version {
 
 	// Lazy initialization...
 	private static class Singleton {
-		private static final Version version = new Version();
+		private static final Version VERSION = new Version();
 	}
 	
 	public static Version getInstance() {
-		return Singleton.version;
+		return Singleton.VERSION;
 	}
 
 	protected Version() {

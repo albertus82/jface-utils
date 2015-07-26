@@ -7,11 +7,11 @@ public class TerminalConsole extends Console {
 	private final PrintStream out;
 
 	private static class Singleton {
-		private static final TerminalConsole console = new TerminalConsole(System.out);
+		private static final TerminalConsole CONSOLE = new TerminalConsole(System.out);
 	}
 
 	public static TerminalConsole getInstance() {
-		return Singleton.console;
+		return Singleton.CONSOLE;
 	}
 
 	private TerminalConsole(PrintStream printStream) {

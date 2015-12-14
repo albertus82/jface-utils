@@ -13,8 +13,7 @@ public class ExceptionUtils {
 				e.printStackTrace(new PrintWriter(sw));
 				stackTrace = sw.toString();
 			}
-			catch (Throwable t) {
-			}
+			catch (Throwable t) {}
 		}
 		return stackTrace;
 	}
@@ -32,8 +31,11 @@ public class ExceptionUtils {
 				message = throwable.getClass().getSimpleName();
 			}
 
-			if (StringUtils.isNotBlank(message) && !message.endsWith(".")) {
-				message += ".";
+			if (StringUtils.isNotBlank(message)) {
+				message = message.trim();
+				if (!message.endsWith(".")) {
+					message += ".";
+				}
 			}
 		}
 		return message;
@@ -46,11 +48,14 @@ public class ExceptionUtils {
 				message = throwable.getClass().getSimpleName() + ": " + (StringUtils.isNotBlank(throwable.getLocalizedMessage()) ? throwable.getLocalizedMessage() : throwable.getMessage());
 			}
 
-			if (StringUtils.isNotBlank(message) && !message.endsWith(".")) {
-				message += ".";
+			if (StringUtils.isNotBlank(message)) {
+				message = message.trim();
+				if (!message.endsWith(".")) {
+					message += ".";
+				}
 			}
 		}
 		return message;
 	}
-	
+
 }

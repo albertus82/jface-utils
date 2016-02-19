@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -31,8 +32,14 @@ public abstract class Configuration {
 
 	protected void load() throws IOException {
 		final InputStream inputStream;
-		final File config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent() + '/' + fileName);
-		if (config.exists()) {
+		File config = null;
+		try {
+			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + '/' + fileName);
+		}
+		catch (URISyntaxException use) {
+			throw new IOException(use);
+		}
+		if (config != null && config.exists()) {
 			inputStream = new BufferedInputStream(new FileInputStream(config));
 		}
 		else {

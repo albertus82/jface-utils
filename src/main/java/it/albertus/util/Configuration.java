@@ -34,7 +34,7 @@ public abstract class Configuration {
 		final InputStream inputStream;
 		File config = null;
 		try {
-			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + '/' + fileName);
+			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
 		}
 		catch (URISyntaxException use) {
 			throw new IOException(use);

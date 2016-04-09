@@ -45,7 +45,10 @@ public abstract class Configuration {
 		else {
 			inputStream = getClass().getResourceAsStream('/' + fileName);
 		}
-		properties.load(inputStream);
+		synchronized (properties) {
+			properties.clear();
+			properties.load(inputStream);
+		}
 		inputStream.close();
 	}
 

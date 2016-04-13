@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -53,15 +52,20 @@ public abstract class Configuration {
 		}
 	}
 
-	public InputStream openConfigurationInputStream() throws IOException {
-		final InputStream inputStream;
+	protected File getFile() {
 		File config = null;
 		try {
 			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
 		}
-		catch (URISyntaxException use) {
-			throw new IOException(use);
+		catch (final Exception e) {
+			config = new File(fileName);
 		}
+		return config;
+	}
+
+	public InputStream openConfigurationInputStream() throws IOException {
+		final InputStream inputStream;
+		final File config = getFile();
 		if (config != null && config.exists()) {
 			inputStream = new BufferedInputStream(new FileInputStream(config));
 		}
@@ -73,13 +77,7 @@ public abstract class Configuration {
 
 	public OutputStream openConfigurationOutputStream() throws IOException {
 		final OutputStream outputStream;
-		File config = null;
-		try {
-			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
-		}
-		catch (URISyntaxException use) {
-			throw new IOException(use);
-		}
+		final File config = getFile();
 		outputStream = new BufferedOutputStream(new FileOutputStream(config));
 		return outputStream;
 	}

@@ -44,8 +44,9 @@ public class ExceptionUtils {
 	public static String getLogMessage(Throwable throwable) {
 		String message = "";
 		if (throwable != null) {
+			message = throwable.getClass().getSimpleName();
 			if (StringUtils.isNotBlank(throwable.getLocalizedMessage()) || StringUtils.isNotBlank(throwable.getMessage())) {
-				message = throwable.getClass().getSimpleName() + ": " + (StringUtils.isNotBlank(throwable.getLocalizedMessage()) ? throwable.getLocalizedMessage() : throwable.getMessage());
+				message += ": " + (StringUtils.isNotBlank(throwable.getLocalizedMessage()) ? throwable.getLocalizedMessage() : throwable.getMessage());
 			}
 
 			if (StringUtils.isNotBlank(message)) {

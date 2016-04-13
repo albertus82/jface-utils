@@ -1,10 +1,13 @@
 package it.albertus.util;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Properties;
@@ -31,6 +34,26 @@ public abstract class Configuration {
 	}
 
 	protected void load() throws IOException {
+		final InputStream inputStream = openConfigurationInputStream();
+		if (inputStream != null) {
+			synchronized (properties) {
+				properties.clear();
+				properties.load(inputStream);
+			}
+			inputStream.close();
+		}
+	}
+
+	public void reload() {
+		try {
+			load();
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+	}
+
+	public InputStream openConfigurationInputStream() throws IOException {
 		final InputStream inputStream;
 		File config = null;
 		try {
@@ -45,11 +68,20 @@ public abstract class Configuration {
 		else {
 			inputStream = getClass().getResourceAsStream('/' + fileName);
 		}
-		synchronized (properties) {
-			properties.clear();
-			properties.load(inputStream);
+		return inputStream;
+	}
+
+	public OutputStream openConfigurationOutputStream() throws IOException {
+		final OutputStream outputStream;
+		File config = null;
+		try {
+			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
 		}
-		inputStream.close();
+		catch (URISyntaxException use) {
+			throw new IOException(use);
+		}
+		outputStream = new BufferedOutputStream(new FileOutputStream(config));
+		return outputStream;
 	}
 
 	public Properties getProperties() {

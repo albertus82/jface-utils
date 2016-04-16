@@ -52,7 +52,7 @@ public abstract class Configuration {
 		}
 	}
 
-	protected File getFile() {
+	public File getFile() {
 		File config;
 		try {
 			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);

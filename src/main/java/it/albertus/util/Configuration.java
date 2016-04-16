@@ -22,13 +22,13 @@ public abstract class Configuration {
 	private final Properties properties = new Properties();
 	private final String fileName;
 
-	protected Configuration(String fileName) {
+	protected Configuration(final String fileName) {
 		this.fileName = fileName;
 		try {
 			load();
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		catch (final IOException ioe) {
+			throw new RuntimeException(ioe);
 		}
 	}
 
@@ -47,13 +47,13 @@ public abstract class Configuration {
 		try {
 			load();
 		}
-		catch (IOException ioe) {
+		catch (final IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
 	}
 
 	protected File getFile() {
-		File config = null;
+		File config;
 		try {
 			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
 		}
@@ -90,15 +90,15 @@ public abstract class Configuration {
 		return fileName;
 	}
 
-	public String getString(String key) {
+	public String getString(final String key) {
 		return properties.getProperty(key);
 	}
 
-	public String getString(String key, String defaultValue) {
+	public String getString(final String key, final String defaultValue) {
 		return properties.getProperty(key, defaultValue);
 	}
 
-	public Boolean getBoolean(String key) {
+	public Boolean getBoolean(final String key) {
 		final String value = getString(key);
 		if (value != null) {
 			return Boolean.valueOf(value.trim());
@@ -106,7 +106,7 @@ public abstract class Configuration {
 		return null;
 	}
 
-	public boolean getBoolean(String key, boolean defaultValue) {
+	public boolean getBoolean(final String key, final boolean defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
 			return Boolean.parseBoolean(value.trim());
@@ -114,103 +114,103 @@ public abstract class Configuration {
 		return defaultValue;
 	}
 
-	public Long getLong(String key) {
+	public Long getLong(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Long.valueOf(value);
+			return Long.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public long getLong(String key, long defaultValue) {
+	public long getLong(final String key, final long defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Long.parseLong(value);
+			return Long.parseLong(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Integer getInt(String key) {
+	public Integer getInt(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Integer.valueOf(value);
+			return Integer.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public int getInt(String key, int defaultValue) {
+	public int getInt(final String key, final int defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Integer.parseInt(value);
+			return Integer.parseInt(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Short getShort(String key) {
+	public Short getShort(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Short.valueOf(value);
+			return Short.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public short getShort(String key, short defaultValue) {
+	public short getShort(final String key, final short defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Short.parseShort(value);
+			return Short.parseShort(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Byte getByte(String key) {
+	public Byte getByte(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Byte.valueOf(value);
+			return Byte.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public byte getByte(String key, byte defaultValue) {
+	public byte getByte(final String key, final byte defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Byte.parseByte(value);
+			return Byte.parseByte(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Float getFloat(String key) {
+	public Float getFloat(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Float.valueOf(value);
+			return Float.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public float getFloat(String key, float defaultValue) {
+	public float getFloat(final String key, final float defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Float.parseFloat(value);
+			return Float.parseFloat(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Double getDouble(String key) {
+	public Double getDouble(final String key) {
 		final String value = getString(key);
 		if (value != null) {
-			return Double.valueOf(value);
+			return Double.valueOf(value.trim());
 		}
 		return null;
 	}
 
-	public double getDouble(String key, double defaultValue) {
+	public double getDouble(final String key, final double defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
-			return Double.parseDouble(value);
+			return Double.parseDouble(value.trim());
 		}
 		return defaultValue;
 	}
 
-	public Character getChar(String key) {
+	public Character getChar(final String key) {
 		final String value = getString(key);
 		if (value != null) {
 			return parseChar(value);
@@ -218,7 +218,7 @@ public abstract class Configuration {
 		return null;
 	}
 
-	public char getChar(String key, char defaultValue) {
+	public char getChar(final String key, final char defaultValue) {
 		final String value = getString(key);
 		if (value != null) {
 			return parseChar(value);
@@ -226,7 +226,7 @@ public abstract class Configuration {
 		return defaultValue;
 	}
 
-	private char parseChar(String value) {
+	private char parseChar(final String value) {
 		if (value.length() == 1) {
 			return value.charAt(0);
 		}
@@ -235,7 +235,7 @@ public abstract class Configuration {
 		}
 	}
 
-	public boolean contains(String key) {
+	public boolean contains(final String key) {
 		return properties.get(key) != null;
 	}
 

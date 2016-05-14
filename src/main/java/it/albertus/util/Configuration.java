@@ -90,6 +90,15 @@ public abstract class Configuration {
 		return fileName;
 	}
 
+	public char[] getCharArray(final String key) {
+		try {
+			return properties.getProperty(key).toCharArray();
+		}
+		catch (final Exception e) {
+			return null;
+		}
+	}
+
 	public String getString(final String key) {
 		return properties.getProperty(key);
 	}

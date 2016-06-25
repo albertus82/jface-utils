@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
 
 import org.eclipse.swt.SWT;
@@ -83,7 +83,7 @@ public class FormattedComboFieldEditor extends ComboFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getComboBoxControl().setToolTipText(Resources.get("lbl.preferences.default.value", defaultValue));
+			getComboBoxControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
 
 import java.util.prefs.Preferences;
@@ -40,7 +40,7 @@ public class FormattedStringFieldEditor extends StringFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(Resources.get("lbl.preferences.default.value", defaultValue));
+			getTextControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 
@@ -52,7 +52,7 @@ public class FormattedStringFieldEditor extends StringFieldEditor {
 	}
 
 	protected void init() {
-		setErrorMessage(Resources.get("err.preferences.string"));
+		setErrorMessage(JFaceResources.get("err.preferences.string"));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
 	}
 

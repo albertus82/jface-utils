@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 
 import java.util.Arrays;
 import java.util.prefs.Preferences;
@@ -178,7 +178,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	}
 
 	protected void init() {
-		setErrorMessage(Resources.get("err.preferences.string"));
+		setErrorMessage(JFaceResources.get("err.preferences.string"));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
 	}
 

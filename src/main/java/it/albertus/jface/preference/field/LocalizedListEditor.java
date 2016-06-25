@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ListEditor;
@@ -35,16 +35,16 @@ public abstract class LocalizedListEditor extends ListEditor {
 		final Composite buttonBox = super.getButtonBoxControl(parent);
 		if (!localized) {
 			final Button addButton = getAddButton();
-			addButton.setText(Resources.get("lbl.preferences.list.button.add"));
+			addButton.setText(JFaceResources.get("lbl.preferences.list.button.add"));
 
 			final Button removeButton = getRemoveButton();
-			removeButton.setText(Resources.get("lbl.preferences.list.button.remove"));
+			removeButton.setText(JFaceResources.get("lbl.preferences.list.button.remove"));
 
 			final Button upButton = getUpButton();
-			upButton.setText(Resources.get("lbl.preferences.list.button.up"));
+			upButton.setText(JFaceResources.get("lbl.preferences.list.button.up"));
 
 			final Button downButton = getDownButton();
-			downButton.setText(Resources.get("lbl.preferences.list.button.down"));
+			downButton.setText(JFaceResources.get("lbl.preferences.list.button.down"));
 
 			localized = true;
 		}

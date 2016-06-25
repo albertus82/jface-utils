@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
 
 import java.io.File;
@@ -23,7 +23,7 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	public FormattedDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		setErrorMessage(Resources.get("err.preferences.directory"));
+		setErrorMessage(JFaceResources.get("err.preferences.directory"));
 		setTextLimit(MAX_PATH);
 	}
 
@@ -31,7 +31,7 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 	protected Button getChangeControl(final Composite parent) {
 		final Button browseButton = super.getChangeControl(parent);
 		if (!localized) {
-			browseButton.setText(Resources.get("lbl.preferences.button.browse"));
+			browseButton.setText(JFaceResources.get("lbl.preferences.button.browse"));
 			localized = true;
 		}
 		return browseButton;
@@ -75,7 +75,7 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(Resources.get("lbl.preferences.default.value", defaultValue));
+			getTextControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
 
 import java.io.File;
@@ -34,7 +34,7 @@ public class FormattedFileFieldEditor extends FileFieldEditor {
 	protected Button getChangeControl(final Composite parent) {
 		final Button browseButton = super.getChangeControl(parent);
 		if (!localized) {
-			browseButton.setText(Resources.get("lbl.preferences.button.browse"));
+			browseButton.setText(JFaceResources.get("lbl.preferences.button.browse"));
 			localized = true;
 		}
 		return browseButton;
@@ -73,7 +73,7 @@ public class FormattedFileFieldEditor extends FileFieldEditor {
 			File file = new File(path);
 			if (file.isFile()) {
 				if (enforceAbsolute && !file.isAbsolute()) {
-					msg = Resources.get("err.preferences.file.absolute.path");
+					msg = JFaceResources.get("err.preferences.file.absolute.path");
 				}
 			}
 			else {
@@ -99,7 +99,7 @@ public class FormattedFileFieldEditor extends FileFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(Resources.get("lbl.preferences.default.value", defaultValue));
+			getTextControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 
@@ -111,7 +111,7 @@ public class FormattedFileFieldEditor extends FileFieldEditor {
 	}
 
 	protected void init() {
-		setErrorMessage(Resources.get("err.preferences.file.existing"));
+		setErrorMessage(JFaceResources.get("err.preferences.file.existing"));
 		setTextLimit(MAX_PATH);
 	}
 

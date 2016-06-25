@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
 import it.albertus.jface.preference.field.listener.IntegerVerifyListener;
 
@@ -26,7 +26,7 @@ public class FormattedIntegerFieldEditor extends IntegerFieldEditor {
 	@Override
 	public void setValidRange(final int min, final int max) {
 		super.setValidRange(min, max);
-		setErrorMessage(Resources.get("err.preferences.integer.range", min, max));
+		setErrorMessage(JFaceResources.get("err.preferences.integer.range", min, max));
 	}
 
 	@Override
@@ -56,12 +56,12 @@ public class FormattedIntegerFieldEditor extends IntegerFieldEditor {
 	protected void init() {
 		getTextControl().addVerifyListener(new IntegerVerifyListener());
 		getTextControl().addFocusListener(new IntegerFocusListener());
-		setErrorMessage(Resources.get("err.preferences.integer"));
+		setErrorMessage(JFaceResources.get("err.preferences.integer"));
 	}
 
 	protected void setToolTipText(final int defaultValue) {
 		if (defaultValue != 0) {
-			getTextControl().setToolTipText(Resources.get("lbl.preferences.default.value", defaultValue));
+			getTextControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

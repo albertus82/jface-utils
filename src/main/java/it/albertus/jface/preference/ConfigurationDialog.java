@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -22,7 +22,7 @@ public class ConfigurationDialog extends PreferenceDialog {
 	@Override
 	protected void configureShell(final Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(Resources.get("lbl.preferences.title"));
+		newShell.setText(JFaceResources.get("lbl.preferences.title"));
 		if (images != null) {
 			newShell.setImages(images);
 		}
@@ -33,10 +33,10 @@ public class ConfigurationDialog extends PreferenceDialog {
 		super.createButtonsForButtonBar(parent);
 
 		final Button okButton = getButton(IDialogConstants.OK_ID);
-		okButton.setText(Resources.get("lbl.preferences.button.ok"));
+		okButton.setText(JFaceResources.get("lbl.preferences.button.ok"));
 
 		final Button cancelButton = getButton(IDialogConstants.CANCEL_ID);
-		cancelButton.setText(Resources.get("lbl.preferences.button.cancel"));
+		cancelButton.setText(JFaceResources.get("lbl.preferences.button.cancel"));
 	}
 
 }

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.field.listener.LowercaseVerifyListener;
 
 import org.eclipse.swt.widgets.Composite;
@@ -20,10 +20,10 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 			}
 		}
 		if (length > DEFAULT_TEXT_LIMIT) {
-			setErrorMessage(Resources.get("err.preferences.integer.range", 0, Integer.MAX_VALUE));
+			setErrorMessage(JFaceResources.get("err.preferences.integer.range", 0, Integer.MAX_VALUE));
 		}
 		else {
-			setErrorMessage(Resources.get("err.preferences.integer"));
+			setErrorMessage(JFaceResources.get("err.preferences.integer"));
 		}
 		getComboBoxControl().setTextLimit(length);
 

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.swt.widgets.Button;
@@ -34,8 +34,8 @@ public class DefaultBooleanFieldEditor extends BooleanFieldEditor {
 
 	protected void setToolTipText(final boolean defaultValue) {
 		if (checkBox != null && !checkBox.isDisposed()) {
-			final String value = Resources.get(defaultValue ? "lbl.preferences.default.value.true" : "lbl.preferences.default.value.false");
-			checkBox.setToolTipText(Resources.get("lbl.preferences.default.value", value));
+			final String value = JFaceResources.get(defaultValue ? "lbl.preferences.default.value.true" : "lbl.preferences.default.value.false");
+			checkBox.setToolTipText(JFaceResources.get("lbl.preferences.default.value", value));
 		}
 	}
 

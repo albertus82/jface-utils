@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.jface.Resources;
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.IPreference;
 import it.albertus.util.Configuration;
 import it.albertus.util.NewLine;
@@ -48,11 +48,11 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		super.createControl(parent);
 
 		final Button defaultsButton = getDefaultsButton();
-		defaultsButton.setText(Resources.get("lbl.preferences.button.defaults"));
-		defaultsButton.setToolTipText(Resources.get("lbl.preferences.button.defaults.tooltip"));
+		defaultsButton.setText(JFaceResources.get("lbl.preferences.button.defaults"));
+		defaultsButton.setToolTipText(JFaceResources.get("lbl.preferences.button.defaults.tooltip"));
 
 		final Button applyButton = getApplyButton();
-		applyButton.setText(Resources.get("lbl.preferences.button.apply"));
+		applyButton.setText(JFaceResources.get("lbl.preferences.button.apply"));
 	}
 
 	@Override

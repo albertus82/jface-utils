@@ -1,6 +1,10 @@
 package it.albertus.jface;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.widgets.Display;
 
 public abstract class GuiUtils {
 
@@ -37,6 +41,21 @@ public abstract class GuiUtils {
 		else {
 			return "";
 		}
+	}
+
+	public static boolean checkClipboard(final Transfer transfer) {
+		final Display display = Display.getCurrent();
+		if (display != null) {
+			final Clipboard clipboard = new Clipboard(display);
+			final TransferData[] clipboardAvailableTypes = clipboard.getAvailableTypes();
+			clipboard.dispose();
+			for (final TransferData clipboardType : clipboardAvailableTypes) {
+				if (transfer.isSupportedType(clipboardType)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

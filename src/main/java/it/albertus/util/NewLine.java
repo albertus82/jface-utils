@@ -32,6 +32,7 @@ public enum NewLine {
 	 * 
 	 * @return la stringa che rappresenta il ritorno a capo.
 	 */
+	@Override
 	public String toString() {
 		return string;
 	}
@@ -40,9 +41,8 @@ public enum NewLine {
 	 * Restituisce l'<b>enum</b> corrispondente al tipo di ritorno a capo
 	 * desiderato.
 	 * 
-	 * @param characters
-	 *            una stringa tra "CR", "\r" (Macintosh), "LF", "\n" (Unix),
-	 *            "CRLF", "\r\n" (DOS/Windows).
+	 * @param characters una stringa tra "CR", "\r" (Macintosh), "LF", "\n"
+	 *        (Unix/OS X), "CRLF", "\r\n" (DOS/Windows).
 	 * @return l'<b>enum</b> corrispondente al tipo di ritorno a capo passato
 	 *         come parametro, oppure null se non riconosciuto.
 	 */

@@ -5,11 +5,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
 /** Executes code in the user-interface thread. */
-public abstract class GuiThreadExecutor {
+public abstract class SwtThreadExecutor {
 
 	private final Widget widget;
 
-	public GuiThreadExecutor(final Widget widget) {
+	public SwtThreadExecutor(final Widget widget) {
 		this.widget = widget;
 	}
 
@@ -38,7 +38,7 @@ public abstract class GuiThreadExecutor {
 						@Override
 						public void run() {
 							try {
-								GuiThreadExecutor.this.run();
+								SwtThreadExecutor.this.run();
 							}
 							catch (final Exception exception) {
 								onError(exception);

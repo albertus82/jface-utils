@@ -6,7 +6,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Display;
 
-public abstract class GuiUtils {
+public abstract class SwtUtils {
 
 	public static final char KEY_OPEN = 'o';
 	public static final char KEY_SAVE = 's';

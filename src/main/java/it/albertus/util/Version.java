@@ -17,7 +17,7 @@ public class Version {
 	private static class Singleton {
 		private static final Version instance = new Version();
 	}
-	
+
 	public static Version getInstance() {
 		return Singleton.instance;
 	}
@@ -26,12 +26,12 @@ public class Version {
 		this(VERSION_FILE_NAME);
 	}
 
-	protected Version(String fileName) {
+	protected Version(final String fileName) {
 		this.fileName = fileName;
 		try {
 			load();
 		}
-		catch (IOException e) {
+		catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}

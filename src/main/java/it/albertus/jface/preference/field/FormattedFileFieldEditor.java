@@ -34,7 +34,7 @@ public class FormattedFileFieldEditor extends FileFieldEditor {
 	protected Button getChangeControl(final Composite parent) {
 		final Button browseButton = super.getChangeControl(parent);
 		if (!localized) {
-			browseButton.setText(JFaceResources.get("lbl.preferences.button.browse"));
+			browseButton.setText(JFaceResources.get("lbl.button.browse"));
 			localized = true;
 		}
 		return browseButton;

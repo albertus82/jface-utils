@@ -14,7 +14,7 @@ public class TerminalConsole extends Console {
 		return Singleton.instance;
 	}
 
-	private TerminalConsole(PrintStream printStream) {
+	private TerminalConsole(final PrintStream printStream) {
 		out = printStream;
 	}
 

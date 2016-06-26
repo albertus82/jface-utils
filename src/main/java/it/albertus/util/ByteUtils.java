@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ByteUtils {
 
-	public static byte[] toByteArray(List<Byte> byteList) {
+	public static byte[] toByteArray(final List<Byte> byteList) {
 		byte[] byteArray = new byte[byteList.size()];
 		for (int i = 0; i < byteArray.length; i++) {
 			byteArray[i] = byteList.get(i).byteValue();
@@ -15,21 +15,21 @@ public class ByteUtils {
 		return byteArray;
 	}
 
-	public static byte[] toByteArray(int intValue) {
+	public static byte[] toByteArray(final int intValue) {
 		byte[] byteArray = new byte[2];
 		byteArray[0] = (byte) intValue;
 		byteArray[1] = (byte) (intValue >>> 8);
 		return byteArray;
 	}
 
-	public static List<Byte> toByteList(int intValue) {
+	public static List<Byte> toByteList(final int intValue) {
 		List<Byte> byteList = new ArrayList<Byte>(2);
 		byteList.add((byte) intValue);
 		byteList.add((byte) (intValue >>> 8));
 		return byteList;
 	}
 
-	public static short[] toShortArray(byte[] byteArray) {
+	public static short[] toShortArray(final byte[] byteArray) {
 		short[] shortArray = new short[byteArray.length];
 		for (int i = 0; i < byteArray.length; i++) {
 			shortArray[i] = toShort(byteArray[i]);
@@ -37,7 +37,7 @@ public class ByteUtils {
 		return shortArray;
 	}
 
-	public static int[] toIntArray(byte[] byteArray) {
+	public static int[] toIntArray(final byte[] byteArray) {
 		if (byteArray.length % 2 != 0) {
 			throw new IllegalArgumentException("Cannot convert an odd sized byte array into an int array.");
 		}
@@ -48,11 +48,11 @@ public class ByteUtils {
 		return intArray;
 	}
 
-	public static short toShort(byte byteValue) {
+	public static short toShort(final byte byteValue) {
 		return toShort(byteValue, ByteOrder.LITTLE_ENDIAN);
 	}
 
-	public static short toShort(byte byteValue, ByteOrder byteOrder) {
+	public static short toShort(final byte byteValue, final ByteOrder byteOrder) {
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(2);
 		byteBuffer.order(byteOrder);
 		byteBuffer.put(byteValue);
@@ -61,11 +61,11 @@ public class ByteUtils {
 		return byteBuffer.getShort();
 	}
 
-	public static int toInt(byte lowOrderByte, byte highOrderByte) {
+	public static int toInt(final byte lowOrderByte, final byte highOrderByte) {
 		return toInt(lowOrderByte, highOrderByte, ByteOrder.LITTLE_ENDIAN);
 	}
 
-	public static int toInt(byte lowOrderByte, byte highOrderByte, ByteOrder byteOrder) {
+	public static int toInt(final byte lowOrderByte, final byte highOrderByte, final ByteOrder byteOrder) {
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4);
 		byteBuffer.order(byteOrder);
 		byteBuffer.put(lowOrderByte);

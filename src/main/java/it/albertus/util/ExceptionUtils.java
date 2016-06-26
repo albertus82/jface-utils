@@ -5,7 +5,7 @@ import java.io.StringWriter;
 
 public class ExceptionUtils {
 
-	public static String getStackTrace(Throwable e) {
+	public static String getStackTrace(final Throwable e) {
 		String stackTrace = "";
 		if (e != null) {
 			try {
@@ -13,12 +13,12 @@ public class ExceptionUtils {
 				e.printStackTrace(new PrintWriter(sw));
 				stackTrace = sw.toString();
 			}
-			catch (Throwable t) {}
+			catch (final Throwable t) {}
 		}
 		return stackTrace;
 	}
 
-	public static String getUIMessage(Throwable throwable) {
+	public static String getUIMessage(final Throwable throwable) {
 		String message = "";
 		if (throwable != null) {
 			if (StringUtils.isNotBlank(throwable.getLocalizedMessage())) {
@@ -41,7 +41,7 @@ public class ExceptionUtils {
 		return message;
 	}
 
-	public static String getLogMessage(Throwable throwable) {
+	public static String getLogMessage(final Throwable throwable) {
 		String message = "";
 		if (throwable != null) {
 			message = throwable.getClass().getSimpleName();

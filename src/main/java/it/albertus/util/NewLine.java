@@ -11,7 +11,7 @@ public enum NewLine {
 	private final char[] characters;
 	private final String string;
 
-	private NewLine(char... characters) {
+	private NewLine(final char... characters) {
 		this.characters = characters;
 		this.string = String.valueOf(characters);
 	}
@@ -46,7 +46,7 @@ public enum NewLine {
 	 * @return l'<b>enum</b> corrispondente al tipo di ritorno a capo passato
 	 *         come parametro, oppure null se non riconosciuto.
 	 */
-	public static NewLine getEnum(String characters) {
+	public static NewLine getEnum(final String characters) {
 		if (characters != null && characters.length() != 0) {
 			for (NewLine newLine : NewLine.values()) {
 				if (newLine.toString().equals(characters) || newLine.name().equalsIgnoreCase(characters.trim())) {

@@ -33,10 +33,10 @@ public class ConfigurationDialog extends PreferenceDialog {
 		super.createButtonsForButtonBar(parent);
 
 		final Button okButton = getButton(IDialogConstants.OK_ID);
-		okButton.setText(JFaceResources.get("lbl.preferences.button.ok"));
+		okButton.setText(JFaceResources.get("lbl.button.ok"));
 
 		final Button cancelButton = getButton(IDialogConstants.CANCEL_ID);
-		cancelButton.setText(JFaceResources.get("lbl.preferences.button.cancel"));
+		cancelButton.setText(JFaceResources.get("lbl.button.cancel"));
 	}
 
 }

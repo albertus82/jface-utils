@@ -52,7 +52,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		defaultsButton.setToolTipText(JFaceResources.get("lbl.preferences.button.defaults.tooltip"));
 
 		final Button applyButton = getApplyButton();
-		applyButton.setText(JFaceResources.get("lbl.preferences.button.apply"));
+		applyButton.setText(JFaceResources.get("lbl.button.apply"));
 	}
 
 	@Override

@@ -1,8 +1,9 @@
 package it.albertus.util;
 
+import java.io.OutputStream;
 import java.util.Locale;
 
-public abstract class Console {
+public abstract class Console extends OutputStream {
 
 	protected int row = 0;
 	protected int column = 0;

@@ -1,5 +1,6 @@
 package it.albertus.util;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 public class TerminalConsole extends Console {
@@ -91,6 +92,11 @@ public class TerminalConsole extends Console {
 	public void println(char array[]) {
 		out.println(array);
 		newLine();
+	}
+
+	@Override
+	public void write(int b) throws IOException {
+		out.write(b);
 	}
 
 }

@@ -12,6 +12,8 @@ public class SystemConsole extends Console {
 		return Singleton.instance;
 	}
 
+	protected SystemConsole() {}
+
 	@Override
 	public void print(final String value) {
 		System.out.print(value);

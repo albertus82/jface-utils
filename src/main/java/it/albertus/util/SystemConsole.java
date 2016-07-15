@@ -13,16 +13,13 @@ public class SystemConsole extends Console {
 	}
 
 	@Override
-	public void print(String value) {
-		if (value == null) {
-			value = String.valueOf(value);
-		}
+	public void print(final String value) {
 		System.out.print(value);
 		updatePosition(value);
 	}
 
 	@Override
-	public void print(char array[]) {
+	public void print(final char array[]) {
 		System.out.print(array);
 		updatePosition(array);
 	}
@@ -34,61 +31,61 @@ public class SystemConsole extends Console {
 	}
 
 	@Override
-	public void println(String value) {
+	public void println(final String value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(Object value) {
+	public void println(final Object value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(boolean value) {
+	public void println(final boolean value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(char value) {
+	public void println(final char value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(int value) {
+	public void println(final int value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(long value) {
+	public void println(final long value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(float value) {
+	public void println(final float value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(double value) {
+	public void println(final double value) {
 		System.out.println(value);
 		newLine();
 	}
 
 	@Override
-	public void println(char array[]) {
+	public void println(final char array[]) {
 		System.out.println(array);
 		newLine();
 	}
 
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		System.out.write(b);
 	}
 

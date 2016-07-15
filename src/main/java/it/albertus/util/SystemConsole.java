@@ -1,22 +1,15 @@
 package it.albertus.util;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
-public class TerminalConsole extends Console {
-
-	private final PrintStream out;
+public class SystemConsole extends Console {
 
 	private static class Singleton {
-		private static final TerminalConsole instance = new TerminalConsole(System.out);
+		private static final SystemConsole instance = new SystemConsole();
 	}
 
-	public static TerminalConsole getInstance() {
+	public static SystemConsole getInstance() {
 		return Singleton.instance;
-	}
-
-	private TerminalConsole(final PrintStream printStream) {
-		out = printStream;
 	}
 
 	@Override
@@ -24,79 +17,79 @@ public class TerminalConsole extends Console {
 		if (value == null) {
 			value = String.valueOf(value);
 		}
-		out.print(value);
+		System.out.print(value);
 		updatePosition(value);
 	}
 
 	@Override
 	public void print(char array[]) {
-		out.print(array);
+		System.out.print(array);
 		updatePosition(array);
 	}
 
 	@Override
 	public void println() {
-		out.println();
+		System.out.println();
 		newLine();
 	}
 
 	@Override
 	public void println(String value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(Object value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(boolean value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(char value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(int value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(long value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(float value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(double value) {
-		out.println(value);
+		System.out.println(value);
 		newLine();
 	}
 
 	@Override
 	public void println(char array[]) {
-		out.println(array);
+		System.out.println(array);
 		newLine();
 	}
 
 	@Override
 	public void write(int b) throws IOException {
-		out.write(b);
+		System.out.write(b);
 	}
 
 }

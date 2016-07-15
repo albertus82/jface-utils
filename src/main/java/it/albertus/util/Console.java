@@ -6,8 +6,8 @@ import java.util.Locale;
 
 public abstract class Console extends OutputStream {
 
-	protected static final PrintStream sysout = System.out;
-	protected static final PrintStream syserr = System.err;
+	public static final PrintStream sysout = System.out;
+	public static final PrintStream syserr = System.err;
 
 	protected int row = 0;
 	protected int column = 0;
@@ -25,7 +25,7 @@ public abstract class Console extends OutputStream {
 		column = 0;
 	}
 
-	protected void updatePosition(final CharSequence cs) {
+	public void updatePosition(final CharSequence cs) {
 		char last = '\0';
 		for (int index = 0; index < cs.length(); index++) {
 			final char current = cs.charAt(index);

@@ -12,7 +12,7 @@ public class SystemConsole extends Console {
 		return Singleton.instance;
 	}
 
-	protected SystemConsole() {}
+	private SystemConsole() {}
 
 	@Override
 	public void print(final String value) {

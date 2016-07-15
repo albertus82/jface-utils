@@ -1,7 +1,5 @@
 package it.albertus.util;
 
-import java.io.IOException;
-
 public class SystemConsole extends Console {
 
 	private static class Singleton {
@@ -84,11 +82,6 @@ public class SystemConsole extends Console {
 	public void println(final char array[]) {
 		System.out.println(array);
 		newLine();
-	}
-
-	@Override
-	public void write(final int b) throws IOException {
-		System.out.write(b);
 	}
 
 }

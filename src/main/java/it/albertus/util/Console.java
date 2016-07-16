@@ -1,12 +1,8 @@
 package it.albertus.util;
 
-import java.io.PrintStream;
 import java.util.Locale;
 
 public abstract class Console {
-
-	public static final PrintStream sysout = System.out;
-	public static final PrintStream syserr = System.err;
 
 	protected int row = 0;
 	protected int column = 0;

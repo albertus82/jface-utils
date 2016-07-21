@@ -1,7 +1,7 @@
 package it.albertus.jface.preference.page;
 
 import it.albertus.jface.JFaceResources;
-import it.albertus.jface.preference.IPreference;
+import it.albertus.jface.preference.Preference;
 import it.albertus.util.Configuration;
 import it.albertus.util.NewLine;
 
@@ -25,23 +25,22 @@ import org.eclipse.swt.widgets.Label;
 
 public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 
-	protected final Map<IPreference, FieldEditor> fieldEditorMap = new HashMap<IPreference, FieldEditor>();
-
+	protected final Configuration configuration;
+	protected final Preference[] preferences;
+	protected final Map<Preference, FieldEditor> fieldEditorMap = new HashMap<Preference, FieldEditor>();
 	protected Control header;
 
-	public AbstractPreferencePage() {
-		super(GRID);
+	public AbstractPreferencePage(final Configuration configuration, final Preference[] preferences) {
+		this(configuration, preferences, GRID);
 	}
 
-	protected AbstractPreferencePage(final int style) {
+	protected AbstractPreferencePage(final Configuration configuration, final Preference[] preferences, final int style) {
 		super(style);
+		this.configuration = configuration;
+		this.preferences = preferences;
 	}
 
-	protected abstract IPage getPage();
-
-	protected abstract IPreference[] getPreferences();
-
-	protected abstract Configuration getConfiguration();
+	protected abstract Page getPage();
 
 	@Override
 	public void createControl(final Composite parent) {
@@ -60,8 +59,6 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		super.performApply();
 
 		// Save configuration file...
-		final Configuration configuration = getConfiguration();
-
 		OutputStream configurationOutputStream = null;
 		try {
 			configurationOutputStream = configuration.openConfigurationOutputStream();
@@ -91,8 +88,8 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 
 		// Fields
-		final IPage page = getPage();
-		for (final IPreference preference : getPreferences()) {
+		final Page page = getPage();
+		for (final Preference preference : preferences) {
 			if (page.equals(preference.getPage())) {
 				final FieldEditor fieldEditor = preference.createFieldEditor(getFieldEditorParent());
 				addField(fieldEditor);
@@ -107,10 +104,10 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		if (event.getSource() instanceof BooleanFieldEditor) {
 			final BooleanFieldEditor changedBooleanFieldEditor = (BooleanFieldEditor) event.getSource();
 			final Boolean parentEnabled = (Boolean) event.getNewValue();
-			for (final Entry<IPreference, FieldEditor> entry : fieldEditorMap.entrySet()) {
+			for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
 				if (entry.getValue().equals(changedBooleanFieldEditor)) {
 					// Found!
-					for (final IPreference childPreference : entry.getKey().getChildren()) {
+					for (final Preference childPreference : entry.getKey().getChildren()) {
 						updateChildrenStatus(childPreference, parentEnabled);
 					}
 					break; // Done!
@@ -131,13 +128,13 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		updateFieldsStatus();
 	}
 
-	protected void updateChildrenStatus(final IPreference childPreference, final Boolean parentEnabled) {
+	protected void updateChildrenStatus(final Preference childPreference, final Boolean parentEnabled) {
 		final FieldEditor childFieldEditor = fieldEditorMap.get(childPreference);
 		updateChildStatus(childFieldEditor, parentEnabled);
 		// Recurse descendants...
 		if (childFieldEditor instanceof BooleanFieldEditor) {
 			final BooleanFieldEditor childBooleanFieldEditor = (BooleanFieldEditor) childFieldEditor;
-			for (final IPreference descendantPreference : childPreference.getChildren()) { // Exit condition
+			for (final Preference descendantPreference : childPreference.getChildren()) { // Exit condition
 				final boolean childEnabled = childBooleanFieldEditor.getBooleanValue();
 				updateChildrenStatus(descendantPreference, childEnabled && parentEnabled);
 			}
@@ -145,7 +142,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected void updateFieldsStatus() {
-		for (final Entry<IPreference, FieldEditor> entry : fieldEditorMap.entrySet()) {
+		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
 			if (entry.getValue() instanceof BooleanFieldEditor) {
 				final BooleanFieldEditor booleanFieldEditor = (BooleanFieldEditor) entry.getValue();
 				final boolean parentEnabled;
@@ -156,7 +153,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 				else {
 					parentEnabled = booleanFieldEditor.getBooleanValue();
 				}
-				for (final IPreference childPreference : entry.getKey().getChildren()) {
+				for (final Preference childPreference : entry.getKey().getChildren()) {
 					updateChildStatus(fieldEditorMap.get(childPreference), parentEnabled);
 				}
 			}

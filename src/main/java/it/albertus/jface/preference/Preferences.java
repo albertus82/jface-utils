@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.IPage;
+import it.albertus.jface.preference.page.Page;
 import it.albertus.util.Configuration;
 
 import java.io.IOException;
@@ -16,26 +16,34 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class AbstractPreferences {
+public class Preferences {
 
-	protected final Shell parentShell;
+	protected final Configuration configuration;
+	protected final Page[] pages;
+	protected final Preference[] preferences;
+	protected final Image[] images;
 
-	public AbstractPreferences(final Shell parentShell) {
-		this.parentShell = parentShell;
+	public Preferences(final Configuration configuration, final Page[] pages, final Preference[] preferences) {
+		this(configuration, pages, preferences, null);
 	}
 
-	public int open() {
-		return open(null);
+	public Preferences(final Configuration configuration, final Page[] pages, final Preference[] preferences, final Image[] images) {
+		this.configuration = configuration;
+		this.pages = pages;
+		this.preferences = preferences;
+		this.images = images;
 	}
 
-	public int open(final IPage selectedPage) {
-		final Configuration configuration = getConfiguration();
+	public int open(final Shell parentShell) {
+		return open(parentShell, null);
+	}
 
+	public int open(final Shell parentShell, final Page selectedPage) {
 		final PreferenceManager preferenceManager = new PreferenceManager();
 
 		// Pages creation...
-		final Map<IPage, PreferenceNode> preferenceNodes = new HashMap<IPage, PreferenceNode>();
-		for (final IPage page : getPages()) {
+		final Map<Page, PreferenceNode> preferenceNodes = new HashMap<Page, PreferenceNode>();
+		for (final Page page : pages) {
 			final PreferenceNode preferenceNode = new PreferenceNode(page.getNodeId(), page.getLabel(), null, page.getPageClass().getName());
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
@@ -49,7 +57,7 @@ public abstract class AbstractPreferences {
 		final PreferenceStore preferenceStore = new PreferenceStore(configuration.getFile().getPath());
 
 		// Set default values...
-		for (final IPreference preference : getPreferences()) {
+		for (final Preference preference : preferences) {
 			if (preference.getDefaultValue() != null) {
 				preferenceStore.setDefault(preference.getConfigurationKey(), preference.getDefaultValue());
 			}
@@ -73,7 +81,7 @@ public abstract class AbstractPreferences {
 			catch (final Exception e) {}
 		}
 
-		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, getImages());
+		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, images);
 
 		preferenceDialog.setPreferenceStore(preferenceStore);
 
@@ -89,20 +97,6 @@ public abstract class AbstractPreferences {
 			configuration.reload();
 		}
 		return returnCode;
-	}
-
-	public Shell getParentShell() {
-		return parentShell;
-	}
-
-	protected abstract Configuration getConfiguration();
-
-	protected abstract IPage[] getPages();
-
-	protected abstract IPreference[] getPreferences();
-
-	protected Image[] getImages() {
-		return null;
 	}
 
 }

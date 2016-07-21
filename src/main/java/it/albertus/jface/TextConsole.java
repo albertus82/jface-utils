@@ -27,6 +27,10 @@ public class TextConsole extends OutputStream {
 	protected final Scrollable scrollable;
 	protected StringBuilder buffer = new StringBuilder();
 
+	public TextConsole(final Composite parent, final Object layoutData) {
+		this(parent, layoutData, null);
+	}
+
 	public TextConsole(final Composite parent, final Object layoutData, final Configuration configuration) {
 		this.configuration = configuration;
 		this.scrollable = createText(parent);
@@ -111,7 +115,7 @@ public class TextConsole extends OutputStream {
 
 		int mc;
 		try {
-			mc = configuration.getInt("gui.console.max.chars");
+			mc = configuration != null ? configuration.getInt("gui.console.max.chars") : Defaults.GUI_CONSOLE_MAX_CHARS;
 		}
 		catch (final Exception exception) {
 			mc = Defaults.GUI_CONSOLE_MAX_CHARS;

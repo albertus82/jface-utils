@@ -2,6 +2,7 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceResources;
 import it.albertus.jface.TextFormatter;
+import it.albertus.util.Localized;
 
 import java.io.File;
 
@@ -19,7 +20,7 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	private File filterPath = null;
 
-	private String dialogMessage;
+	private Localized dialogMessage;
 
 	public FormattedDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -88,8 +89,8 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	protected File getDirectory(final File startingDirectory) {
 		final DirectoryDialog fileDialog = new DirectoryDialog(getShell(), SWT.OPEN | SWT.SHEET);
-		if (dialogMessage != null && !dialogMessage.isEmpty()) {
-			fileDialog.setMessage(dialogMessage);
+		if (dialogMessage != null && dialogMessage.getMessage() != null && !dialogMessage.getMessage().isEmpty()) {
+			fileDialog.setMessage(dialogMessage.getMessage());
 		}
 		if (startingDirectory != null) {
 			fileDialog.setFilterPath(startingDirectory.getPath());
@@ -107,11 +108,11 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 		return null;
 	}
 
-	public String getDialogMessage() {
+	public Localized getDialogMessage() {
 		return dialogMessage;
 	}
 
-	public void setDialogMessage(final String dialogMessage) {
+	public void setDialogMessage(final Localized dialogMessage) {
 		this.dialogMessage = dialogMessage;
 	}
 

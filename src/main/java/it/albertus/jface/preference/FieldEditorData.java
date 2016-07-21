@@ -1,5 +1,7 @@
 package it.albertus.jface.preference;
 
+import it.albertus.util.Localized;
+
 import java.util.Arrays;
 
 public class FieldEditorData {
@@ -28,7 +30,7 @@ public class FieldEditorData {
 	private final Integer integerMaxValidValue;
 
 	// DirectoryFieldEditor
-	private final String directoryDialogMessage;
+	private final Localized directoryDialogMessage;
 
 	// FileFieldEditor
 	private final String[] fileExtensions;
@@ -86,7 +88,7 @@ public class FieldEditorData {
 		return integerMaxValidValue;
 	}
 
-	public String getDirectoryDialogMessage() {
+	public Localized getDirectoryDialogMessage() {
 		return directoryDialogMessage;
 	}
 
@@ -118,7 +120,7 @@ public class FieldEditorData {
 		private Integer textValidateStrategy;
 		private Integer integerMinValidValue;
 		private Integer integerMaxValidValue;
-		private String directoryDialogMessage;
+		private Localized directoryDialogMessage;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
 
@@ -183,7 +185,7 @@ public class FieldEditorData {
 			return this;
 		}
 
-		public FieldEditorDataBuilder directoryDialogMessage(final String dialogMessage) {
+		public FieldEditorDataBuilder directoryDialogMessage(final Localized dialogMessage) {
 			this.directoryDialogMessage = dialogMessage;
 			return this;
 		}

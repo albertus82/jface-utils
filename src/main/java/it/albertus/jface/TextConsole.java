@@ -1,7 +1,7 @@
 package it.albertus.jface;
 
 import it.albertus.jface.listener.TextConsoleDisposeListener;
-import it.albertus.util.Configuration;
+import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 
 import java.io.OutputStream;
@@ -23,7 +23,7 @@ public class TextConsole extends OutputStream {
 		int GUI_CONSOLE_MAX_CHARS = 100000;
 	}
 
-	protected final Configuration configuration;
+	protected final Configured<Integer> maxChars;
 	protected final Scrollable scrollable;
 	protected StringBuilder buffer = new StringBuilder();
 
@@ -31,8 +31,8 @@ public class TextConsole extends OutputStream {
 		this(parent, layoutData, null);
 	}
 
-	public TextConsole(final Composite parent, final Object layoutData, final Configuration configuration) {
-		this.configuration = configuration;
+	public TextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
+		this.maxChars = maxChars;
 		this.scrollable = createText(parent);
 		scrollable.setLayoutData(layoutData);
 		scrollable.setFont(JFaceResources.getTextFont());
@@ -113,14 +113,7 @@ public class TextConsole extends OutputStream {
 			toPrint = value;
 		}
 
-		int mc;
-		try {
-			mc = configuration != null ? configuration.getInt("gui.console.max.chars") : Defaults.GUI_CONSOLE_MAX_CHARS;
-		}
-		catch (final Exception exception) {
-			mc = Defaults.GUI_CONSOLE_MAX_CHARS;
-		}
-		final int maxChars = mc;
+		final int maxChars = getMaxChars();
 
 		// Actual print... (async avoids deadlocks)
 		new SwtThreadExecutor(scrollable, true) {
@@ -134,6 +127,18 @@ public class TextConsole extends OutputStream {
 				failSafePrint(toPrint);
 			}
 		}.start();
+	}
+
+	protected int getMaxChars() {
+		int mc;
+		try {
+			mc = this.maxChars != null ? this.maxChars.getValue() : Defaults.GUI_CONSOLE_MAX_CHARS;
+		}
+		catch (final Exception exception) {
+			mc = Defaults.GUI_CONSOLE_MAX_CHARS;
+		}
+		final int maxChars = mc;
+		return maxChars;
 	}
 
 }

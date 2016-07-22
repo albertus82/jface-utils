@@ -89,8 +89,8 @@ public class FormattedDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	protected File getDirectory(final File startingDirectory) {
 		final DirectoryDialog fileDialog = new DirectoryDialog(getShell(), SWT.OPEN | SWT.SHEET);
-		if (dialogMessage != null && dialogMessage.getMessage() != null && !dialogMessage.getMessage().isEmpty()) {
-			fileDialog.setMessage(dialogMessage.getMessage());
+		if (dialogMessage != null && dialogMessage.getString() != null && !dialogMessage.getString().isEmpty()) {
+			fileDialog.setMessage(dialogMessage.getString());
 		}
 		if (startingDirectory != null) {
 			fileDialog.setFilterPath(startingDirectory.getPath());

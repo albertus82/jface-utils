@@ -2,37 +2,39 @@ package it.albertus.jface.preference;
 
 import it.albertus.util.Localized;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class LocalizedComboEntryNamesAndValues implements ComboEntryNamesAndValues {
 
-	private final List<LocalizedComboEntryNameAndValue> entries;
+	private final Map<Localized, String> entries;
 
 	public LocalizedComboEntryNamesAndValues() {
-		entries = new ArrayList<LocalizedComboEntryNameAndValue>();
+		entries = new LinkedHashMap<Localized, String>();
 	}
 
 	public LocalizedComboEntryNamesAndValues(final int initialCapacity) {
-		entries = new ArrayList<LocalizedComboEntryNameAndValue>(initialCapacity);
+		entries = new LinkedHashMap<Localized, String>(initialCapacity);
 	}
 
 	public LocalizedComboEntryNamesAndValues(final Localized name, final Object value) {
 		this(1);
-		add(name, value);
+		put(name, value);
 	}
 
-	public void add(final Localized name, final Object value) {
-		entries.add(new LocalizedComboEntryNameAndValue(name, String.valueOf(value)));
+	public void put(final Localized name, final Object value) {
+		entries.put(name, String.valueOf(value));
 	}
 
 	@Override
 	public String[][] toArray() {
 		final String[][] options = new String[entries.size()][2];
-		for (int index = 0; index < entries.size(); index++) {
-			final LocalizedComboEntryNameAndValue entry = entries.get(index);
-			options[index][0] = entry.name.getString();
-			options[index][1] = entry.value;
+		int index = 0;
+		for (final Entry<Localized, String> entry : entries.entrySet()) {
+			options[index][0] = entry.getKey().getString();
+			options[index][1] = entry.getValue();
+			index++;
 		}
 		return options;
 	}
@@ -40,21 +42,6 @@ public class LocalizedComboEntryNamesAndValues implements ComboEntryNamesAndValu
 	@Override
 	public String toString() {
 		return entries.toString();
-	}
-
-	private class LocalizedComboEntryNameAndValue {
-		private final Localized name;
-		private final String value;
-
-		private LocalizedComboEntryNameAndValue(final Localized name, final String value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		@Override
-		public String toString() {
-			return '(' + String.valueOf(name) + ", " + value + ')';
-		}
 	}
 
 }

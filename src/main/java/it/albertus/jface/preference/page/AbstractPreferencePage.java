@@ -195,7 +195,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 					return value;
 				}
 			};
-			options.add(name, value);
+			options.put(name, value);
 		}
 		return options;
 	}

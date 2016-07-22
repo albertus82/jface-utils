@@ -11,7 +11,7 @@ public class FieldEditorData {
 	private final Integer horizontalSpan;
 
 	// ComboFieldEditor
-	private final LocalizedComboEntryNamesAndValues comboEntryNamesAndValues;
+	private final ComboEntryNamesAndValues comboEntryNamesAndValues;
 
 	// ScaleFieldEditor
 	private final Integer scaleMinimum;
@@ -44,7 +44,7 @@ public class FieldEditorData {
 		return horizontalSpan;
 	}
 
-	public LocalizedComboEntryNamesAndValues getComboEntryNamesAndValues() {
+	public ComboEntryNamesAndValues getComboEntryNamesAndValues() {
 		return comboEntryNamesAndValues;
 	}
 
@@ -102,14 +102,14 @@ public class FieldEditorData {
 
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", comboEntryNamesAndValues=" + comboEntryNamesAndValues + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy=" + textValidateStrategy
-				+ ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
+		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", comboEntryNamesAndValues=" + comboEntryNamesAndValues + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue="
+				+ integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
 	}
 
 	public static class FieldEditorDataBuilder {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
-		private LocalizedComboEntryNamesAndValues comboEntryNamesAndValues;
+		private ComboEntryNamesAndValues comboEntryNamesAndValues;
 		private Integer scaleMinimum;
 		private Integer scaleMaximum;
 		private Integer scaleIncrement;
@@ -134,7 +134,7 @@ public class FieldEditorData {
 			return this;
 		}
 
-		public FieldEditorDataBuilder comboEntryNamesAndValues(final LocalizedComboEntryNamesAndValues entryNamesAndValues) {
+		public FieldEditorDataBuilder comboEntryNamesAndValues(final ComboEntryNamesAndValues entryNamesAndValues) {
 			this.comboEntryNamesAndValues = entryNamesAndValues;
 			return this;
 		}

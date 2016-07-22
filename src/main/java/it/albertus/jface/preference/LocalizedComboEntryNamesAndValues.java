@@ -5,7 +5,7 @@ import it.albertus.util.Localized;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalizedComboEntryNamesAndValues {
+public class LocalizedComboEntryNamesAndValues implements ComboEntryNamesAndValues {
 
 	private final List<LocalizedComboEntryNameAndValue> entries;
 
@@ -26,6 +26,7 @@ public class LocalizedComboEntryNamesAndValues {
 		entries.add(new LocalizedComboEntryNameAndValue(name, String.valueOf(value)));
 	}
 
+	@Override
 	public String[][] toArray() {
 		final String[][] options = new String[entries.size()][2];
 		for (int index = 0; index < entries.size(); index++) {

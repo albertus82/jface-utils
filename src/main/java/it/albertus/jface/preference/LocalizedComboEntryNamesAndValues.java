@@ -7,11 +7,18 @@ import java.util.List;
 
 public class LocalizedComboEntryNamesAndValues {
 
-	private final List<LocalizedComboEntryNameAndValue> entries = new ArrayList<LocalizedComboEntryNameAndValue>();
+	private final List<LocalizedComboEntryNameAndValue> entries;
 
-	public LocalizedComboEntryNamesAndValues() {}
+	public LocalizedComboEntryNamesAndValues() {
+		entries = new ArrayList<LocalizedComboEntryNameAndValue>();
+	}
+
+	public LocalizedComboEntryNamesAndValues(final int initialCapacity) {
+		entries = new ArrayList<LocalizedComboEntryNameAndValue>(initialCapacity);
+	}
 
 	public LocalizedComboEntryNamesAndValues(final Localized name, final Object value) {
+		this(1);
 		add(name, value);
 	}
 
@@ -29,13 +36,23 @@ public class LocalizedComboEntryNamesAndValues {
 		return options;
 	}
 
+	@Override
+	public String toString() {
+		return entries.toString();
+	}
+
 	private class LocalizedComboEntryNameAndValue {
 		private final Localized name;
 		private final String value;
 
-		public LocalizedComboEntryNameAndValue(final Localized name, final String value) {
+		private LocalizedComboEntryNameAndValue(final Localized name, final String value) {
 			this.name = name;
 			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return '(' + String.valueOf(name) + ", " + value + ')';
 		}
 	}
 

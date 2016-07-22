@@ -185,15 +185,14 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	public static LocalizedComboEntryNamesAndValues getNewLineComboOptions() {
-		final int length = NewLine.values().length;
-		final LocalizedComboEntryNamesAndValues options = new LocalizedComboEntryNamesAndValues();
-		for (int i = 0; i < length; i++) {
-			final int index = i;
-			final String value = NewLine.values()[index].name();
+		final NewLine[] values = NewLine.values();
+		final LocalizedComboEntryNamesAndValues options = new LocalizedComboEntryNamesAndValues(values.length);
+		for (final NewLine newLine : values) {
+			final String value = newLine.name();
 			final Localized name = new Localized() {
 				@Override
 				public String getString() {
-					return NewLine.values()[index].name();
+					return value;
 				}
 			};
 			options.add(name, value);

@@ -1,6 +1,6 @@
 package it.albertus.util;
 
-public abstract class Localized {
+public abstract class Localized implements Comparable<Localized> {
 
 	public abstract String getString();
 
@@ -38,6 +38,11 @@ public abstract class Localized {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public int compareTo(Localized o) {
+		return this.getString().compareTo(o.getString());
 	}
 
 }

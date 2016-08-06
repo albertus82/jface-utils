@@ -7,13 +7,16 @@ import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 public abstract class LocalizedListEditor extends ListEditor {
 
 	private boolean localized; // Do not set any value here!
+	private final boolean container;
 
 	protected LocalizedListEditor() {
 		super();
+		container = false;
 	}
 
 	public LocalizedListEditor(final String name, final String labelText, final Composite parent) {
@@ -22,12 +25,23 @@ public abstract class LocalizedListEditor extends ListEditor {
 
 	public LocalizedListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan) {
 		super(name, labelText, (horizontalSpan != null && horizontalSpan > 0) ? createContainer(parent, horizontalSpan) : parent);
+		if (horizontalSpan != null && horizontalSpan > 0) {
+			container = true;
+		}
+		else {
+			container = false;
+		}
 	}
 
 	protected static Composite createContainer(final Composite fieldEditorParent, final int horizontalSpan) {
 		final Composite parent = new Composite(fieldEditorParent, SWT.NULL);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).span(horizontalSpan, 1).applyTo(parent);
 		return parent;
+	}
+
+	@Override
+	protected void checkParent(final Control control, final Composite parent) {
+		super.checkParent(container ? control.getParent() : control, parent);
 	}
 
 	@Override

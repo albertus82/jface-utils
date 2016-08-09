@@ -180,7 +180,14 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 			if (entry.getKey().getParent() != null && !fieldEditorMap.containsKey(entry.getKey().getParent())) {
 				final FieldEditor fieldEditor = universe.get(entry.getKey().getParent());
 				if (fieldEditor instanceof BooleanFieldEditor) {
-					updateChildrenStatus(entry.getKey(), ((BooleanFieldEditor) fieldEditor).getBooleanValue());
+					boolean parentEnabled;
+					try {
+						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+					}
+					catch (final NullPointerException npe) {
+						parentEnabled = getPreferenceStore().getBoolean(entry.getKey().getParent().getConfigurationKey());
+					}
+					updateChildrenStatus(entry.getKey(), parentEnabled);
 				}
 			}
 		}

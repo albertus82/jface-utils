@@ -1,8 +1,11 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceResources;
+import it.albertus.jface.preference.page.AbstractPreferencePage;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.swt.graphics.Image;
@@ -37,6 +40,16 @@ public class ConfigurationDialog extends PreferenceDialog {
 
 		final Button cancelButton = getButton(IDialogConstants.CANCEL_ID);
 		cancelButton.setText(JFaceResources.get("lbl.button.cancel"));
+	}
+
+	@Override
+	protected boolean showPage(final IPreferenceNode node) {
+		boolean success = super.showPage(node);
+		final IPreferencePage currentPage = getCurrentPage();
+		if (currentPage instanceof AbstractPreferencePage) {
+			((AbstractPreferencePage) currentPage).updateCrossChildrenStatus();
+		}
+		return success;
 	}
 
 }

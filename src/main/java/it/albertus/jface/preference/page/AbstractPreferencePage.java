@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Label;
 
 public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 
+	protected static final Map<Preference, FieldEditor> universe = new HashMap<Preference, FieldEditor>();
+
 	protected final Configuration configuration;
 	protected final Preference[] preferences;
 	protected final Map<Preference, FieldEditor> fieldEditorMap = new HashMap<Preference, FieldEditor>();
@@ -98,6 +100,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 				fieldEditorMap.put(preference, fieldEditor);
 			}
 		}
+		universe.putAll(fieldEditorMap);
 	}
 
 	@Override
@@ -163,10 +166,23 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected void updateChildStatus(final FieldEditor childFieldEditor, final boolean parentEnabled) {
-		childFieldEditor.setEnabled(parentEnabled, getFieldEditorParent());
-		if (!parentEnabled && !childFieldEditor.isValid()) {
-			childFieldEditor.loadDefault(); // Fix invalid value
-			checkState(); // Enable OK & Apply buttons
+		if (childFieldEditor != null) { // null if on another page!
+			childFieldEditor.setEnabled(parentEnabled, getFieldEditorParent());
+			if (!parentEnabled && !childFieldEditor.isValid()) {
+				childFieldEditor.loadDefault(); // Fix invalid value
+				checkState(); // Enable OK & Apply buttons
+			}
+		}
+	}
+
+	public void updateCrossChildrenStatus() {
+		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
+			if (entry.getKey().getParent() != null && !fieldEditorMap.containsKey(entry.getKey().getParent())) {
+				final FieldEditor fieldEditor = universe.get(entry.getKey().getParent());
+				if (fieldEditor instanceof BooleanFieldEditor) {
+					updateChildrenStatus(entry.getKey(), ((BooleanFieldEditor) fieldEditor).getBooleanValue());
+				}
+			}
 		}
 	}
 

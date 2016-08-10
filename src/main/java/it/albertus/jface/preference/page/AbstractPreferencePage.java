@@ -103,6 +103,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		universe.putAll(fieldEditorMap);
 	}
 
+	/* propertyChange -> updateChildrenStatus -> updateChildStatus */
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
 		super.propertyChange(event);
@@ -121,12 +122,14 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 	}
 
+	/* initialize -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus */
 	@Override
 	protected void initialize() {
 		super.initialize();
 		updateFieldsStatus();
 	}
 
+	/* performDefaults -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus */
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();

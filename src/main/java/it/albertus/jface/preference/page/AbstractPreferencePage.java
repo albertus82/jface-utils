@@ -149,19 +149,25 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	protected void updateFieldsStatus() {
 		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
 			if (entry.getValue() instanceof BooleanFieldEditor) {
-				final BooleanFieldEditor booleanFieldEditor = (BooleanFieldEditor) entry.getValue();
-				final boolean parentEnabled;
-				if (fieldEditorMap.get(entry.getKey().getParent()) instanceof BooleanFieldEditor) {
-					final BooleanFieldEditor parentBooleanFieldEditor = (BooleanFieldEditor) fieldEditorMap.get(entry.getKey().getParent());
-					parentEnabled = booleanFieldEditor.getBooleanValue() && parentBooleanFieldEditor.getBooleanValue();
-				}
-				else {
-					parentEnabled = booleanFieldEditor.getBooleanValue();
-				}
+				final boolean parentsEnabled = getParentsEnabled(entry.getKey());
 				for (final Preference childPreference : entry.getKey().getChildren()) {
-					updateChildStatus(fieldEditorMap.get(childPreference), parentEnabled);
+					updateChildStatus(fieldEditorMap.get(childPreference), parentsEnabled);
 				}
 			}
+		}
+	}
+
+	protected boolean getParentsEnabled(final Preference preference) {
+		final FieldEditor fieldEditor = fieldEditorMap.get(preference);
+		if (fieldEditor == null) {
+			return true; // The parent is on another page, checked by updateCrossChildrenStatus().
+		}
+		boolean parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+		if (preference.getParent() != null) {
+			return parentEnabled && getParentsEnabled(preference.getParent());
+		}
+		else {
+			return parentEnabled;
 		}
 	}
 
@@ -179,7 +185,10 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
 			if (entry.getKey().getParent() != null && !fieldEditorMap.containsKey(entry.getKey().getParent())) {
 				final FieldEditor fieldEditor = universe.get(entry.getKey().getParent());
-				if (fieldEditor instanceof BooleanFieldEditor) {
+				if (fieldEditor == null) {
+					updateChildrenStatus(entry.getKey(), configuration.getBoolean(entry.getKey().getParent().getConfigurationKey()));
+				}
+				else if (fieldEditor instanceof BooleanFieldEditor) {
 					boolean parentEnabled;
 					try {
 						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();

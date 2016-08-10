@@ -19,6 +19,8 @@ public interface Preference {
 
 	Preference getParent();
 
+	boolean isRestartRequired();
+
 	Set<? extends Preference> getChildren();
 
 	FieldEditor createFieldEditor(Composite parent);

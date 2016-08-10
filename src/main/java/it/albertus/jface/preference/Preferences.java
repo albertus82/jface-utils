@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -22,6 +23,8 @@ public class Preferences {
 	protected final Page[] pages;
 	protected final Preference[] preferences;
 	protected final Image[] images;
+
+	protected boolean restartRequired = false;
 
 	public Preferences(final Configuration configuration, final Page[] pages, final Preference[] preferences) {
 		this(configuration, pages, preferences, null);
@@ -89,6 +92,13 @@ public class Preferences {
 			preferenceDialog.setSelectedNode(selectedPage.getNodeId());
 		}
 
+		final Map<String, String> configurationBackup = new HashMap<String, String>();
+		for (final Preference preference : preferences) {
+			if (preference.isRestartRequired()) {
+				configurationBackup.put(preference.getConfigurationKey(), configuration.getProperties().getProperty(preference.getConfigurationKey()));
+			}
+		}
+
 		// Open configuration dialog...
 		final int returnCode = preferenceDialog.open();
 
@@ -96,7 +106,19 @@ public class Preferences {
 			// Reload configuration (autosaved by PreferenceStore on OK button)...
 			configuration.reload();
 		}
+
+		for (final Entry<String, String> backedUpProperty : configurationBackup.entrySet()) {
+			if (!configuration.getProperties().getProperty(backedUpProperty.getKey()).equals(backedUpProperty.getValue())) {
+				restartRequired = true;
+				break;
+			}
+		}
+
 		return returnCode;
+	}
+
+	public boolean isRestartRequired() {
+		return restartRequired;
 	}
 
 }

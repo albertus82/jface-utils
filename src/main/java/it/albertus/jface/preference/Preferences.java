@@ -108,7 +108,9 @@ public class Preferences {
 		}
 
 		for (final Entry<String, String> backedUpProperty : configurationBackup.entrySet()) {
-			if (!configuration.getProperties().getProperty(backedUpProperty.getKey()).equals(backedUpProperty.getValue())) {
+			final String oldValue = backedUpProperty.getValue();
+			final String newValue = configuration.getProperties().getProperty(backedUpProperty.getKey());
+			if ((oldValue != null && newValue == null) || (oldValue == null && newValue != null) || (oldValue != null && !oldValue.equals(newValue))) {
 				restartRequired = true;
 				break;
 			}

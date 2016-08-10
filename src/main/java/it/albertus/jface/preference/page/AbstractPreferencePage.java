@@ -131,6 +131,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	protected void performDefaults() {
 		super.performDefaults();
 		updateFieldsStatus();
+		updateCrossChildrenStatus();
 	}
 
 	protected void updateChildrenStatus(final Preference childPreference, final Boolean parentEnabled) {

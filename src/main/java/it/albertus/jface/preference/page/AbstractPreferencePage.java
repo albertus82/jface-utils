@@ -131,7 +131,6 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	protected void performDefaults() {
 		super.performDefaults();
 		updateFieldsStatus();
-		updateCrossChildrenStatus();
 	}
 
 	protected void updateChildrenStatus(final Preference childPreference, final Boolean parentEnabled) {
@@ -159,11 +158,20 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected boolean getParentsEnabled(final Preference preference) {
-		final FieldEditor fieldEditor = fieldEditorMap.get(preference);
-		if (fieldEditor == null) {
-			return true; // The parent is on another page, checked by updateCrossChildrenStatus().
+		final FieldEditor fieldEditor = universe.get(preference);
+		boolean parentEnabled;
+		if (fieldEditor == null) { // Field belongs to a not-yet-created page.
+			parentEnabled = configuration.getBoolean(preference.getConfigurationKey());
 		}
-		boolean parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+		else {
+			try {
+				parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+			}
+			catch (final NullPointerException npe) { // Uninitialized field.
+				parentEnabled = getPreferenceStore().getBoolean(preference.getConfigurationKey());
+			}
+		}
+
 		if (preference.getParent() != null) {
 			return parentEnabled && getParentsEnabled(preference.getParent());
 		}

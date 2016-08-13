@@ -2,8 +2,10 @@
 <!DOCTYPE project>
 <project name="Utils" default="jars">
 
-	<property file="build.properties" />
+	<property environment="env" />
+	<property name="env.JAVA_HOME_BOOTCLASSPATH" value="${env.JAVA_HOME}/../jdk1.6.0_45" />
 
+	<property file="build.properties" />
 	<property file="${build.resourcesDirectory}/version.properties" />
 
 	<target name="clean">

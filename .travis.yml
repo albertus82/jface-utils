@@ -1,5 +1,6 @@
 language: java
 script: ant jars
+env: JAVA_HOME_BOOTCLASSPATH=/usr/lib/jvm/java-6-openjdk-amd64
 jdk:
   - oraclejdk8
   - oraclejdk7

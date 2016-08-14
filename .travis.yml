@@ -11,3 +11,4 @@ addons:
     packages:
       - oracle-java8-installer
       - oracle-java7-installer
+      - oracle-java6-installer

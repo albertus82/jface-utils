@@ -164,7 +164,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		final FieldEditor fieldEditor = universe.get(preference);
 		boolean parentEnabled;
 		if (fieldEditor == null) { // Field belongs to a not-yet-created page.
-			parentEnabled = configuration.getBoolean(preference.getConfigurationKey());
+			parentEnabled = configuration.getBoolean(preference.getConfigurationKey(), Boolean.parseBoolean(preference.getDefaultValue()));
 		}
 		else {
 			try {
@@ -194,11 +194,11 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	public void updateCrossChildrenStatus() {
-		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
-			if (entry.getKey().getParent() != null && !fieldEditorMap.containsKey(entry.getKey().getParent())) {
-				final FieldEditor fieldEditor = universe.get(entry.getKey().getParent());
+		for (final Preference preference : fieldEditorMap.keySet()) {
+			if (preference.getParent() != null && !fieldEditorMap.containsKey(preference.getParent())) {
+				final FieldEditor fieldEditor = universe.get(preference.getParent());
 				if (fieldEditor == null) {
-					updateChildrenStatus(entry.getKey(), configuration.getBoolean(entry.getKey().getParent().getConfigurationKey()));
+					updateChildrenStatus(preference, configuration.getBoolean(preference.getParent().getConfigurationKey(), Boolean.parseBoolean(preference.getParent().getDefaultValue())));
 				}
 				else if (fieldEditor instanceof BooleanFieldEditor) {
 					boolean parentEnabled;
@@ -206,9 +206,9 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
 					}
 					catch (final NullPointerException npe) {
-						parentEnabled = getPreferenceStore().getBoolean(entry.getKey().getParent().getConfigurationKey());
+						parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getConfigurationKey());
 					}
-					updateChildrenStatus(entry.getKey(), parentEnabled);
+					updateChildrenStatus(preference, parentEnabled);
 				}
 			}
 		}

@@ -125,14 +125,14 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 	}
 
-	/* initialize -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus */
+	// initialize -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus
 	@Override
 	protected void initialize() {
 		super.initialize();
 		updateFieldsStatus();
 	}
 
-	/* performDefaults -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus */
+	// performDefaults -> updateFieldsStatus -> getParentsEnabled -> updateChildStatus
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();

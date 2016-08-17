@@ -17,6 +17,8 @@ public interface Preference {
 
 	String getDefaultValue();
 
+	boolean hasSeparator();
+
 	Preference getParent();
 
 	boolean isRestartRequired();

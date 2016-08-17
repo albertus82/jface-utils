@@ -95,6 +95,9 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		final Page page = getPage();
 		for (final Preference preference : preferences) {
 			if (page.equals(preference.getPage())) {
+				if (preference.hasSeparator()) {
+					addSeparator();
+				}
 				final FieldEditor fieldEditor = preference.createFieldEditor(getFieldEditorParent());
 				addField(fieldEditor);
 				fieldEditorMap.put(preference, fieldEditor);

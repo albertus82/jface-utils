@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-public interface ComboEntryNamesAndValues {
+public interface NamesAndValues {
 
 	String[][] toArray();
 

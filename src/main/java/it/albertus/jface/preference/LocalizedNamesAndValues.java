@@ -6,19 +6,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class LocalizedComboEntryNamesAndValues implements ComboEntryNamesAndValues {
+public class LocalizedNamesAndValues implements NamesAndValues {
 
 	private final Map<Localized, String> entries;
 
-	public LocalizedComboEntryNamesAndValues() {
+	public LocalizedNamesAndValues() {
 		entries = new LinkedHashMap<Localized, String>();
 	}
 
-	public LocalizedComboEntryNamesAndValues(final int initialCapacity) {
+	public LocalizedNamesAndValues(final int initialCapacity) {
 		entries = new LinkedHashMap<Localized, String>(initialCapacity);
 	}
 
-	public LocalizedComboEntryNamesAndValues(final Localized name, final Object value) {
+	public LocalizedNamesAndValues(final Localized name, final Object value) {
 		this(1);
 		put(name, value);
 	}

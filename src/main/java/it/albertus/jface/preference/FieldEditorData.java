@@ -11,7 +11,7 @@ public class FieldEditorData {
 	private final Integer horizontalSpan;
 
 	// ComboFieldEditor
-	private final ComboEntryNamesAndValues comboEntryNamesAndValues;
+	private final NamesAndValues namesAndValues;
 
 	// ScaleFieldEditor
 	private final Integer scaleMinimum;
@@ -44,8 +44,8 @@ public class FieldEditorData {
 		return horizontalSpan;
 	}
 
-	public ComboEntryNamesAndValues getComboEntryNamesAndValues() {
-		return comboEntryNamesAndValues;
+	public NamesAndValues getNamesAndValues() {
+		return namesAndValues;
 	}
 
 	public Integer getScaleMinimum() {
@@ -102,14 +102,14 @@ public class FieldEditorData {
 
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", comboEntryNamesAndValues=" + comboEntryNamesAndValues + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue="
-				+ integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
+		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", namesAndValues=" + namesAndValues + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue
+				+ ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
 	}
 
 	public static class FieldEditorDataBuilder {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
-		private ComboEntryNamesAndValues comboEntryNamesAndValues;
+		private NamesAndValues namesAndValues;
 		private Integer scaleMinimum;
 		private Integer scaleMaximum;
 		private Integer scaleIncrement;
@@ -134,8 +134,8 @@ public class FieldEditorData {
 			return this;
 		}
 
-		public FieldEditorDataBuilder comboEntryNamesAndValues(final ComboEntryNamesAndValues entryNamesAndValues) {
-			this.comboEntryNamesAndValues = entryNamesAndValues;
+		public FieldEditorDataBuilder namesAndValues(final NamesAndValues namesAndValues) {
+			this.namesAndValues = namesAndValues;
 			return this;
 		}
 
@@ -208,7 +208,7 @@ public class FieldEditorData {
 	private FieldEditorData(final FieldEditorDataBuilder builder) {
 		this.emptyStringAllowed = builder.emptyStringAllowed;
 		this.horizontalSpan = builder.horizontalSpan;
-		this.comboEntryNamesAndValues = builder.comboEntryNamesAndValues;
+		this.namesAndValues = builder.namesAndValues;
 		this.scaleMinimum = builder.scaleMinimum;
 		this.scaleMaximum = builder.scaleMaximum;
 		this.scaleIncrement = builder.scaleIncrement;

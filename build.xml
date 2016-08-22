@@ -32,8 +32,8 @@
 	</target>
 
 	<target name="jars" depends="compile, resources">
-		<jar destfile="${build.distDirectory}/ajutils-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
-		<jar destfile="${build.distDirectory}/ajutils-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
+		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
+		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
 	</target>
 
 </project>

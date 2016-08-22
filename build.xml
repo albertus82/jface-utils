@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="Utils" default="jars">
+<project name="AJUtils" default="jars">
 
 	<property environment="env" />
 	<property name="env.JAVA_HOME_BOOTCLASSPATH" value="${env.JAVA_HOME}/../jdk1.6.0_45" />
@@ -32,8 +32,8 @@
 	</target>
 
 	<target name="jars" depends="compile, resources">
-		<jar destfile="${build.distDirectory}/albertus-utils-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
-		<jar destfile="${build.distDirectory}/albertus-utils-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
+		<jar destfile="${build.distDirectory}/ajutils-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
+		<jar destfile="${build.distDirectory}/ajutils-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
 	</target>
 
 </project>

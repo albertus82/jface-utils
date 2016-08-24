@@ -1,10 +1,9 @@
 package it.albertus.jface.preference.page;
 
 import it.albertus.jface.JFaceResources;
-import it.albertus.jface.preference.LocalizedNamesAndValues;
 import it.albertus.jface.preference.Preference;
+import it.albertus.jface.preference.StaticNamesAndValues;
 import it.albertus.util.Configuration;
-import it.albertus.util.Localized;
 import it.albertus.util.NewLine;
 
 import java.io.IOException;
@@ -231,18 +230,12 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		GridDataFactory.fillDefaults().span(Short.MAX_VALUE, 1).grab(true, false).applyTo(separator);
 	}
 
-	public static LocalizedNamesAndValues getNewLineComboOptions() {
+	public static StaticNamesAndValues getNewLineComboOptions() {
 		final NewLine[] values = NewLine.values();
-		final LocalizedNamesAndValues options = new LocalizedNamesAndValues(values.length);
+		final StaticNamesAndValues options = new StaticNamesAndValues(values.length);
 		for (final NewLine newLine : values) {
 			final String value = newLine.name();
-			final Localized name = new Localized() {
-				@Override
-				public String getString() {
-					return value;
-				}
-			};
-			options.put(name, value);
+			options.put(value, value);
 		}
 		return options;
 	}

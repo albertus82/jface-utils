@@ -10,8 +10,12 @@ public class FieldEditorData {
 	private final Boolean emptyStringAllowed;
 	private final Integer horizontalSpan;
 
-	// ComboFieldEditor
+	// ComboFieldEditor & RadioGroupFieldEditor
 	private final NamesAndValues namesAndValues;
+
+	// RadioGroupFieldEditor
+	private final Boolean radioUseGroup;
+	private final Integer radioNumColumns;
 
 	// ScaleFieldEditor
 	private final Integer scaleMinimum;
@@ -100,16 +104,26 @@ public class FieldEditorData {
 		return fileEnforceAbsolute;
 	}
 
+	public Boolean getRadioUseGroup() {
+		return radioUseGroup;
+	}
+
+	public Integer getRadioNumColumns() {
+		return radioNumColumns;
+	}
+
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", namesAndValues=" + namesAndValues + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue
-				+ ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
+		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", namesAndValues=" + namesAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy="
+				+ textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
 	}
 
 	public static class FieldEditorDataBuilder {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
 		private NamesAndValues namesAndValues;
+		private Boolean radioUseGroup;
+		private Integer radioNumColumns;
 		private Integer scaleMinimum;
 		private Integer scaleMaximum;
 		private Integer scaleIncrement;
@@ -200,6 +214,16 @@ public class FieldEditorData {
 			return this;
 		}
 
+		public FieldEditorDataBuilder radioUseGroup(final boolean radioUseGroup) {
+			this.radioUseGroup = radioUseGroup;
+			return this;
+		}
+
+		public FieldEditorDataBuilder radioNumColumns(final int radioNumColumns) {
+			this.radioNumColumns = radioNumColumns;
+			return this;
+		}
+
 		public FieldEditorData build() {
 			return new FieldEditorData(this);
 		}
@@ -222,6 +246,8 @@ public class FieldEditorData {
 		this.directoryDialogMessage = builder.directoryDialogMessage;
 		this.fileExtensions = builder.fileExtensions;
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
+		this.radioNumColumns = builder.radioNumColumns;
+		this.radioUseGroup = builder.radioUseGroup;
 	}
 
 }

@@ -4,11 +4,14 @@ import it.albertus.util.Localized;
 
 import java.util.Arrays;
 
+import org.eclipse.swt.graphics.Image;
+
 public class FieldEditorData {
 
 	// Generic
 	private final Boolean emptyStringAllowed;
 	private final Integer horizontalSpan;
+	private final Image[] icons;
 
 	// ComboFieldEditor & RadioGroupFieldEditor
 	private final NamesAndValues namesAndValues;
@@ -112,15 +115,20 @@ public class FieldEditorData {
 		return radioNumColumns;
 	}
 
+	public Image[] getIcons() {
+		return icons;
+	}
+
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", namesAndValues=" + namesAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight=" + textHeight + ", textValidateStrategy="
-				+ textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
+		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", icons=" + Arrays.toString(icons) + ", namesAndValues=" + namesAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight="
+				+ textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
 	}
 
 	public static class FieldEditorDataBuilder {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
+		private Image[] icons;
 		private NamesAndValues namesAndValues;
 		private Boolean radioUseGroup;
 		private Integer radioNumColumns;
@@ -145,6 +153,11 @@ public class FieldEditorData {
 
 		public FieldEditorDataBuilder horizontalSpan(final int horizontalSpan) {
 			this.horizontalSpan = horizontalSpan;
+			return this;
+		}
+
+		public FieldEditorDataBuilder icons(final Image[] icons) {
+			this.icons = icons;
 			return this;
 		}
 
@@ -232,6 +245,7 @@ public class FieldEditorData {
 	private FieldEditorData(final FieldEditorDataBuilder builder) {
 		this.emptyStringAllowed = builder.emptyStringAllowed;
 		this.horizontalSpan = builder.horizontalSpan;
+		this.icons = builder.icons;
 		this.namesAndValues = builder.namesAndValues;
 		this.scaleMinimum = builder.scaleMinimum;
 		this.scaleMaximum = builder.scaleMaximum;

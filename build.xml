@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="AJUtils" default="jars">
+<project name="JFaceUtils" default="jars">
 
 	<property environment="env" />
 	<property name="env.JAVA_HOME_BOOTCLASSPATH" value="${env.JAVA_HOME}/../jdk1.6.0_45" />

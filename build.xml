@@ -31,9 +31,25 @@
 		</copy>
 	</target>
 
-	<target name="jars" depends="compile, resources">
+	<target name="docs">
+		<copy todir="${build.outputDirectory}">
+			<fileset dir="">
+				<include name="README*" />
+				<include name="LICENSE*" />
+				<include name="NOTICE*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jars" depends="compile, resources, docs">
 		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
-		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java" />
+		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java">
+			<fileset dir="">
+				<include name="README*" />
+				<include name="LICENSE*" />
+				<include name="NOTICE*" />
+			</fileset>
+		</jar>
 	</target>
 
 </project>

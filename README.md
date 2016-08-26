@@ -1,6 +1,6 @@
 JFaceUtils
 ==========
 
-[![Build Status](https://travis-ci.org/Albertus82/AJUtils.svg?branch=master)](https://travis-ci.org/Albertus82/AJUtils)
+[![Build Status](https://travis-ci.org/Albertus82/JFaceUtils.svg?branch=master)](https://travis-ci.org/Albertus82/JFaceUtils)
 
-**Java SWT/JFAce Utilities Library** that includes a **Preferences Framework**.
+**Java SWT/JFace Utilities Library** that includes a **Preferences Framework**.

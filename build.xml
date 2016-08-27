@@ -31,23 +31,22 @@
 		</copy>
 	</target>
 
-	<target name="docs">
-		<copy todir="${build.outputDirectory}">
-			<fileset dir="">
+	<target name="jars" depends="compile, resources">
+		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}.jar" basedir="${build.outputDirectory}" level="9">
+			<metainf dir="">
 				<include name="README*" />
 				<include name="LICENSE*" />
 				<include name="NOTICE*" />
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="jars" depends="compile, resources, docs">
-		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}.jar" basedir="${build.outputDirectory}" level="9" />
+			</metainf>
+		</jar>
 		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java">
-			<fileset dir="">
+			<metainf dir="">
 				<include name="README*" />
 				<include name="LICENSE*" />
 				<include name="NOTICE*" />
+			</metainf>
+			<fileset dir="${build.resourcesDirectory}">
+				<include name="**/*.properties" />
 			</fileset>
 		</jar>
 	</target>

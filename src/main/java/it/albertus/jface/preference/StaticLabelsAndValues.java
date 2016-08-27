@@ -4,19 +4,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class StaticNamesAndValues implements NamesAndValues {
+public class StaticLabelsAndValues implements LabelsAndValues {
 
 	private final Map<String, String> entries;
 
-	public StaticNamesAndValues() {
+	public StaticLabelsAndValues() {
 		entries = new LinkedHashMap<String, String>();
 	}
 
-	public StaticNamesAndValues(final int initialCapacity) {
+	public StaticLabelsAndValues(final int initialCapacity) {
 		entries = new LinkedHashMap<String, String>(initialCapacity);
 	}
 
-	public StaticNamesAndValues(final String name, final Object value) {
+	public StaticLabelsAndValues(final String name, final Object value) {
 		this(1);
 		put(name, value);
 	}

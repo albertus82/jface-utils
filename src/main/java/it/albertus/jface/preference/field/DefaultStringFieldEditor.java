@@ -8,19 +8,19 @@ import java.util.prefs.Preferences;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
-public class FormattedStringFieldEditor extends StringFieldEditor {
+public class DefaultStringFieldEditor extends StringFieldEditor {
 
-	public FormattedStringFieldEditor(final String name, final String labelText, final Composite parent) {
+	public DefaultStringFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		init();
 	}
 
-	public FormattedStringFieldEditor(final String name, final String labelText, final int width, final Composite parent) {
+	public DefaultStringFieldEditor(final String name, final String labelText, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
 		init();
 	}
 
-	public FormattedStringFieldEditor(final String name, final String labelText, final int width, final int strategy, final Composite parent) {
+	public DefaultStringFieldEditor(final String name, final String labelText, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
 		init();
 	}

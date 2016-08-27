@@ -10,16 +10,16 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class FormattedIntegerFieldEditor extends IntegerFieldEditor {
+public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 
 	protected static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
-	public FormattedIntegerFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
+	public DefaultIntegerFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
 		super(name, labelText, parent, textLimit);
 		init();
 	}
 
-	public FormattedIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
+	public DefaultIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		this(name, labelText, parent, DEFAULT_TEXT_LIMIT);
 	}
 

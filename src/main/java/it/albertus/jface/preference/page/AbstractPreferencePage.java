@@ -2,7 +2,7 @@ package it.albertus.jface.preference.page;
 
 import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.Preference;
-import it.albertus.jface.preference.StaticNamesAndValues;
+import it.albertus.jface.preference.StaticLabelsAndValues;
 import it.albertus.util.Configuration;
 import it.albertus.util.NewLine;
 
@@ -230,9 +230,9 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		GridDataFactory.fillDefaults().span(Short.MAX_VALUE, 1).grab(true, false).applyTo(separator);
 	}
 
-	public static StaticNamesAndValues getNewLineComboOptions() {
+	public static StaticLabelsAndValues getNewLineComboOptions() {
 		final NewLine[] values = NewLine.values();
-		final StaticNamesAndValues options = new StaticNamesAndValues(values.length);
+		final StaticLabelsAndValues options = new StaticLabelsAndValues(values.length);
 		for (final NewLine newLine : values) {
 			final String value = newLine.name();
 			options.put(value, value);

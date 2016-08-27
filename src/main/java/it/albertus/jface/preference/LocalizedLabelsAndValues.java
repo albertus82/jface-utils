@@ -6,19 +6,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class LocalizedNamesAndValues implements NamesAndValues {
+public class LocalizedLabelsAndValues implements LabelsAndValues {
 
 	private final Map<Localized, String> entries;
 
-	public LocalizedNamesAndValues() {
+	public LocalizedLabelsAndValues() {
 		entries = new LinkedHashMap<Localized, String>();
 	}
 
-	public LocalizedNamesAndValues(final int initialCapacity) {
+	public LocalizedLabelsAndValues(final int initialCapacity) {
 		entries = new LinkedHashMap<Localized, String>(initialCapacity);
 	}
 
-	public LocalizedNamesAndValues(final Localized name, final Object value) {
+	public LocalizedLabelsAndValues(final Localized name, final Object value) {
 		this(1);
 		put(name, value);
 	}

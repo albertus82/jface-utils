@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-public interface NamesAndValues {
+public interface LabelsAndValues {
 
 	String[][] toArray();
 

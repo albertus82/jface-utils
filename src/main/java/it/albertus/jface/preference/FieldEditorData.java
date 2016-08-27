@@ -14,7 +14,7 @@ public class FieldEditorData {
 	private final Image[] icons;
 
 	// ComboFieldEditor & RadioGroupFieldEditor
-	private final NamesAndValues namesAndValues;
+	private final LabelsAndValues labelsAndValues;
 
 	// RadioGroupFieldEditor
 	private final Boolean radioUseGroup;
@@ -51,8 +51,8 @@ public class FieldEditorData {
 		return horizontalSpan;
 	}
 
-	public NamesAndValues getNamesAndValues() {
-		return namesAndValues;
+	public LabelsAndValues getLabelsAndValues() {
+		return labelsAndValues;
 	}
 
 	public Integer getScaleMinimum() {
@@ -121,7 +121,7 @@ public class FieldEditorData {
 
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", icons=" + Arrays.toString(icons) + ", namesAndValues=" + namesAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight="
+		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", icons=" + Arrays.toString(icons) + ", labelsAndValues=" + labelsAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight="
 				+ textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
 	}
 
@@ -129,7 +129,7 @@ public class FieldEditorData {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
 		private Image[] icons;
-		private NamesAndValues namesAndValues;
+		private LabelsAndValues labelsAndValues;
 		private Boolean radioUseGroup;
 		private Integer radioNumColumns;
 		private Integer scaleMinimum;
@@ -161,8 +161,8 @@ public class FieldEditorData {
 			return this;
 		}
 
-		public FieldEditorDataBuilder namesAndValues(final NamesAndValues namesAndValues) {
-			this.namesAndValues = namesAndValues;
+		public FieldEditorDataBuilder labelsAndValues(final LabelsAndValues labelsAndValues) {
+			this.labelsAndValues = labelsAndValues;
 			return this;
 		}
 
@@ -246,7 +246,7 @@ public class FieldEditorData {
 		this.emptyStringAllowed = builder.emptyStringAllowed;
 		this.horizontalSpan = builder.horizontalSpan;
 		this.icons = builder.icons;
-		this.namesAndValues = builder.namesAndValues;
+		this.labelsAndValues = builder.labelsAndValues;
 		this.scaleMinimum = builder.scaleMinimum;
 		this.scaleMaximum = builder.scaleMaximum;
 		this.scaleIncrement = builder.scaleIncrement;

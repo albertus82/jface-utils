@@ -36,7 +36,7 @@ public class FieldEditorData {
 	private final Integer integerMinValidValue;
 	private final Integer integerMaxValidValue;
 
-	// DirectoryFieldEditor
+	// DirectoryFieldEditor & PathEditor
 	private final Localized directoryDialogMessage;
 
 	// FileFieldEditor

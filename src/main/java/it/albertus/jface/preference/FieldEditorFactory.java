@@ -12,6 +12,7 @@ import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
+import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
@@ -25,6 +26,7 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.FontFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -90,8 +92,14 @@ public class FieldEditorFactory {
 		if (IntegerComboFieldEditor.class.equals(type)) {
 			return new IntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		}
+		if (LocalizedPathEditor.class.equals(type)) {
+			return createLocalizedPathEditor(name, label, parent, data);
+		}
 		if (PasswordFieldEditor.class.equals(type)) {
 			return createPasswordFieldEditor(name, label, parent, data);
+		}
+		if (PathEditor.class.equals(type)) {
+			return new PathEditor(name, label, data != null && data.getDirectoryDialogMessage() != null ? data.getDirectoryDialogMessage().toString() : null, parent);
 		}
 		if (RadioGroupFieldEditor.class.equals(type)) {
 			return createRadioGroupFieldEditor(name, label, parent, data);
@@ -290,6 +298,17 @@ public class FieldEditorFactory {
 			}
 		}
 		return integerFieldEditor;
+	}
+
+	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+		final LocalizedPathEditor localizedPathEditor;
+		if (data != null) {
+			localizedPathEditor = new LocalizedPathEditor(name, label, data.getDirectoryDialogMessage(), parent, data.getHorizontalSpan());
+		}
+		else {
+			localizedPathEditor = new LocalizedPathEditor(name, label, null, parent);
+		}
+		return localizedPathEditor;
 	}
 
 	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {

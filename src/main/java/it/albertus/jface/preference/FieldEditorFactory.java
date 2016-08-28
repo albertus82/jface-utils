@@ -1,6 +1,5 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.field.ComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
@@ -34,8 +33,11 @@ public class FieldEditorFactory {
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
 		}
-		if (ComboFieldEditor.class.equals(type)) {
-			return new ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (org.eclipse.jface.preference.ComboFieldEditor.class.equals(type)) {
+			return new org.eclipse.jface.preference.ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		}
+		if (it.albertus.jface.preference.field.ComboFieldEditor.class.equals(type)) {
+			return new it.albertus.jface.preference.field.ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		}
 		if (DefaultBooleanFieldEditor.class.equals(type)) {
 			return new DefaultBooleanFieldEditor(name, label, parent);

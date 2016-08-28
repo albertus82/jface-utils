@@ -55,7 +55,8 @@ public abstract class Configuration {
 	public File getFile() {
 		File config;
 		try {
-			config = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent() + File.separator + fileName);
+			final String parent = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent();
+			config = new File((parent != null ? parent : "") + File.separator + fileName);
 		}
 		catch (final Exception e) {
 			config = new File(fileName);

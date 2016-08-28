@@ -43,6 +43,10 @@ public class FieldEditorData {
 	private final String[] fileExtensions;
 	private final Boolean fileEnforceAbsolute;
 
+	// FontFieldEditor
+	private final Localized fontPreviewAreaText;
+	private final Localized fontChangeButtonText;
+
 	public Boolean getEmptyStringAllowed() {
 		return emptyStringAllowed;
 	}
@@ -119,10 +123,20 @@ public class FieldEditorData {
 		return icons;
 	}
 
+	public Localized getFontPreviewAreaText() {
+		return fontPreviewAreaText;
+	}
+
+	public Localized getFontChangeButtonText() {
+		return fontChangeButtonText;
+	}
+
 	@Override
 	public String toString() {
-		return "FieldEditorData [emptyStringAllowed=" + emptyStringAllowed + ", horizontalSpan=" + horizontalSpan + ", icons=" + Arrays.toString(icons) + ", labelsAndValues=" + labelsAndValues + ", radioUseGroup=" + radioUseGroup + ", radioNumColumns=" + radioNumColumns + ", scaleMinimum=" + scaleMinimum + ", scaleMaximum=" + scaleMaximum + ", scaleIncrement=" + scaleIncrement + ", scalePageIncrement=" + scalePageIncrement + ", textLimit=" + textLimit + ", textWidth=" + textWidth + ", textHeight="
-				+ textHeight + ", textValidateStrategy=" + textValidateStrategy + ", integerMinValidValue=" + integerMinValidValue + ", integerMaxValidValue=" + integerMaxValidValue + ", directoryDialogMessage=" + directoryDialogMessage + ", fileExtensions=" + Arrays.toString(fileExtensions) + ", fileEnforceAbsolute=" + fileEnforceAbsolute + "]";
+		return "FieldEditorData [" + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "")
+				+ (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "")
+				+ (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (integerMinValidValue != null ? "integerMinValidValue=" + integerMinValidValue + ", " : "") + (integerMaxValidValue != null ? "integerMaxValidValue=" + integerMaxValidValue + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "")
+				+ (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	public static class FieldEditorDataBuilder {
@@ -145,6 +159,8 @@ public class FieldEditorData {
 		private Localized directoryDialogMessage;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
+		private Localized fontPreviewAreaText;
+		private Localized fontChangeButtonText;
 
 		public FieldEditorDataBuilder emptyStringAllowed(final boolean emptyStringAllowed) {
 			this.emptyStringAllowed = emptyStringAllowed;
@@ -237,6 +253,16 @@ public class FieldEditorData {
 			return this;
 		}
 
+		public FieldEditorDataBuilder fontPreviewAreaText(final Localized fontPreviewAreaText) {
+			this.fontPreviewAreaText = fontPreviewAreaText;
+			return this;
+		}
+
+		public FieldEditorDataBuilder fontChangeButtonText(final Localized fontChangeButtonText) {
+			this.fontChangeButtonText = fontChangeButtonText;
+			return this;
+		}
+
 		public FieldEditorData build() {
 			return new FieldEditorData(this);
 		}
@@ -262,6 +288,8 @@ public class FieldEditorData {
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
 		this.radioNumColumns = builder.radioNumColumns;
 		this.radioUseGroup = builder.radioUseGroup;
+		this.fontPreviewAreaText = builder.fontPreviewAreaText;
+		this.fontChangeButtonText = builder.fontChangeButtonText;
 	}
 
 }

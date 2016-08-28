@@ -1,5 +1,6 @@
 package it.albertus.jface.preference;
 
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
@@ -22,6 +23,7 @@ import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.jface.preference.FontFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.ScaleFieldEditor;
@@ -74,10 +76,13 @@ public class FieldEditorFactory {
 			return new EditableComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		}
 		if (EmailAddressesListEditor.class.equals(type)) {
-			return new EmailAddressesListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+			return createEmailAddressesListEditor(name, label, parent, data);
 		}
 		if (FileFieldEditor.class.equals(type)) {
 			return createFileFieldEditor(name, label, parent, data);
+		}
+		if (FontFieldEditor.class.equals(type)) {
+			return createFontFieldEditor(name, label, parent, data);
 		}
 		if (IntegerFieldEditor.class.equals(type)) {
 			return createIntegerFieldEditor(name, label, parent, data);
@@ -101,7 +106,7 @@ public class FieldEditorFactory {
 			return createStringFieldEditor(name, label, parent, data);
 		}
 		if (UriListEditor.class.equals(type)) {
-			return new UriListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+			return createUriListEditor(name, label, parent, data);
 		}
 		if (ValidatedComboFieldEditor.class.equals(type)) {
 			return createValidatedComboFieldEditor(name, label, parent, data);
@@ -222,6 +227,15 @@ public class FieldEditorFactory {
 		return directoryFieldEditor;
 	}
 
+	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+		if (data != null) {
+			return new EmailAddressesListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+		}
+		else {
+			return new EmailAddressesListEditor(name, label, parent, null, null);
+		}
+	}
+
 	protected FileFieldEditor createFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
 		final FileFieldEditor fileFieldEditor;
 		if (data != null && data.getFileEnforceAbsolute() != null) {
@@ -242,6 +256,23 @@ public class FieldEditorFactory {
 			}
 		}
 		return fileFieldEditor;
+	}
+
+	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+		final FontFieldEditor fontFieldEditor;
+		if (data != null && data.getFontPreviewAreaText() != null) {
+			fontFieldEditor = new FontFieldEditor(name, label, data.getFontPreviewAreaText().getString(), parent);
+		}
+		else {
+			fontFieldEditor = new FontFieldEditor(name, label, parent);
+		}
+		if (data != null && data.getFontChangeButtonText() != null) {
+			fontFieldEditor.setChangeButtonText(data.getFontChangeButtonText().getString());
+		}
+		else {
+			fontFieldEditor.setChangeButtonText(JFaceResources.get("lbl.button.change"));
+		}
+		return fontFieldEditor;
 	}
 
 	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
@@ -354,6 +385,15 @@ public class FieldEditorFactory {
 			}
 		}
 		return stringFieldEditor;
+	}
+
+	protected UriListEditor createUriListEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+		if (data != null) {
+			return new UriListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+		}
+		else {
+			return new UriListEditor(name, label, parent, null, null);
+		}
 	}
 
 	protected ValidatedComboFieldEditor createValidatedComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {

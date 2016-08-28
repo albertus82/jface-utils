@@ -18,6 +18,7 @@ import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FileFieldEditor;
@@ -32,6 +33,9 @@ public class FieldEditorFactory {
 	public FieldEditor createFieldEditor(final Class<? extends FieldEditor> type, final String name, final String label, final Composite parent, final FieldEditorData data) {
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
+		}
+		if (ColorFieldEditor.class.equals(type)) {
+			return new ColorFieldEditor(name, label, parent);
 		}
 		if (org.eclipse.jface.preference.ComboFieldEditor.class.equals(type)) {
 			return new org.eclipse.jface.preference.ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);

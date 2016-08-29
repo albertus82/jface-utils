@@ -13,16 +13,16 @@ import java.util.Properties;
 import java.util.TreeMap;
 
 /**
- * Classe astratta da estendere con una classe <b>Singleton</b> che richiami il
+ * Conviene estendere questa classe con un <b>Singleton</b> che richiami il
  * costruttore {@link #Configuration(String)} passando come parametro il nome
  * del file di configurazione da caricare.
  */
-public abstract class Configuration {
+public class Configuration {
 
 	private final Properties properties = new Properties();
 	private final String fileName;
 
-	protected Configuration(final String fileName) {
+	public Configuration(final String fileName) {
 		this.fileName = fileName;
 		try {
 			load();

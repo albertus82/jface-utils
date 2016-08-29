@@ -62,9 +62,9 @@ public enum MyApplicationPage implements Page {
 		return parent;
 	}
 
-	public static Page forClass(final Class<? extends AbstractPreferencePage> clazz) {
+	public static Page forClass(Class<? extends AbstractPreferencePage> clazz) {
 		if (clazz != null) {
-			for (final MyApplicationPage page : MyApplicationPage.values()) {
+			for (MyApplicationPage page : MyApplicationPage.values()) {
 				if (clazz.equals(page.pageClass)) {
 					return page;
 				}
@@ -97,7 +97,7 @@ public enum MyApplicationPreference implements Preference {
 	private PreferenceData preferenceData;
 	private FieldEditorData fieldEditorData;
 
-	MyApplicationPreference(final Page page, final Class<? extends FieldEditor> fieldEditorType, final PreferenceData preferenceData, final FieldEditorData fieldEditorData) {
+	MyApplicationPreference(Page page, Class<? extends FieldEditor> fieldEditorType, PreferenceData preferenceData, FieldEditorData fieldEditorData) {
 		this.page = page;
 		this.fieldEditorType = fieldEditorType;
 		this.preferenceData = preferenceData;
@@ -141,8 +141,8 @@ public enum MyApplicationPreference implements Preference {
 
 	@Override
 	public Set<? extends Preference> getChildren() {
-		final Set<MyApplicationPreference> preferences = EnumSet.noneOf(MyApplicationPreference.class);
-		for (final MyApplicationPreference item : MyApplicationPreference.values()) {
+		Set<MyApplicationPreference> preferences = EnumSet.noneOf(MyApplicationPreference.class);
+		for (MyApplicationPreference item : MyApplicationPreference.values()) {
 			if (this.equals(item.getParent())) {
 				preferences.add(item);
 			}
@@ -151,13 +151,13 @@ public enum MyApplicationPreference implements Preference {
 	}
 
 	@Override
-	public FieldEditor createFieldEditor(final Composite parent) {
+	public FieldEditor createFieldEditor(Composite parent) {
 		return fieldEditorFactory.createFieldEditor(fieldEditorType, getConfigurationKey(), getLabel(), parent, fieldEditorData);
 	}
 
-	public static Preference forConfigurationKey(final String configurationKey) {
+	public static Preference forConfigurationKey(String configurationKey) {
 		if (configurationKey != null) {
-			for (final MyApplicationPreference preference : MyApplicationPreference.values()) {
+			for (MyApplicationPreference preference : MyApplicationPreference.values()) {
 				if (configurationKey.equals(preference.getConfigurationKey())) {
 					return preference;
 				}

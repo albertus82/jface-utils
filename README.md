@@ -77,8 +77,95 @@ public enum MyApplicationPage implements Page {
 
 #### Preference enum
 
-```java
+This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java). You can surely improve it, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on.
 
+```java
+public enum MyApplicationPreference implements Preference {
+
+	AUTHENTICATION(MyApplicationPage.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), null),
+	PASSWORD(MyApplicationPage.GENERAL, PasswordFieldEditor.class, new PreferenceDataBuilder().configurationKey("password").label("Password").parent(AUTHENTICATION).build(), null),
+	PORT(MyApplicationPage.GENERAL, DefaultIntegerFieldEditor.class, new PreferenceDataBuilder().configurationKey("port").label("Port").separator().defaultValue(8080).build(), new FieldEditorDataBuilder().integerValidRange(1, 65535).build()),
+	DEBUG(MyApplicationPage.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("debug").label("Enable debug mode").separator().defaultValue(false).build(), null),
+	CONFIRM_CLOSE(MyApplicationPage.APPEARANCE, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("confirmClose").label("Confirm close").defaultValue(false).build(), null),
+	FONT_COLOR(MyApplicationPage.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("fontColor").label("Font color").defaultValue("255,0,0").build(), null),
+	BACKGROUND_COLOR(MyApplicationPage.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("backgroundColor").label("Background color").defaultValue("255,255,255").build(), null);
+
+	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+
+	private Page page;
+	private Class<? extends FieldEditor> fieldEditorType;
+	private PreferenceData preferenceData;
+	private FieldEditorData fieldEditorData;
+
+	MyApplicationPreference(final Page page, final Class<? extends FieldEditor> fieldEditorType, final PreferenceData preferenceData, final FieldEditorData fieldEditorData) {
+		this.page = page;
+		this.fieldEditorType = fieldEditorType;
+		this.preferenceData = preferenceData;
+		this.fieldEditorData = fieldEditorData;
+	}
+
+	@Override
+	public String getConfigurationKey() {
+		return preferenceData.getConfigurationKey();
+	}
+
+	@Override
+	public String getLabel() {
+		return preferenceData.getLabel().getString();
+	}
+
+	@Override
+	public Page getPage() {
+		return page;
+	}
+
+	@Override
+	public String getDefaultValue() {
+		return preferenceData.getDefaultValue();
+	}
+
+	@Override
+	public Preference getParent() {
+		return preferenceData.getParent();
+	}
+
+	@Override
+	public boolean isRestartRequired() {
+		return preferenceData.isRestartRequired();
+	}
+
+	@Override
+	public boolean hasSeparator() {
+		return preferenceData.hasSeparator();
+	}
+
+	@Override
+	public Set<? extends Preference> getChildren() {
+		final Set<MyApplicationPreference> preferences = EnumSet.noneOf(MyApplicationPreference.class);
+		for (final MyApplicationPreference item : MyApplicationPreference.values()) {
+			if (this.equals(item.getParent())) {
+				preferences.add(item);
+			}
+		}
+		return preferences;
+	}
+
+	@Override
+	public FieldEditor createFieldEditor(final Composite parent) {
+		return fieldEditorFactory.createFieldEditor(fieldEditorType, getConfigurationKey(), getLabel(), parent, fieldEditorData);
+	}
+
+	public static Preference forConfigurationKey(final String configurationKey) {
+		if (configurationKey != null) {
+			for (final MyApplicationPreference preference : MyApplicationPreference.values()) {
+				if (configurationKey.equals(preference.getConfigurationKey())) {
+					return preference;
+				}
+			}
+		}
+		return null;
+	}
+}
 ```
 
 #### PreferencePage classes

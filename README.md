@@ -144,17 +144,6 @@ public enum MyApplicationPreference implements Preference {
 	public FieldEditor createFieldEditor(Composite parent) {
 		return fieldEditorFactory.createFieldEditor(fieldEditorType, getConfigurationKey(), getLabel(), parent, fieldEditorData);
 	}
-
-	public static Preference forConfigurationKey(String configurationKey) {
-		if (configurationKey != null) {
-			for (MyApplicationPreference preference : MyApplicationPreference.values()) {
-				if (configurationKey.equals(preference.getConfigurationKey())) {
-					return preference;
-				}
-			}
-		}
-		return null;
-	}
 }
 ```
 

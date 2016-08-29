@@ -30,12 +30,12 @@ public enum MyApplicationPage implements Page {
 	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
 	COLORS("colors", "Colors", ColorsPreferencePage.class, APPEARANCE);
 
-	private final String nodeId;
-	private final String label;
-	private final Class<? extends AbstractPreferencePage> pageClass;
-	private final Page parent;
+	private String nodeId;
+	private String label;
+	private Class<? extends AbstractPreferencePage> pageClass;
+	private Page parent;
 
-	private MyApplicationPage(final String nodeId, final String label, final Class<? extends AbstractPreferencePage> pageClass, final Page parent) {
+	private MyApplicationPage(String nodeId, String label, Class<? extends AbstractPreferencePage> pageClass, Page parent) {
 		this.nodeId = nodeId;
 		this.label = label;
 		this.pageClass = pageClass;

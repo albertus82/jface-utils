@@ -1,13 +1,23 @@
 package it.albertus.jface.preference;
 
+import it.albertus.util.Localized;
+
 public class PreferenceData {
 
+	private final String configurationKey;
+	private final Localized label;
 	private final String defaultValue;
 	private final Preference parent;
 	private final boolean restartRequired;
-	private final String configurationKey;
-	private final String labelResourceKey;
 	private final boolean separator;
+
+	public String getConfigurationKey() {
+		return configurationKey;
+	}
+
+	public Localized getLabel() {
+		return label;
+	}
 
 	public String getDefaultValue() {
 		return defaultValue;
@@ -21,25 +31,32 @@ public class PreferenceData {
 		return restartRequired;
 	}
 
-	public String getConfigurationKey() {
-		return configurationKey;
-	}
-
-	public String getLabelResourceKey() {
-		return labelResourceKey;
-	}
-
 	public boolean hasSeparator() {
 		return separator;
 	}
 
+	@Override
+	public String toString() {
+		return "PreferenceData [configurationKey=" + configurationKey + ", label=" + label + ", defaultValue=" + defaultValue + ", parent=" + parent + ", restartRequired=" + restartRequired + ", separator=" + separator + "]";
+	}
+
 	public static class PreferenceDataBuilder {
+		private String configurationKey;
+		private Localized label;
 		private String defaultValue;
 		private Preference parent;
 		private boolean restartRequired;
-		private String configurationKey;
-		private String labelResourceKey;
 		private boolean separator;
+
+		public PreferenceDataBuilder configurationKey(final String configurationKey) {
+			this.configurationKey = configurationKey;
+			return this;
+		}
+
+		public PreferenceDataBuilder label(final Localized label) {
+			this.label = label;
+			return this;
+		}
 
 		public PreferenceDataBuilder defaultValue(final String defaultValue) {
 			this.defaultValue = defaultValue;
@@ -109,27 +126,17 @@ public class PreferenceData {
 			return separator(true);
 		}
 
-		public PreferenceDataBuilder configurationKey(final String configurationKey) {
-			this.configurationKey = configurationKey;
-			return this;
-		}
-
-		public PreferenceDataBuilder labelResourceKey(final String labelResourceKey) {
-			this.labelResourceKey = labelResourceKey;
-			return this;
-		}
-
 		public PreferenceData build() {
 			return new PreferenceData(this);
 		}
 	}
 
 	private PreferenceData(final PreferenceDataBuilder builder) {
+		this.configurationKey = builder.configurationKey;
+		this.label = builder.label;
 		this.defaultValue = builder.defaultValue;
 		this.parent = builder.parent;
 		this.restartRequired = builder.restartRequired;
-		this.configurationKey = builder.configurationKey;
-		this.labelResourceKey = builder.labelResourceKey;
 		this.separator = builder.separator;
 	}
 

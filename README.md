@@ -25,6 +25,7 @@ This is a very simple example of enum that implements [`Page`](src/main/java/it/
 
 ```java
 public enum MyApplicationPage implements Page {
+
 	GENERAL("general", "General", GeneralPreferencePage.class, null),
 	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
 	COLORS("colors", "Colors", ColorsPreferencePage.class, APPEARANCE);

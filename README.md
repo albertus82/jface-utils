@@ -7,7 +7,35 @@ JFaceUtils
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/8672431/18028808/b4825704-6c87-11e6-96db-79f1fc46f931.png)
 
-## Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
+## Preferences Framework
+
+### Getting started
+
+In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object (e.g. from a `SelectionListener`) and invoke its `open` method. The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors takes three or four arguments:
+* [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
+* [`Page[]`](src/main/java/it/albertus/jface/preference/page/Page.java): preference pages that contains preference items;
+* [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): preference items;
+* `Image[]`: icons used for the Preference dialogs (optional).
+
+#### PreferencePage classes
+
+```java
+
+```
+
+#### Page enum
+
+```java
+
+```
+
+#### Preference enum
+
+```java
+
+```
+
+### Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
 ```java
 public class MyApplicationFieldEditorFactory extends FieldEditorFactory {
@@ -22,7 +50,5 @@ public class MyApplicationFieldEditorFactory extends FieldEditorFactory {
 		}
 		return super.createFieldEditor(type, name, label, parent, data);
 	}
-
 }
 ```
-

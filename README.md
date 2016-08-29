@@ -21,7 +21,7 @@ A convenient approach may be the use of enums for [`Page`](src/main/java/it/albe
 
 #### Page enum
 
-This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java). You can surely improve it, for example introducing localization and autodetermining `nodeId` values using the enum names.
+This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java). You can surely improve it, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
 
 ```java
 public enum MyApplicationPage implements Page {

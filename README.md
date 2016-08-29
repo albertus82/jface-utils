@@ -95,10 +95,10 @@ public class MyApplicationFieldEditorFactory extends FieldEditorFactory {
 	@Override
 	public FieldEditor createFieldEditor(Class<? extends FieldEditor> type, String name, String label, Composite parent, FieldEditorData data) {
 		if (MyCustomFieldEditor.class.equals(type)) {
-			return new MyCustomFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new MyCustomFieldEditor(name, label, parent);
 		}
 		if (AnotherCustomFieldEditor.class.equals(type)) {
-			return new AnotherCustomFieldEditor(name, label, parent);
+			return new AnotherCustomFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		}
 		return super.createFieldEditor(type, name, label, parent, data);
 	}

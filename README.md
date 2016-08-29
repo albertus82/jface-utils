@@ -17,19 +17,70 @@ In order to open a Preferences dialog, you must instantiate a [`Preferences`](sr
 * [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): preference items;
 * `Image[]`: icons used for the Preference dialogs (optional).
 
-#### PreferencePage classes
-
-```java
-
-```
+A convenient approach may be the use of enums for [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) objects, like in the following code samples.
 
 #### Page enum
 
+This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java). You can surely improve it, for example introducing localization and autodetermining `nodeId` values using the enum names.
+
+```java
+public enum MyApplicationPage implements Page {
+	GENERAL("general", "General", GeneralPreferencePage.class, null),
+	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
+	COLORS("colors", "Colors", ColorsPreferencePage.class, APPEARANCE);
+
+	private final String nodeId;
+	private final String label;
+	private final Class<? extends AbstractPreferencePage> pageClass;
+	private final Page parent;
+
+	private MyApplicationPage(final String nodeId, final String label, final Class<? extends AbstractPreferencePage> pageClass, final Page parent) {
+		this.nodeId = nodeId;
+		this.label = label;
+		this.pageClass = pageClass;
+		this.parent = parent;
+	}
+
+	@Override
+	public String getNodeId() {
+		return nodeId;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public Class<? extends AbstractPreferencePage> getPageClass() {
+		return pageClass;
+	}
+
+	@Override
+	public Page getParent() {
+		return parent;
+	}
+
+	public static Page forClass(final Class<? extends AbstractPreferencePage> clazz) {
+		if (clazz != null) {
+			for (final MyApplicationPage page : MyApplicationPage.values()) {
+				if (clazz.equals(page.pageClass)) {
+					return page;
+				}
+			}
+		}
+		return null;
+	}
+}
+```
+
+#### Preference enum
+
 ```java
 
 ```
 
-#### Preference enum
+#### PreferencePage classes
 
 ```java
 

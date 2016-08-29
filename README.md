@@ -77,7 +77,7 @@ public enum MyApplicationPage implements Page {
 
 #### Preference enum
 
-This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java). You can surely improve it, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes.
+This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java). You can surely improve it, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
 
 ```java
 public enum MyApplicationPreference implements Preference {

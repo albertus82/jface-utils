@@ -58,6 +58,16 @@ public class PreferenceData {
 			return this;
 		}
 
+		public PreferenceDataBuilder label(final String label) {
+			this.label = new Localized() {
+				@Override
+				public String getString() {
+					return label;
+				}
+			};
+			return this;
+		}
+
 		public PreferenceDataBuilder defaultValue(final String defaultValue) {
 			this.defaultValue = defaultValue;
 			return this;

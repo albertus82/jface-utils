@@ -21,7 +21,8 @@ A convenient approach may be to use enums for [`Page`](src/main/java/it/albertus
 
 #### Page enum
 
-This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java). You can surely improve it, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
+This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java).
+You can surely improve it, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
 
 ```java
 public enum MyApplicationPage implements Page {
@@ -60,17 +61,6 @@ public enum MyApplicationPage implements Page {
 	@Override
 	public Page getParent() {
 		return parent;
-	}
-
-	public static Page forClass(Class<? extends AbstractPreferencePage> clazz) {
-		if (clazz != null) {
-			for (MyApplicationPage page : MyApplicationPage.values()) {
-				if (clazz.equals(page.pageClass)) {
-					return page;
-				}
-			}
-		}
-		return null;
 	}
 }
 ```
@@ -170,8 +160,25 @@ public enum MyApplicationPreference implements Preference {
 
 #### PreferencePage classes
 
-```java
+This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). You will need one class per [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) enum constant. The `getPage` method must return the enum constant associated with this page class.
+You can easily improve this architecture by writing another abstract class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recalls the super constructors with that static parameters; you can also write a static lookup method in your [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) enum so that you can override the `getPage` method directly in your abstract superclass.
 
+```java
+public class GeneralPreferencePage extends AbstractPreferencePage {
+
+	public GeneralPreferencePage() {
+		super(MyApplicationConfiguration.getInstance(), MyApplicationPreference.values());
+	}
+
+	protected GeneralPreferencePage(final int style) {
+		super(MyApplicationConfiguration.getInstance(), MyApplicationPreference.values(), style);
+	}
+
+	@Override
+	public Page getPage() {
+		return MyApplicationPage.GENERAL;
+	}
+}
 ```
 
 ### Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension

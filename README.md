@@ -11,7 +11,7 @@ JFaceUtils
 
 ### Getting started
 
-In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object (e.g. from a `SelectionListener`) and invoke its `open` method. The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors takes three or four arguments:
+In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke its `open` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors takes three or four arguments:
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
 * [`Page[]`](src/main/java/it/albertus/jface/preference/page/Page.java): preference pages that contains preference items;
 * [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): preference items;

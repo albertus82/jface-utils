@@ -13,7 +13,7 @@ public class ConfigurationNode extends PreferenceNode {
 	private final PageDefinition pageDefinition;
 
 	public ConfigurationNode(final PageDefinition pageDefinition, final Preference[] preferences, final Configuration configuration) {
-		super(pageDefinition.getNodeId(), pageDefinition.getLabel(), null, pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
+		super(pageDefinition.getNodeId(), pageDefinition.getLabel(), pageDefinition.getImage(), pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
 		this.preferences = preferences;
 		this.configuration = configuration;
 		this.pageDefinition = pageDefinition;
@@ -25,6 +25,9 @@ public class ConfigurationNode extends PreferenceNode {
 		if (pageDefinition.getPageClass() != null) {
 			super.createPage();
 			page = getPage();
+			if (getLabelImage() != null) {
+				page.setImageDescriptor(getImageDescriptor());
+			}
 		}
 		else {
 			page = new BasePreferencePage();

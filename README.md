@@ -15,7 +15,7 @@ In order to open a Preferences dialog, you must instantiate a [`Preferences`](sr
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
 * [`PageDefinition[]`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java): definitions of the pages that will contain the preference items;
 * [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): definitions of the preference items;
-* `Image[]`: icons used for the Preference dialogs (optional).
+* `Image[]`: icons used for the preference dialogs (optional).
 
 A convenient approach may be to implement [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) interfaces using enums, like in the following code samples.
 

@@ -28,7 +28,7 @@ public enum MyPageDefinition implements PageDefinition {
 
 	GENERAL("general", "General", GeneralPreferencePage.class, null),
 	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
-	COLORS("colors", "Colors", ColorsPreferencePage.class, APPEARANCE);
+	COLORS("appearance.colors", "Colors", ColorsPreferencePage.class, APPEARANCE);
 
 	private String nodeId;
 	private String label;

@@ -152,17 +152,13 @@ You can surely improve this code, for example introducing localization, autodete
 
 #### Preference page classes
 
-This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The two constructor signatures are mandatory.** Lastly, `getPageDefinition` method must return the enum constant associated with this page class.
+This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The no-arguments constructor is mandatory.** Lastly, `getPageDefinition` method must return the enum constant associated with this page class.
 
 ```java
 public class GeneralPreferencePage extends AbstractPreferencePage {
 
 	public GeneralPreferencePage() {
 		super(MyConfiguration.getInstance(), MyPreference.values());
-	}
-
-	protected GeneralPreferencePage(final int style) {
-		super(MyConfiguration.getInstance(), MyPreference.values(), style);
 	}
 
 	@Override

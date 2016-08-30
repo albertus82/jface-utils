@@ -21,8 +21,7 @@ A convenient approach may be to use enums for [`PageDefinition`](src/main/java/i
 
 #### Page enum
 
-This is a very simple example of enum that implements [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java).
-You can surely improve it, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
+This is a very simple example of enum that implements [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java):
 
 ```java
 public enum MyPageDefinition implements PageDefinition {
@@ -65,9 +64,11 @@ public enum MyPageDefinition implements PageDefinition {
 }
 ```
 
+You can surely improve this code, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
+
 #### Preference enum
 
-This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java). You can surely improve it, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
+This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java).
 
 ```java
 public enum MyPreference implements Preference {
@@ -147,10 +148,11 @@ public enum MyPreference implements Preference {
 }
 ```
 
+You can surely improve this code, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
+
 #### PreferencePage classes
 
 This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum constant. The `getPageDefinition` method must return the enum constant associated with this page class.
-You can easily improve this architecture by writing another abstract class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recalls the super constructors with that static parameters; you can also write a static lookup method in your [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum so that you can override the `getPageDefinition` method directly in your abstract superclass.
 
 ```java
 public class GeneralPreferencePage extends AbstractPreferencePage {
@@ -169,6 +171,8 @@ public class GeneralPreferencePage extends AbstractPreferencePage {
 	}
 }
 ```
+
+You can easily improve this architecture by writing another abstract class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recalls the super constructors with that static parameters; you can also write a static lookup method in your [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum so that you can override the `getPageDefinition` method directly in your abstract superclass.
 
 ### Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 

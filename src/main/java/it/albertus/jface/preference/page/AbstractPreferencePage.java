@@ -26,11 +26,11 @@ import org.eclipse.swt.widgets.Label;
 
 public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 
-	protected static final Map<Preference, FieldEditor> universe = new HashMap<Preference, FieldEditor>();
+	protected static final Map<Preference, FieldEditorWrapper> universe = new HashMap<Preference, FieldEditorWrapper>();
 
 	protected final Configuration configuration;
 	protected final Preference[] preferences;
-	protected final Map<Preference, FieldEditor> fieldEditorMap = new HashMap<Preference, FieldEditor>();
+	protected final Map<Preference, FieldEditorWrapper> fieldEditorMap = new HashMap<Preference, FieldEditorWrapper>();
 	protected Control header;
 
 	public AbstractPreferencePage(final Configuration configuration, final Preference[] preferences) {
@@ -97,9 +97,10 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 				if (preference.hasSeparator()) {
 					addSeparator();
 				}
-				final FieldEditor fieldEditor = preference.createFieldEditor(getFieldEditorParent());
+				final Composite fieldEditorParent = getFieldEditorParent();
+				final FieldEditor fieldEditor = preference.createFieldEditor(fieldEditorParent);
 				addField(fieldEditor);
-				fieldEditorMap.put(preference, fieldEditor);
+				fieldEditorMap.put(preference, new FieldEditorWrapper(fieldEditor, fieldEditorParent));
 			}
 		}
 		universe.putAll(fieldEditorMap);
@@ -112,8 +113,8 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		if (event.getSource() instanceof BooleanFieldEditor) {
 			final BooleanFieldEditor changedBooleanFieldEditor = (BooleanFieldEditor) event.getSource();
 			final Boolean parentEnabled = (Boolean) event.getNewValue();
-			for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
-				if (entry.getValue().equals(changedBooleanFieldEditor)) {
+			for (final Entry<Preference, FieldEditorWrapper> entry : fieldEditorMap.entrySet()) {
+				if (entry.getValue().getFieldEditor().equals(changedBooleanFieldEditor)) {
 					// Found!
 					for (final Preference childPreference : entry.getKey().getChildren()) {
 						updateChildrenStatus(childPreference, parentEnabled);
@@ -139,11 +140,11 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected void updateChildrenStatus(final Preference childPreference, final Boolean parentEnabled) {
-		final FieldEditor childFieldEditor = fieldEditorMap.get(childPreference);
+		final FieldEditorWrapper childFieldEditor = fieldEditorMap.get(childPreference);
 		updateChildStatus(childFieldEditor, parentEnabled);
 		// Recurse descendants...
-		if (childFieldEditor instanceof BooleanFieldEditor) {
-			final BooleanFieldEditor childBooleanFieldEditor = (BooleanFieldEditor) childFieldEditor;
+		if (childFieldEditor != null && childFieldEditor.getFieldEditor() instanceof BooleanFieldEditor) {
+			final BooleanFieldEditor childBooleanFieldEditor = (BooleanFieldEditor) childFieldEditor.getFieldEditor();
 			for (final Preference descendantPreference : childPreference.getChildren()) { // Exit condition
 				final boolean childEnabled = childBooleanFieldEditor.getBooleanValue();
 				updateChildrenStatus(descendantPreference, childEnabled && parentEnabled);
@@ -152,8 +153,8 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected void updateFieldsStatus() {
-		for (final Entry<Preference, FieldEditor> entry : fieldEditorMap.entrySet()) {
-			if (entry.getValue() instanceof BooleanFieldEditor) {
+		for (final Entry<Preference, FieldEditorWrapper> entry : fieldEditorMap.entrySet()) {
+			if (entry.getValue().getFieldEditor() instanceof BooleanFieldEditor) {
 				final boolean parentsEnabled = getParentsEnabled(entry.getKey());
 				for (final Preference childPreference : entry.getKey().getChildren()) {
 					updateChildStatus(fieldEditorMap.get(childPreference), parentsEnabled);
@@ -163,14 +164,14 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	}
 
 	protected boolean getParentsEnabled(final Preference preference) {
-		final FieldEditor fieldEditor = universe.get(preference);
+		final FieldEditorWrapper fieldEditorWrapper = universe.get(preference);
 		boolean parentEnabled;
-		if (fieldEditor == null) { // Field belongs to a not-yet-created page.
+		if (fieldEditorWrapper == null) { // Field belongs to a not-yet-created page.
 			parentEnabled = configuration.getBoolean(preference.getConfigurationKey(), Boolean.parseBoolean(preference.getDefaultValue()));
 		}
 		else {
 			try {
-				parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+				parentEnabled = ((BooleanFieldEditor) fieldEditorWrapper.getFieldEditor()).getBooleanValue();
 			}
 			catch (final NullPointerException npe) { // Uninitialized field.
 				parentEnabled = getPreferenceStore().getBoolean(preference.getConfigurationKey());
@@ -185,11 +186,12 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 	}
 
-	protected void updateChildStatus(final FieldEditor childFieldEditor, final boolean parentEnabled) {
+	protected void updateChildStatus(final FieldEditorWrapper childFieldEditor, final boolean parentEnabled) {
 		if (childFieldEditor != null) { // null if on another page!
-			childFieldEditor.setEnabled(parentEnabled, getFieldEditorParent());
-			if (!parentEnabled && !childFieldEditor.isValid()) {
-				childFieldEditor.loadDefault(); // Fix invalid value
+			final FieldEditor fieldEditor = childFieldEditor.getFieldEditor();
+			fieldEditor.setEnabled(parentEnabled, childFieldEditor.getParent());
+			if (!parentEnabled && !fieldEditor.isValid()) {
+				fieldEditor.loadDefault(); // Fix invalid value
 				checkState(); // Enable OK & Apply buttons
 			}
 		}
@@ -198,19 +200,22 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	public void updateCrossChildrenStatus() {
 		for (final Preference preference : fieldEditorMap.keySet()) {
 			if (preference.getParent() != null && !fieldEditorMap.containsKey(preference.getParent())) {
-				final FieldEditor fieldEditor = universe.get(preference.getParent());
-				if (fieldEditor == null) {
+				final FieldEditorWrapper fieldEditorWrapper = universe.get(preference.getParent());
+				if (fieldEditorWrapper == null) {
 					updateChildrenStatus(preference, configuration.getBoolean(preference.getParent().getConfigurationKey(), Boolean.parseBoolean(preference.getParent().getDefaultValue())));
 				}
-				else if (fieldEditor instanceof BooleanFieldEditor) {
-					boolean parentEnabled;
-					try {
-						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+				else {
+					final FieldEditor fieldEditor = fieldEditorWrapper.getFieldEditor();
+					if (fieldEditor instanceof BooleanFieldEditor) {
+						boolean parentEnabled;
+						try {
+							parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+						}
+						catch (final NullPointerException npe) {
+							parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getConfigurationKey());
+						}
+						updateChildrenStatus(preference, parentEnabled);
 					}
-					catch (final NullPointerException npe) {
-						parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getConfigurationKey());
-					}
-					updateChildrenStatus(preference, parentEnabled);
 				}
 			}
 		}

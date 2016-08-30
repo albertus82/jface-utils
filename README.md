@@ -68,7 +68,7 @@ You can surely improve this code, for example introducing localization, autodete
 
 #### Preference enum
 
-This is a simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java).
+This is a simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java):
 
 ```java
 public enum MyPreference implements Preference {
@@ -171,6 +171,8 @@ public class GeneralPreferencePage extends AbstractPreferencePage {
 You can easily improve this architecture by writing another abstract class that extend [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recall the super constructors with that static parameters; you can also write a static lookup method in your [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum so that you can override the `getPageDefinition` method directly in your abstract superclass. With these two gimmicks, you'll end up creating a bunch of empty classes that extend your custom abstract superclass.
 
 ### Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
+
+if you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new `FieldEditor`s:
 
 ```java
 public class MyFieldEditorFactory extends FieldEditorFactory {

@@ -1,7 +1,7 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceResources;
-import it.albertus.jface.preference.page.AbstractPreferencePage;
+import it.albertus.jface.preference.page.BasePreferencePage;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -46,8 +46,8 @@ public class ConfigurationDialog extends PreferenceDialog {
 	protected boolean showPage(final IPreferenceNode node) {
 		boolean success = super.showPage(node);
 		final IPreferencePage currentPage = getCurrentPage();
-		if (currentPage instanceof AbstractPreferencePage) {
-			((AbstractPreferencePage) currentPage).updateCrossChildrenStatus();
+		if (currentPage instanceof BasePreferencePage) {
+			((BasePreferencePage) currentPage).updateCrossChildrenStatus();
 		}
 		return success;
 	}

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.AbstractPreferencePage;
+import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.PageDefinition;
 import it.albertus.util.Configuration;
 
@@ -13,7 +13,7 @@ public class ConfigurationNode extends PreferenceNode {
 	private final PageDefinition pageDefinition;
 
 	public ConfigurationNode(final PageDefinition pageDefinition, final Preference[] preferences, final Configuration configuration) {
-		super(pageDefinition.getNodeId(), pageDefinition.getLabel(), null, pageDefinition.getPageClass().getName());
+		super(pageDefinition.getNodeId(), pageDefinition.getLabel(), null, pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
 		this.preferences = preferences;
 		this.configuration = configuration;
 		this.pageDefinition = pageDefinition;
@@ -21,13 +21,24 @@ public class ConfigurationNode extends PreferenceNode {
 
 	@Override
 	public void createPage() {
-		super.createPage();
-		if (getPage() instanceof AbstractPreferencePage) {
-			final AbstractPreferencePage page = (AbstractPreferencePage) getPage();
-			page.setPreferences(preferences);
-			page.setConfiguration(configuration);
-			page.setPageDefinition(pageDefinition);
+		final BasePreferencePage page;
+		if (pageDefinition.getPageClass() != null) {
+			super.createPage();
+			page = getPage();
 		}
+		else {
+			page = new BasePreferencePage();
+			setPage(page);
+			page.setTitle(pageDefinition.getLabel());
+		}
+		page.setPreferences(preferences);
+		page.setConfiguration(configuration);
+		page.setPageDefinition(pageDefinition);
+	}
+
+	@Override
+	public BasePreferencePage getPage() {
+		return (BasePreferencePage) super.getPage();
 	}
 
 }

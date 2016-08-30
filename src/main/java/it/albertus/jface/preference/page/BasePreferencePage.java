@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
-public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
+public class BasePreferencePage extends FieldEditorPreferencePage {
 
 	protected static final Map<Preference, FieldEditorWrapper> universe = new HashMap<Preference, FieldEditorWrapper>();
 
@@ -35,11 +35,11 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 	private Preference[] preferences;
 	private PageDefinition pageDefinition;
 
-	public AbstractPreferencePage() {
+	public BasePreferencePage() {
 		this(GRID);
 	}
 
-	protected AbstractPreferencePage(final int style) {
+	protected BasePreferencePage(final int style) {
 		super(style);
 	}
 

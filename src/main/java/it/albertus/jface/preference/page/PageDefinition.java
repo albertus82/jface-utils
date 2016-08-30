@@ -6,7 +6,7 @@ public interface PageDefinition {
 
 	String getLabel();
 
-	Class<? extends AbstractPreferencePage> getPageClass();
+	Class<? extends BasePreferencePage> getPageClass();
 
 	PageDefinition getParent();
 

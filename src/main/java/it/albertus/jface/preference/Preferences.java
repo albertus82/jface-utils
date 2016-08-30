@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.Page;
+import it.albertus.jface.preference.page.PageDefinition;
 import it.albertus.util.Configuration;
 
 import java.io.IOException;
@@ -20,33 +20,33 @@ import org.eclipse.swt.widgets.Shell;
 public class Preferences {
 
 	protected final Configuration configuration;
-	protected final Page[] pages;
+	protected final PageDefinition[] pages;
 	protected final Preference[] preferences;
 	protected final Image[] images;
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final Configuration configuration, final Page[] pages, final Preference[] preferences) {
+	public Preferences(final Configuration configuration, final PageDefinition[] pages, final Preference[] preferences) {
 		this(configuration, pages, preferences, null);
 	}
 
-	public Preferences(final Configuration configuration, final Page[] pages, final Preference[] preferences, final Image[] images) {
+	public Preferences(final Configuration configuration, final PageDefinition[] pages, final Preference[] preferences, final Image[] images) {
 		this.configuration = configuration;
 		this.pages = pages;
 		this.preferences = preferences;
 		this.images = images;
 	}
 
-	public int open(final Shell parentShell) {
-		return open(parentShell, null);
+	public int openDialog(final Shell parentShell) {
+		return openDialog(parentShell, null);
 	}
 
-	public int open(final Shell parentShell, final Page selectedPage) {
+	public int openDialog(final Shell parentShell, final PageDefinition selectedPage) {
 		final PreferenceManager preferenceManager = new PreferenceManager();
 
 		// Pages creation...
-		final Map<Page, PreferenceNode> preferenceNodes = new HashMap<Page, PreferenceNode>();
-		for (final Page page : pages) {
+		final Map<PageDefinition, PreferenceNode> preferenceNodes = new HashMap<PageDefinition, PreferenceNode>();
+		for (final PageDefinition page : pages) {
 			final PreferenceNode preferenceNode = new PreferenceNode(page.getNodeId(), page.getLabel(), null, page.getPageClass().getName());
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);

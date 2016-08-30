@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.Page;
+import it.albertus.jface.preference.page.PageDefinition;
 
 import java.util.Set;
 
@@ -13,7 +13,7 @@ public interface Preference {
 
 	String getLabel();
 
-	Page getPage();
+	PageDefinition getPageDefinition();
 
 	String getDefaultValue();
 

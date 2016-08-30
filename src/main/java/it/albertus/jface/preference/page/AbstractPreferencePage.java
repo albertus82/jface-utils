@@ -43,7 +43,7 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		this.preferences = preferences;
 	}
 
-	protected abstract Page getPage();
+	protected abstract PageDefinition getPageDefinition();
 
 	@Override
 	public void createControl(final Composite parent) {
@@ -91,9 +91,9 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 
 		// Fields
-		final Page page = getPage();
+		final PageDefinition page = getPageDefinition();
 		for (final Preference preference : preferences) {
-			if (page.equals(preference.getPage())) {
+			if (page.equals(preference.getPageDefinition())) {
 				if (preference.hasSeparator()) {
 					addSeparator();
 				}

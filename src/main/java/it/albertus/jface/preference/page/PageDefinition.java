@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.page;
 
-public interface Page {
+public interface PageDefinition {
 
 	String getNodeId();
 
@@ -8,6 +8,6 @@ public interface Page {
 
 	Class<? extends AbstractPreferencePage> getPageClass();
 
-	Page getParent();
+	PageDefinition getParent();
 
 }

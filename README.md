@@ -13,13 +13,13 @@ JFaceUtils
 
 In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
-* [`PageDefinition[]`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java): preference pages that contains preference items;
-* [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): preference items;
+* [`PageDefinition[]`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java): definitions of the pages that will contain the preference items;
+* [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): definitions of the preference items;
 * `Image[]`: icons used for the Preference dialogs (optional).
 
 A convenient approach may be to use enums for [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) objects, like in the following code samples.
 
-#### PageDefinition enum
+#### Page definition enum
 
 This is a very simple example of enum that implements [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java):
 
@@ -150,7 +150,7 @@ public enum MyPreference implements Preference {
 
 You can surely improve this code, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
 
-#### PreferencePage classes
+#### Preference page classes
 
 This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum constant. The two constructor signatures are mandatory. Lastly, `getPageDefinition` method must return the enum constant associated with this page class.
 

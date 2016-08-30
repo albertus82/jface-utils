@@ -13,19 +13,19 @@ JFaceUtils
 
 In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke its `open` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
-* [`Page[]`](src/main/java/it/albertus/jface/preference/page/Page.java): preference pages that contains preference items;
+* [`PageDefinition[]`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java): preference pages that contains preference items;
 * [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): preference items;
 * `Image[]`: icons used for the Preference dialogs (optional).
 
-A convenient approach may be to use enums for [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) objects, like in the following code samples.
+A convenient approach may be to use enums for [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) objects, like in the following code samples.
 
 #### Page enum
 
-This is a very simple example of enum that implements [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java).
+This is a very simple example of enum that implements [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java).
 You can surely improve it, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
 
 ```java
-public enum MyApplicationPage implements Page {
+public enum MyPageDefinition implements PageDefinition {
 
 	GENERAL("general", "General", GeneralPreferencePage.class, null),
 	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
@@ -34,9 +34,9 @@ public enum MyApplicationPage implements Page {
 	private String nodeId;
 	private String label;
 	private Class<? extends AbstractPreferencePage> pageClass;
-	private Page parent;
+	private PageDefinition parent;
 
-	MyApplicationPage(String nodeId, String label, Class<? extends AbstractPreferencePage> pageClass, Page parent) {
+	MyPageDefinition(String nodeId, String label, Class<? extends AbstractPreferencePage> pageClass, PageDefinition parent) {
 		this.nodeId = nodeId;
 		this.label = label;
 		this.pageClass = pageClass;
@@ -59,7 +59,7 @@ public enum MyApplicationPage implements Page {
 	}
 
 	@Override
-	public Page getParent() {
+	public PageDefinition getParent() {
 		return parent;
 	}
 }
@@ -70,24 +70,24 @@ public enum MyApplicationPage implements Page {
 This is a very simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java). You can surely improve it, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
 
 ```java
-public enum MyApplicationPreference implements Preference {
+public enum MyPreference implements Preference {
 
-	AUTHENTICATION(MyApplicationPage.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), null),
-	PASSWORD(MyApplicationPage.GENERAL, PasswordFieldEditor.class, new PreferenceDataBuilder().configurationKey("password").label("Password").parent(AUTHENTICATION).build(), null),
-	PORT(MyApplicationPage.GENERAL, DefaultIntegerFieldEditor.class, new PreferenceDataBuilder().configurationKey("port").label("Port").separator().defaultValue(8080).build(), new FieldEditorDataBuilder().integerValidRange(1, 65535).build()),
-	DEBUG(MyApplicationPage.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("debug").label("Enable debug mode").separator().defaultValue(false).build(), null),
-	CONFIRM_CLOSE(MyApplicationPage.APPEARANCE, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("confirmClose").label("Confirm close").defaultValue(false).build(), null),
-	FONT_COLOR(MyApplicationPage.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("fontColor").label("Font color").defaultValue("255,0,0").build(), null),
-	BACKGROUND_COLOR(MyApplicationPage.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("backgroundColor").label("Background color").defaultValue("255,255,255").build(), null);
+	AUTHENTICATION(MyPageDefinition.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), null),
+	PASSWORD(MyPageDefinition.GENERAL, PasswordFieldEditor.class, new PreferenceDataBuilder().configurationKey("password").label("Password").parent(AUTHENTICATION).build(), null),
+	PORT(MyPageDefinition.GENERAL, DefaultIntegerFieldEditor.class, new PreferenceDataBuilder().configurationKey("port").label("Port").separator().defaultValue(8080).build(), new FieldEditorDataBuilder().integerValidRange(1, 65535).build()),
+	DEBUG(MyPageDefinition.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("debug").label("Enable debug mode").separator().defaultValue(false).build(), null),
+	CONFIRM_CLOSE(MyPageDefinition.APPEARANCE, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("confirmClose").label("Confirm close").defaultValue(false).build(), null),
+	FONT_COLOR(MyPageDefinition.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("fontColor").label("Font color").defaultValue("255,0,0").build(), null),
+	BACKGROUND_COLOR(MyPageDefinition.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("backgroundColor").label("Background color").defaultValue("255,255,255").build(), null);
 
 	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
 
-	private Page page;
+	private PageDefinition pageDefinition;
 	private Class<? extends FieldEditor> fieldEditorType;
 	private PreferenceData preferenceData;
 	private FieldEditorData fieldEditorData;
 
-	MyApplicationPreference(Page page, Class<? extends FieldEditor> fieldEditorType, PreferenceData preferenceData, FieldEditorData fieldEditorData) {
+	MyPreference(Page page, Class<? extends FieldEditor> fieldEditorType, PreferenceData preferenceData, FieldEditorData fieldEditorData) {
 		this.page = page;
 		this.fieldEditorType = fieldEditorType;
 		this.preferenceData = preferenceData;
@@ -131,8 +131,8 @@ public enum MyApplicationPreference implements Preference {
 
 	@Override
 	public Set<? extends Preference> getChildren() {
-		Set<MyApplicationPreference> preferences = EnumSet.noneOf(MyApplicationPreference.class);
-		for (MyApplicationPreference item : MyApplicationPreference.values()) {
+		Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
+		for (MyPreference item : MyPreference.values()) {
 			if (this.equals(item.getParent())) {
 				preferences.add(item);
 			}
@@ -149,23 +149,23 @@ public enum MyApplicationPreference implements Preference {
 
 #### PreferencePage classes
 
-This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). You will need one class per [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) enum constant. The `getPage` method must return the enum constant associated with this page class.
-You can easily improve this architecture by writing another abstract class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recalls the super constructors with that static parameters; you can also write a static lookup method in your [`Page`](src/main/java/it/albertus/jface/preference/page/Page.java) enum so that you can override the `getPage` method directly in your abstract superclass.
+This is a very simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum constant. The `getPageDefinition` method must return the enum constant associated with this page class.
+You can easily improve this architecture by writing another abstract class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java) and recalls the super constructors with that static parameters; you can also write a static lookup method in your [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) enum so that you can override the `getPageDefinition` method directly in your abstract superclass.
 
 ```java
 public class GeneralPreferencePage extends AbstractPreferencePage {
 
 	public GeneralPreferencePage() {
-		super(MyApplicationConfiguration.getInstance(), MyApplicationPreference.values());
+		super(MyConfiguration.getInstance(), MyPreference.values());
 	}
 
 	protected GeneralPreferencePage(final int style) {
-		super(MyApplicationConfiguration.getInstance(), MyApplicationPreference.values(), style);
+		super(MyConfiguration.getInstance(), MyPreference.values(), style);
 	}
 
 	@Override
-	public Page getPage() {
-		return MyApplicationPage.GENERAL;
+	public PageDefinition getPageDefinition() {
+		return MyPageDefinition.GENERAL;
 	}
 }
 ```
@@ -173,7 +173,7 @@ public class GeneralPreferencePage extends AbstractPreferencePage {
 ### Example of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
 ```java
-public class MyApplicationFieldEditorFactory extends FieldEditorFactory {
+public class MyFieldEditorFactory extends FieldEditorFactory {
 
 	@Override
 	public FieldEditor createFieldEditor(Class<? extends FieldEditor> type, String name, String label, Composite parent, FieldEditorData data) {

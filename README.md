@@ -172,7 +172,7 @@ You can easily improve this architecture by writing another abstract class that 
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
-if you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new objects:
+If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new objects:
 
 ```java
 public class MyFieldEditorFactory extends FieldEditorFactory {

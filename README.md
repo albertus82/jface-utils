@@ -17,7 +17,17 @@ In order to open a Preferences dialog, you must instantiate a [`Preferences`](sr
 * [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): definitions of the preference items;
 * `Image[]`: icons used for the preference dialogs (optional).
 
-A convenient approach may be to implement [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) interfaces using enums, like in the following code samples.
+A convenient approach may be to implement [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) interfaces using enums, like in the following code examples.
+
+#### Preference page classes
+
+This is an extremely simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The default constructor is mandatory.**
+
+```java
+public class GeneralPreferencePage extends AbstractPreferencePage {}
+```
+
+In these classes you can define any customization of the preference page; for example, overriding the `createHeader` method you can add a custom header on the page.
 
 #### Page definition enum
 
@@ -149,16 +159,6 @@ public enum MyPreference implements Preference {
 ```
 
 You can surely improve this code, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
-
-#### Preference page classes
-
-This is an extremely simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The default constructor is mandatory.**.
-
-```java
-public class GeneralPreferencePage extends AbstractPreferencePage {}
-```
-
-In these classes you can define any customization of the preference page; for example, overriding the `createHeader` method you can add a custom header on the page.
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 

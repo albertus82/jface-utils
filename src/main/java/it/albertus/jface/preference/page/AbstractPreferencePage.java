@@ -28,22 +28,44 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 
 	protected static final Map<Preference, FieldEditorWrapper> universe = new HashMap<Preference, FieldEditorWrapper>();
 
-	protected final Configuration configuration;
-	protected final Preference[] preferences;
 	protected final Map<Preference, FieldEditorWrapper> fieldEditorMap = new HashMap<Preference, FieldEditorWrapper>();
 	protected Control header;
 
-	public AbstractPreferencePage(final Configuration configuration, final Preference[] preferences) {
-		this(configuration, preferences, GRID);
+	private Configuration configuration;
+	private Preference[] preferences;
+	private PageDefinition pageDefinition;
+
+	public AbstractPreferencePage() {
+		this(GRID);
 	}
 
-	protected AbstractPreferencePage(final Configuration configuration, final Preference[] preferences, final int style) {
+	protected AbstractPreferencePage(final int style) {
 		super(style);
+	}
+
+	public final Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(final Configuration configuration) {
 		this.configuration = configuration;
+	}
+
+	public final Preference[] getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(final Preference[] preferences) {
 		this.preferences = preferences;
 	}
 
-	protected abstract PageDefinition getPageDefinition();
+	public final PageDefinition getPageDefinition() {
+		return pageDefinition;
+	}
+
+	public void setPageDefinition(final PageDefinition pageDefinition) {
+		this.pageDefinition = pageDefinition;
+	}
 
 	@Override
 	public void createControl(final Composite parent) {
@@ -91,9 +113,8 @@ public abstract class AbstractPreferencePage extends FieldEditorPreferencePage {
 		}
 
 		// Fields
-		final PageDefinition page = getPageDefinition();
 		for (final Preference preference : preferences) {
-			if (page.equals(preference.getPageDefinition())) {
+			if (pageDefinition.equals(preference.getPageDefinition())) {
 				if (preference.hasSeparator()) {
 					addSeparator();
 				}

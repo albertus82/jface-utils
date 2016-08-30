@@ -47,7 +47,7 @@ public class Preferences {
 		// Pages creation...
 		final Map<PageDefinition, PreferenceNode> preferenceNodes = new HashMap<PageDefinition, PreferenceNode>();
 		for (final PageDefinition page : pages) {
-			final PreferenceNode preferenceNode = new PreferenceNode(page.getNodeId(), page.getLabel(), null, page.getPageClass().getName());
+			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, configuration);
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
 			}

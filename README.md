@@ -155,10 +155,10 @@ You can surely improve this code, for example introducing localization, autodete
 This is an extremely simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The default constructor is mandatory.**.
 
 ```java
-public class GeneralPreferencePage extends AbstractPreferencePage {
-
-}
+public class GeneralPreferencePage extends AbstractPreferencePage {}
 ```
+
+In these classes you can define any customization of the preference page; for example, overriding the `createHeader` method you can add a custom header on the page.
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 

@@ -7,7 +7,7 @@ JFaceUtils
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/8672431/18028808/b4825704-6c87-11e6-96db-79f1fc46f931.png)
 
-## Preferences Framework
+## The Preferences Framework
 
 ### Getting started
 

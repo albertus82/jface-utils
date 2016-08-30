@@ -106,8 +106,8 @@ public enum MyPreference implements Preference {
 	}
 
 	@Override
-	public Page getPage() {
-		return page;
+	public PageDefinition getPageDefinition() {
+		return pageDefinition;
 	}
 
 	@Override

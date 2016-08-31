@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.PageDefinition;
+import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.Configuration;
 
 import java.io.IOException;
@@ -20,17 +20,17 @@ import org.eclipse.swt.widgets.Shell;
 public class Preferences {
 
 	protected final Configuration configuration;
-	protected final PageDefinition[] pages;
+	protected final IPageDefinition[] pages;
 	protected final Preference[] preferences;
 	protected final Image[] images;
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final Configuration configuration, final PageDefinition[] pages, final Preference[] preferences) {
+	public Preferences(final Configuration configuration, final IPageDefinition[] pages, final Preference[] preferences) {
 		this(configuration, pages, preferences, null);
 	}
 
-	public Preferences(final Configuration configuration, final PageDefinition[] pages, final Preference[] preferences, final Image[] images) {
+	public Preferences(final Configuration configuration, final IPageDefinition[] pages, final Preference[] preferences, final Image[] images) {
 		this.configuration = configuration;
 		this.pages = pages;
 		this.preferences = preferences;
@@ -41,12 +41,12 @@ public class Preferences {
 		return openDialog(parentShell, null);
 	}
 
-	public int openDialog(final Shell parentShell, final PageDefinition selectedPage) {
+	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
 		final PreferenceManager preferenceManager = new PreferenceManager();
 
 		// Pages creation...
-		final Map<PageDefinition, PreferenceNode> preferenceNodes = new HashMap<PageDefinition, PreferenceNode>();
-		for (final PageDefinition page : pages) {
+		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
+		for (final IPageDefinition page : pages) {
 			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, configuration);
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);

@@ -34,7 +34,9 @@ import org.eclipse.swt.widgets.Composite;
 
 public class FieldEditorFactory {
 
-	public FieldEditor createFieldEditor(final Class<? extends FieldEditor> type, final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final Class<? extends FieldEditor> type = details.getFieldEditorClass();
+
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
 		}

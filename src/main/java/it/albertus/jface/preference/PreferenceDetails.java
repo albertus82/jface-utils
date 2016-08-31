@@ -1,8 +1,12 @@
 package it.albertus.jface.preference;
 
+import it.albertus.jface.preference.page.IPreferencePageDefinition;
 import it.albertus.util.Localized;
 
 public class PreferenceDetails {
+
+	// Mandatory
+	private IPreferencePageDefinition pageDefinition;
 
 	private String name;
 	private Localized label;
@@ -11,7 +15,15 @@ public class PreferenceDetails {
 	private boolean restartRequired;
 	private boolean separate;
 
-	public PreferenceDetails() {}
+	protected PreferenceDetails() {}
+
+	public IPreferencePageDefinition getPageDefinition() {
+		return pageDefinition;
+	}
+
+	public void setPageDefinition(final IPreferencePageDefinition pageDefinition) {
+		this.pageDefinition = pageDefinition;
+	}
 
 	public final String getName() {
 		return name;
@@ -63,16 +75,21 @@ public class PreferenceDetails {
 
 	@Override
 	public String toString() {
-		return "PreferenceDetails [" + (name != null ? "name=" + name + ", " : "") + (label != null ? "label=" + label + ", " : "") + (defaultValue != null ? "defaultValue=" + defaultValue + ", " : "") + (parent != null ? "parent=" + parent + ", " : "") + "restartRequired=" + restartRequired + ", separate=" + separate + "]";
+		return "PreferenceDetails [" + (pageDefinition != null ? "pageDefinition=" + pageDefinition + ", " : "") + (name != null ? "name=" + name + ", " : "") + (label != null ? "label=" + label + ", " : "") + (defaultValue != null ? "defaultValue=" + defaultValue + ", " : "") + (parent != null ? "parent=" + parent + ", " : "") + "restartRequired=" + restartRequired + ", separate=" + separate + "]";
 	}
 
 	public static class PreferenceDetailsBuilder {
+		private final IPreferencePageDefinition pageDefinition;
 		private String name;
 		private Localized label;
 		private String defaultValue;
 		private IPreference parent;
 		private boolean restartRequired;
 		private boolean separate;
+
+		public PreferenceDetailsBuilder(final IPreferencePageDefinition pageDefinition) {
+			this.pageDefinition = pageDefinition;
+		}
 
 		public PreferenceDetailsBuilder name(final String name) {
 			this.name = name;
@@ -168,6 +185,7 @@ public class PreferenceDetails {
 	}
 
 	private PreferenceDetails(final PreferenceDetailsBuilder builder) {
+		this.pageDefinition = builder.pageDefinition;
 		this.name = builder.name;
 		this.label = builder.label;
 		this.defaultValue = builder.defaultValue;

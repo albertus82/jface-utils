@@ -4,9 +4,13 @@ import it.albertus.util.Localized;
 
 import java.util.Arrays;
 
+import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.graphics.Image;
 
 public class FieldEditorDetails {
+
+	// Mandatory
+	private final Class<? extends FieldEditor> fieldEditorClass;
 
 	// Generic
 	private final Boolean emptyStringAllowed;
@@ -46,6 +50,10 @@ public class FieldEditorDetails {
 	// FontFieldEditor
 	private final Localized fontPreviewAreaText;
 	private final Localized fontChangeButtonText;
+
+	public Class<? extends FieldEditor> getFieldEditorClass() {
+		return fieldEditorClass;
+	}
 
 	public Boolean getEmptyStringAllowed() {
 		return emptyStringAllowed;
@@ -133,13 +141,14 @@ public class FieldEditorDetails {
 
 	@Override
 	public String toString() {
-		return "FieldEditorDetails [" + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "")
-				+ (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "")
-				+ (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (integerMinValidValue != null ? "integerMinValidValue=" + integerMinValidValue + ", " : "") + (integerMaxValidValue != null ? "integerMaxValidValue=" + integerMaxValidValue + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "")
-				+ (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "")
+				+ (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "")
+				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (integerMinValidValue != null ? "integerMinValidValue=" + integerMinValidValue + ", " : "") + (integerMaxValidValue != null ? "integerMaxValidValue=" + integerMaxValidValue + ", " : "")
+				+ (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	public static class FieldEditorDetailsBuilder {
+		private final Class<? extends FieldEditor> fieldEditorClass;
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
 		private Image[] icons;
@@ -161,6 +170,10 @@ public class FieldEditorDetails {
 		private Boolean fileEnforceAbsolute;
 		private Localized fontPreviewAreaText;
 		private Localized fontChangeButtonText;
+
+		public FieldEditorDetailsBuilder(final Class<? extends FieldEditor> fieldEditorClass) {
+			this.fieldEditorClass = fieldEditorClass;
+		}
 
 		public FieldEditorDetailsBuilder emptyStringAllowed(final boolean emptyStringAllowed) {
 			this.emptyStringAllowed = emptyStringAllowed;
@@ -269,6 +282,7 @@ public class FieldEditorDetails {
 	}
 
 	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
+		this.fieldEditorClass = builder.fieldEditorClass;
 		this.emptyStringAllowed = builder.emptyStringAllowed;
 		this.horizontalSpan = builder.horizontalSpan;
 		this.icons = builder.icons;

@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class FieldEditorFactory {
 
-	public FieldEditor createFieldEditor(final Class<? extends FieldEditor> type, final String name, final String label, final Composite parent, final FieldEditorData data) {
+	public FieldEditor createFieldEditor(final Class<? extends FieldEditor> type, final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
 		}
@@ -42,90 +42,90 @@ public class FieldEditorFactory {
 			return new ColorFieldEditor(name, label, parent);
 		}
 		if (org.eclipse.jface.preference.ComboFieldEditor.class.equals(type)) {
-			return new org.eclipse.jface.preference.ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new org.eclipse.jface.preference.ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
 		if (it.albertus.jface.preference.field.ComboFieldEditor.class.equals(type)) {
-			return new it.albertus.jface.preference.field.ComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new it.albertus.jface.preference.field.ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
 		if (DefaultBooleanFieldEditor.class.equals(type)) {
 			return new DefaultBooleanFieldEditor(name, label, parent);
 		}
 		if (DefaultComboFieldEditor.class.equals(type)) {
-			return new DefaultComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new DefaultComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
 		if (DefaultDirectoryFieldEditor.class.equals(type)) {
-			return createDefaultDirectoryFieldEditor(name, label, parent, data);
+			return createDefaultDirectoryFieldEditor(name, label, parent, details);
 		}
 		if (DefaultFileFieldEditor.class.equals(type)) {
-			return createDefaultFileFieldEditor(name, label, parent, data);
+			return createDefaultFileFieldEditor(name, label, parent, details);
 		}
 		if (DefaultIntegerFieldEditor.class.equals(type)) {
-			return createDefaultIntegerFieldEditor(name, label, parent, data);
+			return createDefaultIntegerFieldEditor(name, label, parent, details);
 		}
 		if (DefaultRadioGroupFieldEditor.class.equals(type)) {
-			return createDefaultRadioGroupFieldEditor(name, label, parent, data);
+			return createDefaultRadioGroupFieldEditor(name, label, parent, details);
 		}
 		if (DefaultStringFieldEditor.class.equals(type)) {
-			return createDefaultStringFieldEditor(name, label, parent, data);
+			return createDefaultStringFieldEditor(name, label, parent, details);
 		}
 		if (DelimiterComboFieldEditor.class.equals(type)) {
-			return createDelimiterComboFieldEditor(name, label, parent, data);
+			return createDelimiterComboFieldEditor(name, label, parent, details);
 		}
 		if (DirectoryFieldEditor.class.equals(type)) {
-			return createDirectoryFieldEditor(name, label, parent, data);
+			return createDirectoryFieldEditor(name, label, parent, details);
 		}
 		if (EditableComboFieldEditor.class.equals(type)) {
-			return new EditableComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new EditableComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
 		if (EmailAddressesListEditor.class.equals(type)) {
-			return createEmailAddressesListEditor(name, label, parent, data);
+			return createEmailAddressesListEditor(name, label, parent, details);
 		}
 		if (FileFieldEditor.class.equals(type)) {
-			return createFileFieldEditor(name, label, parent, data);
+			return createFileFieldEditor(name, label, parent, details);
 		}
 		if (FontFieldEditor.class.equals(type)) {
-			return createFontFieldEditor(name, label, parent, data);
+			return createFontFieldEditor(name, label, parent, details);
 		}
 		if (IntegerFieldEditor.class.equals(type)) {
-			return createIntegerFieldEditor(name, label, parent, data);
+			return createIntegerFieldEditor(name, label, parent, details);
 		}
 		if (IntegerComboFieldEditor.class.equals(type)) {
-			return new IntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new IntegerComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
 		if (LocalizedPathEditor.class.equals(type)) {
-			return createLocalizedPathEditor(name, label, parent, data);
+			return createLocalizedPathEditor(name, label, parent, details);
 		}
 		if (PasswordFieldEditor.class.equals(type)) {
-			return createPasswordFieldEditor(name, label, parent, data);
+			return createPasswordFieldEditor(name, label, parent, details);
 		}
 		if (PathEditor.class.equals(type)) {
-			return new PathEditor(name, label, data != null && data.getDirectoryDialogMessage() != null ? data.getDirectoryDialogMessage().toString() : null, parent);
+			return new PathEditor(name, label, details != null && details.getDirectoryDialogMessage() != null ? details.getDirectoryDialogMessage().toString() : null, parent);
 		}
 		if (RadioGroupFieldEditor.class.equals(type)) {
-			return createRadioGroupFieldEditor(name, label, parent, data);
+			return createRadioGroupFieldEditor(name, label, parent, details);
 		}
 		if (ScaleFieldEditor.class.equals(type)) {
-			return createScaleFieldEditor(name, label, parent, data);
+			return createScaleFieldEditor(name, label, parent, details);
 		}
 		if (ScaleIntegerFieldEditor.class.equals(type)) {
-			return createScaleIntegerFieldEditor(name, label, parent, data);
+			return createScaleIntegerFieldEditor(name, label, parent, details);
 		}
 		if (StringFieldEditor.class.equals(type)) {
-			return createStringFieldEditor(name, label, parent, data);
+			return createStringFieldEditor(name, label, parent, details);
 		}
 		if (UriListEditor.class.equals(type)) {
-			return createUriListEditor(name, label, parent, data);
+			return createUriListEditor(name, label, parent, details);
 		}
 		if (ValidatedComboFieldEditor.class.equals(type)) {
-			return createValidatedComboFieldEditor(name, label, parent, data);
+			return createValidatedComboFieldEditor(name, label, parent, details);
 		}
 		if (WrapStringFieldEditor.class.equals(type)) {
-			return createWrapStringFieldEditor(name, label, parent, data);
+			return createWrapStringFieldEditor(name, label, parent, details);
 		}
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
 	}
 
-	protected DefaultDirectoryFieldEditor createDefaultDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DefaultDirectoryFieldEditor createDefaultDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultDirectoryFieldEditor formattedDirectoryFieldEditor = new DefaultDirectoryFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getTextLimit() != null) {
@@ -141,7 +141,7 @@ public class FieldEditorFactory {
 		return formattedDirectoryFieldEditor;
 	}
 
-	protected DefaultFileFieldEditor createDefaultFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DefaultFileFieldEditor createDefaultFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultFileFieldEditor formattedFileFieldEditor;
 		if (data != null && data.getFileEnforceAbsolute() != null) {
 			formattedFileFieldEditor = new DefaultFileFieldEditor(name, label, data.getFileEnforceAbsolute(), parent);
@@ -163,7 +163,7 @@ public class FieldEditorFactory {
 		return formattedFileFieldEditor;
 	}
 
-	protected DefaultIntegerFieldEditor createDefaultIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DefaultIntegerFieldEditor createDefaultIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultIntegerFieldEditor formattedIntegerFieldEditor = new DefaultIntegerFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getEmptyStringAllowed() != null) {
@@ -180,7 +180,7 @@ public class FieldEditorFactory {
 		return formattedIntegerFieldEditor;
 	}
 
-	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data.getRadioUseGroup() != null) {
 			return new DefaultRadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent, data.getRadioUseGroup());
 		}
@@ -189,7 +189,7 @@ public class FieldEditorFactory {
 		}
 	}
 
-	protected DefaultStringFieldEditor createDefaultStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DefaultStringFieldEditor createDefaultStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultStringFieldEditor formattedStringFieldEditor;
 		if (data != null && data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
 			formattedStringFieldEditor = new DefaultStringFieldEditor(name, label, data.getTextWidth(), data.getTextValidateStrategy(), parent);
@@ -214,7 +214,7 @@ public class FieldEditorFactory {
 		return formattedStringFieldEditor;
 	}
 
-	protected DelimiterComboFieldEditor createDelimiterComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DelimiterComboFieldEditor createDelimiterComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DelimiterComboFieldEditor delimiterComboFieldEditor = new DelimiterComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		if (data.getEmptyStringAllowed() != null) {
 			delimiterComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
@@ -222,7 +222,7 @@ public class FieldEditorFactory {
 		return delimiterComboFieldEditor;
 	}
 
-	protected DirectoryFieldEditor createDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected DirectoryFieldEditor createDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DirectoryFieldEditor directoryFieldEditor = new DirectoryFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getTextLimit() != null) {
@@ -235,7 +235,7 @@ public class FieldEditorFactory {
 		return directoryFieldEditor;
 	}
 
-	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data != null) {
 			return new EmailAddressesListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
 		}
@@ -244,7 +244,7 @@ public class FieldEditorFactory {
 		}
 	}
 
-	protected FileFieldEditor createFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected FileFieldEditor createFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final FileFieldEditor fileFieldEditor;
 		if (data != null && data.getFileEnforceAbsolute() != null) {
 			fileFieldEditor = new FileFieldEditor(name, label, data.getFileEnforceAbsolute(), parent);
@@ -266,7 +266,7 @@ public class FieldEditorFactory {
 		return fileFieldEditor;
 	}
 
-	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final FontFieldEditor fontFieldEditor;
 		if (data != null && data.getFontPreviewAreaText() != null) {
 			fontFieldEditor = new FontFieldEditor(name, label, data.getFontPreviewAreaText().getString(), parent);
@@ -283,7 +283,7 @@ public class FieldEditorFactory {
 		return fontFieldEditor;
 	}
 
-	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getEmptyStringAllowed() != null) {
@@ -300,7 +300,7 @@ public class FieldEditorFactory {
 		return integerFieldEditor;
 	}
 
-	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final LocalizedPathEditor localizedPathEditor;
 		if (data != null) {
 			localizedPathEditor = new LocalizedPathEditor(name, label, data.getDirectoryDialogMessage(), parent, data.getHorizontalSpan());
@@ -311,7 +311,7 @@ public class FieldEditorFactory {
 		return localizedPathEditor;
 	}
 
-	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final PasswordFieldEditor passwordFieldEditor;
 		if (data != null && data.getTextWidth() != null) {
 			passwordFieldEditor = new PasswordFieldEditor(name, label, data.getTextWidth(), parent);
@@ -330,7 +330,7 @@ public class FieldEditorFactory {
 		return passwordFieldEditor;
 	}
 
-	protected RadioGroupFieldEditor createRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected RadioGroupFieldEditor createRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data.getRadioUseGroup() != null) {
 			return new RadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent, data.getRadioUseGroup());
 		}
@@ -339,7 +339,7 @@ public class FieldEditorFactory {
 		}
 	}
 
-	protected ScaleFieldEditor createScaleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected ScaleFieldEditor createScaleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final ScaleFieldEditor scaleFieldEditor = new ScaleFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getScaleMinimum() != null) {
@@ -358,7 +358,7 @@ public class FieldEditorFactory {
 		return scaleFieldEditor;
 	}
 
-	protected ScaleIntegerFieldEditor createScaleIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected ScaleIntegerFieldEditor createScaleIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		int min = 0;
 		int max = 10;
 		int increment = 1;
@@ -381,7 +381,7 @@ public class FieldEditorFactory {
 		return new ScaleIntegerFieldEditor(name, label, parent, min, max, increment, pageIncrement);
 	}
 
-	protected StringFieldEditor createStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected StringFieldEditor createStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final StringFieldEditor stringFieldEditor;
 		if (data != null && data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
 			stringFieldEditor = new StringFieldEditor(name, label, data.getTextWidth(), data.getTextValidateStrategy(), parent);
@@ -406,7 +406,7 @@ public class FieldEditorFactory {
 		return stringFieldEditor;
 	}
 
-	protected UriListEditor createUriListEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected UriListEditor createUriListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data != null) {
 			return new UriListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
 		}
@@ -415,7 +415,7 @@ public class FieldEditorFactory {
 		}
 	}
 
-	protected ValidatedComboFieldEditor createValidatedComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected ValidatedComboFieldEditor createValidatedComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final ValidatedComboFieldEditor validatedComboFieldEditor = new ValidatedComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		if (data.getEmptyStringAllowed() != null) {
 			validatedComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
@@ -423,7 +423,7 @@ public class FieldEditorFactory {
 		return validatedComboFieldEditor;
 	}
 
-	protected WrapStringFieldEditor createWrapStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorData data) {
+	protected WrapStringFieldEditor createWrapStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final WrapStringFieldEditor wrapStringFieldEditor;
 		if (data != null && data.getTextHeight() != null) {
 			wrapStringFieldEditor = new WrapStringFieldEditor(name, label, parent, data.getTextHeight());

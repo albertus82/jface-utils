@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.eclipse.swt.graphics.Image;
 
-public class FieldEditorData {
+public class FieldEditorDetails {
 
 	// Generic
 	private final Boolean emptyStringAllowed;
@@ -133,13 +133,13 @@ public class FieldEditorData {
 
 	@Override
 	public String toString() {
-		return "FieldEditorData [" + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "")
+		return "FieldEditorDetails [" + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "")
 				+ (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "")
 				+ (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (integerMinValidValue != null ? "integerMinValidValue=" + integerMinValidValue + ", " : "") + (integerMaxValidValue != null ? "integerMaxValidValue=" + integerMaxValidValue + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "")
 				+ (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
-	public static class FieldEditorDataBuilder {
+	public static class FieldEditorDetailsBuilder {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
 		private Image[] icons;
@@ -162,113 +162,113 @@ public class FieldEditorData {
 		private Localized fontPreviewAreaText;
 		private Localized fontChangeButtonText;
 
-		public FieldEditorDataBuilder emptyStringAllowed(final boolean emptyStringAllowed) {
+		public FieldEditorDetailsBuilder emptyStringAllowed(final boolean emptyStringAllowed) {
 			this.emptyStringAllowed = emptyStringAllowed;
 			return this;
 		}
 
-		public FieldEditorDataBuilder horizontalSpan(final int horizontalSpan) {
+		public FieldEditorDetailsBuilder horizontalSpan(final int horizontalSpan) {
 			this.horizontalSpan = horizontalSpan;
 			return this;
 		}
 
-		public FieldEditorDataBuilder icons(final Image[] icons) {
+		public FieldEditorDetailsBuilder icons(final Image[] icons) {
 			this.icons = icons;
 			return this;
 		}
 
-		public FieldEditorDataBuilder labelsAndValues(final LabelsAndValues labelsAndValues) {
+		public FieldEditorDetailsBuilder labelsAndValues(final LabelsAndValues labelsAndValues) {
 			this.labelsAndValues = labelsAndValues;
 			return this;
 		}
 
-		public FieldEditorDataBuilder scaleMinimum(final int min) {
+		public FieldEditorDetailsBuilder scaleMinimum(final int min) {
 			this.scaleMinimum = min;
 			return this;
 		}
 
-		public FieldEditorDataBuilder scaleMaximum(final int max) {
+		public FieldEditorDetailsBuilder scaleMaximum(final int max) {
 			this.scaleMaximum = max;
 			return this;
 		}
 
-		public FieldEditorDataBuilder scaleIncrement(final int increment) {
+		public FieldEditorDetailsBuilder scaleIncrement(final int increment) {
 			this.scaleIncrement = increment;
 			return this;
 		}
 
-		public FieldEditorDataBuilder scalePageIncrement(final int pageIncrement) {
+		public FieldEditorDetailsBuilder scalePageIncrement(final int pageIncrement) {
 			this.scalePageIncrement = pageIncrement;
 			return this;
 		}
 
-		public FieldEditorDataBuilder textLimit(final int limit) {
+		public FieldEditorDetailsBuilder textLimit(final int limit) {
 			this.textLimit = limit;
 			return this;
 		}
 
-		public FieldEditorDataBuilder textWidth(final int width) {
+		public FieldEditorDetailsBuilder textWidth(final int width) {
 			this.textWidth = width;
 			return this;
 		}
 
-		public FieldEditorDataBuilder textHeight(final int height) {
+		public FieldEditorDetailsBuilder textHeight(final int height) {
 			this.textHeight = height;
 			return this;
 		}
 
-		public FieldEditorDataBuilder textValidateStrategy(final int validateStrategy) {
+		public FieldEditorDetailsBuilder textValidateStrategy(final int validateStrategy) {
 			this.textValidateStrategy = validateStrategy;
 			return this;
 		}
 
-		public FieldEditorDataBuilder integerValidRange(final int min, final int max) {
+		public FieldEditorDetailsBuilder integerValidRange(final int min, final int max) {
 			this.integerMinValidValue = min;
 			this.integerMaxValidValue = max;
 			return this;
 		}
 
-		public FieldEditorDataBuilder directoryDialogMessage(final Localized dialogMessage) {
+		public FieldEditorDetailsBuilder directoryDialogMessage(final Localized dialogMessage) {
 			this.directoryDialogMessage = dialogMessage;
 			return this;
 		}
 
-		public FieldEditorDataBuilder fileExtensions(final String[] fileExtensions) {
+		public FieldEditorDetailsBuilder fileExtensions(final String[] fileExtensions) {
 			this.fileExtensions = fileExtensions;
 			return this;
 		}
 
-		public FieldEditorDataBuilder fileEnforceAbsolute(final boolean fileEnforceAbsolute) {
+		public FieldEditorDetailsBuilder fileEnforceAbsolute(final boolean fileEnforceAbsolute) {
 			this.fileEnforceAbsolute = fileEnforceAbsolute;
 			return this;
 		}
 
-		public FieldEditorDataBuilder radioUseGroup(final boolean radioUseGroup) {
+		public FieldEditorDetailsBuilder radioUseGroup(final boolean radioUseGroup) {
 			this.radioUseGroup = radioUseGroup;
 			return this;
 		}
 
-		public FieldEditorDataBuilder radioNumColumns(final int radioNumColumns) {
+		public FieldEditorDetailsBuilder radioNumColumns(final int radioNumColumns) {
 			this.radioNumColumns = radioNumColumns;
 			return this;
 		}
 
-		public FieldEditorDataBuilder fontPreviewAreaText(final Localized fontPreviewAreaText) {
+		public FieldEditorDetailsBuilder fontPreviewAreaText(final Localized fontPreviewAreaText) {
 			this.fontPreviewAreaText = fontPreviewAreaText;
 			return this;
 		}
 
-		public FieldEditorDataBuilder fontChangeButtonText(final Localized fontChangeButtonText) {
+		public FieldEditorDetailsBuilder fontChangeButtonText(final Localized fontChangeButtonText) {
 			this.fontChangeButtonText = fontChangeButtonText;
 			return this;
 		}
 
-		public FieldEditorData build() {
-			return new FieldEditorData(this);
+		public FieldEditorDetails build() {
+			return new FieldEditorDetails(this);
 		}
 	}
 
-	private FieldEditorData(final FieldEditorDataBuilder builder) {
+	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
 		this.emptyStringAllowed = builder.emptyStringAllowed;
 		this.horizontalSpan = builder.horizontalSpan;
 		this.icons = builder.icons;

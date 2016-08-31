@@ -21,16 +21,16 @@ public class Preferences {
 
 	protected final Configuration configuration;
 	protected final IPreferencePageDefinition[] pages;
-	protected final Preference[] preferences;
+	protected final IPreference[] preferences;
 	protected final Image[] images;
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final Preference[] preferences) {
+	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final IPreference[] preferences) {
 		this(configuration, pages, preferences, null);
 	}
 
-	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final Preference[] preferences, final Image[] images) {
+	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final IPreference[] preferences, final Image[] images) {
 		this.configuration = configuration;
 		this.pages = pages;
 		this.preferences = preferences;
@@ -60,9 +60,9 @@ public class Preferences {
 		final PreferenceStore preferenceStore = new PreferenceStore(configuration.getFile().getPath());
 
 		// Set default values...
-		for (final Preference preference : preferences) {
+		for (final IPreference preference : preferences) {
 			if (preference.getDefaultValue() != null) {
-				preferenceStore.setDefault(preference.getConfigurationKey(), preference.getDefaultValue());
+				preferenceStore.setDefault(preference.getName(), preference.getDefaultValue());
 			}
 		}
 
@@ -93,9 +93,9 @@ public class Preferences {
 		}
 
 		final Map<String, String> configurationBackup = new HashMap<String, String>();
-		for (final Preference preference : preferences) {
+		for (final IPreference preference : preferences) {
 			if (preference.isRestartRequired()) {
-				configurationBackup.put(preference.getConfigurationKey(), configuration.getProperties().getProperty(preference.getConfigurationKey()));
+				configurationBackup.put(preference.getName(), configuration.getProperties().getProperty(preference.getName()));
 			}
 		}
 

@@ -7,9 +7,9 @@ import java.util.Set;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
-public interface Preference {
+public interface IPreference {
 
-	String getConfigurationKey();
+	String getName();
 
 	String getLabel();
 
@@ -17,13 +17,13 @@ public interface Preference {
 
 	String getDefaultValue();
 
-	boolean hasSeparator();
+	boolean isSeparate();
 
-	Preference getParent();
+	IPreference getParent();
 
 	boolean isRestartRequired();
 
-	Set<? extends Preference> getChildren();
+	Set<? extends IPreference> getChildren();
 
 	FieldEditor createFieldEditor(Composite parent);
 

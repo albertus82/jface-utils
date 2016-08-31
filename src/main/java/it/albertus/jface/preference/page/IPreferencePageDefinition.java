@@ -4,7 +4,7 @@ import it.albertus.util.Localized;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-public interface IPageDefinition {
+public interface IPreferencePageDefinition {
 
 	String getNodeId();
 
@@ -14,6 +14,6 @@ public interface IPageDefinition {
 
 	ImageDescriptor getImage();
 
-	IPageDefinition getParent();
+	IPreferencePageDefinition getParent();
 
 }

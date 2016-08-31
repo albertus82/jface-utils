@@ -1,7 +1,7 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.page.BasePreferencePage;
-import it.albertus.jface.preference.page.IPageDefinition;
+import it.albertus.jface.preference.page.IPreferencePageDefinition;
 import it.albertus.util.Configuration;
 
 import org.eclipse.jface.preference.PreferenceNode;
@@ -10,9 +10,9 @@ public class ConfigurationNode extends PreferenceNode {
 
 	private final Preference[] preferences;
 	private final Configuration configuration;
-	private final IPageDefinition pageDefinition;
+	private final IPreferencePageDefinition pageDefinition;
 
-	public ConfigurationNode(final IPageDefinition pageDefinition, final Preference[] preferences, final Configuration configuration) {
+	public ConfigurationNode(final IPreferencePageDefinition pageDefinition, final Preference[] preferences, final Configuration configuration) {
 		super(pageDefinition.getNodeId(), pageDefinition.getLabel().getString(), pageDefinition.getImage(), pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
 		this.preferences = preferences;
 		this.configuration = configuration;

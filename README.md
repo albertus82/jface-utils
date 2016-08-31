@@ -13,28 +13,18 @@ JFaceUtils
 
 In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
-* [`PageDefinition[]`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java): definitions of the pages that will contain the preference items;
-* [`Preference[]`](src/main/java/it/albertus/jface/preference/Preference.java): definitions of the preference items;
+* [`IPreferencePageDefinition[]`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java): definitions of the pages that will contain the preference items;
+* [`IPreference[]`](src/main/java/it/albertus/jface/preference/IPreference.java): the preference items;
 * `Image[]`: icons used for the preference dialogs (optional).
 
-A convenient approach may be to implement [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java) and [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java) interfaces using enums, like in the following code examples.
-
-#### Preference page classes
-
-This is an extremely simple example of class that extends [`AbstractPreferencePage`](src/main/java/it/albertus/jface/preference/page/AbstractPreferencePage.java). **You will need one class per [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java). The default constructor is mandatory.**
-
-```java
-public class GeneralPreferencePage extends AbstractPreferencePage {}
-```
-
-In these classes you can define any customization of the preference page; for example, overriding the `createHeader` method you can add a custom header on the page.
+A convenient approach may be to implement [`IPreferencePageDefinition`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java) and [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
 
 #### Page definition enum
 
-This is a very simple example of enum that implements [`PageDefinition`](src/main/java/it/albertus/jface/preference/page/PageDefinition.java):
+This is a very simple example of enum that implements [`IPreferencePageDefinition`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java):
 
 ```java
-public enum MyPageDefinition implements PageDefinition {
+public enum MyPageDefinition implements IPreferencePageDefinition {
 
 	GENERAL("general", "General", GeneralPreferencePage.class, null),
 	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
@@ -78,10 +68,10 @@ You can surely improve this code, for example introducing localization, autodete
 
 #### Preference enum
 
-This is a simple example of enum that implements [`Preference`](src/main/java/it/albertus/jface/preference/Preference.java):
+This is a simple example of enum that implements [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java):
 
 ```java
-public enum MyPreference implements Preference {
+public enum MyPreference implements IPreference {
 
 	AUTHENTICATION(MyPageDefinition.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), null),
 	PASSWORD(MyPageDefinition.GENERAL, PasswordFieldEditor.class, new PreferenceDataBuilder().configurationKey("password").label("Password").parent(AUTHENTICATION).build(), null),

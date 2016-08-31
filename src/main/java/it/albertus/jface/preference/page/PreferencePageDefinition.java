@@ -16,6 +16,7 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 
 	public PreferencePageDefinition() {}
 
+	@Override
 	public final String getNodeId() {
 		return nodeId;
 	}
@@ -24,6 +25,7 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 		this.nodeId = nodeId;
 	}
 
+	@Override
 	public final Localized getLabel() {
 		return label;
 	}
@@ -32,6 +34,7 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 		this.label = label;
 	}
 
+	@Override
 	public final Class<? extends BasePreferencePage> getPageClass() {
 		return pageClass;
 	}
@@ -40,6 +43,7 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 		this.pageClass = pageClass;
 	}
 
+	@Override
 	public final ImageDescriptor getImage() {
 		return image;
 	}
@@ -48,6 +52,7 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 		this.image = image;
 	}
 
+	@Override
 	public final IPreferencePageDefinition getParent() {
 		return parent;
 	}

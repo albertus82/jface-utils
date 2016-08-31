@@ -10,133 +10,221 @@ import org.eclipse.swt.graphics.Image;
 public class FieldEditorDetails {
 
 	// Mandatory
-	private final Class<? extends FieldEditor> fieldEditorClass;
+	private Class<? extends FieldEditor> fieldEditorClass;
 
 	// Generic
-	private final Boolean emptyStringAllowed;
-	private final Integer horizontalSpan;
-	private final Image[] icons;
+	private Boolean emptyStringAllowed;
+	private Integer horizontalSpan;
+	private Image[] icons;
 
 	// ComboFieldEditor & RadioGroupFieldEditor
-	private final LabelsAndValues labelsAndValues;
+	private LabelsAndValues labelsAndValues;
 
 	// RadioGroupFieldEditor
-	private final Boolean radioUseGroup;
-	private final Integer radioNumColumns;
+	private Boolean radioUseGroup;
+	private Integer radioNumColumns;
 
 	// ScaleFieldEditor
-	private final Integer scaleMinimum;
-	private final Integer scaleMaximum;
-	private final Integer scaleIncrement;
-	private final Integer scalePageIncrement;
+	private Integer scaleMinimum;
+	private Integer scaleMaximum;
+	private Integer scaleIncrement;
+	private Integer scalePageIncrement;
 
 	// StringFieldEditor
-	private final Integer textLimit;
-	private final Integer textWidth;
-	private final Integer textHeight;
-	private final Integer textValidateStrategy;
+	private Integer textLimit;
+	private Integer textWidth;
+	private Integer textHeight;
+	private Integer textValidateStrategy;
 
 	// IntegerFieldEditor
-	private final Integer integerMinValidValue;
-	private final Integer integerMaxValidValue;
+	private Integer integerMinValidValue;
+	private Integer integerMaxValidValue;
 
 	// DirectoryFieldEditor & PathEditor
-	private final Localized directoryDialogMessage;
+	private Localized directoryDialogMessage;
 
 	// FileFieldEditor
-	private final String[] fileExtensions;
-	private final Boolean fileEnforceAbsolute;
+	private String[] fileExtensions;
+	private Boolean fileEnforceAbsolute;
 
 	// FontFieldEditor
-	private final Localized fontPreviewAreaText;
-	private final Localized fontChangeButtonText;
+	private Localized fontPreviewAreaText;
+	private Localized fontChangeButtonText;
 
 	public Class<? extends FieldEditor> getFieldEditorClass() {
 		return fieldEditorClass;
+	}
+
+	public void setFieldEditorClass(Class<? extends FieldEditor> fieldEditorClass) {
+		this.fieldEditorClass = fieldEditorClass;
 	}
 
 	public Boolean getEmptyStringAllowed() {
 		return emptyStringAllowed;
 	}
 
+	public void setEmptyStringAllowed(Boolean emptyStringAllowed) {
+		this.emptyStringAllowed = emptyStringAllowed;
+	}
+
 	public Integer getHorizontalSpan() {
 		return horizontalSpan;
 	}
 
-	public LabelsAndValues getLabelsAndValues() {
-		return labelsAndValues;
-	}
-
-	public Integer getScaleMinimum() {
-		return scaleMinimum;
-	}
-
-	public Integer getScaleMaximum() {
-		return scaleMaximum;
-	}
-
-	public Integer getScaleIncrement() {
-		return scaleIncrement;
-	}
-
-	public Integer getScalePageIncrement() {
-		return scalePageIncrement;
-	}
-
-	public Integer getTextLimit() {
-		return textLimit;
-	}
-
-	public Integer getTextWidth() {
-		return textWidth;
-	}
-
-	public Integer getTextHeight() {
-		return textHeight;
-	}
-
-	public Integer getTextValidateStrategy() {
-		return textValidateStrategy;
-	}
-
-	public Integer getIntegerMinValidValue() {
-		return integerMinValidValue;
-	}
-
-	public Integer getIntegerMaxValidValue() {
-		return integerMaxValidValue;
-	}
-
-	public Localized getDirectoryDialogMessage() {
-		return directoryDialogMessage;
-	}
-
-	public String[] getFileExtensions() {
-		return fileExtensions;
-	}
-
-	public Boolean getFileEnforceAbsolute() {
-		return fileEnforceAbsolute;
-	}
-
-	public Boolean getRadioUseGroup() {
-		return radioUseGroup;
-	}
-
-	public Integer getRadioNumColumns() {
-		return radioNumColumns;
+	public void setHorizontalSpan(Integer horizontalSpan) {
+		this.horizontalSpan = horizontalSpan;
 	}
 
 	public Image[] getIcons() {
 		return icons;
 	}
 
+	public void setIcons(Image[] icons) {
+		this.icons = icons;
+	}
+
+	public LabelsAndValues getLabelsAndValues() {
+		return labelsAndValues;
+	}
+
+	public void setLabelsAndValues(LabelsAndValues labelsAndValues) {
+		this.labelsAndValues = labelsAndValues;
+	}
+
+	public Boolean getRadioUseGroup() {
+		return radioUseGroup;
+	}
+
+	public void setRadioUseGroup(Boolean radioUseGroup) {
+		this.radioUseGroup = radioUseGroup;
+	}
+
+	public Integer getRadioNumColumns() {
+		return radioNumColumns;
+	}
+
+	public void setRadioNumColumns(Integer radioNumColumns) {
+		this.radioNumColumns = radioNumColumns;
+	}
+
+	public Integer getScaleMinimum() {
+		return scaleMinimum;
+	}
+
+	public void setScaleMinimum(Integer scaleMinimum) {
+		this.scaleMinimum = scaleMinimum;
+	}
+
+	public Integer getScaleMaximum() {
+		return scaleMaximum;
+	}
+
+	public void setScaleMaximum(Integer scaleMaximum) {
+		this.scaleMaximum = scaleMaximum;
+	}
+
+	public Integer getScaleIncrement() {
+		return scaleIncrement;
+	}
+
+	public void setScaleIncrement(Integer scaleIncrement) {
+		this.scaleIncrement = scaleIncrement;
+	}
+
+	public Integer getScalePageIncrement() {
+		return scalePageIncrement;
+	}
+
+	public void setScalePageIncrement(Integer scalePageIncrement) {
+		this.scalePageIncrement = scalePageIncrement;
+	}
+
+	public Integer getTextLimit() {
+		return textLimit;
+	}
+
+	public void setTextLimit(Integer textLimit) {
+		this.textLimit = textLimit;
+	}
+
+	public Integer getTextWidth() {
+		return textWidth;
+	}
+
+	public void setTextWidth(Integer textWidth) {
+		this.textWidth = textWidth;
+	}
+
+	public Integer getTextHeight() {
+		return textHeight;
+	}
+
+	public void setTextHeight(Integer textHeight) {
+		this.textHeight = textHeight;
+	}
+
+	public Integer getTextValidateStrategy() {
+		return textValidateStrategy;
+	}
+
+	public void setTextValidateStrategy(Integer textValidateStrategy) {
+		this.textValidateStrategy = textValidateStrategy;
+	}
+
+	public Integer getIntegerMinValidValue() {
+		return integerMinValidValue;
+	}
+
+	public void setIntegerMinValidValue(Integer integerMinValidValue) {
+		this.integerMinValidValue = integerMinValidValue;
+	}
+
+	public Integer getIntegerMaxValidValue() {
+		return integerMaxValidValue;
+	}
+
+	public void setIntegerMaxValidValue(Integer integerMaxValidValue) {
+		this.integerMaxValidValue = integerMaxValidValue;
+	}
+
+	public Localized getDirectoryDialogMessage() {
+		return directoryDialogMessage;
+	}
+
+	public void setDirectoryDialogMessage(Localized directoryDialogMessage) {
+		this.directoryDialogMessage = directoryDialogMessage;
+	}
+
+	public String[] getFileExtensions() {
+		return fileExtensions;
+	}
+
+	public void setFileExtensions(String[] fileExtensions) {
+		this.fileExtensions = fileExtensions;
+	}
+
+	public Boolean getFileEnforceAbsolute() {
+		return fileEnforceAbsolute;
+	}
+
+	public void setFileEnforceAbsolute(Boolean fileEnforceAbsolute) {
+		this.fileEnforceAbsolute = fileEnforceAbsolute;
+	}
+
 	public Localized getFontPreviewAreaText() {
 		return fontPreviewAreaText;
 	}
 
+	public void setFontPreviewAreaText(Localized fontPreviewAreaText) {
+		this.fontPreviewAreaText = fontPreviewAreaText;
+	}
+
 	public Localized getFontChangeButtonText() {
 		return fontChangeButtonText;
+	}
+
+	public void setFontChangeButtonText(Localized fontChangeButtonText) {
+		this.fontChangeButtonText = fontChangeButtonText;
 	}
 
 	@Override

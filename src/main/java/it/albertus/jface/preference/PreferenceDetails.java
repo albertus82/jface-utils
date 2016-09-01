@@ -15,6 +15,7 @@ public class PreferenceDetails {
 	private boolean restartRequired;
 	private boolean separate;
 
+	// Allow extension
 	protected PreferenceDetails() {}
 
 	public IPreferencePageDefinition getPageDefinition() {
@@ -76,6 +77,16 @@ public class PreferenceDetails {
 	@Override
 	public String toString() {
 		return "PreferenceDetails [" + (pageDefinition != null ? "pageDefinition=" + pageDefinition + ", " : "") + (name != null ? "name=" + name + ", " : "") + (label != null ? "label=" + label + ", " : "") + (defaultValue != null ? "defaultValue=" + defaultValue + ", " : "") + (parent != null ? "parent=" + parent + ", " : "") + "restartRequired=" + restartRequired + ", separate=" + separate + "]";
+	}
+
+	private PreferenceDetails(final PreferenceDetailsBuilder builder) {
+		this.pageDefinition = builder.pageDefinition;
+		this.name = builder.name;
+		this.label = builder.label;
+		this.defaultValue = builder.defaultValue;
+		this.parent = builder.parent;
+		this.restartRequired = builder.restartRequired;
+		this.separate = builder.separate;
 	}
 
 	public static class PreferenceDetailsBuilder {
@@ -182,16 +193,6 @@ public class PreferenceDetails {
 		public PreferenceDetails build() {
 			return new PreferenceDetails(this);
 		}
-	}
-
-	private PreferenceDetails(final PreferenceDetailsBuilder builder) {
-		this.pageDefinition = builder.pageDefinition;
-		this.name = builder.name;
-		this.label = builder.label;
-		this.defaultValue = builder.defaultValue;
-		this.parent = builder.parent;
-		this.restartRequired = builder.restartRequired;
-		this.separate = builder.separate;
 	}
 
 }

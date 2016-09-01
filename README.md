@@ -36,7 +36,7 @@ public enum MyPageDefinition implements IPageDefinition {
 		this(new PageDefinitionDetailsBuilder().build());
 	}
 
-	MyPageDefinition(final PageDefinitionDetails pageDefinitionDetails) {
+	MyPageDefinition(PageDefinitionDetails pageDefinitionDetails) {
 		this.pageDefinitionDetails = pageDefinitionDetails;
 	}
 

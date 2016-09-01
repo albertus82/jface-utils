@@ -22,14 +22,22 @@ public class ConfigurationNode extends PreferenceNode {
 	@Override
 	public void createPage() {
 		final BasePreferencePage page;
-		if (pageDefinition.getPageClass() != null) {
-			super.createPage();
-			page = getPage();
+		final Class<? extends BasePreferencePage> pageClass = pageDefinition.getPageClass();
+		if (pageClass != null) {
+			try {
+				page = pageClass.newInstance();
+			}
+			catch (final InstantiationException ie) {
+				throw new IllegalStateException(ie);
+			}
+			catch (final IllegalAccessException iae) {
+				throw new IllegalStateException(iae);
+			}
 		}
 		else {
 			page = new BasePreferencePage();
-			setPage(page);
 		}
+		setPage(page);
 		if (getLabelImage() != null) {
 			page.setImageDescriptor(getImageDescriptor());
 		}

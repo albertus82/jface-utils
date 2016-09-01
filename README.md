@@ -152,6 +152,12 @@ You can surely improve this code, for example introducing localization and autod
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
+The [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interface already declares [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) variable:
+
+```java
+public static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+```
+
 If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new objects:
 
 ```java
@@ -172,3 +178,5 @@ public class MyFieldEditorFactory extends FieldEditorFactory {
 	}
 }
 ```
+
+After that, you can use your new factory instead of the standard one made available by [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java).

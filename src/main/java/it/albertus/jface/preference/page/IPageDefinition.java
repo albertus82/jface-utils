@@ -1,19 +1,17 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.util.Localized;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
-public interface IPreferencePageDefinition {
+public interface IPageDefinition {
 
 	String getNodeId();
 
-	Localized getLabel();
+	String getLabel();
 
 	Class<? extends BasePreferencePage> getPageClass();
 
 	ImageDescriptor getImage();
 
-	IPreferencePageDefinition getParent();
+	IPageDefinition getParent();
 
 }

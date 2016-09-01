@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.IPreferencePageDefinition;
+import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.Configuration;
 
 import java.io.IOException;
@@ -20,19 +20,19 @@ import org.eclipse.swt.widgets.Shell;
 public class Preferences {
 
 	protected final Configuration configuration;
-	protected final IPreferencePageDefinition[] pages;
+	protected final IPageDefinition[] pageDefinitions;
 	protected final IPreference[] preferences;
 	protected final Image[] images;
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final IPreference[] preferences) {
+	public Preferences(final Configuration configuration, final IPageDefinition[] pages, final IPreference[] preferences) {
 		this(configuration, pages, preferences, null);
 	}
 
-	public Preferences(final Configuration configuration, final IPreferencePageDefinition[] pages, final IPreference[] preferences, final Image[] images) {
+	public Preferences(final Configuration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
 		this.configuration = configuration;
-		this.pages = pages;
+		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
 		this.images = images;
 	}
@@ -41,12 +41,12 @@ public class Preferences {
 		return openDialog(parentShell, null);
 	}
 
-	public int openDialog(final Shell parentShell, final IPreferencePageDefinition selectedPage) {
+	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
 		final PreferenceManager preferenceManager = new PreferenceManager();
 
 		// Pages creation...
-		final Map<IPreferencePageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPreferencePageDefinition, PreferenceNode>();
-		for (final IPreferencePageDefinition page : pages) {
+		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
+		for (final IPageDefinition page : pageDefinitions) {
 			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, configuration);
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);

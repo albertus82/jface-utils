@@ -33,7 +33,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 	private Configuration configuration;
 	private IPreference[] preferences;
-	private IPreferencePageDefinition pageDefinition;
+	private IPageDefinition pageDefinition;
 
 	public BasePreferencePage() {
 		this(GRID);
@@ -59,11 +59,11 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		this.preferences = preferences;
 	}
 
-	public final IPreferencePageDefinition getPageDefinition() {
+	public final IPageDefinition getPageDefinition() {
 		return pageDefinition;
 	}
 
-	public void setPageDefinition(final IPreferencePageDefinition pageDefinition) {
+	public void setPageDefinition(final IPageDefinition pageDefinition) {
 		this.pageDefinition = pageDefinition;
 	}
 

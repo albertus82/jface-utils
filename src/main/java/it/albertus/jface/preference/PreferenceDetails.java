@@ -1,12 +1,12 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.IPreferencePageDefinition;
+import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.Localized;
 
 public class PreferenceDetails {
 
 	// Mandatory
-	private IPreferencePageDefinition pageDefinition;
+	private IPageDefinition pageDefinition;
 
 	private String name;
 	private Localized label;
@@ -18,11 +18,11 @@ public class PreferenceDetails {
 	// Allow extension
 	protected PreferenceDetails() {}
 
-	public IPreferencePageDefinition getPageDefinition() {
+	public IPageDefinition getPageDefinition() {
 		return pageDefinition;
 	}
 
-	public void setPageDefinition(final IPreferencePageDefinition pageDefinition) {
+	public void setPageDefinition(final IPageDefinition pageDefinition) {
 		this.pageDefinition = pageDefinition;
 	}
 
@@ -90,7 +90,7 @@ public class PreferenceDetails {
 	}
 
 	public static class PreferenceDetailsBuilder {
-		private final IPreferencePageDefinition pageDefinition;
+		private final IPageDefinition pageDefinition;
 		private String name;
 		private Localized label;
 		private String defaultValue;
@@ -98,7 +98,7 @@ public class PreferenceDetails {
 		private boolean restartRequired;
 		private boolean separate;
 
-		public PreferenceDetailsBuilder(final IPreferencePageDefinition pageDefinition) {
+		public PreferenceDetailsBuilder(final IPageDefinition pageDefinition) {
 			this.pageDefinition = pageDefinition;
 		}
 

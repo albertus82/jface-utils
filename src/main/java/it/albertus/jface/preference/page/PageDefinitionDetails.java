@@ -6,58 +6,53 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
-public class PreferencePageDefinition implements IPreferencePageDefinition {
+public class PageDefinitionDetails {
 
 	private String nodeId;
 	private Localized label;
 	private Class<? extends BasePreferencePage> pageClass;
 	private ImageDescriptor image;
-	private IPreferencePageDefinition parent;
+	private IPageDefinition parent;
 
-	public PreferencePageDefinition() {}
+	protected PageDefinitionDetails() {}
 
-	@Override
 	public String getNodeId() {
 		return nodeId;
 	}
 
-	public void setNodeId(String nodeId) {
+	public void setNodeId(final String nodeId) {
 		this.nodeId = nodeId;
 	}
 
-	@Override
 	public Localized getLabel() {
 		return label;
 	}
 
-	public void setLabel(Localized label) {
+	public void setLabel(final Localized label) {
 		this.label = label;
 	}
 
-	@Override
 	public Class<? extends BasePreferencePage> getPageClass() {
 		return pageClass;
 	}
 
-	public void setPageClass(Class<? extends BasePreferencePage> pageClass) {
+	public void setPageClass(final Class<? extends BasePreferencePage> pageClass) {
 		this.pageClass = pageClass;
 	}
 
-	@Override
 	public ImageDescriptor getImage() {
 		return image;
 	}
 
-	public void setImage(ImageDescriptor image) {
+	public void setImage(final ImageDescriptor image) {
 		this.image = image;
 	}
 
-	@Override
-	public IPreferencePageDefinition getParent() {
+	public IPageDefinition getParent() {
 		return parent;
 	}
 
-	public void setParent(IPreferencePageDefinition parent) {
+	public void setParent(IPageDefinition parent) {
 		this.parent = parent;
 	}
 
@@ -77,10 +72,10 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof PreferencePageDefinition)) {
+		if (!(obj instanceof PageDefinitionDetails)) {
 			return false;
 		}
-		PreferencePageDefinition other = (PreferencePageDefinition) obj;
+		PageDefinitionDetails other = (PageDefinitionDetails) obj;
 		if (nodeId == null) {
 			if (other.nodeId != null) {
 				return false;
@@ -94,27 +89,27 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 
 	@Override
 	public String toString() {
-		return "PreferencePageDefinition [" + (nodeId != null ? "nodeId=" + nodeId + ", " : "") + (label != null ? "label=" + label + ", " : "") + (pageClass != null ? "pageClass=" + pageClass + ", " : "") + (image != null ? "image=" + image + ", " : "") + (parent != null ? "parent=" + parent : "") + "]";
+		return "PageDefinitionDetails [" + (nodeId != null ? "nodeId=" + nodeId + ", " : "") + (label != null ? "label=" + label + ", " : "") + (pageClass != null ? "pageClass=" + pageClass + ", " : "") + (image != null ? "image=" + image + ", " : "") + (parent != null ? "parent=" + parent : "") + "]";
 	}
 
-	public static class PreferencePageDefinitionBuilder {
+	public static class PageDefinitionDetailsBuilder {
 		private String nodeId;
 		private Localized label;
 		private Class<? extends BasePreferencePage> pageClass;
 		private ImageDescriptor image;
-		private IPreferencePageDefinition parent;
+		private IPageDefinition parent;
 
-		public PreferencePageDefinitionBuilder nodeId(final String nodeId) {
+		public PageDefinitionDetailsBuilder nodeId(final String nodeId) {
 			this.nodeId = nodeId;
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder label(final Localized label) {
+		public PageDefinitionDetailsBuilder label(final Localized label) {
 			this.label = label;
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder label(final String label) {
+		public PageDefinitionDetailsBuilder label(final String label) {
 			this.label = new Localized() {
 				@Override
 				public String getString() {
@@ -124,37 +119,37 @@ public class PreferencePageDefinition implements IPreferencePageDefinition {
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder pageClass(final Class<? extends BasePreferencePage> pageClass) {
+		public PageDefinitionDetailsBuilder pageClass(final Class<? extends BasePreferencePage> pageClass) {
 			this.pageClass = pageClass;
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder image(final ImageDescriptor imageDescriptor) {
+		public PageDefinitionDetailsBuilder image(final ImageDescriptor imageDescriptor) {
 			this.image = imageDescriptor;
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder image(final Image image) {
+		public PageDefinitionDetailsBuilder image(final Image image) {
 			this.image = ImageDescriptor.createFromImage(image);
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder image(final ImageData imageData) {
+		public PageDefinitionDetailsBuilder image(final ImageData imageData) {
 			this.image = ImageDescriptor.createFromImageData(imageData);
 			return this;
 		}
 
-		public PreferencePageDefinitionBuilder parent(final IPreferencePageDefinition parent) {
+		public PageDefinitionDetailsBuilder parent(final IPageDefinition parent) {
 			this.parent = parent;
 			return this;
 		}
 
-		public PreferencePageDefinition build() {
-			return new PreferencePageDefinition(this);
+		public PageDefinitionDetails build() {
+			return new PageDefinitionDetails(this);
 		}
 	}
 
-	private PreferencePageDefinition(final PreferencePageDefinitionBuilder builder) {
+	private PageDefinitionDetails(final PageDefinitionDetailsBuilder builder) {
 		this.nodeId = builder.nodeId;
 		this.label = builder.label;
 		this.pageClass = builder.pageClass;

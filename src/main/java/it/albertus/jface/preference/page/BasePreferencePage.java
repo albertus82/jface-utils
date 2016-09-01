@@ -119,7 +119,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 					addSeparator();
 				}
 				final Composite fieldEditorParent = getFieldEditorParent();
-				final FieldEditor fieldEditor = preference.createFieldEditor(fieldEditorParent);
+				final FieldEditor fieldEditor = createFieldEditor(preference, fieldEditorParent);
 				addField(fieldEditor);
 				fieldEditorMap.put(preference, new FieldEditorWrapper(fieldEditor, fieldEditorParent));
 			}
@@ -127,7 +127,11 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		universe.putAll(fieldEditorMap);
 	}
 
-	/* propertyChange -> updateChildrenStatus -> updateChildStatus */
+	protected FieldEditor createFieldEditor(final IPreference preference, final Composite parent) {
+		return preference.createFieldEditor(parent);
+	}
+
+	// propertyChange -> updateChildrenStatus -> updateChildStatus
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
 		super.propertyChange(event);

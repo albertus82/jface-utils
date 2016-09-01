@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public interface IPreference {
 
+	FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+
 	String getName();
 
 	String getLabel();

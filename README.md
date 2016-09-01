@@ -68,7 +68,7 @@ public enum MyPageDefinition implements IPageDefinition {
 }
 ```
 
-You can surely improve this code, for example introducing localization and autodetermining `nodeId` values using the enum names.
+You can surely improve this code, for example introducing localization and autodetermining `nodeId` values using the enum names. This example makes use of [`PageDefinitionDetails`](src/main/java/it/albertus/jface/preference/page/PageDefinitionDetails.java) helper class and its builder.
 
 #### Preference enum
 

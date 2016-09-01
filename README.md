@@ -13,15 +13,15 @@ JFaceUtils
 
 In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
 * [`Configuration`](src/main/java/it/albertus/util/Configuration.java): the application's configuration object;
-* [`IPreferencePageDefinition[]`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java): definitions of the pages that will contain the preference items;
+* [`IPageDefinition[]`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java): definitions of the pages that will contain the preference items;
 * [`IPreference[]`](src/main/java/it/albertus/jface/preference/IPreference.java): the preference items;
 * `Image[]`: icons used for the preference dialogs (optional).
 
-A convenient approach may be to implement [`IPreferencePageDefinition`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java) and [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
+A convenient approach may be to implement [`IPageDefinition`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java) and [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
 
 #### Page definition enum
 
-This is a very simple example of enum that implements [`IPreferencePageDefinition`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java):
+This is a very simple example of enum that implements [`IPageDefinition`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java):
 
 ```java
 public enum MyPageDefinition implements IPageDefinition {

@@ -9,6 +9,8 @@ JFaceUtils
 
 ## The Preferences Framework
 
+The creation of a **configuration dialog** for a SWT/JFace application can be a very annoying and time consuming task: you have to create every single field editor, they can be a lot and you may have to split them across multiple pages. Moreover, the basic JFaces' `FieldEditor` classes aren't very flexible. This framework will allow you to create a complete configuration dialog writing only two enums, and includes several customizable `FieldEditor` classes with localization support and other useful features.
+
 ### Getting started
 
 In order to open a Preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:

@@ -108,7 +108,7 @@ public enum MyPreference implements IPreference {
 	}
 
 	@Override
-	public IPreferencePageDefinition getPageDefinition() {
+	public IPageDefinition getPageDefinition() {
 		return preferenceDetails.getPageDefinition();
 	}
 

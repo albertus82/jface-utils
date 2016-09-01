@@ -26,45 +26,48 @@ This is a very simple example of enum that implements [`IPreferencePageDefinitio
 ```java
 public enum MyPageDefinition implements IPreferencePageDefinition {
 
-	GENERAL("general", "General", GeneralPreferencePage.class, null),
-	APPEARANCE("appearance", "Appearance", AppearancePreferencePage.class, null),
-	COLORS("appearance.colors", "Colors", ColorsPreferencePage.class, APPEARANCE);
+	GENERAL(new PreferencePageDefinitionBuilder().nodeId("general").label("General").pageClass(GeneralPreferencePage.class).build()),
+	APPEARANCE(new PreferencePageDefinitionBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
+	COLORS(new PreferencePageDefinitionBuilder().nodeId("appearance.colors").label("Colors").pageClass(ColorsPreferencePage.class).parent(APPEARANCE).build());
+	
+	private final IPreferencePageDefinition pageDefinition;
 
-	private String nodeId;
-	private String label;
-	private Class<? extends AbstractPreferencePage> pageClass;
-	private PageDefinition parent;
+	MyPageDefinition() {
+		this(new PreferencePageDefinition());
+	}
 
-	MyPageDefinition(String nodeId, String label, Class<? extends AbstractPreferencePage> pageClass, PageDefinition parent) {
-		this.nodeId = nodeId;
-		this.label = label;
-		this.pageClass = pageClass;
-		this.parent = parent;
+	MyPageDefinition(PreferencePageDefinition pageDefinition) {
+		this.pageDefinition = pageDefinition;
 	}
 
 	@Override
 	public String getNodeId() {
-		return nodeId;
+		return pageDefinition.getNodeId();
 	}
 
 	@Override
-	public String getLabel() {
-		return label;
+	public Localized getLabel() {
+		return pageDefinition.getLabel();
 	}
 
 	@Override
-	public Class<? extends AbstractPreferencePage> getPageClass() {
-		return pageClass;
+	public Class<? extends BasePreferencePage> getPageClass() {
+		return pageDefinition.getPageClass();
 	}
 
 	@Override
-	public PageDefinition getParent() {
-		return parent;
+	public IPreferencePageDefinition getParent() {
+		return pageDefinition.getParent();
+	}
+
+	@Override
+	public ImageDescriptor getImage() {
+		return pageDefinition.getImage();
 	}
 }
 ```
 
-You can surely improve this code, for example introducing localization, autodetermining `nodeId` values using the enum names, adding an overloaded constructor that doesn't require the `parent` argument, and so on.
+You can surely improve this code, for example introducing localization and autodetermining `nodeId` values using the enum names.
 
 #### Preference enum
 
@@ -73,65 +76,59 @@ This is a simple example of enum that implements [`IPreference`](src/main/java/i
 ```java
 public enum MyPreference implements IPreference {
 
-	AUTHENTICATION(MyPageDefinition.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), null),
-	PASSWORD(MyPageDefinition.GENERAL, PasswordFieldEditor.class, new PreferenceDataBuilder().configurationKey("password").label("Password").parent(AUTHENTICATION).build(), null),
-	PORT(MyPageDefinition.GENERAL, DefaultIntegerFieldEditor.class, new PreferenceDataBuilder().configurationKey("port").label("Port").separator().defaultValue(8080).build(), new FieldEditorDataBuilder().integerValidRange(1, 65535).build()),
-	DEBUG(MyPageDefinition.GENERAL, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("debug").label("Enable debug mode").separator().defaultValue(false).build(), null),
-	CONFIRM_CLOSE(MyPageDefinition.APPEARANCE, DefaultBooleanFieldEditor.class, new PreferenceDataBuilder().configurationKey("confirmClose").label("Confirm close").defaultValue(false).build(), null),
-	FONT_COLOR(MyPageDefinition.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("fontColor").label("Font color").defaultValue("255,0,0").build(), null),
-	BACKGROUND_COLOR(MyPageDefinition.COLORS, ColorFieldEditor.class, new PreferenceDataBuilder().configurationKey("backgroundColor").label("Background color").defaultValue("255,255,255").build(), null);
+	AUTHENTICATION(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
+	PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("password").label("Password").parent(AUTHENTICATION).build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
+	PORT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("port").label("Port").separate().defaultValue(8080).build(), new FieldEditorDetailsBuilder(DefaultIntegerFieldEditor.class).integerValidRange(1, 65535).build()),
+	DEBUG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("debug").label("Enable debug mode").separate().defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
+	CONFIRM_CLOSE(new PreferenceDetailsBuilder(MyPageDefinition.APPEARANCE).name("confirmClose").label("Confirm close").defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
+	FONT_COLOR(new PreferenceDetailsBuilder(MyPageDefinition.COLORS).name("fontColor").label("Font color").defaultValue("255,0,0").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build()),
+	BACKGROUND_COLOR(new PreferenceDetailsBuilder(MyPageDefinition.COLORS).name("backgroundColor").label("Background color").defaultValue("255,255,255").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build());
 
-	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+	private PreferenceDetails preferenceDetails;
+	private FieldEditorDetails fieldEditorDetails;
 
-	private PageDefinition pageDefinition;
-	private Class<? extends FieldEditor> fieldEditorType;
-	private PreferenceData preferenceData;
-	private FieldEditorData fieldEditorData;
-
-	MyPreference(Page page, Class<? extends FieldEditor> fieldEditorType, PreferenceData preferenceData, FieldEditorData fieldEditorData) {
-		this.page = page;
-		this.fieldEditorType = fieldEditorType;
-		this.preferenceData = preferenceData;
-		this.fieldEditorData = fieldEditorData;
+	MyPreference(PreferenceDetails preferenceDetails, FieldEditorDetails fieldEditorDetails) {
+		this.preferenceDetails = preferenceDetails;
+		this.fieldEditorDetails = fieldEditorDetails;
 	}
 
 	@Override
-	public String getConfigurationKey() {
-		return preferenceData.getConfigurationKey();
+	public String getName() {
+		return preferenceDetails.getName();
 	}
 
 	@Override
 	public String getLabel() {
-		return preferenceData.getLabel().getString();
+		return preferenceDetails.getLabel().getString();
 	}
 
 	@Override
-	public PageDefinition getPageDefinition() {
-		return pageDefinition;
+	public IPreferencePageDefinition getPageDefinition() {
+		return preferenceDetails.getPageDefinition();
 	}
 
 	@Override
 	public String getDefaultValue() {
-		return preferenceData.getDefaultValue();
+		return preferenceDetails.getDefaultValue();
 	}
 
 	@Override
-	public Preference getParent() {
-		return preferenceData.getParent();
+	public IPreference getParent() {
+		return preferenceDetails.getParent();
 	}
 
 	@Override
 	public boolean isRestartRequired() {
-		return preferenceData.isRestartRequired();
+		return preferenceDetails.isRestartRequired();
 	}
 
 	@Override
-	public boolean hasSeparator() {
-		return preferenceData.hasSeparator();
+	public boolean isSeparate() {
+		return preferenceDetails.isSeparate();
 	}
 
 	@Override
-	public Set<? extends Preference> getChildren() {
+	public Set<? extends IPreference> getChildren() {
 		Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
 		for (MyPreference item : MyPreference.values()) {
 			if (this.equals(item.getParent())) {
@@ -143,12 +140,12 @@ public enum MyPreference implements IPreference {
 
 	@Override
 	public FieldEditor createFieldEditor(Composite parent) {
-		return fieldEditorFactory.createFieldEditor(fieldEditorType, getConfigurationKey(), getLabel(), parent, fieldEditorData);
+		return fieldEditorFactory.createFieldEditor(getName(), getLabel(), parent, fieldEditorDetails);
 	}
 }
 ```
 
-You can surely improve this code, for example introducing localization, autodetermining `configurationKey` values using the enum names, adding an overloaded constructor that doesn't require the `fieldEditorData` argument, and so on. This example makes use of [`PreferenceData`](src/main/java/it/albertus/jface/preference/PreferenceData.java) and [`FieldEditorData`](src/main/java/it/albertus/jface/preference/FieldEditorData.java) helper classes and their respective builders.
+You can surely improve this code, for example introducing localization and autodetermining `name` values using the enum names. This example makes use of [`PreferenceDetails`](src/main/java/it/albertus/jface/preference/PreferenceDetails.java) and [`FieldEditorDetails`](src/main/java/it/albertus/jface/preference/FieldEditorDetails.java) helper classes and their respective builders.
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
@@ -158,14 +155,17 @@ If you need to create your custom `FieldEditor` classes, you can extend [`FieldE
 public class MyFieldEditorFactory extends FieldEditorFactory {
 
 	@Override
-	public FieldEditor createFieldEditor(Class<? extends FieldEditor> type, String name, String label, Composite parent, FieldEditorData data) {
+	public FieldEditor createFieldEditor(String name, String label, Composite parent, FieldEditorDetails details) {
+		Class<? extends FieldEditor> type = details.getFieldEditorClass();
+
 		if (MyCustomFieldEditor.class.equals(type)) {
 			return new MyCustomFieldEditor(name, label, parent);
 		}
 		if (AnotherCustomFieldEditor.class.equals(type)) {
-			return new AnotherCustomFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+			return new AnotherCustomFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		return super.createFieldEditor(type, name, label, parent, data);
+
+		return super.createFieldEditor(name, label, parent, details);
 	}
 }
 ```

@@ -29,8 +29,8 @@ public enum MyPageDefinition implements IPreferencePageDefinition {
 	GENERAL(new PreferencePageDefinitionBuilder().nodeId("general").label("General").pageClass(GeneralPreferencePage.class).build()),
 	APPEARANCE(new PreferencePageDefinitionBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
 	COLORS(new PreferencePageDefinitionBuilder().nodeId("appearance.colors").label("Colors").pageClass(ColorsPreferencePage.class).parent(APPEARANCE).build());
-	
-	private final IPreferencePageDefinition pageDefinition;
+
+	private IPreferencePageDefinition pageDefinition;
 
 	MyPageDefinition() {
 		this(new PreferencePageDefinition());

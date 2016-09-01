@@ -24,46 +24,47 @@ A convenient approach may be to implement [`IPreferencePageDefinition`](src/main
 This is a very simple example of enum that implements [`IPreferencePageDefinition`](src/main/java/it/albertus/jface/preference/page/IPreferencePageDefinition.java):
 
 ```java
-public enum MyPageDefinition implements IPreferencePageDefinition {
+public enum MyPageDefinition implements IPageDefinition {
 
-	GENERAL(new PreferencePageDefinitionBuilder().nodeId("general").label("General").pageClass(GeneralPreferencePage.class).build()),
-	APPEARANCE(new PreferencePageDefinitionBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
-	COLORS(new PreferencePageDefinitionBuilder().nodeId("appearance.colors").label("Colors").pageClass(ColorsPreferencePage.class).parent(APPEARANCE).build());
+	GENERAL(new PageDefinitionDetailsBuilder().nodeId("general").label("General").pageClass(GeneralPreferencePage.class).build()),
+	APPEARANCE(new PageDefinitionDetailsBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
+	COLORS(new PageDefinitionDetailsBuilder().nodeId("appearance.colors").label("Colors").pageClass(ColorsPreferencePage.class).parent(APPEARANCE).build());
 
-	private IPreferencePageDefinition pageDefinition;
+	private PageDefinitionDetails pageDefinitionDetails;
 
 	MyPageDefinition() {
-		this(new PreferencePageDefinition());
+		this(new PageDefinitionDetailsBuilder().build());
 	}
 
-	MyPageDefinition(PreferencePageDefinition pageDefinition) {
-		this.pageDefinition = pageDefinition;
+	MyPageDefinition(final PageDefinitionDetails pageDefinitionDetails) {
+		this.pageDefinitionDetails = pageDefinitionDetails;
 	}
 
 	@Override
 	public String getNodeId() {
-		return pageDefinition.getNodeId();
+		return pageDefinitionDetails.getNodeId();
 	}
 
 	@Override
-	public Localized getLabel() {
-		return pageDefinition.getLabel();
+	public String getLabel() {
+		return pageDefinitionDetails.getLabel().getString();
 	}
 
 	@Override
 	public Class<? extends BasePreferencePage> getPageClass() {
-		return pageDefinition.getPageClass();
+		return pageDefinitionDetails.getPageClass();
 	}
 
 	@Override
-	public IPreferencePageDefinition getParent() {
-		return pageDefinition.getParent();
+	public IPageDefinition getParent() {
+		return pageDefinitionDetails.getParent();
 	}
 
 	@Override
 	public ImageDescriptor getImage() {
-		return pageDefinition.getImage();
+		return pageDefinitionDetails.getImage();
 	}
+
 }
 ```
 

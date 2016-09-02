@@ -4,25 +4,24 @@ import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.jface.preference.page.PageDefinitionDetails;
 import it.albertus.jface.preference.page.PageDefinitionDetails.PageDefinitionDetailsBuilder;
+import it.albertus.jface.preference.page.RestartHeaderPreferencePage;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-public enum PageDefinition implements IPageDefinition {
+public enum MyPageDefinition implements IPageDefinition {
 
-	GENERAL(new PageDefinitionDetailsBuilder().label("General").build()),
-	GENERAL_NESTED(new PageDefinitionDetailsBuilder().label("Nested").parent(GENERAL).build());
+	GENERAL(new PageDefinitionDetailsBuilder().nodeId("general").label("General").build()),
+	APPEARANCE(new PageDefinitionDetailsBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
+	COLORS(new PageDefinitionDetailsBuilder().nodeId("appearance.colors").label("Colors").parent(APPEARANCE).build());
 
-	private final PageDefinitionDetails pageDefinitionDetails;
+	private PageDefinitionDetails pageDefinitionDetails;
 
-	PageDefinition() {
+	MyPageDefinition() {
 		this(new PageDefinitionDetailsBuilder().build());
 	}
 
-	PageDefinition(final PageDefinitionDetails pageDefinitionDetails) {
+	MyPageDefinition(PageDefinitionDetails pageDefinitionDetails) {
 		this.pageDefinitionDetails = pageDefinitionDetails;
-		if (pageDefinitionDetails.getNodeId() == null) {
-			pageDefinitionDetails.setNodeId(name().toLowerCase().replace('_', '.'));
-		}
 	}
 
 	@Override

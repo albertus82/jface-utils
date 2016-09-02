@@ -24,19 +24,19 @@ public class PreferencesExample {
 		final Display display = Display.getDefault();
 
 		final Shell shell = new Shell(display);
-		shell.setText("Preferences");
+		shell.setText("Preferences example");
 		shell.setLayout(new FillLayout());
 
 		final Button button = new Button(shell, SWT.NONE);
-
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final Preferences preferences = new Preferences(PageDefinition.values(), Preference.values(), configuration);
+			public void widgetSelected(final SelectionEvent se) {
+				final Preferences preferences = new Preferences(MyPageDefinition.values(), MyPreference.values(), configuration);
+				preferences.setDialogTitle("Preferences");
 				preferences.openDialog(shell);
 			}
 		});
-		button.setText("Preferences");
+		button.setText("Open preferences dialog");
 
 		shell.pack();
 		shell.open();

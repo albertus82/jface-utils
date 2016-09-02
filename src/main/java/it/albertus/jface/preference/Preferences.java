@@ -95,7 +95,7 @@ public class Preferences {
 		final Map<String, String> configurationBackup = new HashMap<String, String>();
 		for (final IPreference preference : preferences) {
 			if (preference.isRestartRequired()) {
-				configurationBackup.put(preference.getName(), configuration.getProperties().getProperty(preference.getName()));
+				configurationBackup.put(preference.getName(), configuration.getString(preference.getName()));
 			}
 		}
 
@@ -109,7 +109,7 @@ public class Preferences {
 
 		for (final Entry<String, String> backedUpProperty : configurationBackup.entrySet()) {
 			final String oldValue = backedUpProperty.getValue();
-			final String newValue = configuration.getProperties().getProperty(backedUpProperty.getKey());
+			final String newValue = configuration.getString(backedUpProperty.getKey());
 			if ((oldValue != null && newValue == null) || (oldValue == null && newValue != null) || (oldValue != null && !oldValue.equals(newValue))) {
 				restartRequired = true;
 				break;

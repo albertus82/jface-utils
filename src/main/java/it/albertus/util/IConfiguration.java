@@ -15,8 +15,4 @@ public interface IConfiguration {
 
 	OutputStream openOutputStream() throws IOException;
 
-	String getString(String key);
-
-	String getString(String key, String defaultValue);
-
 }

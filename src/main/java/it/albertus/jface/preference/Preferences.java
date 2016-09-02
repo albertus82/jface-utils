@@ -26,8 +26,8 @@ public class Preferences {
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final IConfiguration configuration, final IPageDefinition[] pages, final IPreference[] preferences) {
-		this(configuration, pages, preferences, null);
+	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences) {
+		this(configuration, pageDefinitions, preferences, null);
 	}
 
 	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
@@ -95,7 +95,7 @@ public class Preferences {
 		final Map<String, String> configurationBackup = new HashMap<String, String>();
 		for (final IPreference preference : preferences) {
 			if (preference.isRestartRequired()) {
-				configurationBackup.put(preference.getName(), configuration.getString(preference.getName()));
+				configurationBackup.put(preference.getName(), preferenceStore.getString(preference.getName()));
 			}
 		}
 
@@ -109,7 +109,7 @@ public class Preferences {
 
 		for (final Entry<String, String> backedUpProperty : configurationBackup.entrySet()) {
 			final String oldValue = backedUpProperty.getValue();
-			final String newValue = configuration.getString(backedUpProperty.getKey());
+			final String newValue = preferenceStore.getString(backedUpProperty.getKey());
 			if ((oldValue != null && newValue == null) || (oldValue == null && newValue != null) || (oldValue != null && !oldValue.equals(newValue))) {
 				restartRequired = true;
 				break;

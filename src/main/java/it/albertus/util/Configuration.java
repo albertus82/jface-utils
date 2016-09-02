@@ -93,12 +93,10 @@ public class Configuration implements IConfiguration {
 		return fileName;
 	}
 
-	@Override
 	public String getString(final String key) {
 		return properties.getProperty(key);
 	}
 
-	@Override
 	public String getString(final String key, final String defaultValue) {
 		return properties.getProperty(key, defaultValue);
 	}

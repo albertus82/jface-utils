@@ -16,12 +16,18 @@ This framework will allow you to create a complete preferences dialog by writing
 ### Getting started
 
 In order to open a preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` method (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
-* [`IConfiguration`](src/main/java/it/albertus/util/IConfiguration.java): the object that manages the application properties (may be a sort of `Properties` wrapper); it has a `reload` callback method that will be invoked when the configuration has to be reoladed from the file pointed by the `getFile` return value.
+* [`IConfiguration`](src/main/java/it/albertus/util/IConfiguration.java): the object that manages the application properties.
 * [`IPageDefinition[]`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java): definitions of the pages that will contain the preference items;
 * [`IPreference[]`](src/main/java/it/albertus/jface/preference/IPreference.java): the preference items;
 * `Image[]`: icons used for the preference dialogs (optional).
 
 A convenient approach may be to implement [`IPageDefinition`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java) and [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
+
+#### Configuration object
+
+The interface [`IConfiguration`](src/main/java/it/albertus/util/IConfiguration.java) defines two methods:
+* **`getFile`**: must return the path and file name of your configuration file.
+* **`reload`**: must reload the configuration file in order to update the configuration properties. This method will be called automatically when needed (callback).
 
 #### Page definition enum
 

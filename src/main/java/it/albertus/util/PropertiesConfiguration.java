@@ -1,21 +1,19 @@
 package it.albertus.util;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesConfiguration implements IConfiguration {
+public class PropertiesConfiguration extends PreferencesCallback {
 
 	private final Properties properties;
-	private final String fileName;
 
 	public PropertiesConfiguration(final String propertiesFileName) {
+		super(propertiesFileName);
 		this.properties = new Properties();
-		this.fileName = propertiesFileName;
 		load();
 	}
 
@@ -24,17 +22,8 @@ public class PropertiesConfiguration implements IConfiguration {
 		load();
 	}
 
-	@Override
-	public File getFile() {
-		return new File(fileName);
-	}
-
 	public Properties getProperties() {
 		return properties;
-	}
-
-	public final String getFileName() {
-		return fileName;
 	}
 
 	protected void load() {

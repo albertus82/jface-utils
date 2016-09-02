@@ -103,7 +103,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 		// Reload RouterLogger configuration...
 		try {
-			configuration.reload();
+			configuration.reload(); // Callback
 		}
 		catch (final IOException ioe) {
 			ioe.printStackTrace();

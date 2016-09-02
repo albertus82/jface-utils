@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Preferences {
 
-	protected final IConfiguration configuration;
+	protected final IConfiguration preferencesCallback;
 	protected final IPageDefinition[] pageDefinitions;
 	protected final IPreference[] preferences;
 	protected final Image[] images;
@@ -30,12 +30,12 @@ public class Preferences {
 	private boolean restartRequired = false;
 	private PreferenceDialog preferenceDialog;
 
-	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences) {
-		this(configuration, pageDefinitions, preferences, null);
+	public Preferences(final IConfiguration preferencesCallback, final IPageDefinition[] pageDefinitions, final IPreference[] preferences) {
+		this(preferencesCallback, pageDefinitions, preferences, null);
 	}
 
-	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
-		this.configuration = configuration;
+	public Preferences(final IConfiguration preferencesCallback, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
+		this.preferencesCallback = preferencesCallback;
 		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
 		this.images = images;
@@ -51,7 +51,7 @@ public class Preferences {
 		// Pages creation...
 		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
 		for (final IPageDefinition page : pageDefinitions) {
-			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, configuration);
+			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, preferencesCallback);
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
 			}
@@ -61,7 +61,7 @@ public class Preferences {
 			preferenceNodes.put(page, preferenceNode);
 		}
 
-		final PreferenceStore preferenceStore = new PreferenceStore(configuration.getFile().getPath());
+		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFile().getPath());
 
 		// Set default values...
 		for (final IPreference preference : preferences) {
@@ -73,7 +73,7 @@ public class Preferences {
 		// Load configuration file...
 		InputStream configurationInputStream = null;
 		try {
-			configurationInputStream = new BufferedInputStream(new FileInputStream(configuration.getFile()));
+			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFile()));
 			if (configurationInputStream != null) {
 				preferenceStore.load(configurationInputStream);
 			}
@@ -110,7 +110,7 @@ public class Preferences {
 		if (returnCode == Window.OK) {
 			// Reload configuration (autosaved by PreferenceStore on OK button)...
 			try {
-				configuration.reload();
+				preferencesCallback.reload(); // Callback
 			}
 			catch (final IOException ioe) {
 				ioe.printStackTrace();

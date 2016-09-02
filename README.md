@@ -26,10 +26,10 @@ A convenient approach may be to implement [`IPageDefinition`](src/main/java/it/a
 #### Callback object
 
 The interface [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) declares two methods:
-* **`getFileName`**: must return the path and file name of your configuration file.
+* **`getFileName`**: must return the path and name of your configuration file.
 * **`reload`**: must **reload the configuration file and update your in-memory configuration properties**, so that your application can see the updated values. This method will be called automatically when necessary (callback).
 
-You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) or may use/extend one of [`PreferencesCallback`](src/main/java/it/albertus/jface/preference/PreferencesCallback.java), [`PropertiesConfiguration`](src/main/java/it/albertus/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/it/albertus/util/Configuration.java) depending on your needs.
+You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/it/albertus/jface/preference/PreferencesCallback.java) or use/extend one of [`PropertiesConfiguration`] src/main/java/it/albertus/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/it/albertus/util/Configuration.java) depending on your needs.
 
 #### Page definition enum
 

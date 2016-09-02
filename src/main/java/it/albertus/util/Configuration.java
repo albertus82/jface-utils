@@ -17,7 +17,7 @@ import java.util.TreeMap;
  * costruttore {@link #Configuration(String)} passando come parametro il nome
  * del file di configurazione da caricare.
  */
-public class Configuration {
+public class Configuration implements IConfiguration {
 
 	private final Properties properties = new Properties();
 	private final String fileName;
@@ -33,7 +33,7 @@ public class Configuration {
 	}
 
 	protected void load() throws IOException {
-		final InputStream inputStream = openConfigurationInputStream();
+		final InputStream inputStream = openInputStream();
 		if (inputStream != null) {
 			synchronized (properties) {
 				properties.clear();
@@ -64,7 +64,8 @@ public class Configuration {
 		return config;
 	}
 
-	public InputStream openConfigurationInputStream() throws IOException {
+	@Override
+	public InputStream openInputStream() throws IOException {
 		final InputStream inputStream;
 		final File config = getFile();
 		if (config != null && config.exists()) {
@@ -76,7 +77,8 @@ public class Configuration {
 		return inputStream;
 	}
 
-	public OutputStream openConfigurationOutputStream() throws IOException {
+	@Override
+	public OutputStream openOutputStream() throws IOException {
 		final OutputStream outputStream;
 		final File config = getFile();
 		outputStream = new BufferedOutputStream(new FileOutputStream(config));
@@ -91,6 +93,16 @@ public class Configuration {
 		return fileName;
 	}
 
+	@Override
+	public String getString(final String key) {
+		return properties.getProperty(key);
+	}
+
+	@Override
+	public String getString(final String key, final String defaultValue) {
+		return properties.getProperty(key, defaultValue);
+	}
+
 	public char[] getCharArray(final String key) {
 		try {
 			return properties.getProperty(key).toCharArray();
@@ -98,14 +110,6 @@ public class Configuration {
 		catch (final Exception e) {
 			return null;
 		}
-	}
-
-	public String getString(final String key) {
-		return properties.getProperty(key);
-	}
-
-	public String getString(final String key, final String defaultValue) {
-		return properties.getProperty(key, defaultValue);
 	}
 
 	public Boolean getBoolean(final String key) {

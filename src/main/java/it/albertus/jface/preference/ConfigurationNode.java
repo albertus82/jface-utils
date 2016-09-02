@@ -2,17 +2,17 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.IPageDefinition;
-import it.albertus.util.Configuration;
+import it.albertus.util.IConfiguration;
 
 import org.eclipse.jface.preference.PreferenceNode;
 
 public class ConfigurationNode extends PreferenceNode {
 
 	private final IPreference[] preferences;
-	private final Configuration configuration;
+	private final IConfiguration configuration;
 	private final IPageDefinition pageDefinition;
 
-	public ConfigurationNode(final IPageDefinition pageDefinition, final IPreference[] preferences, final Configuration configuration) {
+	public ConfigurationNode(final IPageDefinition pageDefinition, final IPreference[] preferences, final IConfiguration configuration) {
 		super(pageDefinition.getNodeId(), pageDefinition.getLabel().replace("&&", "&"), pageDefinition.getImage(), pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
 		this.preferences = preferences;
 		this.configuration = configuration;

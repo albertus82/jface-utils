@@ -3,7 +3,7 @@ package it.albertus.jface.preference.page;
 import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.IPreference;
 import it.albertus.jface.preference.StaticLabelsAndValues;
-import it.albertus.util.Configuration;
+import it.albertus.util.IConfiguration;
 import it.albertus.util.NewLine;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 	protected final Map<IPreference, FieldEditorWrapper> fieldEditorMap = new HashMap<IPreference, FieldEditorWrapper>();
 	protected Control header;
 
-	private Configuration configuration;
+	private IConfiguration configuration;
 	private IPreference[] preferences;
 	private IPageDefinition pageDefinition;
 
@@ -43,11 +43,11 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		super(style);
 	}
 
-	public final Configuration getConfiguration() {
+	public final IConfiguration getConfiguration() {
 		return configuration;
 	}
 
-	public void setConfiguration(final Configuration configuration) {
+	public void setConfiguration(final IConfiguration configuration) {
 		this.configuration = configuration;
 	}
 
@@ -86,7 +86,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		// Save configuration file...
 		OutputStream configurationOutputStream = null;
 		try {
-			configurationOutputStream = configuration.openConfigurationOutputStream();
+			configurationOutputStream = configuration.openOutputStream();
 			((PreferenceStore) getPreferenceStore()).save(configurationOutputStream, null);
 		}
 		catch (final IOException ioe) {
@@ -192,7 +192,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		final FieldEditorWrapper fieldEditorWrapper = universe.get(preference);
 		boolean parentEnabled;
 		if (fieldEditorWrapper == null) { // Field belongs to a not-yet-created page.
-			parentEnabled = configuration.getBoolean(preference.getName(), Boolean.parseBoolean(preference.getDefaultValue()));
+			parentEnabled = getBooleanFromStore(preference);
 		}
 		else {
 			try {
@@ -227,7 +227,8 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 			if (preference.getParent() != null && !fieldEditorMap.containsKey(preference.getParent())) {
 				final FieldEditorWrapper fieldEditorWrapper = universe.get(preference.getParent());
 				if (fieldEditorWrapper == null) {
-					updateChildrenStatus(preference, configuration.getBoolean(preference.getParent().getName(), Boolean.parseBoolean(preference.getParent().getDefaultValue())));
+					boolean parentEnabled = getBooleanFromStore(preference.getParent());
+					updateChildrenStatus(preference, parentEnabled);
 				}
 				else {
 					final FieldEditor fieldEditor = fieldEditorWrapper.getFieldEditor();
@@ -244,6 +245,10 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 				}
 			}
 		}
+	}
+
+	protected boolean getBooleanFromStore(final IPreference preference) {
+		return getPreferenceStore().getBoolean(preference.getName());
 	}
 
 	public Control getHeader() {

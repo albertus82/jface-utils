@@ -1,7 +1,7 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.page.IPageDefinition;
-import it.albertus.util.Configuration;
+import it.albertus.util.IConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,18 +19,18 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Preferences {
 
-	protected final Configuration configuration;
+	protected final IConfiguration configuration;
 	protected final IPageDefinition[] pageDefinitions;
 	protected final IPreference[] preferences;
 	protected final Image[] images;
 
 	protected boolean restartRequired = false;
 
-	public Preferences(final Configuration configuration, final IPageDefinition[] pages, final IPreference[] preferences) {
+	public Preferences(final IConfiguration configuration, final IPageDefinition[] pages, final IPreference[] preferences) {
 		this(configuration, pages, preferences, null);
 	}
 
-	public Preferences(final Configuration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
+	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
 		this.configuration = configuration;
 		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
@@ -69,7 +69,7 @@ public class Preferences {
 		// Load configuration file...
 		InputStream configurationInputStream = null;
 		try {
-			configurationInputStream = configuration.openConfigurationInputStream();
+			configurationInputStream = configuration.openInputStream();
 			if (configurationInputStream != null) {
 				preferenceStore.load(configurationInputStream);
 			}

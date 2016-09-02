@@ -138,32 +138,32 @@ public class Preferences {
 		this.dialogTitle = dialogTitle;
 	}
 
-	public PreferenceDialog getPreferenceDialog() {
-		return preferenceDialog;
-	}
-
-	public IPreferencesCallback getPreferencesCallback() {
-		return preferencesCallback;
-	}
-
-	public IPageDefinition[] getPageDefinitions() {
-		return pageDefinitions;
-	}
-
-	public IPreference[] getPreferences() {
-		return preferences;
-	}
-
-	public Image[] getImages() {
-		return images;
-	}
-
 	public boolean isRestartRequired() {
 		return restartRequired;
 	}
 
 	protected void setRestartRequired(final boolean restartRequired) {
 		this.restartRequired = restartRequired;
+	}
+
+	protected PreferenceDialog getPreferenceDialog() {
+		return preferenceDialog;
+	}
+
+	protected IPreferencesCallback getPreferencesCallback() {
+		return preferencesCallback;
+	}
+
+	protected IPageDefinition[] getPageDefinitions() {
+		return pageDefinitions;
+	}
+
+	protected IPreference[] getPreferences() {
+		return preferences;
+	}
+
+	protected Image[] getImages() {
+		return images;
 	}
 
 }

@@ -12,9 +12,9 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
 public enum Preference implements IPreference {
-	
- TEXT_1(new PreferenceDetailsBuilder( PageDefinition.GENERAL ).label("Text 1").defaultValue("ciao").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build())
-	;
+
+	TEXT_1(new PreferenceDetailsBuilder(PageDefinition.GENERAL).label("Text 1").defaultValue("Value").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build());
+
 	private final PreferenceDetails preferenceDetails;
 	private final FieldEditorDetails fieldEditorDetails;
 

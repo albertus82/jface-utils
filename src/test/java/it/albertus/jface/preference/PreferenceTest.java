@@ -1,5 +1,6 @@
 package it.albertus.jface.preference;
 
+import it.albertus.util.IConfiguration;
 import it.albertus.util.PropertiesConfiguration;
 
 import org.eclipse.swt.SWT;
@@ -12,27 +13,33 @@ import org.eclipse.swt.widgets.Shell;
 
 public class PreferenceTest {
 
-	public static void main(String[] args) {
+	public static void main(final String... args) {
 		new PreferenceTest().run();
 	}
 
-	private PropertiesConfiguration configuration;
+	private IConfiguration configuration = new PropertiesConfiguration("configuration.properties");
 
 	private void run() {
-		configuration = new PropertiesConfiguration("configuration.properties");
 		final Display display = Display.getDefault();
+
 		final Shell shell = new Shell(display);
 		shell.setText("Preferences");
 		shell.setLayout(new FillLayout());
-		Button button = new Button(shell, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {@Override
-		public void widgetSelected(SelectionEvent e) {
-			Preferences p = new Preferences(configuration, PageDefinition.values(), Preference.values());
-			p.openDialog(shell);
-		}});
+
+		final Button button = new Button(shell, SWT.NONE);
+
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Preferences p = new Preferences(configuration, PageDefinition.values(), Preference.values());
+				p.openDialog(shell);
+			}
+		});
 		button.setText("Preferences");
+
 		shell.pack();
 		shell.open();
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -40,4 +47,5 @@ public class PreferenceTest {
 		}
 		display.dispose();
 	}
+
 }

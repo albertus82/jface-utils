@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 public interface IConfiguration {
 
-	void reload();
+	void reload() throws IOException;
 
 	File getFile();
 

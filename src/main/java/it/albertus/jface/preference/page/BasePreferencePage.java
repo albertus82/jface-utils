@@ -100,7 +100,12 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		}
 
 		// Reload RouterLogger configuration...
-		configuration.reload();
+		try {
+			configuration.reload();
+		}
+		catch (final IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	@Override

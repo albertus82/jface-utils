@@ -105,7 +105,12 @@ public class Preferences {
 
 		if (returnCode == Window.OK) {
 			// Reload configuration (autosaved by PreferenceStore on OK button)...
-			configuration.reload();
+			try {
+				configuration.reload();
+			}
+			catch (final IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 
 		for (final Entry<String, String> backedUpProperty : configurationBackup.entrySet()) {

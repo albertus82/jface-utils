@@ -13,11 +13,11 @@ public class FieldEditorWrapper {
 		this.parent = parent;
 	}
 
-	public final FieldEditor getFieldEditor() {
+	public FieldEditor getFieldEditor() {
 		return fieldEditor;
 	}
 
-	public final Composite getParent() {
+	public Composite getParent() {
 		return parent;
 	}
 

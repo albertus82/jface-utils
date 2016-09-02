@@ -2,6 +2,7 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
+import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.page.IPageDefinition;
 
@@ -13,7 +14,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public enum Preference implements IPreference {
 
-	TEXT_1(new PreferenceDetailsBuilder(PageDefinition.GENERAL).label("Text 1").defaultValue("Value").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build());
+	TEXT_1(new PreferenceDetailsBuilder(PageDefinition.GENERAL).label("Text 1").defaultValue("Value").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build()),
+	INTEGER_1(new PreferenceDetailsBuilder(PageDefinition.GENERAL_NESTED).label("Integer 1").defaultValue("1").build(), new FieldEditorDetailsBuilder(DefaultIntegerFieldEditor.class).integerValidRange(0, 100).build());
 
 	private final PreferenceDetails preferenceDetails;
 	private final FieldEditorDetails fieldEditorDetails;

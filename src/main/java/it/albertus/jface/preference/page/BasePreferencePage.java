@@ -2,8 +2,8 @@ package it.albertus.jface.preference.page;
 
 import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.IPreference;
+import it.albertus.jface.preference.IPreferencesCallback;
 import it.albertus.jface.preference.StaticLabelsAndValues;
-import it.albertus.util.IConfiguration;
 import it.albertus.util.NewLine;
 
 import java.io.BufferedOutputStream;
@@ -33,7 +33,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 	protected final Map<IPreference, FieldEditorWrapper> fieldEditorMap = new HashMap<IPreference, FieldEditorWrapper>();
 	protected Control header;
 
-	private IConfiguration configuration;
+	private IPreferencesCallback preferencesCallback;
 	private IPreference[] preferences;
 	private IPageDefinition pageDefinition;
 
@@ -45,15 +45,15 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		super(style);
 	}
 
-	public final IConfiguration getConfiguration() {
-		return configuration;
+	public IPreferencesCallback getPreferencesCallback() {
+		return preferencesCallback;
 	}
 
-	public void setConfiguration(final IConfiguration configuration) {
-		this.configuration = configuration;
+	public void setPreferencesCallback(final IPreferencesCallback preferencesCallback) {
+		this.preferencesCallback = preferencesCallback;
 	}
 
-	public final IPreference[] getPreferences() {
+	public IPreference[] getPreferences() {
 		return preferences;
 	}
 
@@ -61,7 +61,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		this.preferences = preferences;
 	}
 
-	public final IPageDefinition getPageDefinition() {
+	public IPageDefinition getPageDefinition() {
 		return pageDefinition;
 	}
 
@@ -88,7 +88,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		// Save configuration file...
 		OutputStream configurationOutputStream = null;
 		try {
-			configurationOutputStream = new BufferedOutputStream(new FileOutputStream(configuration.getFile()));
+			configurationOutputStream = new BufferedOutputStream(new FileOutputStream(preferencesCallback.getFileName()));
 			((PreferenceStore) getPreferenceStore()).save(configurationOutputStream, null);
 		}
 		catch (final IOException ioe) {
@@ -103,7 +103,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 		// Reload RouterLogger configuration...
 		try {
-			configuration.reload(); // Callback
+			preferencesCallback.reload(); // Callback
 		}
 		catch (final IOException ioe) {
 			ioe.printStackTrace();

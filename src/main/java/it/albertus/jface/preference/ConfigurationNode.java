@@ -2,21 +2,20 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.IPageDefinition;
-import it.albertus.util.IConfiguration;
 
 import org.eclipse.jface.preference.PreferenceNode;
 
 public class ConfigurationNode extends PreferenceNode {
 
-	private final IPreference[] preferences;
-	private final IConfiguration configuration;
 	private final IPageDefinition pageDefinition;
+	private final IPreference[] preferences;
+	private final IPreferencesCallback preferencesCallback;
 
-	public ConfigurationNode(final IPageDefinition pageDefinition, final IPreference[] preferences, final IConfiguration configuration) {
+	public ConfigurationNode(final IPageDefinition pageDefinition, final IPreference[] preferences, final IPreferencesCallback preferencesCallback) {
 		super(pageDefinition.getNodeId(), pageDefinition.getLabel().replace("&&", "&"), pageDefinition.getImage(), pageDefinition.getPageClass() != null ? pageDefinition.getPageClass().getName() : null);
-		this.preferences = preferences;
-		this.configuration = configuration;
 		this.pageDefinition = pageDefinition;
+		this.preferences = preferences;
+		this.preferencesCallback = preferencesCallback;
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class ConfigurationNode extends PreferenceNode {
 		}
 		page.setTitle(pageDefinition.getLabel());
 		page.setPreferences(preferences);
-		page.setConfiguration(configuration);
+		page.setPreferencesCallback(preferencesCallback);
 		page.setPageDefinition(pageDefinition);
 	}
 

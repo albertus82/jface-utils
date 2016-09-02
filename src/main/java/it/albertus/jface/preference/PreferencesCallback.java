@@ -1,8 +1,6 @@
-package it.albertus.util;
+package it.albertus.jface.preference;
 
-import java.io.File;
-
-public abstract class PreferencesCallback implements IConfiguration {
+public abstract class PreferencesCallback implements IPreferencesCallback {
 
 	private final String fileName;
 
@@ -11,10 +9,6 @@ public abstract class PreferencesCallback implements IConfiguration {
 	}
 
 	@Override
-	public File getFile() {
-		return new File(fileName);
-	}
-
 	public String getFileName() {
 		return fileName;
 	}

@@ -1,5 +1,7 @@
 package it.albertus.util;
 
+import it.albertus.jface.preference.PreferencesCallback;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +31,7 @@ public class PropertiesConfiguration extends PreferencesCallback {
 	protected void load() {
 		InputStream inputStream = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(getFile()));
+			inputStream = new BufferedInputStream(new FileInputStream(getFileName()));
 			if (inputStream != null) {
 				synchronized (properties) {
 					try {

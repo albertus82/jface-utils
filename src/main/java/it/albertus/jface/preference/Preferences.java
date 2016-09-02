@@ -1,7 +1,7 @@
 package it.albertus.jface.preference;
 
+import it.albertus.jface.JFaceResources;
 import it.albertus.jface.preference.page.IPageDefinition;
-import it.albertus.util.IConfiguration;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -22,19 +22,20 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Preferences {
 
-	protected final IConfiguration preferencesCallback;
-	protected final IPageDefinition[] pageDefinitions;
-	protected final IPreference[] preferences;
-	protected final Image[] images;
+	private final IPreferencesCallback preferencesCallback;
+	private final IPageDefinition[] pageDefinitions;
+	private final IPreference[] preferences;
+	private final Image[] images;
 
-	private boolean restartRequired = false;
+	private String dialogTitle = JFaceResources.get("lbl.preferences.title");
 	private PreferenceDialog preferenceDialog;
+	private boolean restartRequired = false;
 
-	public Preferences(final IConfiguration preferencesCallback, final IPageDefinition[] pageDefinitions, final IPreference[] preferences) {
-		this(preferencesCallback, pageDefinitions, preferences, null);
+	public Preferences(final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final IPreferencesCallback preferencesCallback) {
+		this(pageDefinitions, preferences, preferencesCallback, null);
 	}
 
-	public Preferences(final IConfiguration preferencesCallback, final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final Image[] images) {
+	public Preferences(final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final IPreferencesCallback preferencesCallback, final Image[] images) {
 		this.preferencesCallback = preferencesCallback;
 		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
@@ -61,7 +62,7 @@ public class Preferences {
 			preferenceNodes.put(page, preferenceNode);
 		}
 
-		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFile().getPath());
+		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFileName());
 
 		// Set default values...
 		for (final IPreference preference : preferences) {
@@ -73,7 +74,7 @@ public class Preferences {
 		// Load configuration file...
 		InputStream configurationInputStream = null;
 		try {
-			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFile()));
+			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
 			if (configurationInputStream != null) {
 				preferenceStore.load(configurationInputStream);
 			}
@@ -89,7 +90,7 @@ public class Preferences {
 			catch (final Exception e) {/* Ignore */}
 		}
 
-		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, images);
+		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
 
 		preferenceDialog.setPreferenceStore(preferenceStore);
 
@@ -129,8 +130,32 @@ public class Preferences {
 		return returnCode;
 	}
 
-	protected PreferenceDialog getPreferenceDialog() {
+	public String getDialogTitle() {
+		return dialogTitle;
+	}
+
+	public void setDialogTitle(final String dialogTitle) {
+		this.dialogTitle = dialogTitle;
+	}
+
+	public PreferenceDialog getPreferenceDialog() {
 		return preferenceDialog;
+	}
+
+	public IPreferencesCallback getPreferencesCallback() {
+		return preferencesCallback;
+	}
+
+	public IPageDefinition[] getPageDefinitions() {
+		return pageDefinitions;
+	}
+
+	public IPreference[] getPreferences() {
+		return preferences;
+	}
+
+	public Image[] getImages() {
+		return images;
 	}
 
 	public boolean isRestartRequired() {

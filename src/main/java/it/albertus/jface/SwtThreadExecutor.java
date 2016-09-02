@@ -19,7 +19,7 @@ public abstract class SwtThreadExecutor {
 		this.async = async;
 	}
 
-	public final Widget getWidget() {
+	public Widget getWidget() {
 		return widget;
 	}
 

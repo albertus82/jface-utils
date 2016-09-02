@@ -26,7 +26,7 @@ public class PreferenceDetails {
 		this.pageDefinition = pageDefinition;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 

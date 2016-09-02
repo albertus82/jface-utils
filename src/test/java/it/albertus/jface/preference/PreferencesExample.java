@@ -1,6 +1,5 @@
 package it.albertus.jface.preference;
 
-import it.albertus.util.IConfiguration;
 import it.albertus.util.PropertiesConfiguration;
 
 import org.eclipse.swt.SWT;
@@ -11,15 +10,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class PreferenceTest {
+public class PreferencesExample {
 
 	public static void main(final String... args) {
-		new PreferenceTest().run();
+		new PreferencesExample().run();
 	}
 
-	private IConfiguration configuration = new PropertiesConfiguration("configuration.properties");
+	private final PropertiesConfiguration configuration = new PropertiesConfiguration("configuration.properties");
 
 	private void run() {
+		System.out.println("Before: " + configuration.getProperties());
+
 		final Display display = Display.getDefault();
 
 		final Shell shell = new Shell(display);
@@ -31,8 +32,8 @@ public class PreferenceTest {
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Preferences p = new Preferences(configuration, PageDefinition.values(), Preference.values());
-				p.openDialog(shell);
+				final Preferences preferences = new Preferences(PageDefinition.values(), Preference.values(), configuration);
+				preferences.openDialog(shell);
 			}
 		});
 		button.setText("Preferences");
@@ -46,6 +47,8 @@ public class PreferenceTest {
 			}
 		}
 		display.dispose();
+
+		System.out.println("After:  " + configuration.getProperties());
 	}
 
 }

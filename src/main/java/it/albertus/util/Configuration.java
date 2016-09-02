@@ -16,9 +16,9 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	@Override
-	public File getFile() {
+	public String getFileName() {
 		File config;
-		final String fileName = getFileName();
+		final String fileName = super.getFileName();
 		try {
 			final String parent = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent();
 			config = new File((parent != null ? parent : "") + File.separator + fileName);
@@ -26,7 +26,7 @@ public class Configuration extends PropertiesConfiguration {
 		catch (final Exception e) {
 			config = new File(fileName);
 		}
-		return config;
+		return config.getPath();
 	}
 
 	public String getString(final String key) {

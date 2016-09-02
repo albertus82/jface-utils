@@ -15,17 +15,21 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ConfigurationDialog extends PreferenceDialog {
 
+	private final String title;
 	private final Image[] images;
 
-	public ConfigurationDialog(final Shell parentShell, final PreferenceManager manager, final Image[] images) {
+	public ConfigurationDialog(final Shell parentShell, final PreferenceManager manager, final String title, final Image[] images) {
 		super(parentShell, manager);
+		this.title = title;
 		this.images = images;
 	}
 
 	@Override
 	protected void configureShell(final Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(JFaceResources.get("lbl.preferences.title"));
+		if (title != null) {
+			newShell.setText(title);
+		}
 		if (images != null) {
 			newShell.setImages(images);
 		}

@@ -1,15 +1,7 @@
 package it.albertus.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TreeMap;
 
 /**
@@ -17,43 +9,16 @@ import java.util.TreeMap;
  * costruttore {@link #Configuration(String)} passando come parametro il nome
  * del file di configurazione da caricare.
  */
-public class Configuration implements IConfiguration {
-
-	private final Properties properties = new Properties();
-	private final String fileName;
+public class Configuration extends PropertiesConfiguration {
 
 	public Configuration(final String fileName) {
-		this.fileName = fileName;
-		try {
-			load();
-		}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
+		super(fileName);
 	}
 
-	protected void load() throws IOException {
-		final InputStream inputStream = openInputStream();
-		if (inputStream != null) {
-			synchronized (properties) {
-				properties.clear();
-				properties.load(inputStream);
-			}
-			inputStream.close();
-		}
-	}
-
-	public void reload() {
-		try {
-			load();
-		}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-	}
-
+	@Override
 	public File getFile() {
 		File config;
+		final String fileName = getFileName();
 		try {
 			final String parent = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent();
 			config = new File((parent != null ? parent : "") + File.separator + fileName);
@@ -64,46 +29,17 @@ public class Configuration implements IConfiguration {
 		return config;
 	}
 
-	@Override
-	public InputStream openInputStream() throws IOException {
-		final InputStream inputStream;
-		final File config = getFile();
-		if (config != null && config.exists()) {
-			inputStream = new BufferedInputStream(new FileInputStream(config));
-		}
-		else {
-			inputStream = getClass().getResourceAsStream('/' + fileName);
-		}
-		return inputStream;
-	}
-
-	@Override
-	public OutputStream openOutputStream() throws IOException {
-		final OutputStream outputStream;
-		final File config = getFile();
-		outputStream = new BufferedOutputStream(new FileOutputStream(config));
-		return outputStream;
-	}
-
-	public Properties getProperties() {
-		return properties;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
 	public String getString(final String key) {
-		return properties.getProperty(key);
+		return getProperties().getProperty(key);
 	}
 
 	public String getString(final String key, final String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+		return getProperties().getProperty(key, defaultValue);
 	}
 
 	public char[] getCharArray(final String key) {
 		try {
-			return properties.getProperty(key).toCharArray();
+			return getProperties().getProperty(key).toCharArray();
 		}
 		catch (final Exception e) {
 			return null;
@@ -248,14 +184,14 @@ public class Configuration implements IConfiguration {
 	}
 
 	public boolean contains(final String key) {
-		return properties.get(key) != null;
+		return getProperties().get(key) != null;
 	}
 
 	@Override
 	public String toString() {
 		final Map<String, String> properties = new TreeMap<String, String>();
-		for (final Object key : this.properties.keySet()) {
-			properties.put((String) key, this.properties.getProperty((String) key));
+		for (final Object key : getProperties().keySet()) {
+			properties.put((String) key, getProperties().getProperty((String) key));
 		}
 		return properties.toString();
 	}

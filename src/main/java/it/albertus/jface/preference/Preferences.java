@@ -3,6 +3,9 @@ package it.albertus.jface.preference;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.IConfiguration;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -70,11 +73,12 @@ public class Preferences {
 		// Load configuration file...
 		InputStream configurationInputStream = null;
 		try {
-			configurationInputStream = configuration.openInputStream();
+			configurationInputStream = new BufferedInputStream(new FileInputStream(configuration.getFile()));
 			if (configurationInputStream != null) {
 				preferenceStore.load(configurationInputStream);
 			}
 		}
+		catch (final FileNotFoundException fnfe) {/* Ignore */}
 		catch (final IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
@@ -82,7 +86,7 @@ public class Preferences {
 			try {
 				configurationInputStream.close();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 
 		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, images);

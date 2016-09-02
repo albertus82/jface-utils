@@ -6,6 +6,8 @@ import it.albertus.jface.preference.StaticLabelsAndValues;
 import it.albertus.util.IConfiguration;
 import it.albertus.util.NewLine;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -86,7 +88,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		// Save configuration file...
 		OutputStream configurationOutputStream = null;
 		try {
-			configurationOutputStream = configuration.openOutputStream();
+			configurationOutputStream = new BufferedOutputStream(new FileOutputStream(configuration.getFile()));
 			((PreferenceStore) getPreferenceStore()).save(configurationOutputStream, null);
 		}
 		catch (final IOException ioe) {

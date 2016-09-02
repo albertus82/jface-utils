@@ -24,7 +24,8 @@ public class Preferences {
 	protected final IPreference[] preferences;
 	protected final Image[] images;
 
-	protected boolean restartRequired = false;
+	private boolean restartRequired = false;
+	private PreferenceDialog preferenceDialog;
 
 	public Preferences(final IConfiguration configuration, final IPageDefinition[] pageDefinitions, final IPreference[] preferences) {
 		this(configuration, pageDefinitions, preferences, null);
@@ -84,7 +85,7 @@ public class Preferences {
 			catch (final Exception e) {}
 		}
 
-		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, images);
+		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, images);
 
 		preferenceDialog.setPreferenceStore(preferenceStore);
 
@@ -119,8 +120,16 @@ public class Preferences {
 		return returnCode;
 	}
 
+	protected PreferenceDialog getPreferenceDialog() {
+		return preferenceDialog;
+	}
+
 	public boolean isRestartRequired() {
 		return restartRequired;
+	}
+
+	protected void setRestartRequired(final boolean restartRequired) {
+		this.restartRequired = restartRequired;
 	}
 
 }

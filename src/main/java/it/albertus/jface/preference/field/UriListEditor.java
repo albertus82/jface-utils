@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,7 +109,7 @@ public class UriListEditor extends LocalizedListEditor {
 		@Override
 		protected void configureShell(final Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText(JFaceResources.get("lbl.preferences.uri.add.title"));
+			newShell.setText(JFaceMessages.get("lbl.preferences.uri.add.title"));
 			if (images != null) {
 				newShell.setImages(images);
 			}
@@ -118,8 +118,8 @@ public class UriListEditor extends LocalizedListEditor {
 		@Override
 		public void create() {
 			super.create();
-			setTitle(JFaceResources.get("lbl.preferences.uri.add.title"));
-			setMessage(JFaceResources.get("lbl.preferences.uri.add.message"), IMessageProvider.INFORMATION);
+			setTitle(JFaceMessages.get("lbl.preferences.uri.add.title"));
+			setMessage(JFaceMessages.get("lbl.preferences.uri.add.message"), IMessageProvider.INFORMATION);
 		}
 
 		@Override
@@ -130,7 +130,7 @@ public class UriListEditor extends LocalizedListEditor {
 			GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(container);
 
 			final Label labelName = new Label(container, SWT.NONE);
-			labelName.setText(JFaceResources.get("lbl.preferences.uri.add.address"));
+			labelName.setText(JFaceMessages.get("lbl.preferences.uri.add.address"));
 			GridDataFactory.swtDefaults().applyTo(labelName);
 
 			textUri = new Text(container, SWT.BORDER);
@@ -146,11 +146,11 @@ public class UriListEditor extends LocalizedListEditor {
 			super.createButtonsForButtonBar(parent);
 
 			okButton = getButton(IDialogConstants.OK_ID);
-			okButton.setText(JFaceResources.get("lbl.button.ok"));
+			okButton.setText(JFaceMessages.get("lbl.button.ok"));
 			okButton.setEnabled(false);
 
 			cancelButton = getButton(IDialogConstants.CANCEL_ID);
-			cancelButton.setText(JFaceResources.get("lbl.button.cancel"));
+			cancelButton.setText(JFaceMessages.get("lbl.button.cancel"));
 		}
 
 		@Override

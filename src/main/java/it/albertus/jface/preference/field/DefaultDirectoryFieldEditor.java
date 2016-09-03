@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 import it.albertus.util.Localized;
 
@@ -24,7 +24,7 @@ public class DefaultDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	public DefaultDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		setErrorMessage(JFaceResources.get("err.preferences.directory"));
+		setErrorMessage(JFaceMessages.get("err.preferences.directory"));
 		setTextLimit(MAX_PATH);
 	}
 
@@ -32,7 +32,7 @@ public class DefaultDirectoryFieldEditor extends DirectoryFieldEditor {
 	protected Button getChangeControl(final Composite parent) {
 		final Button browseButton = super.getChangeControl(parent);
 		if (!localized) {
-			browseButton.setText(JFaceResources.get("lbl.button.browse"));
+			browseButton.setText(JFaceMessages.get("lbl.button.browse"));
 			localized = true;
 		}
 		return browseButton;
@@ -76,7 +76,7 @@ public class DefaultDirectoryFieldEditor extends DirectoryFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
+			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +45,7 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (radioBox != null && !radioBox.isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			radioBox.setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
+			radioBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

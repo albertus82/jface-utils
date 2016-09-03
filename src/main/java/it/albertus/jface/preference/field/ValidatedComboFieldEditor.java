@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 
 import org.eclipse.swt.events.KeyAdapter;
@@ -15,7 +15,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 
 	public ValidatedComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setErrorMessage(JFaceResources.get("err.preferences.combo.empty"));
+		setErrorMessage(JFaceMessages.get("err.preferences.combo.empty"));
 		getComboBoxControl().addKeyListener(new ValidateKeyListener());
 	}
 
@@ -74,7 +74,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 
 	protected void setToolTipText(final String defaultValue) {
 		if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getComboBoxControl().setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
+			getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

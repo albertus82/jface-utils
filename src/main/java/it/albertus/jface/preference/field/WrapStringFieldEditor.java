@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 
 import java.util.prefs.Preferences;
 
@@ -29,7 +29,7 @@ public class WrapStringFieldEditor extends StringFieldEditor {
 	public WrapStringFieldEditor(final String name, final String labelText, final Composite parent, final int height) {
 		super(name, labelText, parent);
 		adjustTextHeight(height);
-		setErrorMessage(JFaceResources.get("err.preferences.string"));
+		setErrorMessage(JFaceMessages.get("err.preferences.string"));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
 	}
 

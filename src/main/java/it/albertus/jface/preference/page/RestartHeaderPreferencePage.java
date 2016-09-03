@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 
 import org.eclipse.swt.SWT;
@@ -14,7 +14,7 @@ public class RestartHeaderPreferencePage extends BasePreferencePage {
 		// return createNoteComposite(null, getFieldEditorParent(), JFaceResources.get("lbl.preferences.header.restart"), "");
 		final Label header = new Label(getFieldEditorParent(), SWT.WRAP);
 		TextFormatter.setBoldFontStyle(header);
-		header.setText(JFaceResources.get("lbl.preferences.header.restart"));
+		header.setText(JFaceMessages.get("lbl.preferences.header.restart"));
 		return header;
 	}
 

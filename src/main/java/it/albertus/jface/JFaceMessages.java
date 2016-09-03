@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class JFaceResources {
+public class JFaceMessages {
 
 	public enum Language {
 		ENGLISH(Locale.ENGLISH),
@@ -23,7 +23,7 @@ public class JFaceResources {
 		}
 	}
 
-	private static final String BASE_NAME = JFaceResources.class.getName().toLowerCase();
+	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase();
 
 	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
 
@@ -60,6 +60,6 @@ public class JFaceResources {
 	}
 
 	/** Instantiation not permitted. */
-	private JFaceResources() {}
+	private JFaceMessages() {}
 
 }

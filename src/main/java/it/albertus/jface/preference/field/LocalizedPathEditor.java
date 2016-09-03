@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.util.Localized;
 
 import java.io.File;
@@ -59,16 +59,16 @@ public class LocalizedPathEditor extends PathEditor {
 		final Composite buttonBox = super.getButtonBoxControl(parent);
 		if (!localized) {
 			final Button addButton = getAddButton();
-			addButton.setText(JFaceResources.get("lbl.preferences.list.button.add"));
+			addButton.setText(JFaceMessages.get("lbl.preferences.list.button.add"));
 
 			final Button removeButton = getRemoveButton();
-			removeButton.setText(JFaceResources.get("lbl.preferences.list.button.remove"));
+			removeButton.setText(JFaceMessages.get("lbl.preferences.list.button.remove"));
 
 			final Button upButton = getUpButton();
-			upButton.setText(JFaceResources.get("lbl.preferences.list.button.up"));
+			upButton.setText(JFaceMessages.get("lbl.preferences.list.button.up"));
 
 			final Button downButton = getDownButton();
-			downButton.setText(JFaceResources.get("lbl.preferences.list.button.down"));
+			downButton.setText(JFaceMessages.get("lbl.preferences.list.button.down"));
 
 			localized = true;
 		}

@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
@@ -280,7 +280,7 @@ public class FieldEditorFactory {
 			fontFieldEditor.setChangeButtonText(data.getFontChangeButtonText().getString());
 		}
 		else {
-			fontFieldEditor.setChangeButtonText(JFaceResources.get("lbl.button.change"));
+			fontFieldEditor.setChangeButtonText(JFaceMessages.get("lbl.button.change"));
 		}
 		return fontFieldEditor;
 	}

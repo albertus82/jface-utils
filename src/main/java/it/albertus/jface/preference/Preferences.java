@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.page.IPageDefinition;
 
 import java.io.BufferedInputStream;
@@ -27,7 +27,7 @@ public class Preferences {
 	private final IPreference[] preferences;
 	private final Image[] images;
 
-	private String dialogTitle = JFaceResources.get("lbl.preferences.title");
+	private String dialogTitle = JFaceMessages.get("lbl.preferences.title");
 	private PreferenceDialog preferenceDialog;
 	private boolean restartRequired = false;
 

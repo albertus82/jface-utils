@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceResources;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 import it.albertus.jface.preference.field.listener.IntegerVerifyListener;
 
@@ -71,7 +71,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 
 	protected void setToolTipText(final int defaultValue) {
 		if (text != null && !text.isDisposed() && defaultValue != 0) {
-			text.setToolTipText(JFaceResources.get("lbl.preferences.default.value", defaultValue));
+			text.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 

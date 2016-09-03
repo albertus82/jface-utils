@@ -156,7 +156,7 @@ You can surely improve this code, for example introducing localization and autod
 
 The interface [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) declares two methods:
 * **`getFileName`**: must return the path and name of your configuration file.
-* **`reload`**: must **reload the configuration file and update your in-memory configuration properties**, so that your application can see the updated values. This method will be called automatically when necessary (callback).
+* **`reload`**: must **reload the configuration file and update your in-memory configuration properties**, so that your application can see the updated values. This method is invoked automatically when necessary (callback).
 
 You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/it/albertus/jface/preference/PreferencesCallback.java) or use/extend [`PropertiesConfiguration`] (src/main/java/it/albertus/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/it/albertus/util/Configuration.java) depending on your needs.
 

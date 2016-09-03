@@ -163,7 +163,7 @@ You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jf
 
 ### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
 
-The [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interface already declares [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) variable:
+The [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interface already declares a ready-to-use [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) variable:
 
 ```java
 public static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();

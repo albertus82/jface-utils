@@ -40,6 +40,7 @@ public class PreferencesExample {
 		button.setText("Open preferences dialog");
 
 		shell.pack();
+		shell.setSize(shell.getSize().x * 2, shell.getSize().y * 2);
 		shell.open();
 
 		while (!shell.isDisposed()) {

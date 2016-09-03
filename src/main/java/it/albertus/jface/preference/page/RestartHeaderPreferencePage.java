@@ -13,7 +13,7 @@ public class RestartHeaderPreferencePage extends BasePreferencePage {
 
 	@Override
 	protected Control createHeader() {
-		// return createNoteComposite(null, getFieldEditorParent(), message, "");
+		// return createNoteComposite(null, getFieldEditorParent(), restartMessage, "");
 		final Label header = new Label(getFieldEditorParent(), SWT.WRAP);
 		TextFormatter.setBoldFontStyle(header);
 		header.setText(restartMessage);

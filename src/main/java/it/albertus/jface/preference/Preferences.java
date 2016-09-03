@@ -42,8 +42,8 @@ public class Preferences {
 		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
 		this.images = images;
-		preferenceManager = createPreferenceManager();
-		preferenceStore = createPreferenceStore();
+		this.preferenceManager = createPreferenceManager();
+		this.preferenceStore = createPreferenceStore();
 	}
 
 	public int openDialog(final Shell parentShell) {

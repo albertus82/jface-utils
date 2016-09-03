@@ -47,48 +47,9 @@ public class Preferences {
 	}
 
 	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
-		final PreferenceManager preferenceManager = new PreferenceManager();
+		final PreferenceManager preferenceManager = createPreferenceManager();
 
-		// Pages creation...
-		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
-		for (final IPageDefinition page : pageDefinitions) {
-			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, preferencesCallback);
-			if (page.getParent() != null) {
-				preferenceNodes.get(page.getParent()).add(preferenceNode);
-			}
-			else {
-				preferenceManager.addToRoot(preferenceNode);
-			}
-			preferenceNodes.put(page, preferenceNode);
-		}
-
-		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFileName());
-
-		// Set default values...
-		for (final IPreference preference : preferences) {
-			if (preference.getDefaultValue() != null) {
-				preferenceStore.setDefault(preference.getName(), preference.getDefaultValue());
-			}
-		}
-
-		// Load configuration file...
-		InputStream configurationInputStream = null;
-		try {
-			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
-			if (configurationInputStream != null) {
-				preferenceStore.load(configurationInputStream);
-			}
-		}
-		catch (final FileNotFoundException fnfe) {/* Ignore */}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-		finally {
-			try {
-				configurationInputStream.close();
-			}
-			catch (final Exception e) {/* Ignore */}
-		}
+		final PreferenceStore preferenceStore = createPreferenceStore();
 
 		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
 
@@ -128,6 +89,55 @@ public class Preferences {
 		}
 
 		return returnCode;
+	}
+
+	protected PreferenceStore createPreferenceStore() {
+		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFileName());
+
+		// Set default values...
+		for (final IPreference preference : preferences) {
+			if (preference.getDefaultValue() != null) {
+				preferenceStore.setDefault(preference.getName(), preference.getDefaultValue());
+			}
+		}
+
+		// Load configuration file...
+		InputStream configurationInputStream = null;
+		try {
+			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
+			if (configurationInputStream != null) {
+				preferenceStore.load(configurationInputStream);
+			}
+		}
+		catch (final FileNotFoundException fnfe) {/* Ignore */}
+		catch (final IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+		finally {
+			try {
+				configurationInputStream.close();
+			}
+			catch (final Exception e) {/* Ignore */}
+		}
+		return preferenceStore;
+	}
+
+	protected PreferenceManager createPreferenceManager() {
+		final PreferenceManager preferenceManager = new PreferenceManager();
+
+		// Pages creation...
+		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
+		for (final IPageDefinition page : pageDefinitions) {
+			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, preferencesCallback);
+			if (page.getParent() != null) {
+				preferenceNodes.get(page.getParent()).add(preferenceNode);
+			}
+			else {
+				preferenceManager.addToRoot(preferenceNode);
+			}
+			preferenceNodes.put(page, preferenceNode);
+		}
+		return preferenceManager;
 	}
 
 	public String getDialogTitle() {

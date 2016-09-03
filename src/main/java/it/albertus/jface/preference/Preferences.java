@@ -27,8 +27,10 @@ public class Preferences {
 	private final IPreference[] preferences;
 	private final Image[] images;
 
+	private final PreferenceManager preferenceManager;
+	private final PreferenceStore preferenceStore;
+
 	private String dialogTitle = JFaceMessages.get("lbl.preferences.title");
-	private PreferenceDialog preferenceDialog;
 	private boolean restartRequired = false;
 
 	public Preferences(final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final IPreferencesCallback preferencesCallback) {
@@ -40,6 +42,8 @@ public class Preferences {
 		this.pageDefinitions = pageDefinitions;
 		this.preferences = preferences;
 		this.images = images;
+		preferenceManager = createPreferenceManager();
+		preferenceStore = createPreferenceStore();
 	}
 
 	public int openDialog(final Shell parentShell) {
@@ -47,11 +51,26 @@ public class Preferences {
 	}
 
 	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
-		final PreferenceManager preferenceManager = createPreferenceManager();
+		// Load configuration file...
+		InputStream configurationInputStream = null;
+		try {
+			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
+			if (configurationInputStream != null) {
+				preferenceStore.load(configurationInputStream);
+			}
+		}
+		catch (final FileNotFoundException fnfe) {/* Ignore */}
+		catch (final IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+		finally {
+			try {
+				configurationInputStream.close();
+			}
+			catch (final Exception e) {/* Ignore */}
+		}
 
-		final PreferenceStore preferenceStore = createPreferenceStore();
-
-		preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
+		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
 
 		preferenceDialog.setPreferenceStore(preferenceStore);
 
@@ -101,24 +120,6 @@ public class Preferences {
 			}
 		}
 
-		// Load configuration file...
-		InputStream configurationInputStream = null;
-		try {
-			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
-			if (configurationInputStream != null) {
-				preferenceStore.load(configurationInputStream);
-			}
-		}
-		catch (final FileNotFoundException fnfe) {/* Ignore */}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-		finally {
-			try {
-				configurationInputStream.close();
-			}
-			catch (final Exception e) {/* Ignore */}
-		}
 		return preferenceStore;
 	}
 
@@ -152,28 +153,32 @@ public class Preferences {
 		return restartRequired;
 	}
 
-	protected void setRestartRequired(final boolean restartRequired) {
+	public void setRestartRequired(final boolean restartRequired) {
 		this.restartRequired = restartRequired;
 	}
 
-	protected PreferenceDialog getPreferenceDialog() {
-		return preferenceDialog;
-	}
-
-	protected IPreferencesCallback getPreferencesCallback() {
+	public IPreferencesCallback getPreferencesCallback() {
 		return preferencesCallback;
 	}
 
-	protected IPageDefinition[] getPageDefinitions() {
+	public IPageDefinition[] getPageDefinitions() {
 		return pageDefinitions;
 	}
 
-	protected IPreference[] getPreferences() {
+	public IPreference[] getPreferences() {
 		return preferences;
 	}
 
-	protected Image[] getImages() {
+	public Image[] getImages() {
 		return images;
+	}
+
+	public PreferenceManager getPreferenceManager() {
+		return preferenceManager;
+	}
+
+	public PreferenceStore getPreferenceStore() {
+		return preferenceStore;
 	}
 
 }

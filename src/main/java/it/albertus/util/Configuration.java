@@ -1,6 +1,5 @@
 package it.albertus.util;
 
-import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,20 +12,6 @@ public class Configuration extends PropertiesConfiguration {
 
 	public Configuration(final String fileName) {
 		super(fileName);
-	}
-
-	@Override
-	public String getFileName() {
-		File config;
-		final String fileName = super.getFileName();
-		try {
-			final String parent = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getSchemeSpecificPart()).getParent();
-			config = new File((parent != null ? parent : "") + File.separator + fileName);
-		}
-		catch (final Exception e) {
-			config = new File(fileName);
-		}
-		return config.getPath();
 	}
 
 	public String getString(final String key) {

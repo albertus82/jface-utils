@@ -11,6 +11,7 @@ import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
+import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
@@ -84,6 +85,9 @@ public class FieldEditorFactory {
 		}
 		if (FileFieldEditor.class.equals(type)) {
 			return createFileFieldEditor(name, label, parent, details);
+		}
+		if (FloatFieldEditor.class.equals(type)) {
+			return createFloatFieldEditor(name, label, parent, details);
 		}
 		if (FontFieldEditor.class.equals(type)) {
 			return createFontFieldEditor(name, label, parent, details);
@@ -166,20 +170,20 @@ public class FieldEditorFactory {
 	}
 
 	protected DefaultIntegerFieldEditor createDefaultIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultIntegerFieldEditor formattedIntegerFieldEditor = new DefaultIntegerFieldEditor(name, label, parent);
+		final DefaultIntegerFieldEditor defaultIntegerFieldEditor = new DefaultIntegerFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getEmptyStringAllowed() != null) {
-				formattedIntegerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+				defaultIntegerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
 			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
-				formattedIntegerFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
-				formattedIntegerFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
+				defaultIntegerFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
+				defaultIntegerFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
 			}
 			if (data.getTextLimit() != null) {
-				formattedIntegerFieldEditor.setTextLimit(data.getTextLimit());
+				defaultIntegerFieldEditor.setTextLimit(data.getTextLimit());
 			}
 		}
-		return formattedIntegerFieldEditor;
+		return defaultIntegerFieldEditor;
 	}
 
 	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
@@ -266,6 +270,23 @@ public class FieldEditorFactory {
 			}
 		}
 		return fileFieldEditor;
+	}
+
+	protected FloatFieldEditor createFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final FloatFieldEditor floatFieldEditor = new FloatFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				floatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
+				floatFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
+				floatFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
+			}
+			if (data.getTextLimit() != null) {
+				floatFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return floatFieldEditor;
 	}
 
 	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

@@ -52,6 +52,52 @@ public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 	}
 
 	@Override
+	protected void doStore() {
+		if (!isEmptyStringAllowed()) {
+			super.doStore();
+		}
+		else {
+			final Text text = getTextControl();
+			if (text != null) {
+				getPreferenceStore().setValue(getPreferenceName(), text.getText());
+			}
+		}
+	}
+
+	@Override
+	protected void doLoadDefault() {
+		if (!isEmptyStringAllowed()) {
+			super.doLoadDefault();
+		}
+		else {
+			Text text = getTextControl();
+			if (text != null) {
+				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
+			}
+			valueChanged();
+		}
+	}
+
+	@Override
+	protected boolean checkState() {
+		if (!isEmptyStringAllowed()) {
+			return super.checkState();
+		}
+		else {
+			boolean state = super.checkState();
+			if (!state) {
+				final Text text = getTextControl();
+				if (text != null && "".equals(text.getText())) {
+					clearErrorMessage();
+					state = true;
+				}
+			}
+			return state;
+		}
+
+	}
+
+	@Override
 	protected void valueChanged() {
 		super.valueChanged();
 		updateFontStyle();
@@ -75,7 +121,7 @@ public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 	}
 
 	protected void updateFontStyle() {
-		final int defaultValue = getPreferenceStore().getDefaultInt(getPreferenceName());
+		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
 		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
 	}
 

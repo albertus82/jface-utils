@@ -3,6 +3,7 @@ package it.albertus.jface.preference.field;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 import it.albertus.jface.preference.field.listener.IntegerVerifyListener;
+import it.albertus.util.Configured;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ScaleFieldEditor;
@@ -35,7 +36,12 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 		text.setTextLimit(Integer.toString(getMaximum()).length());
 		text.addFocusListener(new TextFocusListener());
 		text.addKeyListener(new TextKeyListener());
-		text.addVerifyListener(new IntegerVerifyListener());
+		text.addVerifyListener(new IntegerVerifyListener(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return false;
+			}
+		}));
 		return text;
 	}
 

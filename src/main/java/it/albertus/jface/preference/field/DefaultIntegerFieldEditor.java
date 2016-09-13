@@ -3,6 +3,7 @@ package it.albertus.jface.preference.field;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 import it.albertus.jface.preference.field.listener.IntegerVerifyListener;
+import it.albertus.util.Configured;
 
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.events.FocusAdapter;
@@ -13,6 +14,8 @@ import org.eclipse.swt.widgets.Text;
 public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 
 	protected static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
+
+	private int minValidValue = 0;
 
 	public DefaultIntegerFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
 		super(name, labelText, parent, textLimit);
@@ -26,6 +29,7 @@ public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 	@Override
 	public void setValidRange(final int min, final int max) {
 		super.setValidRange(min, max);
+		this.minValidValue = min;
 		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
 	}
 
@@ -54,7 +58,12 @@ public class DefaultIntegerFieldEditor extends IntegerFieldEditor {
 	}
 
 	protected void init() {
-		getTextControl().addVerifyListener(new IntegerVerifyListener());
+		getTextControl().addVerifyListener(new IntegerVerifyListener(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return minValidValue < 0;
+			}
+		}));
 		getTextControl().addFocusListener(new IntegerFocusListener());
 		setErrorMessage(JFaceMessages.get("err.preferences.integer"));
 	}

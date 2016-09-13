@@ -1,9 +1,17 @@
 package it.albertus.jface.preference.field.listener;
 
+import it.albertus.util.Configured;
+
 import org.eclipse.swt.events.VerifyEvent;
 
 /** Accepts only numeric inputs and trims automatically. */
 public abstract class NumberVerifyListener extends TrimVerifyListener {
+
+	protected final Configured<Boolean> allowNegatives;
+
+	protected NumberVerifyListener(final Configured<Boolean> allowNegatives) {
+		this.allowNegatives = allowNegatives;
+	}
 
 	@Override
 	public void verifyText(final VerifyEvent ve) {
@@ -13,6 +21,6 @@ public abstract class NumberVerifyListener extends TrimVerifyListener {
 		}
 	}
 
-	protected abstract boolean isNumeric(final String string);
+	protected abstract boolean isNumeric(String string);
 
 }

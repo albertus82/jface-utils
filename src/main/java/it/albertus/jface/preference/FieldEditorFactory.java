@@ -177,7 +177,7 @@ public class FieldEditorFactory {
 			}
 			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
 				defaultIntegerFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
-				defaultIntegerFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
+				defaultIntegerFieldEditor.setTextLimit(Math.max(data.getIntegerMaxValidValue().toString().length(), data.getIntegerMinValidValue().toString().length()));
 			}
 			if (data.getTextLimit() != null) {
 				defaultIntegerFieldEditor.setTextLimit(data.getTextLimit());

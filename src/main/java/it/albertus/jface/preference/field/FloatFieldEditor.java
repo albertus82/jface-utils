@@ -95,4 +95,12 @@ public class FloatFieldEditor extends StringFieldEditor {
 		return Float.parseFloat(getStringValue());
 	}
 
+	public float getMinValidValue() {
+		return minValidValue;
+	}
+
+	public float getMaxValidValue() {
+		return maxValidValue;
+	}
+
 }

@@ -2,7 +2,7 @@ package it.albertus.jface.preference.field.listener;
 
 import it.albertus.util.Configured;
 
-/** Accepts only numeric inputs and trims automatically. */
+/** Accepts only integer inputs and trims automatically. */
 public class IntegerVerifyListener extends NumberVerifyListener {
 
 	public IntegerVerifyListener(final Configured<Boolean> allowNegatives) {

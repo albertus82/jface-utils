@@ -36,9 +36,9 @@ public class FieldEditorDetails {
 	private Integer textHeight;
 	private Integer textValidateStrategy;
 
-	// IntegerFieldEditor
-	private Integer integerMinValidValue;
-	private Integer integerMaxValidValue;
+	// IntegerFieldEditor & FloatFieldEditor
+	private Number numberMinValidValue;
+	private Number numberMaxValidValue;
 
 	// DirectoryFieldEditor & PathEditor
 	private Localized directoryDialogMessage;
@@ -174,20 +174,20 @@ public class FieldEditorDetails {
 		this.textValidateStrategy = textValidateStrategy;
 	}
 
-	public Integer getIntegerMinValidValue() {
-		return integerMinValidValue;
+	public Number getNumberMinValidValue() {
+		return numberMinValidValue;
 	}
 
-	public void setIntegerMinValidValue(final Integer integerMinValidValue) {
-		this.integerMinValidValue = integerMinValidValue;
+	public void setNumberMinValidValue(final Number numberMinValidValue) {
+		this.numberMinValidValue = numberMinValidValue;
 	}
 
-	public Integer getIntegerMaxValidValue() {
-		return integerMaxValidValue;
+	public Number getNumberMaxValidValue() {
+		return numberMaxValidValue;
 	}
 
-	public void setIntegerMaxValidValue(final Integer integerMaxValidValue) {
-		this.integerMaxValidValue = integerMaxValidValue;
+	public void setNumberMaxValidValue(final Number numberMaxValidValue) {
+		this.numberMaxValidValue = numberMaxValidValue;
 	}
 
 	public Localized getDirectoryDialogMessage() {
@@ -234,7 +234,7 @@ public class FieldEditorDetails {
 	public String toString() {
 		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "")
 				+ (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "")
-				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (integerMinValidValue != null ? "integerMinValidValue=" + integerMinValidValue + ", " : "") + (integerMaxValidValue != null ? "integerMaxValidValue=" + integerMaxValidValue + ", " : "")
+				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinValidValue != null ? "numberMinValidValue=" + numberMinValidValue + ", " : "") + (numberMaxValidValue != null ? "numberMaxValidValue=" + numberMaxValidValue + ", " : "")
 				+ (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
@@ -252,8 +252,8 @@ public class FieldEditorDetails {
 		this.textWidth = builder.textWidth;
 		this.textHeight = builder.textHeight;
 		this.textValidateStrategy = builder.textValidateStrategy;
-		this.integerMinValidValue = builder.integerMinValidValue;
-		this.integerMaxValidValue = builder.integerMaxValidValue;
+		this.numberMinValidValue = builder.numberMinValidValue;
+		this.numberMaxValidValue = builder.numberMaxValidValue;
 		this.directoryDialogMessage = builder.directoryDialogMessage;
 		this.fileExtensions = builder.fileExtensions;
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
@@ -279,8 +279,8 @@ public class FieldEditorDetails {
 		private Integer textWidth;
 		private Integer textHeight;
 		private Integer textValidateStrategy;
-		private Integer integerMinValidValue;
-		private Integer integerMaxValidValue;
+		private Number numberMinValidValue;
+		private Number numberMaxValidValue;
 		private Localized directoryDialogMessage;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
@@ -351,9 +351,9 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder integerValidRange(final int min, final int max) {
-			this.integerMinValidValue = min;
-			this.integerMaxValidValue = max;
+		public FieldEditorDetailsBuilder numberValidRange(final Number min, final Number max) {
+			this.numberMinValidValue = min;
+			this.numberMaxValidValue = max;
 			return this;
 		}
 

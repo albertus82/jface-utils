@@ -5,6 +5,7 @@ import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
 import it.albertus.jface.preference.field.DefaultFileFieldEditor;
+import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
 import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
@@ -61,6 +62,9 @@ public class FieldEditorFactory {
 		}
 		if (DefaultFileFieldEditor.class.equals(type)) {
 			return createDefaultFileFieldEditor(name, label, parent, details);
+		}
+		if (DefaultFloatFieldEditor.class.equals(type)) {
+			return createDefaultFloatFieldEditor(name, label, parent, details);
 		}
 		if (DefaultIntegerFieldEditor.class.equals(type)) {
 			return createDefaultIntegerFieldEditor(name, label, parent, details);
@@ -169,15 +173,31 @@ public class FieldEditorFactory {
 		return formattedFileFieldEditor;
 	}
 
+	protected DefaultFloatFieldEditor createDefaultFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DefaultFloatFieldEditor defaultFloatFieldEditor = new DefaultFloatFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				defaultFloatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				defaultFloatFieldEditor.setValidRange(data.getNumberMinValidValue().floatValue(), data.getNumberMaxValidValue().floatValue());
+			}
+			if (data.getTextLimit() != null) {
+				defaultFloatFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return defaultFloatFieldEditor;
+	}
+
 	protected DefaultIntegerFieldEditor createDefaultIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultIntegerFieldEditor defaultIntegerFieldEditor = new DefaultIntegerFieldEditor(name, label, parent);
 		if (data != null) {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultIntegerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
-				defaultIntegerFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
-				defaultIntegerFieldEditor.setTextLimit(Math.max(data.getIntegerMaxValidValue().toString().length(), data.getIntegerMinValidValue().toString().length()));
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				defaultIntegerFieldEditor.setValidRange(data.getNumberMinValidValue().intValue(), data.getNumberMaxValidValue().intValue());
+				defaultIntegerFieldEditor.setTextLimit(Math.max(Integer.valueOf(data.getNumberMaxValidValue().intValue()).toString().length(), Integer.valueOf(data.getNumberMinValidValue().intValue()).toString().length()));
 			}
 			if (data.getTextLimit() != null) {
 				defaultIntegerFieldEditor.setTextLimit(data.getTextLimit());
@@ -278,9 +298,8 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				floatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
-				floatFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
-				floatFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				floatFieldEditor.setValidRange(data.getNumberMinValidValue().floatValue(), data.getNumberMaxValidValue().floatValue());
 			}
 			if (data.getTextLimit() != null) {
 				floatFieldEditor.setTextLimit(data.getTextLimit());
@@ -312,9 +331,9 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				integerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getIntegerMinValidValue() != null && data.getIntegerMaxValidValue() != null) {
-				integerFieldEditor.setValidRange(data.getIntegerMinValidValue(), data.getIntegerMaxValidValue());
-				integerFieldEditor.setTextLimit(data.getIntegerMaxValidValue().toString().length());
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				integerFieldEditor.setValidRange(data.getNumberMinValidValue().intValue(), data.getNumberMaxValidValue().intValue());
+				integerFieldEditor.setTextLimit(Math.max(Integer.valueOf(data.getNumberMaxValidValue().intValue()).toString().length(), Integer.valueOf(data.getNumberMinValidValue().intValue()).toString().length()));
 			}
 			if (data.getTextLimit() != null) {
 				integerFieldEditor.setTextLimit(data.getTextLimit());

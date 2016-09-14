@@ -9,6 +9,15 @@ public class FloatVerifyListener extends NumberVerifyListener {
 		super(allowNegatives);
 	}
 
+	public FloatVerifyListener(final boolean allowNegatives) {
+		this(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return allowNegatives;
+			}
+		});
+	}
+
 	@Override
 	protected boolean isNumeric(final String string) {
 		try {

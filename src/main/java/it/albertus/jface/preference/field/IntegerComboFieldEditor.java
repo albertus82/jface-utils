@@ -1,7 +1,7 @@
 package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.preference.field.listener.LowercaseVerifyListener;
+import it.albertus.jface.listener.LowercaseVerifyListener;
 
 import org.eclipse.swt.widgets.Composite;
 

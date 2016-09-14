@@ -1,4 +1,4 @@
-package it.albertus.jface.preference.field.listener;
+package it.albertus.jface.listener;
 
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;

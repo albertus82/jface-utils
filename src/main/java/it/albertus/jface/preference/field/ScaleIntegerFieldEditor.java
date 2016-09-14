@@ -2,7 +2,7 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
-import it.albertus.jface.preference.field.listener.IntegerVerifyListener;
+import it.albertus.jface.listener.IntegerVerifyListener;
 import it.albertus.util.Configured;
 
 import org.eclipse.jface.layout.GridDataFactory;

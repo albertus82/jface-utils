@@ -1,4 +1,4 @@
-package it.albertus.jface.preference.field.listener;
+package it.albertus.jface.listener;
 
 import it.albertus.util.Configured;
 

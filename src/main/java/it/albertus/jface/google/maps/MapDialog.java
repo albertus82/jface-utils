@@ -201,7 +201,7 @@ public class MapDialog extends Dialog {
 		return returnCode;
 	}
 
-	public void setReturnCode(final int returnCode) {
+	protected void setReturnCode(final int returnCode) {
 		this.returnCode = returnCode;
 	}
 

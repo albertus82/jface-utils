@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MapDialog extends Dialog {
 
+	public static final String API_URL = "http://maps.googleapis.com/maps/api/js";
 	public static final String OPTIONS_PLACEHOLDER = "/* Options */";
 	public static final String MARKERS_PLACEHOLDER = "/* Markers */";
 
@@ -132,8 +133,12 @@ public class MapDialog extends Dialog {
 			writer = new BufferedWriter(new FileWriter(tempFile));
 			String line;
 			while ((line = reader.readLine()) != null) {
+				// Language
+				if (line.contains(API_URL) && !JFaceMessages.getLanguage().getLocale().getLanguage().isEmpty()) {
+					line = line.replace(API_URL, API_URL + "?language=" + JFaceMessages.getLanguage().getLocale().getLanguage());
+				}
 				// Options
-				if (line.contains(OPTIONS_PLACEHOLDER)) {
+				else if (line.contains(OPTIONS_PLACEHOLDER)) {
 					final StringBuilder optionsBlock = new StringBuilder();
 					optionsBlock.append('\t').append("center: new google.maps.LatLng(").append(options.getCenterLat()).append(", ").append(options.getCenterLng()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					optionsBlock.append('\t').append("zoom: ").append(options.getZoom()).append(',').append(NewLine.SYSTEM_LINE_SEPARATOR);

@@ -3,6 +3,7 @@ package it.albertus.jface.preference;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
+import it.albertus.jface.preference.field.DefaultDateFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
 import it.albertus.jface.preference.field.DefaultFileFieldEditor;
 import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
@@ -56,6 +57,9 @@ public class FieldEditorFactory {
 		}
 		if (DefaultComboFieldEditor.class.equals(type)) {
 			return new DefaultComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		}
+		if (DefaultDateFieldEditor.class.equals(type)) {
+			return createDefaultDateFieldEditor(name, label, parent, details);
 		}
 		if (DefaultDirectoryFieldEditor.class.equals(type)) {
 			return createDefaultDirectoryFieldEditor(name, label, parent, details);
@@ -133,6 +137,32 @@ public class FieldEditorFactory {
 			return createWrapStringFieldEditor(name, label, parent, details);
 		}
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
+	}
+
+	protected DefaultDateFieldEditor createDefaultDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DefaultDateFieldEditor formattedDateFieldEditor;
+		if (data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
+			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), data.getTextValidateStrategy(), parent);
+		}
+		else if (data.getTextValidateStrategy() != null) {
+			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), StringFieldEditor.UNLIMITED, data.getTextValidateStrategy(), parent);
+		}
+		else if (data.getTextWidth() != null) {
+			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), parent);
+		}
+		else {
+			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), parent);
+		}
+		if (data.getEmptyStringAllowed() != null) {
+			formattedDateFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getTextLimit() != null) {
+			formattedDateFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		if (data.getDateMinValidValue() != null && data.getDateMaxValidValue() != null) {
+			formattedDateFieldEditor.setValidRange(data.getDateMinValidValue(), data.getDateMaxValidValue());
+		}
+		return formattedDateFieldEditor;
 	}
 
 	protected DefaultDirectoryFieldEditor createDefaultDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

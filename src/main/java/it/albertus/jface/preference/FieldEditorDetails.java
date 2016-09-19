@@ -3,6 +3,7 @@ package it.albertus.jface.preference;
 import it.albertus.util.Localized;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.graphics.Image;
@@ -39,6 +40,11 @@ public class FieldEditorDetails {
 	// IntegerFieldEditor & FloatFieldEditor
 	private Number numberMinValidValue;
 	private Number numberMaxValidValue;
+
+	// DateFieldEditor
+	private String datePattern;
+	private Date dateMinValidValue;
+	private Date dateMaxValidValue;
 
 	// DirectoryFieldEditor & PathEditor
 	private Localized directoryDialogMessage;
@@ -230,12 +236,37 @@ public class FieldEditorDetails {
 		this.fontChangeButtonText = fontChangeButtonText;
 	}
 
+	public String getDatePattern() {
+		return datePattern;
+	}
+
+	public void setDatePattern(final String datePattern) {
+		this.datePattern = datePattern;
+	}
+
+	public Date getDateMinValidValue() {
+		return dateMinValidValue;
+	}
+
+	public void setDateMinValidValue(final Date dateMinValidValue) {
+		this.dateMinValidValue = dateMinValidValue;
+	}
+
+	public Date getDateMaxValidValue() {
+		return dateMaxValidValue;
+	}
+
+	public void setDateMaxValidValue(final Date dateMaxValidValue) {
+		this.dateMaxValidValue = dateMaxValidValue;
+	}
+
 	@Override
 	public String toString() {
 		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "")
 				+ (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "")
-				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinValidValue != null ? "numberMinValidValue=" + numberMinValidValue + ", " : "") + (numberMaxValidValue != null ? "numberMaxValidValue=" + numberMaxValidValue + ", " : "")
-				+ (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinValidValue != null ? "numberMinValidValue=" + numberMinValidValue + ", " : "") + (numberMaxValidValue != null ? "numberMaxValidValue=" + numberMaxValidValue + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "")
+				+ (dateMinValidValue != null ? "dateMinValidValue=" + dateMinValidValue + ", " : "") + (dateMaxValidValue != null ? "dateMaxValidValue=" + dateMaxValidValue + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "")
+				+ (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
@@ -254,6 +285,9 @@ public class FieldEditorDetails {
 		this.textValidateStrategy = builder.textValidateStrategy;
 		this.numberMinValidValue = builder.numberMinValidValue;
 		this.numberMaxValidValue = builder.numberMaxValidValue;
+		this.datePattern = builder.datePattern;
+		this.dateMinValidValue = builder.dateMinValidValue;
+		this.dateMaxValidValue = builder.dateMaxValidValue;
 		this.directoryDialogMessage = builder.directoryDialogMessage;
 		this.fileExtensions = builder.fileExtensions;
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
@@ -281,6 +315,9 @@ public class FieldEditorDetails {
 		private Integer textValidateStrategy;
 		private Number numberMinValidValue;
 		private Number numberMaxValidValue;
+		private String datePattern;
+		private Date dateMinValidValue;
+		private Date dateMaxValidValue;
 		private Localized directoryDialogMessage;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
@@ -354,6 +391,17 @@ public class FieldEditorDetails {
 		public FieldEditorDetailsBuilder numberValidRange(final Number min, final Number max) {
 			this.numberMinValidValue = min;
 			this.numberMaxValidValue = max;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder datePattern(final String datePattern) {
+			this.datePattern = datePattern;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder dateValidRange(final Date from, final Date to) {
+			this.dateMinValidValue = from;
+			this.dateMaxValidValue = to;
 			return this;
 		}
 

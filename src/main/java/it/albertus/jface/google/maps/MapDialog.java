@@ -68,7 +68,6 @@ public class MapDialog extends Dialog {
 			}
 		});
 
-		closeButton.setFocus();
 		shell.setDefaultButton(closeButton);
 		return buttonComposite;
 	}

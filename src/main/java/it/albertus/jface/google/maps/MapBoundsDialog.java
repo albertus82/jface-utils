@@ -36,7 +36,6 @@ public class MapBoundsDialog extends MapDialog {
 		final Button confirmButton = new Button(buttonComposite, SWT.PUSH);
 		confirmButton.setText(JFaceMessages.get("lbl.button.confirm"));
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(BUTTON_WIDTH, SWT.DEFAULT).applyTo(confirmButton);
-		confirmButton.setFocus();
 		confirmButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {

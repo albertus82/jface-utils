@@ -3,6 +3,10 @@ package it.albertus.jface.preference.field;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 
+import java.text.ParseException;
+
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultDateFieldEditor extends DateFieldEditor {
@@ -17,6 +21,12 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 
 	public DefaultDateFieldEditor(final String name, final String labelText, final String pattern, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, pattern, width, strategy, parent);
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+		getTextControl().addFocusListener(new DateFocusListener());
 	}
 
 	@Override
@@ -42,6 +52,19 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
 		if (defaultValue != null && !defaultValue.isEmpty()) {
 			TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+		}
+	}
+
+	protected class DateFocusListener extends FocusAdapter {
+		@Override
+		public void focusLost(final FocusEvent fe) {
+			if (getValidateStrategy() == VALIDATE_ON_KEY_STROKE) {
+				try {
+					getTextControl().setText(formatDate(parseDate(getTextControl().getText())));
+					valueChanged();
+				}
+				catch (final ParseException pe) {/* Ignore */}
+			}
 		}
 	}
 

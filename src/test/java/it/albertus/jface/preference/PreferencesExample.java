@@ -5,6 +5,7 @@ import it.albertus.util.PropertiesConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
@@ -19,13 +20,14 @@ public class PreferencesExample {
 	private final PropertiesConfiguration configuration = new PropertiesConfiguration("configuration.properties");
 
 	private void run() {
-		final Preferences preferences = new Preferences(MyPageDefinition.values(), MyPreference.values(), configuration);
-		preferences.setDialogTitle("Preferences");
-
 		final Display display = Display.getDefault();
+
+		final Preferences preferences = new Preferences(MyPageDefinition.values(), MyPreference.values(), configuration, new Image[] { display.getSystemImage(SWT.ICON_QUESTION) });
+		preferences.setDialogTitle("Preferences");
 
 		final Shell shell = new Shell(display);
 		shell.setText("Preferences example");
+		shell.setImage(display.getSystemImage(SWT.ICON_INFORMATION));
 		shell.setLayout(new FillLayout());
 
 		final Button button = new Button(shell, SWT.NONE);
@@ -40,7 +42,7 @@ public class PreferencesExample {
 		button.setText("Open preferences dialog");
 
 		shell.pack();
-		shell.setSize(shell.getSize().x * 2, shell.getSize().y * 2);
+		shell.setSize(shell.getSize().x * 2, (short) (shell.getSize().y * 1.5));
 		shell.open();
 
 		while (!shell.isDisposed()) {

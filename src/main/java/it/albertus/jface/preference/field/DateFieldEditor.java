@@ -9,10 +9,7 @@ import java.util.Date;
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 public class DateFieldEditor extends StringFieldEditor {
 
@@ -28,6 +25,8 @@ public class DateFieldEditor extends StringFieldEditor {
 	private Date minValidValue;
 	private Date maxValidValue;
 
+	private int validateStrategy;
+
 	protected synchronized Date parseDate(final String source) throws ParseException {
 		return dateFormat.parse(source);
 	}
@@ -38,6 +37,7 @@ public class DateFieldEditor extends StringFieldEditor {
 
 	public DateFieldEditor(final String name, final String labelText, final String pattern, final Composite parent) {
 		super(name, labelText, parent);
+		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.dateFormat = new SimpleDateFormat(pattern);
@@ -46,6 +46,7 @@ public class DateFieldEditor extends StringFieldEditor {
 
 	public DateFieldEditor(final String name, final String labelText, final String pattern, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
+		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.dateFormat = new SimpleDateFormat(pattern);
@@ -54,6 +55,7 @@ public class DateFieldEditor extends StringFieldEditor {
 
 	public DateFieldEditor(final String name, final String labelText, final String pattern, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
+		this.validateStrategy = strategy;
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.dateFormat = new SimpleDateFormat(pattern);
@@ -98,16 +100,6 @@ public class DateFieldEditor extends StringFieldEditor {
 		dateFormat.setLenient(false);
 		setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
-		final Text text = getTextControl();
-		text.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent fe) {
-				try {
-					text.setText(formatDate(parseDate(text.getText())));
-				}
-				catch (final ParseException pe) {/* Ignore */}
-			}
-		});
 	}
 
 	public String getPattern() {
@@ -132,6 +124,16 @@ public class DateFieldEditor extends StringFieldEditor {
 
 	public void setMaxValidValue(final Date maxValidValue) {
 		this.maxValidValue = maxValidValue;
+	}
+
+	public int getValidateStrategy() {
+		return validateStrategy;
+	}
+
+	@Override
+	public void setValidateStrategy(final int value) {
+		super.setValidateStrategy(value);
+		this.validateStrategy = value;
 	}
 
 }

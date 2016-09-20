@@ -114,16 +114,8 @@ public class DateFieldEditor extends StringFieldEditor {
 		return minValidValue;
 	}
 
-	public void setMinValidValue(final Date minValidValue) {
-		this.minValidValue = minValidValue;
-	}
-
 	public Date getMaxValidValue() {
 		return maxValidValue;
-	}
-
-	public void setMaxValidValue(final Date maxValidValue) {
-		this.maxValidValue = maxValidValue;
 	}
 
 	public int getValidateStrategy() {

@@ -9,7 +9,10 @@ import java.util.Date;
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 public class DateFieldEditor extends StringFieldEditor {
 
@@ -95,6 +98,16 @@ public class DateFieldEditor extends StringFieldEditor {
 		dateFormat.setLenient(false);
 		setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
+		final Text text = getTextControl();
+		text.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent fe) {
+				try {
+					text.setText(formatDate(parseDate(text.getText())));
+				}
+				catch (final ParseException pe) {/* Ignore */}
+			}
+		});
 	}
 
 	public String getPattern() {

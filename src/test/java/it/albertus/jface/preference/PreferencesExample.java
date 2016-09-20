@@ -19,8 +19,6 @@ public class PreferencesExample {
 	private final PropertiesConfiguration configuration = new PropertiesConfiguration("configuration.properties");
 
 	private void run() {
-		System.out.println("Before: " + configuration.getProperties());
-
 		final Preferences preferences = new Preferences(MyPageDefinition.values(), MyPreference.values(), configuration);
 		preferences.setDialogTitle("Preferences");
 
@@ -34,7 +32,9 @@ public class PreferencesExample {
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
+				System.out.println("Before: " + configuration.getProperties());
 				preferences.openDialog(shell);
+				System.out.println("After:  " + configuration.getProperties());
 			}
 		});
 		button.setText("Open preferences dialog");
@@ -49,8 +49,6 @@ public class PreferencesExample {
 			}
 		}
 		display.dispose();
-
-		System.out.println("After:  " + configuration.getProperties());
 	}
 
 }

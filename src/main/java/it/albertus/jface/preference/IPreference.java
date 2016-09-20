@@ -2,7 +2,7 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.page.IPageDefinition;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -25,7 +25,7 @@ public interface IPreference {
 
 	boolean isRestartRequired();
 
-	Set<? extends IPreference> getChildren();
+	Collection<? extends IPreference> getChildren();
 
 	FieldEditor createFieldEditor(Composite parent);
 

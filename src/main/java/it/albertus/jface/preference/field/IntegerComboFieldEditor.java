@@ -1,24 +1,18 @@
 package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.listener.LowerCaseVerifyListener;
-import it.albertus.jface.listener.TrimVerifyListener;
-import it.albertus.jface.listener.UpperCaseVerifyListener;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
+public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 
 	protected static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
 	private int minValidValue = 0;
 	private int maxValidValue = Integer.MAX_VALUE;
 
-	protected final LabelsCase labelsCase;
-
 	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		labelsCase = getLabelsCase();
 
 		// Compute text limit & error message...
 		final int length = getMaxLabelLength();
@@ -29,21 +23,6 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 			setErrorMessage(JFaceMessages.get("err.preferences.integer"));
 		}
 		setTextLimit(length);
-
-		// If all the labels are upper or lower case, force the input case.
-		switch (labelsCase) {
-		case UPPER:
-			getComboBoxControl().addVerifyListener(new UpperCaseVerifyListener());
-			break;
-		case LOWER:
-			getComboBoxControl().addVerifyListener(new LowerCaseVerifyListener());
-			break;
-		}
-
-		// If none of the labels contain whitespace, disable the space bar.
-		if (!labelsContainWhitespace()) {
-			getComboBoxControl().addVerifyListener(new TrimVerifyListener());
-		}
 	}
 
 	@Override
@@ -87,7 +66,7 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 		try {
 			newText = getNameForValue(Integer.valueOf(newText).toString());
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -125,43 +104,6 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 
 	public int getMaxValidValue() {
 		return maxValidValue;
-	}
-
-	protected boolean labelsContainWhitespace() {
-		for (final String entry[] : getEntryNamesAndValues()) {
-			if (entry[0].contains(" ")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected LabelsCase getLabelsCase() {
-		int upperCaseCount = 0;
-		int lowerCaseCount = 0;
-		for (final String entry[] : getEntryNamesAndValues()) {
-			if (entry[0].equals(entry[0].toLowerCase())) {
-				lowerCaseCount++;
-			}
-			else if (entry[0].equals(entry[0].toUpperCase())) {
-				upperCaseCount++;
-			}
-		}
-		if (upperCaseCount == getEntryNamesAndValues().length) {
-			return LabelsCase.UPPER;
-		}
-		else if (lowerCaseCount == getEntryNamesAndValues().length) {
-			return LabelsCase.LOWER;
-		}
-		else {
-			return LabelsCase.MIXED;
-		}
-	}
-
-	protected enum LabelsCase {
-		UPPER,
-		LOWER,
-		MIXED;
 	}
 
 }

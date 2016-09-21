@@ -9,33 +9,33 @@ public class MapOptions implements Serializable {
 	public static final MapType DEFAULT_TYPE = MapType.ROADMAP;
 	public static final int DEFAULT_ZOOM = 1;
 
-	private float centerLat;
-	private float centerLng;
+	private double centerLat;
+	private double centerLng;
 	private int zoom = DEFAULT_ZOOM;
 	private MapType type = DEFAULT_TYPE;
 
 	public MapOptions() {}
 
-	public MapOptions(final float centerLat, final float centerLng, final int zoom, final MapType type) {
+	public MapOptions(final double centerLat, final double centerLng, final int zoom, final MapType type) {
 		this.centerLat = centerLat;
 		this.centerLng = centerLng;
 		this.zoom = zoom;
 		this.type = type;
 	}
 
-	public float getCenterLat() {
+	public double getCenterLat() {
 		return centerLat;
 	}
 
-	public void setCenterLat(final float centerLat) {
+	public void setCenterLat(final double centerLat) {
 		this.centerLat = centerLat;
 	}
 
-	public float getCenterLng() {
+	public double getCenterLng() {
 		return centerLng;
 	}
 
-	public void setCenterLng(final float centerLng) {
+	public void setCenterLng(final double centerLng) {
 		this.centerLng = centerLng;
 	}
 
@@ -67,15 +67,18 @@ public class MapOptions implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Float.floatToIntBits(centerLat);
-		result = prime * result + Float.floatToIntBits(centerLng);
+		long temp;
+		temp = Double.doubleToLongBits(centerLat);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(centerLng);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + zoom;
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -86,10 +89,10 @@ public class MapOptions implements Serializable {
 			return false;
 		}
 		MapOptions other = (MapOptions) obj;
-		if (Float.floatToIntBits(centerLat) != Float.floatToIntBits(other.centerLat)) {
+		if (Double.doubleToLongBits(centerLat) != Double.doubleToLongBits(other.centerLat)) {
 			return false;
 		}
-		if (Float.floatToIntBits(centerLng) != Float.floatToIntBits(other.centerLng)) {
+		if (Double.doubleToLongBits(centerLng) != Double.doubleToLongBits(other.centerLng)) {
 			return false;
 		}
 		if (type != other.type) {

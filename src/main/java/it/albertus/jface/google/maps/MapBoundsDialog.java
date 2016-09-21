@@ -40,9 +40,9 @@ public class MapBoundsDialog extends MapDialog {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
 				try {
-					getOptions().setCenterLat(((Number) browser.evaluate("return map.getCenter().lat();")).floatValue());
-					getOptions().setCenterLng(((Number) browser.evaluate("return map.getCenter().lng();")).floatValue());
 					getOptions().setZoom(((Number) browser.evaluate("return map.getZoom();")).intValue());
+					getOptions().setCenterLat((Double) browser.evaluate("return map.getCenter().lat();"));
+					getOptions().setCenterLng((Double) browser.evaluate("return map.getCenter().lng();"));
 					bounds.setNorthEastLat((Double) browser.evaluate("return map.getBounds().getNorthEast().lat();"));
 					bounds.setSouthWestLat((Double) browser.evaluate("return map.getBounds().getSouthWest().lat();"));
 					bounds.setNorthEastLng((Double) browser.evaluate("return map.getBounds().getNorthEast().lng();"));

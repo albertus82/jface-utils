@@ -6,25 +6,25 @@ public class MapMarker implements Serializable {
 
 	private static final long serialVersionUID = -8178591515901703859L;
 
-	private final float latitude;
-	private final float longitude;
+	private final double latitude;
+	private final double longitude;
 	private final String title;
 
-	public MapMarker(final float latitude, final float longitude, final String title) {
+	public MapMarker(final double latitude, final double longitude, final String title) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.title = title != null && !title.trim().isEmpty() ? title.trim() : "";
 	}
 
-	public MapMarker(final float latitude, final float longitude) {
+	public MapMarker(final double latitude, final double longitude) {
 		this(latitude, longitude, null);
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
@@ -33,11 +33,19 @@ public class MapMarker implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "MapMarker [latitude=" + latitude + ", longitude=" + longitude + ", " + (title != null && !title.trim().isEmpty() ? "title=" + title : "") + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Float.floatToIntBits(latitude);
-		result = prime * result + Float.floatToIntBits(longitude);
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -53,18 +61,13 @@ public class MapMarker implements Serializable {
 			return false;
 		}
 		MapMarker other = (MapMarker) obj;
-		if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude)) {
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude)) {
 			return false;
 		}
-		if (Float.floatToIntBits(longitude) != Float.floatToIntBits(other.longitude)) {
+		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude)) {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", " + (title != null && !title.trim().isEmpty() ? "title=" + title : "") + "]";
 	}
 
 }

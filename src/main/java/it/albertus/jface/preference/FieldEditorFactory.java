@@ -6,12 +6,14 @@ import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDateFieldEditor;
 import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
+import it.albertus.jface.preference.field.DefaultDoubleFieldEditor;
 import it.albertus.jface.preference.field.DefaultFileFieldEditor;
 import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
 import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
+import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
@@ -68,6 +70,9 @@ public class FieldEditorFactory {
 		if (DefaultDirectoryFieldEditor.class.equals(type)) {
 			return createDefaultDirectoryFieldEditor(name, label, parent, details);
 		}
+		if (DefaultDoubleFieldEditor.class.equals(type)) {
+			return createDefaultDoubleFieldEditor(name, label, parent, details);
+		}
 		if (DefaultFileFieldEditor.class.equals(type)) {
 			return createDefaultFileFieldEditor(name, label, parent, details);
 		}
@@ -88,6 +93,9 @@ public class FieldEditorFactory {
 		}
 		if (DirectoryFieldEditor.class.equals(type)) {
 			return createDirectoryFieldEditor(name, label, parent, details);
+		}
+		if (DoubleFieldEditor.class.equals(type)) {
+			return createDoubleFieldEditor(name, label, parent, details);
 		}
 		if (EditableComboFieldEditor.class.equals(type)) {
 			return new EditableComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
@@ -211,6 +219,22 @@ public class FieldEditorFactory {
 		return formattedDirectoryFieldEditor;
 	}
 
+	protected DefaultDoubleFieldEditor createDefaultDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DefaultDoubleFieldEditor defaultDoubleFieldEditor = new DefaultDoubleFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				defaultDoubleFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				defaultDoubleFieldEditor.setValidRange(data.getNumberMinValidValue().doubleValue(), data.getNumberMaxValidValue().doubleValue());
+			}
+			if (data.getTextLimit() != null) {
+				defaultDoubleFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return defaultDoubleFieldEditor;
+	}
+
 	protected DefaultFileFieldEditor createDefaultFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DefaultFileFieldEditor formattedFileFieldEditor;
 		if (data != null && data.getFileEnforceAbsolute() != null) {
@@ -319,6 +343,22 @@ public class FieldEditorFactory {
 			}
 		}
 		return directoryFieldEditor;
+	}
+
+	protected DoubleFieldEditor createDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DoubleFieldEditor doubleFieldEditor = new DoubleFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				doubleFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				doubleFieldEditor.setValidRange(data.getNumberMinValidValue().doubleValue(), data.getNumberMaxValidValue().doubleValue());
+			}
+			if (data.getTextLimit() != null) {
+				doubleFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return doubleFieldEditor;
 	}
 
 	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

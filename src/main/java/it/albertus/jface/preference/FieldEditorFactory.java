@@ -121,7 +121,7 @@ public class FieldEditorFactory {
 			return createIntegerFieldEditor(name, label, parent, details);
 		}
 		if (IntegerComboFieldEditor.class.equals(type)) {
-			return new IntegerComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+			return createIntegerComboFieldEditor(name, label, parent, details);
 		}
 		if (LocalizedPathEditor.class.equals(type)) {
 			return createLocalizedPathEditor(name, label, parent, details);
@@ -448,6 +448,22 @@ public class FieldEditorFactory {
 			fontFieldEditor.setChangeButtonText(JFaceMessages.get("lbl.button.change"));
 		}
 		return fontFieldEditor;
+	}
+
+	protected IntegerComboFieldEditor createIntegerComboFieldEditor(String name, String label, Composite parent, FieldEditorDetails data) {
+		final IntegerComboFieldEditor integerComboFieldEditor = new IntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			integerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			integerComboFieldEditor.setValidRange(data.getNumberMinValidValue().intValue(), data.getNumberMaxValidValue().intValue());
+			final int maxNumberLength = Math.max(Integer.valueOf(data.getNumberMaxValidValue().intValue()).toString().length(), Integer.valueOf(data.getNumberMinValidValue().intValue()).toString().length());
+			integerComboFieldEditor.setTextLimit(Math.max(maxNumberLength, integerComboFieldEditor.getMaxLabelLength()));
+		}
+		if (data.getTextLimit() != null) {
+			integerComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return integerComboFieldEditor;
 	}
 
 	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

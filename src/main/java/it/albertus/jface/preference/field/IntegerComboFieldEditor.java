@@ -9,44 +9,35 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 
 	protected static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
+	private int minValidValue = 0;
+	private int maxValidValue = Integer.MAX_VALUE;
+
 	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 
 		// Compute text limit & error message...
-		int length = DEFAULT_TEXT_LIMIT;
-		for (final String entry[] : entryNamesAndValues) {
-			if (entry[0].length() > length) {
-				length = entry[0].length();
-			}
-		}
+		final int length = getMaxLabelLength();
 		if (length > DEFAULT_TEXT_LIMIT) {
-			setErrorMessage(JFaceMessages.get("err.preferences.integer.range", 0, Integer.MAX_VALUE));
+			setErrorMessage(JFaceMessages.get("err.preferences.integer.range", minValidValue, maxValidValue));
 		}
 		else {
 			setErrorMessage(JFaceMessages.get("err.preferences.integer"));
 		}
-		getComboBoxControl().setTextLimit(length);
+		setTextLimit(length);
 
 		getComboBoxControl().addVerifyListener(new LowercaseVerifyListener());
 	}
 
 	@Override
-	protected boolean checkState() {
-		if (getValue() != null) {
-			try {
-				final int number = Integer.parseInt(getValue());
-				if (number >= 0 && number <= Integer.MAX_VALUE) {
-					return true;
-				}
+	protected boolean doCheckState() {
+		try {
+			final int number = Integer.parseInt(getValue());
+			if (number >= minValidValue && number <= maxValidValue) {
+				return true;
 			}
-			catch (final NumberFormatException nfe) {}
 		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
-	}
-
-	@Override
-	protected String getDefaultValue() {
-		return Integer.toString(getPreferenceStore().getDefaultInt(getPreferenceName()));
 	}
 
 	/** Trims value and tries to convert it to integer (removes trailing zeros). */
@@ -92,6 +83,20 @@ public class IntegerComboFieldEditor extends ValidatedComboFieldEditor {
 		catch (final Exception exception) {
 			super.setValue(value);
 		}
+	}
+
+	public void setValidRange(final int min, final int max) {
+		minValidValue = min;
+		maxValidValue = max;
+		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
+	}
+
+	public int getMinValidValue() {
+		return minValidValue;
+	}
+
+	public int getMaxValidValue() {
+		return maxValidValue;
 	}
 
 }

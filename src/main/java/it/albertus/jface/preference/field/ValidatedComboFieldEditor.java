@@ -107,12 +107,21 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 	}
 
 	protected boolean checkState() {
-		if (!emptyStringAllowed && (getValue() == null || getValue().isEmpty())) {
-			return false;
+		if (getValue() == null || getValue().isEmpty()) {
+			if (emptyStringAllowed) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
-			return true;
+			return true && doCheckState();
 		}
+	}
+
+	protected boolean doCheckState() {
+		return true;
 	}
 
 	public String getErrorMessage() {

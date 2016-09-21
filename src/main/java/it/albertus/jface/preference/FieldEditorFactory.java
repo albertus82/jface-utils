@@ -10,6 +10,7 @@ import it.albertus.jface.preference.field.DefaultDoubleFieldEditor;
 import it.albertus.jface.preference.field.DefaultFileFieldEditor;
 import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
 import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
+import it.albertus.jface.preference.field.DefaultLongFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
@@ -19,6 +20,7 @@ import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
+import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
@@ -82,6 +84,9 @@ public class FieldEditorFactory {
 		if (DefaultIntegerFieldEditor.class.equals(type)) {
 			return createDefaultIntegerFieldEditor(name, label, parent, details);
 		}
+		if (DefaultLongFieldEditor.class.equals(type)) {
+			return createDefaultLongFieldEditor(name, label, parent, details);
+		}
 		if (DefaultRadioGroupFieldEditor.class.equals(type)) {
 			return createDefaultRadioGroupFieldEditor(name, label, parent, details);
 		}
@@ -120,6 +125,9 @@ public class FieldEditorFactory {
 		}
 		if (LocalizedPathEditor.class.equals(type)) {
 			return createLocalizedPathEditor(name, label, parent, details);
+		}
+		if (LongFieldEditor.class.equals(type)) {
+			return createLongFieldEditor(name, label, parent, details);
 		}
 		if (PasswordFieldEditor.class.equals(type)) {
 			return createPasswordFieldEditor(name, label, parent, details);
@@ -290,6 +298,23 @@ public class FieldEditorFactory {
 		return defaultIntegerFieldEditor;
 	}
 
+	protected DefaultLongFieldEditor createDefaultLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DefaultLongFieldEditor defaultLongFieldEditor = new DefaultLongFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				defaultLongFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				defaultLongFieldEditor.setValidRange(data.getNumberMinValidValue().longValue(), data.getNumberMaxValidValue().longValue());
+				defaultLongFieldEditor.setTextLimit(Math.max(Long.valueOf(data.getNumberMaxValidValue().longValue()).toString().length(), Long.valueOf(data.getNumberMinValidValue().longValue()).toString().length()));
+			}
+			if (data.getTextLimit() != null) {
+				defaultLongFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return defaultLongFieldEditor;
+	}
+
 	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data.getRadioUseGroup() != null) {
 			return new DefaultRadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent, data.getRadioUseGroup());
@@ -440,6 +465,23 @@ public class FieldEditorFactory {
 			}
 		}
 		return integerFieldEditor;
+	}
+
+	protected LongFieldEditor createLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final LongFieldEditor longFieldEditor = new LongFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				longFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				longFieldEditor.setValidRange(data.getNumberMinValidValue().longValue(), data.getNumberMaxValidValue().longValue());
+				longFieldEditor.setTextLimit(Math.max(Long.valueOf(data.getNumberMaxValidValue().longValue()).toString().length(), Long.valueOf(data.getNumberMinValidValue().longValue()).toString().length()));
+			}
+			if (data.getTextLimit() != null) {
+				longFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return longFieldEditor;
 	}
 
 	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

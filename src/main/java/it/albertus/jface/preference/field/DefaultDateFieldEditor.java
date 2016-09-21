@@ -8,6 +8,7 @@ import java.text.ParseException;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 public class DefaultDateFieldEditor extends DateFieldEditor {
 
@@ -58,9 +59,14 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 	protected class DateFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {
+			final Text text = (Text) fe.widget;
+			final String oldText = text.getText();
 			if (getValidateStrategy() == VALIDATE_ON_KEY_STROKE) {
 				try {
-					getTextControl().setText(formatDate(parseDate(getTextControl().getText())));
+					final String newText = formatDate(parseDate(getTextControl().getText()));
+					if (!oldText.equals(newText)) {
+						text.setText(newText);
+					}
 					valueChanged();
 				}
 				catch (final ParseException pe) {/* Ignore */}

@@ -20,6 +20,7 @@ import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
+import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
@@ -125,6 +126,9 @@ public class FieldEditorFactory {
 		}
 		if (LocalizedPathEditor.class.equals(type)) {
 			return createLocalizedPathEditor(name, label, parent, details);
+		}
+		if (LongComboFieldEditor.class.equals(type)) {
+			return createLongComboFieldEditor(name, label, parent, details);
 		}
 		if (LongFieldEditor.class.equals(type)) {
 			return createLongFieldEditor(name, label, parent, details);
@@ -450,7 +454,7 @@ public class FieldEditorFactory {
 		return fontFieldEditor;
 	}
 
-	protected IntegerComboFieldEditor createIntegerComboFieldEditor(String name, String label, Composite parent, FieldEditorDetails data) {
+	protected IntegerComboFieldEditor createIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final IntegerComboFieldEditor integerComboFieldEditor = new IntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
 		if (data.getEmptyStringAllowed() != null) {
 			integerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
@@ -509,6 +513,22 @@ public class FieldEditorFactory {
 			localizedPathEditor = new LocalizedPathEditor(name, label, null, parent);
 		}
 		return localizedPathEditor;
+	}
+
+	protected LongComboFieldEditor createLongComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final LongComboFieldEditor longComboFieldEditor = new LongComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			longComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			longComboFieldEditor.setValidRange(data.getNumberMinValidValue().longValue(), data.getNumberMaxValidValue().longValue());
+			final int maxNumberLength = Math.max(Long.valueOf(data.getNumberMaxValidValue().longValue()).toString().length(), Long.valueOf(data.getNumberMinValidValue().longValue()).toString().length());
+			longComboFieldEditor.setTextLimit(Math.max(maxNumberLength, longComboFieldEditor.getMaxLabelLength()));
+		}
+		if (data.getTextLimit() != null) {
+			longComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return longComboFieldEditor;
 	}
 
 	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

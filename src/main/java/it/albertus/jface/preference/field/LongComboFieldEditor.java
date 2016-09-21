@@ -4,14 +4,14 @@ import it.albertus.jface.JFaceMessages;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class IntegerComboFieldEditor extends NumberComboFieldEditor {
+public class LongComboFieldEditor extends NumberComboFieldEditor {
 
-	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
 
-	private int minValidValue = 0;
-	private int maxValidValue = Integer.MAX_VALUE;
+	private long minValidValue = 0;
+	private long maxValidValue = Long.MAX_VALUE;
 
-	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
+	public LongComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 
 		// Compute text limit & error message...
@@ -28,7 +28,7 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	protected boolean doCheckState() {
 		try {
-			final int number = Integer.parseInt(getValue());
+			final long number = Long.parseLong(getValue());
 			if (number >= minValidValue && number <= maxValidValue) {
 				return true;
 			}
@@ -37,18 +37,18 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 		return false;
 	}
 
-	/** Trims value and tries to convert it to integer (removes trailing zeros). */
+	/** Trims value and tries to convert it to long (removes trailing zeros). */
 	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {
-			value = Integer.valueOf(value).toString();
+			value = Long.valueOf(value).toString();
 		}
 		catch (final Exception exception) {}
 		return value;
 	}
 
-	/** Trims combo text and converts it to integer (removes trailing zeros). */
+	/** Trims combo text and converts it to long (removes trailing zeros). */
 	@Override
 	protected void cleanComboText() {
 		final String oldText = getComboBoxControl().getText();
@@ -64,7 +64,7 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 		}
 
 		try {
-			newText = getNameForValue(Integer.valueOf(newText).toString());
+			newText = getNameForValue(Long.valueOf(newText).toString());
 		}
 		catch (final Exception exception) {/* Ignore */}
 		if (!newText.equals(oldText)) {
@@ -75,7 +75,7 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	public String getValue() {
 		try {
-			return Integer.valueOf(super.getValue()).toString();
+			return Long.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception exception) {
 			return super.getValue();
@@ -85,24 +85,24 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	protected void setValue(final String value) {
 		try {
-			super.setValue(Integer.valueOf(value).toString());
+			super.setValue(Long.valueOf(value).toString());
 		}
 		catch (final Exception exception) {
 			super.setValue(value);
 		}
 	}
 
-	public void setValidRange(final int min, final int max) {
+	public void setValidRange(final long min, final long max) {
 		minValidValue = min;
 		maxValidValue = max;
 		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
 	}
 
-	public int getMinValidValue() {
+	public long getMinValidValue() {
 		return minValidValue;
 	}
 
-	public int getMaxValidValue() {
+	public long getMaxValidValue() {
 		return maxValidValue;
 	}
 

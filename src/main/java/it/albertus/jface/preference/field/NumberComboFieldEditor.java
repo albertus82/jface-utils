@@ -29,7 +29,7 @@ public abstract class NumberComboFieldEditor extends ValidatedComboFieldEditor {
 			getComboBoxControl().addVerifyListener(new TrimVerifyListener());
 		}
 	}
- 
+
 	protected boolean labelsContainWhitespace() {
 		for (final String entry[] : getEntryNamesAndValues()) {
 			if (entry[0].contains(" ")) {

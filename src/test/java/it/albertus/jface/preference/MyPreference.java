@@ -8,6 +8,7 @@ import it.albertus.jface.preference.field.DefaultDoubleFieldEditor;
 import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
 import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
 import it.albertus.jface.preference.field.DefaultLongFieldEditor;
+import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
@@ -31,8 +32,9 @@ public enum MyPreference implements IPreference {
 	LONG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("long").label("Long").build(), new FieldEditorDetailsBuilder(DefaultLongFieldEditor.class).emptyStringAllowed(true).numberValidRange(-100, Long.MAX_VALUE).build()),
 	FLOAT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("float").label("Float").build(), new FieldEditorDetailsBuilder(DefaultFloatFieldEditor.class).emptyStringAllowed(true).build()),
 	DOUBLE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("double").label("Double").build(), new FieldEditorDetailsBuilder(DefaultDoubleFieldEditor.class).emptyStringAllowed(true).build()),
-	INTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("integerCombo").label("IntegerCombo").defaultValue(55).build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("InTeGeR", 1)).numberValidRange(-1000000, 9999).emptyStringAllowed(true).build()),
-	LONG_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("longCombo").label("LongCombo").defaultValue(100).build(), new FieldEditorDetailsBuilder(LongComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("long", 1)).emptyStringAllowed(false).build()),
+	INTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("integerCombo").label("IntegerCombo").build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("InTeGeR", 1)).numberValidRange(-1000000, 9999).emptyStringAllowed(true).build()),
+	LONG_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("longCombo").label("LongCombo").defaultValue(100).build(), new FieldEditorDetailsBuilder(LongComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("long", 1.0)).emptyStringAllowed(false).build()),
+	FLOAT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("floatCombo").label("FloatCombo").defaultValue(1).build(), new FieldEditorDetailsBuilder(FloatComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("float", 1)).emptyStringAllowed(true).numberValidRange(-10, 66.67).build()),
 	VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("validatedCombo").label("ValidatedCombo").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Validated", "value")).emptyStringAllowed(false).build()),
 	CONFIRM_CLOSE(new PreferenceDetailsBuilder(MyPageDefinition.APPEARANCE).name("confirmClose").label("Confirm close").defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
 	FONT_COLOR(new PreferenceDetailsBuilder(MyPageDefinition.COLORS).name("fontColor").label("Font color").defaultValue("255,0,0").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build()),

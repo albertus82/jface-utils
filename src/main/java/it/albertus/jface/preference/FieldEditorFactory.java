@@ -17,6 +17,7 @@ import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
+import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
@@ -111,6 +112,9 @@ public class FieldEditorFactory {
 		}
 		if (FileFieldEditor.class.equals(type)) {
 			return createFileFieldEditor(name, label, parent, details);
+		}
+		if (FloatComboFieldEditor.class.equals(type)) {
+			return createFloatComboFieldEditor(name, label, parent, details);
 		}
 		if (FloatFieldEditor.class.equals(type)) {
 			return createFloatFieldEditor(name, label, parent, details);
@@ -419,6 +423,20 @@ public class FieldEditorFactory {
 			}
 		}
 		return fileFieldEditor;
+	}
+
+	protected FloatComboFieldEditor createFloatComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final FloatComboFieldEditor floatComboFieldEditor = new FloatComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			floatComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			floatComboFieldEditor.setValidRange(data.getNumberMinValidValue().floatValue(), data.getNumberMaxValidValue().floatValue());
+		}
+		if (data.getTextLimit() != null) {
+			floatComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return floatComboFieldEditor;
 	}
 
 	protected FloatFieldEditor createFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

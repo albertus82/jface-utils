@@ -54,15 +54,6 @@ public class LongComboFieldEditor extends NumberComboFieldEditor {
 		final String oldText = getComboBoxControl().getText();
 		String newText = oldText.trim();
 
-		switch (labelsCase) {
-		case UPPER:
-			newText = newText.toUpperCase();
-			break;
-		case LOWER:
-			newText = newText.toLowerCase();
-			break;
-		}
-
 		try {
 			newText = getNameForValue(Long.valueOf(newText).toString());
 		}

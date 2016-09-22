@@ -15,13 +15,11 @@ public abstract class NumberComboFieldEditor extends ValidatedComboFieldEditor {
 		labelsCase = getLabelsCase();
 
 		// If all the labels are upper or lower case, force the input case.
-		switch (labelsCase) {
-		case UPPER:
+		if (LabelsCase.UPPER.equals(labelsCase)) {
 			getComboBoxControl().addVerifyListener(new UpperCaseVerifyListener());
-			break;
-		case LOWER:
+		}
+		else if (LabelsCase.LOWER.equals(labelsCase)) {
 			getComboBoxControl().addVerifyListener(new LowerCaseVerifyListener());
-			break;
 		}
 
 		// If none of the labels contain whitespace, disable the space bar.

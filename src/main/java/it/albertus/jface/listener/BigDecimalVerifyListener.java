@@ -4,7 +4,7 @@ import it.albertus.util.Configured;
 
 import java.math.BigDecimal;
 
-/** Accepts only double inputs and trims automatically. */
+/** Accepts only big decimal inputs and trims automatically. */
 public class BigDecimalVerifyListener extends NumberVerifyListener {
 
 	public BigDecimalVerifyListener(final Configured<Boolean> allowNegatives) {

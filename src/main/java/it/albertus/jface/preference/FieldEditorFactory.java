@@ -3,6 +3,7 @@ package it.albertus.jface.preference;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
+import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
@@ -53,6 +54,9 @@ public class FieldEditorFactory {
 	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final Class<? extends FieldEditor> type = details.getFieldEditorClass();
 
+		if (BigIntegerComboFieldEditor.class.equals(type)) {
+			return createBigIntegerComboFieldEditor(name, label, parent, details);
+		}
 		if (BigDecimalComboFieldEditor.class.equals(type)) {
 			return createBigDecimalComboFieldEditor(name, label, parent, details);
 		}
@@ -189,6 +193,20 @@ public class FieldEditorFactory {
 			return createWrapStringFieldEditor(name, label, parent, details);
 		}
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
+	}
+
+	protected BigIntegerComboFieldEditor createBigIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final BigIntegerComboFieldEditor bigIntegerComboFieldEditor = new BigIntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			bigIntegerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			bigIntegerComboFieldEditor.setValidRange(data.getNumberMinValidValue(), data.getNumberMaxValidValue());
+		}
+		if (data.getTextLimit() != null) {
+			bigIntegerComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return bigIntegerComboFieldEditor;
 	}
 
 	protected BigDecimalComboFieldEditor createBigDecimalComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

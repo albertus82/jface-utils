@@ -102,19 +102,27 @@ public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
 	}
 
 	public void setValidRange(final Number min, final Number max) {
-		if (min instanceof BigDecimal) {
-			minValidValue = (BigDecimal) min;
-		}
-		else {
-			minValidValue = BigDecimal.valueOf(min.doubleValue());
-		}
+		setMinValidValue(min);
+		setMaxValidValue(max);
+		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
+	}
+
+	protected void setMaxValidValue(final Number max) {
 		if (max instanceof BigDecimal) {
 			maxValidValue = (BigDecimal) max;
 		}
 		else {
 			maxValidValue = BigDecimal.valueOf(max.doubleValue());
 		}
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
+	}
+
+	protected void setMinValidValue(final Number min) {
+		if (min instanceof BigDecimal) {
+			minValidValue = (BigDecimal) min;
+		}
+		else {
+			minValidValue = BigDecimal.valueOf(min.doubleValue());
+		}
 	}
 
 	public BigDecimal getMinValidValue() {

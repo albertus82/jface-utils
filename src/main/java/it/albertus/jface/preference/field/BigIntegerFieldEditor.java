@@ -2,53 +2,53 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class BigDecimalFieldEditor extends StringFieldEditor {
+public class BigIntegerFieldEditor extends StringFieldEditor {
 
-	private BigDecimal minValidValue;
-	private BigDecimal maxValidValue;
+	private BigInteger minValidValue;
+	private BigInteger maxValidValue;
 
-	protected BigDecimalFieldEditor() {}
+	protected BigIntegerFieldEditor() {}
 
-	public BigDecimalFieldEditor(String name, String labelText, Composite parent) {
+	public BigIntegerFieldEditor(String name, String labelText, Composite parent) {
 		this(name, labelText, parent, Preferences.MAX_VALUE_LENGTH);
 	}
 
-	public BigDecimalFieldEditor(String name, String labelText, Composite parent, int textLimit) {
+	public BigIntegerFieldEditor(String name, String labelText, Composite parent, int textLimit) {
 		init(name, labelText);
 		setTextLimit(textLimit);
 		setEmptyStringAllowed(false);
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal"));
+		setErrorMessage(JFaceMessages.get("err.preferences.integer"));
 		createControl(parent);
 	}
 
 	public void setValidRange(Number min, Number max) {
 		setMinValidValue(min);
 		setMaxValidValue(max);
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
+		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
 	}
 
 	protected void setMaxValidValue(Number max) {
-		if (max instanceof BigDecimal) {
-			maxValidValue = (BigDecimal) max;
+		if (max instanceof BigInteger) {
+			maxValidValue = (BigInteger) max;
 		}
 		else {
-			maxValidValue = BigDecimal.valueOf(max.doubleValue());
+			maxValidValue = BigInteger.valueOf(max.longValue());
 		}
 	}
 
 	protected void setMinValidValue(Number min) {
-		if (min instanceof BigDecimal) {
-			minValidValue = (BigDecimal) min;
+		if (min instanceof BigInteger) {
+			minValidValue = (BigInteger) min;
 		}
 		else {
-			minValidValue = BigDecimal.valueOf(min.doubleValue());
+			minValidValue = BigInteger.valueOf(min.longValue());
 		}
 	}
 
@@ -63,7 +63,7 @@ public class BigDecimalFieldEditor extends StringFieldEditor {
 
 		String numberString = text.getText();
 		try {
-			BigDecimal number = new BigDecimal(numberString);
+			BigInteger number = new BigInteger(numberString);
 			if (minValidValue == null || maxValidValue == null || (number.compareTo(minValidValue) >= 0 && number.compareTo(maxValidValue) <= 0)) {
 				clearErrorMessage();
 				return true;
@@ -86,7 +86,7 @@ public class BigDecimalFieldEditor extends StringFieldEditor {
 		if (text != null) {
 			String value;
 			try {
-				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = new BigInteger(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
 			catch (final Exception e) {
 				value = "";
@@ -103,7 +103,7 @@ public class BigDecimalFieldEditor extends StringFieldEditor {
 		if (text != null) {
 			String value;
 			try {
-				value = new BigDecimal(getPreferenceStore().getDefaultString(getPreferenceName())).toString();
+				value = new BigInteger(getPreferenceStore().getDefaultString(getPreferenceName())).toString();
 			}
 			catch (final Exception e) {
 				value = "";
@@ -117,20 +117,20 @@ public class BigDecimalFieldEditor extends StringFieldEditor {
 	protected void doStore() {
 		Text text = getTextControl();
 		if (text != null) {
-			BigDecimal bd = new BigDecimal(text.getText());
-			getPreferenceStore().setValue(getPreferenceName(), bd.toString());
+			BigInteger bi = new BigInteger(text.getText());
+			getPreferenceStore().setValue(getPreferenceName(), bi.toString());
 		}
 	}
 
-	public BigDecimal getBigDecimalValue() throws NumberFormatException {
-		return new BigDecimal(getStringValue());
+	public BigInteger getBigIntegerValue() throws NumberFormatException {
+		return new BigInteger(getStringValue());
 	}
 
-	public BigDecimal getMinValidValue() {
+	public BigInteger getMinValidValue() {
 		return minValidValue;
 	}
 
-	public BigDecimal getMaxValidValue() {
+	public BigInteger getMaxValidValue() {
 		return maxValidValue;
 	}
 

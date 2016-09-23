@@ -76,7 +76,7 @@ public class DefaultFloatFieldEditor extends FloatFieldEditor {
 			boolean state = super.checkState();
 			if (!state) {
 				final Text text = getTextControl();
-				if (text != null && "".equals(text.getText())) {
+				if (text != null && text.getText().isEmpty()) {
 					clearErrorMessage();
 					state = true;
 				}

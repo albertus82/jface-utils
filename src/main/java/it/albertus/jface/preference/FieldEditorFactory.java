@@ -14,6 +14,7 @@ import it.albertus.jface.preference.field.DefaultLongFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
+import it.albertus.jface.preference.field.DoubleComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
@@ -100,6 +101,9 @@ public class FieldEditorFactory {
 		}
 		if (DirectoryFieldEditor.class.equals(type)) {
 			return createDirectoryFieldEditor(name, label, parent, details);
+		}
+		if (DoubleComboFieldEditor.class.equals(type)) {
+			return createDoubleComboFieldEditor(name, label, parent, details);
 		}
 		if (DoubleFieldEditor.class.equals(type)) {
 			return createDoubleFieldEditor(name, label, parent, details);
@@ -376,6 +380,20 @@ public class FieldEditorFactory {
 			}
 		}
 		return directoryFieldEditor;
+	}
+
+	protected DoubleComboFieldEditor createDoubleComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DoubleComboFieldEditor doubleComboFieldEditor = new DoubleComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			doubleComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			doubleComboFieldEditor.setValidRange(data.getNumberMinValidValue().doubleValue(), data.getNumberMaxValidValue().doubleValue());
+		}
+		if (data.getTextLimit() != null) {
+			doubleComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return doubleComboFieldEditor;
 	}
 
 	protected DoubleFieldEditor createDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

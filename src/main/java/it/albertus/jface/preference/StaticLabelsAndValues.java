@@ -21,8 +21,9 @@ public class StaticLabelsAndValues implements LabelsAndValues {
 		put(name, value);
 	}
 
-	public void put(final String name, final Object value) {
+	public StaticLabelsAndValues put(final String name, final Object value) {
 		entries.put(name, String.valueOf(value));
+		return this;
 	}
 
 	@Override

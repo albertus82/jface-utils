@@ -4,14 +4,14 @@ import it.albertus.jface.JFaceMessages;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class FloatComboFieldEditor extends NumberComboFieldEditor {
+public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 
-	private static final int DEFAULT_TEXT_LIMIT = 16;
+	private static final int DEFAULT_TEXT_LIMIT = 32;
 
-	private float minValidValue = Float.NEGATIVE_INFINITY;
-	private float maxValidValue = Float.POSITIVE_INFINITY;
+	private double minValidValue = Double.NEGATIVE_INFINITY;
+	private double maxValidValue = Double.POSITIVE_INFINITY;
 
-	public FloatComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
+	public DoubleComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setTextLimit(Math.max(getMaxLabelLength(), DEFAULT_TEXT_LIMIT));
 		JFaceMessages.get("err.preferences.decimal");
@@ -20,7 +20,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	protected boolean doCheckState() {
 		try {
-			final float number = Float.parseFloat(getValue());
+			final double number = Double.parseDouble(getValue());
 			if (number >= minValidValue && number <= maxValidValue) {
 				return true;
 			}
@@ -34,9 +34,9 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {
-			value = Float.valueOf(value).toString();
+			value = Double.valueOf(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 
@@ -47,7 +47,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 		String newText = oldText.trim();
 
 		try {
-			newText = getNameForValue(Float.valueOf(newText).toString());
+			newText = getNameForValue(Double.valueOf(newText).toString());
 		}
 		catch (final Exception exception) {/* Ignore */}
 		if (!newText.equals(oldText)) {
@@ -58,7 +58,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	public String getValue() {
 		try {
-			return Float.valueOf(super.getValue()).toString();
+			return Double.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception exception) {
 			return super.getValue();
@@ -68,7 +68,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	protected void setValue(final String value) {
 		try {
-			super.setValue(Float.valueOf(value).toString());
+			super.setValue(Double.valueOf(value).toString());
 		}
 		catch (final Exception exception) {
 			super.setValue(value);
@@ -80,7 +80,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 		for (final String[] entry : getEntryNamesAndValues()) {
 			String comboValue;
 			try {
-				comboValue = Float.valueOf(entry[1]).toString();
+				comboValue = Double.valueOf(entry[1]).toString();
 			}
 			catch (final Exception e) {
 				comboValue = entry[1];
@@ -96,23 +96,23 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	protected String getDefaultValue() {
 		String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
 		try {
-			defaultValue = Float.toString(Float.parseFloat(defaultValue));
+			defaultValue = Double.toString(Double.parseDouble(defaultValue));
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return defaultValue;
 	}
 
-	public void setValidRange(final float min, final float max) {
+	public void setValidRange(final double min, final double max) {
 		minValidValue = min;
 		maxValidValue = max;
 		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
 	}
 
-	public float getMinValidValue() {
+	public double getMinValidValue() {
 		return minValidValue;
 	}
 
-	public float getMaxValidValue() {
+	public double getMaxValidValue() {
 		return maxValidValue;
 	}
 

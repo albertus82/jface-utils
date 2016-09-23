@@ -167,6 +167,11 @@ public class PreferenceDetails {
 			return this;
 		}
 
+		public PreferenceDetailsBuilder defaultValue(final Object defaultValue) {
+			this.defaultValue = String.valueOf(defaultValue);
+			return this;
+		}
+
 		public PreferenceDetailsBuilder parent(final IPreference parent) {
 			this.parent = parent;
 			return this;

@@ -23,12 +23,6 @@ public class DefaultFloatFieldEditor extends FloatFieldEditor {
 	}
 
 	@Override
-	public void setValidRange(final float min, final float max) {
-		super.setValidRange(min, max);
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
-	}
-
-	@Override
 	protected void doLoad() {
 		final Text text = getTextControl();
 		if (text != null && !text.isDisposed()) {

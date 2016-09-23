@@ -1,7 +1,9 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
+import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultDateFieldEditor;
@@ -48,6 +50,9 @@ public class FieldEditorFactory {
 	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final Class<? extends FieldEditor> type = details.getFieldEditorClass();
 
+		if (BigDecimalFieldEditor.class.equals(type)) {
+			return createBigDecimalFieldEditor(name, label, parent, details);
+		}
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
 		}
@@ -62,6 +67,9 @@ public class FieldEditorFactory {
 		}
 		if (DateFieldEditor.class.equals(type)) {
 			return createDateFieldEditor(name, label, parent, details);
+		}
+		if (DefaultBigDecimalFieldEditor.class.equals(type)) {
+			return createDefaultBigDecimalFieldEditor(name, label, parent, details);
 		}
 		if (DefaultBooleanFieldEditor.class.equals(type)) {
 			return new DefaultBooleanFieldEditor(name, label, parent);
@@ -171,6 +179,22 @@ public class FieldEditorFactory {
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
 	}
 
+	protected BigDecimalFieldEditor createBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final BigDecimalFieldEditor bigDecimalFieldEditor = new BigDecimalFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				bigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				bigDecimalFieldEditor.setValidRange(data.getNumberMinValidValue(), data.getNumberMaxValidValue());
+			}
+			if (data.getTextLimit() != null) {
+				bigDecimalFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return bigDecimalFieldEditor;
+	}
+
 	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DateFieldEditor dateFieldEditor;
 		if (data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
@@ -195,6 +219,22 @@ public class FieldEditorFactory {
 			dateFieldEditor.setValidRange(data.getDateMinValidValue(), data.getDateMaxValidValue());
 		}
 		return dateFieldEditor;
+	}
+
+	protected DefaultBigDecimalFieldEditor createDefaultBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final DefaultBigDecimalFieldEditor defaultBigDecimalFieldEditor = new DefaultBigDecimalFieldEditor(name, label, parent);
+		if (data != null) {
+			if (data.getEmptyStringAllowed() != null) {
+				defaultBigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			}
+			if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+				defaultBigDecimalFieldEditor.setValidRange(data.getNumberMinValidValue(), data.getNumberMaxValidValue());
+			}
+			if (data.getTextLimit() != null) {
+				defaultBigDecimalFieldEditor.setTextLimit(data.getTextLimit());
+			}
+		}
+		return defaultBigDecimalFieldEditor;
 	}
 
 	protected DefaultDateFieldEditor createDefaultDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

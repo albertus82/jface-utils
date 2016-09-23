@@ -1,5 +1,6 @@
 package it.albertus.util;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -139,6 +140,22 @@ public class Configuration extends PropertiesConfiguration {
 		final String value = getString(key);
 		if (value != null) {
 			return Double.parseDouble(value.trim());
+		}
+		return defaultValue;
+	}
+
+	public BigDecimal getBigDecimal(final String key) {
+		final String value = getString(key);
+		if (value != null) {
+			return new BigDecimal(value.trim());
+		}
+		return null;
+	}
+
+	public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
+		final String value = getString(key);
+		if (value != null) {
+			return new BigDecimal(value.trim());
 		}
 		return defaultValue;
 	}

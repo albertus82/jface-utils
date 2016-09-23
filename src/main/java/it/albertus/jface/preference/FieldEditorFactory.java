@@ -1,6 +1,7 @@
 package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
@@ -50,6 +51,9 @@ public class FieldEditorFactory {
 	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final Class<? extends FieldEditor> type = details.getFieldEditorClass();
 
+		if (BigDecimalComboFieldEditor.class.equals(type)) {
+			return createBigDecimalComboFieldEditor(name, label, parent, details);
+		}
 		if (BigDecimalFieldEditor.class.equals(type)) {
 			return createBigDecimalFieldEditor(name, label, parent, details);
 		}
@@ -177,6 +181,20 @@ public class FieldEditorFactory {
 			return createWrapStringFieldEditor(name, label, parent, details);
 		}
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
+	}
+
+	protected BigDecimalComboFieldEditor createBigDecimalComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+		final BigDecimalComboFieldEditor bigDecimalComboFieldEditor = new BigDecimalComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
+		if (data.getEmptyStringAllowed() != null) {
+			bigDecimalComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		}
+		if (data.getNumberMinValidValue() != null && data.getNumberMaxValidValue() != null) {
+			bigDecimalComboFieldEditor.setValidRange(data.getNumberMinValidValue(), data.getNumberMaxValidValue());
+		}
+		if (data.getTextLimit() != null) {
+			bigDecimalComboFieldEditor.setTextLimit(data.getTextLimit());
+		}
+		return bigDecimalComboFieldEditor;
 	}
 
 	protected BigDecimalFieldEditor createBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

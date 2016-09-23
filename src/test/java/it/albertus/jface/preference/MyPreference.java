@@ -2,6 +2,7 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
+import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultDateFieldEditor;
@@ -40,6 +41,7 @@ public enum MyPreference implements IPreference {
 	LONG_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("longCombo").label("LongCombo").defaultValue(100).build(), new FieldEditorDetailsBuilder(LongComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("long", 1.0)).emptyStringAllowed(false).build()),
 	FLOAT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("floatCombo").label("FloatCombo").defaultValue(1).build(), new FieldEditorDetailsBuilder(FloatComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("float", 1)).emptyStringAllowed(true).numberValidRange(-10, 66.67).build()),
 	DOUBLE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("doubleCombo").label("DoubleCombo").build(), new FieldEditorDetailsBuilder(DoubleComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Double value", -10.5).put("invalid", 10.5)).emptyStringAllowed(true).numberValidRange(-1000, -0.5).build()),
+	BIGDECIMAL_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigDecimalCombo").label("BigDecimalCombo").defaultValue(22.22).build(), new FieldEditorDetailsBuilder(BigDecimalComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("BigDecimal Value", -10.5).put("invalid", 1000000)).emptyStringAllowed(false).numberValidRange(-1000, 100000).textLimit(20).build()),
 	VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("validatedCombo").label("ValidatedCombo").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Validated", "value")).emptyStringAllowed(false).build()),
 	CONFIRM_CLOSE(new PreferenceDetailsBuilder(MyPageDefinition.APPEARANCE).name("confirmClose").label("Confirm close").defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
 	FONT_COLOR(new PreferenceDetailsBuilder(MyPageDefinition.COLORS).name("fontColor").label("Font color").defaultValue("255,0,0").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build()),

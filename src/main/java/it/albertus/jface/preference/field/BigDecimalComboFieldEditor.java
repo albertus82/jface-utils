@@ -2,26 +2,27 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
 
+import java.math.BigDecimal;
+import java.util.prefs.Preferences;
+
 import org.eclipse.swt.widgets.Composite;
 
-public class FloatComboFieldEditor extends NumberComboFieldEditor {
+public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
 
-	private static final int DEFAULT_TEXT_LIMIT = 16;
+	private BigDecimal minValidValue;
+	private BigDecimal maxValidValue;
 
-	private float minValidValue = Float.NEGATIVE_INFINITY;
-	private float maxValidValue = Float.POSITIVE_INFINITY;
-
-	public FloatComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
+	public BigDecimalComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setTextLimit(Math.max(getMaxLabelLength(), DEFAULT_TEXT_LIMIT));
+		setTextLimit(Math.max(getMaxLabelLength(), Preferences.MAX_VALUE_LENGTH));
 		JFaceMessages.get("err.preferences.decimal");
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
-			final float number = Float.parseFloat(getValue());
-			if (number >= minValidValue && number <= maxValidValue) {
+			final BigDecimal number = new BigDecimal(getValue());
+			if (minValidValue == null || maxValidValue == null || (number.compareTo(minValidValue) >= 0 && number.compareTo(maxValidValue) <= 0)) {
 				return true;
 			}
 		}
@@ -33,9 +34,9 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {
-			value = Float.valueOf(value).toString();
+			value = new BigDecimal(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 
@@ -45,7 +46,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 		String newText = oldText.trim();
 
 		try {
-			newText = getNameForValue(Float.valueOf(newText).toString());
+			newText = getNameForValue(new BigDecimal(newText).toString());
 		}
 		catch (final Exception exception) {/* Ignore */}
 		if (!newText.equals(oldText)) {
@@ -56,7 +57,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	public String getValue() {
 		try {
-			return Float.valueOf(super.getValue()).toString();
+			return new BigDecimal(super.getValue()).toString();
 		}
 		catch (final Exception exception) {
 			return super.getValue();
@@ -66,7 +67,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	@Override
 	protected void setValue(final String value) {
 		try {
-			super.setValue(Float.valueOf(value).toString());
+			super.setValue(new BigDecimal(value).toString());
 		}
 		catch (final Exception exception) {
 			super.setValue(value);
@@ -78,7 +79,7 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 		for (final String[] entry : getEntryNamesAndValues()) {
 			String comboValue;
 			try {
-				comboValue = Float.valueOf(entry[1]).toString();
+				comboValue = new BigDecimal(entry[1]).toString();
 			}
 			catch (final Exception e) {
 				comboValue = entry[1];
@@ -94,23 +95,33 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 	protected String getDefaultValue() {
 		String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
 		try {
-			defaultValue = Float.toString(Float.parseFloat(defaultValue));
+			defaultValue = new BigDecimal(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return defaultValue;
 	}
 
-	public void setValidRange(final float min, final float max) {
-		minValidValue = min;
-		maxValidValue = max;
+	public void setValidRange(final Number min, final Number max) {
+		if (min instanceof BigDecimal) {
+			minValidValue = (BigDecimal) min;
+		}
+		else {
+			minValidValue = BigDecimal.valueOf(min.doubleValue());
+		}
+		if (max instanceof BigDecimal) {
+			maxValidValue = (BigDecimal) max;
+		}
+		else {
+			maxValidValue = BigDecimal.valueOf(max.doubleValue());
+		}
 		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
 	}
 
-	public float getMinValidValue() {
+	public BigDecimal getMinValidValue() {
 		return minValidValue;
 	}
 
-	public float getMaxValidValue() {
+	public BigDecimal getMaxValidValue() {
 		return maxValidValue;
 	}
 

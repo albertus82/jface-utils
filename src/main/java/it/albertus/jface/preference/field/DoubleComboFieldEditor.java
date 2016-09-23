@@ -29,7 +29,6 @@ public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 		return false;
 	}
 
-	/** Trims value and tries to convert it to integer (removes trailing zeros). */
 	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
@@ -40,7 +39,6 @@ public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 		return value;
 	}
 
-	/** Trims combo text and converts it to integer (removes trailing zeros). */
 	@Override
 	protected void cleanComboText() {
 		final String oldText = getComboBoxControl().getText();

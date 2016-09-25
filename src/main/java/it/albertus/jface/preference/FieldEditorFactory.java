@@ -36,6 +36,9 @@ import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -200,8 +203,18 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			bigIntegerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		bigIntegerComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		bigIntegerComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() == null || data.getNumberMinimum() instanceof BigInteger) {
+			bigIntegerComboFieldEditor.setMinValidValue((BigInteger) data.getNumberMinimum());
+		}
+		else {
+			bigIntegerComboFieldEditor.setMinValidValue(BigInteger.valueOf(data.getNumberMinimum().longValue()));
+		}
+		if (data.getNumberMaximum() == null || data.getNumberMaximum() instanceof BigInteger) {
+			bigIntegerComboFieldEditor.setMaxValidValue((BigInteger) data.getNumberMaximum());
+		}
+		else {
+			bigIntegerComboFieldEditor.setMaxValidValue(BigInteger.valueOf(data.getNumberMaximum().longValue()));
+		}
 		if (data.getTextLimit() != null) {
 			bigIntegerComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
@@ -213,8 +226,18 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			bigDecimalComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		bigDecimalComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		bigDecimalComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() == null || data.getNumberMinimum() instanceof BigDecimal) {
+			bigDecimalComboFieldEditor.setMinValidValue((BigDecimal) data.getNumberMinimum());
+		}
+		else {
+			bigDecimalComboFieldEditor.setMinValidValue(BigDecimal.valueOf(data.getNumberMinimum().doubleValue()));
+		}
+		if (data.getNumberMaximum() == null || data.getNumberMaximum() instanceof BigDecimal) {
+			bigDecimalComboFieldEditor.setMaxValidValue((BigDecimal) data.getNumberMaximum());
+		}
+		else {
+			bigDecimalComboFieldEditor.setMaxValidValue(BigDecimal.valueOf(data.getNumberMaximum().doubleValue()));
+		}
 		if (data.getTextLimit() != null) {
 			bigDecimalComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
@@ -499,8 +522,12 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			doubleComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		doubleComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		doubleComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() != null) {
+			doubleComboFieldEditor.setMinValidValue(data.getNumberMinimum().doubleValue());
+		}
+		if (data.getNumberMaximum() != null) {
+			doubleComboFieldEditor.setMaxValidValue(data.getNumberMaximum().doubleValue());
+		}
 		if (data.getTextLimit() != null) {
 			doubleComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
@@ -559,8 +586,12 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			floatComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		floatComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		floatComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() != null) {
+			floatComboFieldEditor.setMinValidValue(data.getNumberMinimum().floatValue());
+		}
+		if (data.getNumberMaximum() != null) {
+			floatComboFieldEditor.setMaxValidValue(data.getNumberMaximum().floatValue());
+		}
 		if (data.getTextLimit() != null) {
 			floatComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
@@ -605,8 +636,12 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			integerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		integerComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		integerComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() != null) {
+			integerComboFieldEditor.setMinValidValue(data.getNumberMinimum().intValue());
+		}
+		if (data.getNumberMaximum() != null) {
+			integerComboFieldEditor.setMaxValidValue(data.getNumberMaximum().intValue());
+		}
 		if (data.getTextLimit() != null) {
 			integerComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
@@ -663,8 +698,12 @@ public class FieldEditorFactory {
 		if (data.getEmptyStringAllowed() != null) {
 			longComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 		}
-		longComboFieldEditor.setMinValidValue(data.getNumberMinimum());
-		longComboFieldEditor.setMaxValidValue(data.getNumberMaximum());
+		if (data.getNumberMinimum() != null) {
+			longComboFieldEditor.setMinValidValue(data.getNumberMinimum().longValue());
+		}
+		if (data.getNumberMaximum() != null) {
+			longComboFieldEditor.setMaxValidValue(data.getNumberMaximum().longValue());
+		}
 		if (data.getTextLimit() != null) {
 			longComboFieldEditor.setTextLimit(data.getTextLimit());
 		}

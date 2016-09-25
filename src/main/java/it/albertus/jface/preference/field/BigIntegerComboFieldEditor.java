@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class BigIntegerComboFieldEditor extends NumberComboFieldEditor {
+public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<BigInteger> {
 
 	public BigIntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -92,41 +92,7 @@ public class BigIntegerComboFieldEditor extends NumberComboFieldEditor {
 	}
 
 	@Override
-	public BigInteger getMinValidValue() {
-		return (BigInteger) super.getMinValidValue();
-	}
-
-	@Override
-	public void setMinValidValue(final Number min) {
-		if (min == null || min instanceof BigInteger) {
-			super.setMinValidValue((BigInteger) min);
-		}
-		else {
-			super.setMinValidValue(BigInteger.valueOf(min.longValue()));
-		}
-	}
-
-	@Override
-	public BigInteger getMaxValidValue() {
-		return (BigInteger) super.getMaxValidValue();
-	}
-
-	@Override
-	public void setMaxValidValue(final Number max) {
-		if (max == null || max instanceof BigInteger) {
-			super.setMaxValidValue((BigInteger) max);
-		}
-		else {
-			super.setMaxValidValue(BigInteger.valueOf(max.longValue()));
-		}
-	}
-
-	@Override
-	protected NumberType getNumberType() {
-		return NumberType.INTEGER;
-	}
-
-	public BigInteger getBigIntegerValue() throws NumberFormatException {
+	public BigInteger getNumberValue() throws NumberFormatException {
 		return new BigInteger(getValue());
 	}
 

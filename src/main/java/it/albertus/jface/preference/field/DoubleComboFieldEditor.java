@@ -2,7 +2,7 @@ package it.albertus.jface.preference.field;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class DoubleComboFieldEditor extends NumberComboFieldEditor {
+public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Double> {
 
 	private static final int DEFAULT_TEXT_LIMIT = 32;
 
@@ -97,31 +97,7 @@ public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 	}
 
 	@Override
-	protected NumberType getNumberType() {
-		return NumberType.DECIMAL;
-	}
-
-	@Override
-	public Double getMinValidValue() {
-		return (Double) super.getMinValidValue();
-	}
-
-	@Override
-	public void setMinValidValue(final Number min) {
-		super.setMinValidValue(min != null ? min.doubleValue() : null);
-	}
-
-	@Override
-	public Double getMaxValidValue() {
-		return (Double) super.getMaxValidValue();
-	}
-
-	@Override
-	public void setMaxValidValue(final Number max) {
-		super.setMaxValidValue(max != null ? max.doubleValue() : null);
-	}
-
-	public Double getDoubleValue() throws NumberFormatException {
+	public Double getNumberValue() throws NumberFormatException {
 		return Double.valueOf(getValue());
 	}
 

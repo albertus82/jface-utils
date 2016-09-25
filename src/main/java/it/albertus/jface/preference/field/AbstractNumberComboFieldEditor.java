@@ -1,6 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.listener.LowerCaseVerifyListener;
 import it.albertus.jface.listener.TrimVerifyListener;
 import it.albertus.jface.listener.UpperCaseVerifyListener;
@@ -9,14 +8,14 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class NumberComboFieldEditor extends ValidatedComboFieldEditor {
+public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? extends Number>> extends ValidatedComboFieldEditor {
 
 	protected final LabelsCase labelsCase;
 
-	private Number minValidValue;
-	private Number maxValidValue;
+	private T minValidValue;
+	private T maxValidValue;
 
-	public NumberComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
+	public AbstractNumberComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		labelsCase = getLabelsCase();
 
@@ -43,47 +42,41 @@ public abstract class NumberComboFieldEditor extends ValidatedComboFieldEditor {
 		return Preferences.MAX_VALUE_LENGTH;
 	}
 
-	protected boolean checkValidRange(Comparable number) {
+	protected boolean checkValidRange(Comparable<T> number) {
 		if ((getMinValidValue() == null || number.compareTo(getMinValidValue()) >= 0) && (getMaxValidValue() == null || number.compareTo(getMaxValidValue()) <= 0)) {
 			return true;
 		}
 		return false;
 	}
 
-	public void setValidRange(final Number min, final Number max) {
+	public void setValidRange(final T min, final T max) {
 		setMinValidValue(min);
 		setMaxValidValue(max);
 	}
 
-	protected Number getMinValidValue() {
+	public T getMinValidValue() {
 		return minValidValue;
 	}
 
-	protected void setMinValidValue(final Number min) {
+	public void setMinValidValue(final T min) {
 		this.minValidValue = min;
 		updateErrorMessage();
 		updateTextLimit();
 	}
 
-	protected Number getMaxValidValue() {
+	public T getMaxValidValue() {
 		return maxValidValue;
 	}
 
-	protected void setMaxValidValue(final Number max) {
+	public void setMaxValidValue(final T max) {
 		this.maxValidValue = max;
 		updateErrorMessage();
 		updateTextLimit();
 	}
 
-	protected void updateTextLimit() {
-		if (NumberType.INTEGER.equals(getNumberType())) {
-			int maxNumberLength = getDefaultTextLimit();
-			if (getMinValidValue() != null && getMaxValidValue() != null) {
-				maxNumberLength = Math.max(getMinValidValue().toString().length(), getMaxValidValue().toString().length());
-			}
-			setTextLimit(Math.max(maxNumberLength, getMaxLabelLength()));
-		}
-	}
+	public abstract T getNumberValue() throws NumberFormatException;
+
+	protected abstract void updateTextLimit();
 
 	protected boolean labelsContainWhitespace() {
 		for (final String entry[] : getEntryNamesAndValues()) {
@@ -94,28 +87,7 @@ public abstract class NumberComboFieldEditor extends ValidatedComboFieldEditor {
 		return false;
 	}
 
-	protected abstract NumberType getNumberType();
-
-	protected enum NumberType {
-		INTEGER,
-		DECIMAL;
-	}
-
-	protected void updateErrorMessage() {
-		final String keyPart = getNumberType().name().toLowerCase();
-		if (getMinValidValue() == null && getMaxValidValue() == null) {
-			setErrorMessage(JFaceMessages.get("err.preferences." + keyPart));
-		}
-		else if (getMinValidValue() != null && getMaxValidValue() == null) {
-			setErrorMessage(JFaceMessages.get("err.preferences." + keyPart + ".min", getMinValidValue()));
-		}
-		else if (getMinValidValue() == null && getMaxValidValue() != null) {
-			setErrorMessage(JFaceMessages.get("err.preferences." + keyPart + ".max", getMaxValidValue()));
-		}
-		else {
-			setErrorMessage(JFaceMessages.get("err.preferences." + keyPart + ".range", getMinValidValue(), getMaxValidValue()));
-		}
-	}
+	protected abstract void updateErrorMessage();
 
 	protected enum LabelsCase {
 		UPPER,

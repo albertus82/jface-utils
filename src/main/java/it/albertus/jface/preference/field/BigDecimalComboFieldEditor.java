@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
+public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<BigDecimal> {
 
 	public BigDecimalComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -92,41 +92,7 @@ public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
 	}
 
 	@Override
-	public BigDecimal getMinValidValue() {
-		return (BigDecimal) super.getMinValidValue();
-	}
-
-	@Override
-	public void setMinValidValue(final Number min) {
-		if (min == null || min instanceof BigDecimal) {
-			super.setMinValidValue((BigDecimal) min);
-		}
-		else {
-			super.setMinValidValue(BigDecimal.valueOf(min.doubleValue()));
-		}
-	}
-
-	@Override
-	public BigDecimal getMaxValidValue() {
-		return (BigDecimal) super.getMaxValidValue();
-	}
-
-	@Override
-	public void setMaxValidValue(final Number max) {
-		if (max == null || max instanceof BigDecimal) {
-			super.setMaxValidValue((BigDecimal) max);
-		}
-		else {
-			super.setMaxValidValue(BigDecimal.valueOf(max.doubleValue()));
-		}
-	}
-
-	@Override
-	protected NumberType getNumberType() {
-		return NumberType.DECIMAL;
-	}
-
-	public BigDecimal getBigDecimalValue() throws NumberFormatException {
+	public BigDecimal getNumberValue() throws NumberFormatException {
 		return new BigDecimal(getValue());
 	}
 

@@ -2,7 +2,7 @@ package it.albertus.jface.preference.field;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class IntegerComboFieldEditor extends NumberComboFieldEditor {
+public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Integer> {
 
 	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length();
 
@@ -72,31 +72,7 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 	}
 
 	@Override
-	protected NumberType getNumberType() {
-		return NumberType.INTEGER;
-	}
-
-	@Override
-	public Integer getMinValidValue() {
-		return (Integer) super.getMinValidValue();
-	}
-
-	@Override
-	public void setMinValidValue(final Number min) {
-		super.setMinValidValue(min != null ? min.intValue() : null);
-	}
-
-	@Override
-	public Integer getMaxValidValue() {
-		return (Integer) super.getMaxValidValue();
-	}
-
-	@Override
-	public void setMaxValidValue(final Number max) {
-		super.setMaxValidValue(max != null ? max.intValue() : null);
-	}
-
-	public Integer getIntegerValue() throws NumberFormatException {
+	public Integer getNumberValue() throws NumberFormatException {
 		return Integer.valueOf(getValue());
 	}
 

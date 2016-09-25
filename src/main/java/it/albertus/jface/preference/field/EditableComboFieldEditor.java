@@ -104,7 +104,7 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 		}
 	}
 
-	public int getMaxLabelLength() {
+	protected int getMaxLabelLength() {
 		int length = 0;
 		for (final String entry[] : getEntryNamesAndValues()) {
 			if (entry[0].length() > length) {

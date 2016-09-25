@@ -1,29 +1,25 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.swt.widgets.Composite;
 
 public class FloatComboFieldEditor extends NumberComboFieldEditor {
 
 	private static final int DEFAULT_TEXT_LIMIT = 16;
 
-	private float minValidValue = Float.NEGATIVE_INFINITY;
-	private float maxValidValue = Float.POSITIVE_INFINITY;
-
 	public FloatComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setTextLimit(Math.max(getMaxLabelLength(), DEFAULT_TEXT_LIMIT));
-		JFaceMessages.get("err.preferences.decimal");
+	}
+
+	@Override
+	protected int getDefaultTextLimit() {
+		return DEFAULT_TEXT_LIMIT;
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
 			final float number = Float.parseFloat(getValue());
-			if (number >= minValidValue && number <= maxValidValue) {
-				return true;
-			}
+			return checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -100,18 +96,33 @@ public class FloatComboFieldEditor extends NumberComboFieldEditor {
 		return defaultValue;
 	}
 
-	public void setValidRange(final float min, final float max) {
-		minValidValue = min;
-		maxValidValue = max;
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.DECIMAL;
 	}
 
-	public float getMinValidValue() {
-		return minValidValue;
+	@Override
+	public Float getMinValidValue() {
+		return (Float) super.getMinValidValue();
 	}
 
-	public float getMaxValidValue() {
-		return maxValidValue;
+	@Override
+	public void setMinValidValue(final Number min) {
+		super.setMinValidValue(min != null ? min.floatValue() : null);
+	}
+
+	@Override
+	public Float getMaxValidValue() {
+		return (Float) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		super.setMaxValidValue(max != null ? max.floatValue() : null);
+	}
+
+	public Float getFloatValue() throws NumberFormatException {
+		return Float.valueOf(getValue());
 	}
 
 }

@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -78,16 +77,15 @@ public class DateFieldEditor extends StringFieldEditor {
 				result = false;
 			}
 		}
-		if (minValidValue != null && maxValidValue != null && date != null && (date.before(minValidValue) || date.after(maxValidValue))) {
+		if (date != null && ((getMinValidValue() != null && date.before(getMinValidValue())) || (getMaxValidValue() != null && date.after(getMaxValidValue())))) {
 			result = false;
 		}
 		return result;
 	}
 
 	public void setValidRange(final Date from, final Date to) {
-		minValidValue = from;
-		maxValidValue = to;
-		setErrorMessage(JFaceMessages.get("err.preferences.date.range", formatDate(from), formatDate(to)));
+		setMinValidValue(from);
+		setMaxValidValue(to);
 	}
 
 	protected void checkPattern(final String pattern) {
@@ -98,8 +96,8 @@ public class DateFieldEditor extends StringFieldEditor {
 
 	protected void init() {
 		dateFormat.setLenient(false);
-		setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
-		setTextLimit(Preferences.MAX_VALUE_LENGTH);
+		updateErrorMessage();
+		setTextLimit(Byte.MAX_VALUE);
 	}
 
 	public String getPattern() {
@@ -114,8 +112,18 @@ public class DateFieldEditor extends StringFieldEditor {
 		return minValidValue;
 	}
 
+	public void setMinValidValue(final Date minValidValue) {
+		this.minValidValue = minValidValue;
+		updateErrorMessage();
+	}
+
 	public Date getMaxValidValue() {
 		return maxValidValue;
+	}
+
+	public void setMaxValidValue(final Date maxValidValue) {
+		this.maxValidValue = maxValidValue;
+		updateErrorMessage();
 	}
 
 	public int getValidateStrategy() {
@@ -126,6 +134,21 @@ public class DateFieldEditor extends StringFieldEditor {
 	public void setValidateStrategy(final int value) {
 		super.setValidateStrategy(value);
 		this.validateStrategy = value;
+	}
+
+	protected void updateErrorMessage() {
+		if (getMinValidValue() == null && getMaxValidValue() == null) {
+			setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
+		}
+		else if (getMinValidValue() != null && getMaxValidValue() == null) {
+			setErrorMessage(JFaceMessages.get("err.preferences.date.from", formatDate(getMinValidValue())));
+		}
+		else if (getMinValidValue() == null && getMaxValidValue() != null) {
+			setErrorMessage(JFaceMessages.get("err.preferences.date.to", formatDate(getMaxValidValue())));
+		}
+		else {
+			setErrorMessage(JFaceMessages.get("err.preferences.date.range", formatDate(getMinValidValue()), formatDate(getMaxValidValue())));
+		}
 	}
 
 }

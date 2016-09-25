@@ -1,30 +1,20 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.math.BigInteger;
-import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
 public class BigIntegerComboFieldEditor extends NumberComboFieldEditor {
 
-	private BigInteger minValidValue;
-	private BigInteger maxValidValue;
-
 	public BigIntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setTextLimit(Math.max(getMaxLabelLength(), Preferences.MAX_VALUE_LENGTH));
-		JFaceMessages.get("err.preferences.integer");
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
 			final BigInteger number = new BigInteger(getValue());
-			if (minValidValue == null || maxValidValue == null || (number.compareTo(minValidValue) >= 0 && number.compareTo(maxValidValue) <= 0)) {
-				return true;
-			}
+			return checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -101,36 +91,43 @@ public class BigIntegerComboFieldEditor extends NumberComboFieldEditor {
 		return defaultValue;
 	}
 
-	public void setValidRange(final Number min, final Number max) {
-		setMinValidValue(min);
-		setMaxValidValue(max);
-		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
-	}
-
-	protected void setMaxValidValue(final Number max) {
-		if (max instanceof BigInteger) {
-			maxValidValue = (BigInteger) max;
-		}
-		else {
-			maxValidValue = BigInteger.valueOf(max.longValue());
-		}
-	}
-
-	protected void setMinValidValue(final Number min) {
-		if (min instanceof BigInteger) {
-			minValidValue = (BigInteger) min;
-		}
-		else {
-			minValidValue = BigInteger.valueOf(min.longValue());
-		}
-	}
-
+	@Override
 	public BigInteger getMinValidValue() {
-		return minValidValue;
+		return (BigInteger) super.getMinValidValue();
 	}
 
+	@Override
+	public void setMinValidValue(final Number min) {
+		if (min == null || min instanceof BigInteger) {
+			super.setMinValidValue((BigInteger) min);
+		}
+		else {
+			super.setMinValidValue(BigInteger.valueOf(min.longValue()));
+		}
+	}
+
+	@Override
 	public BigInteger getMaxValidValue() {
-		return maxValidValue;
+		return (BigInteger) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		if (max == null || max instanceof BigInteger) {
+			super.setMaxValidValue((BigInteger) max);
+		}
+		else {
+			super.setMaxValidValue(BigInteger.valueOf(max.longValue()));
+		}
+	}
+
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.INTEGER;
+	}
+
+	public BigInteger getBigIntegerValue() throws NumberFormatException {
+		return new BigInteger(getValue());
 	}
 
 }

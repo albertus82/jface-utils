@@ -1,29 +1,25 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.swt.widgets.Composite;
 
 public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 
 	private static final int DEFAULT_TEXT_LIMIT = 32;
 
-	private double minValidValue = Double.NEGATIVE_INFINITY;
-	private double maxValidValue = Double.POSITIVE_INFINITY;
-
 	public DoubleComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setTextLimit(Math.max(getMaxLabelLength(), DEFAULT_TEXT_LIMIT));
-		JFaceMessages.get("err.preferences.decimal");
+	}
+
+	@Override
+	protected int getDefaultTextLimit() {
+		return DEFAULT_TEXT_LIMIT;
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
-			final double number = Double.parseDouble(getValue());
-			if (number >= minValidValue && number <= maxValidValue) {
-				return true;
-			}
+			final Double number = Double.valueOf(getValue());
+			return checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -100,18 +96,33 @@ public class DoubleComboFieldEditor extends NumberComboFieldEditor {
 		return defaultValue;
 	}
 
-	public void setValidRange(final double min, final double max) {
-		minValidValue = min;
-		maxValidValue = max;
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.DECIMAL;
 	}
 
-	public double getMinValidValue() {
-		return minValidValue;
+	@Override
+	public Double getMinValidValue() {
+		return (Double) super.getMinValidValue();
 	}
 
-	public double getMaxValidValue() {
-		return maxValidValue;
+	@Override
+	public void setMinValidValue(final Number min) {
+		super.setMinValidValue(min != null ? min.doubleValue() : null);
+	}
+
+	@Override
+	public Double getMaxValidValue() {
+		return (Double) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		super.setMaxValidValue(max != null ? max.doubleValue() : null);
+	}
+
+	public Double getDoubleValue() throws NumberFormatException {
+		return Double.valueOf(getValue());
 	}
 
 }

@@ -1,30 +1,20 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.math.BigDecimal;
-import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
 public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
 
-	private BigDecimal minValidValue;
-	private BigDecimal maxValidValue;
-
 	public BigDecimalComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
-		setTextLimit(Math.max(getMaxLabelLength(), Preferences.MAX_VALUE_LENGTH));
-		JFaceMessages.get("err.preferences.decimal");
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
 			final BigDecimal number = new BigDecimal(getValue());
-			if (minValidValue == null || maxValidValue == null || (number.compareTo(minValidValue) >= 0 && number.compareTo(maxValidValue) <= 0)) {
-				return true;
-			}
+			return checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -101,36 +91,43 @@ public class BigDecimalComboFieldEditor extends NumberComboFieldEditor {
 		return defaultValue;
 	}
 
-	public void setValidRange(final Number min, final Number max) {
-		setMinValidValue(min);
-		setMaxValidValue(max);
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal.range", min, max));
-	}
-
-	protected void setMaxValidValue(final Number max) {
-		if (max instanceof BigDecimal) {
-			maxValidValue = (BigDecimal) max;
-		}
-		else {
-			maxValidValue = BigDecimal.valueOf(max.doubleValue());
-		}
-	}
-
-	protected void setMinValidValue(final Number min) {
-		if (min instanceof BigDecimal) {
-			minValidValue = (BigDecimal) min;
-		}
-		else {
-			minValidValue = BigDecimal.valueOf(min.doubleValue());
-		}
-	}
-
+	@Override
 	public BigDecimal getMinValidValue() {
-		return minValidValue;
+		return (BigDecimal) super.getMinValidValue();
 	}
 
+	@Override
+	public void setMinValidValue(final Number min) {
+		if (min == null || min instanceof BigDecimal) {
+			super.setMinValidValue((BigDecimal) min);
+		}
+		else {
+			super.setMinValidValue(BigDecimal.valueOf(min.doubleValue()));
+		}
+	}
+
+	@Override
 	public BigDecimal getMaxValidValue() {
-		return maxValidValue;
+		return (BigDecimal) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		if (max == null || max instanceof BigDecimal) {
+			super.setMaxValidValue((BigDecimal) max);
+		}
+		else {
+			super.setMaxValidValue(BigDecimal.valueOf(max.doubleValue()));
+		}
+	}
+
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.DECIMAL;
+	}
+
+	public BigDecimal getBigDecimalValue() throws NumberFormatException {
+		return new BigDecimal(getValue());
 	}
 
 }

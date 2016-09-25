@@ -1,37 +1,25 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.swt.widgets.Composite;
 
 public class LongComboFieldEditor extends NumberComboFieldEditor {
 
-	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
-
-	private long minValidValue = 0;
-	private long maxValidValue = Long.MAX_VALUE;
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length();
 
 	public LongComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+	}
 
-		// Compute text limit & error message...
-		final int maxLabelLength = getMaxLabelLength();
-		if (maxLabelLength > DEFAULT_TEXT_LIMIT) {
-			setErrorMessage(JFaceMessages.get("err.preferences.integer.range", minValidValue, maxValidValue));
-		}
-		else {
-			setErrorMessage(JFaceMessages.get("err.preferences.integer"));
-		}
-		setTextLimit(Math.max(maxLabelLength, DEFAULT_TEXT_LIMIT));
+	@Override
+	protected int getDefaultTextLimit() {
+		return DEFAULT_TEXT_LIMIT;
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
 			final long number = Long.parseLong(getValue());
-			if (number >= minValidValue && number <= maxValidValue) {
-				return true;
-			}
+			return super.checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -83,18 +71,33 @@ public class LongComboFieldEditor extends NumberComboFieldEditor {
 		}
 	}
 
-	public void setValidRange(final long min, final long max) {
-		minValidValue = min;
-		maxValidValue = max;
-		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.INTEGER;
 	}
 
-	public long getMinValidValue() {
-		return minValidValue;
+	@Override
+	public Long getMinValidValue() {
+		return (Long) super.getMinValidValue();
 	}
 
-	public long getMaxValidValue() {
-		return maxValidValue;
+	@Override
+	public void setMinValidValue(final Number min) {
+		super.setMinValidValue(min != null ? min.longValue() : null);
+	}
+
+	@Override
+	public Long getMaxValidValue() {
+		return (Long) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		super.setMaxValidValue(max != null ? max.longValue() : null);
+	}
+
+	public Long getLongValue() throws NumberFormatException {
+		return Long.valueOf(getValue());
 	}
 
 }

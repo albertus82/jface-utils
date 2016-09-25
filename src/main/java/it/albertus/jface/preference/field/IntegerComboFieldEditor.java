@@ -1,37 +1,25 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.swt.widgets.Composite;
 
 public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 
-	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
-
-	private int minValidValue = 0;
-	private int maxValidValue = Integer.MAX_VALUE;
+	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length();
 
 	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+	}
 
-		// Compute text limit & error message...
-		final int maxLabelLength = getMaxLabelLength();
-		if (maxLabelLength > DEFAULT_TEXT_LIMIT) {
-			setErrorMessage(JFaceMessages.get("err.preferences.integer.range", minValidValue, maxValidValue));
-		}
-		else {
-			setErrorMessage(JFaceMessages.get("err.preferences.integer"));
-		}
-		setTextLimit(Math.max(maxLabelLength, DEFAULT_TEXT_LIMIT));
+	@Override
+	protected int getDefaultTextLimit() {
+		return DEFAULT_TEXT_LIMIT;
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		try {
-			final int number = Integer.parseInt(getValue());
-			if (number >= minValidValue && number <= maxValidValue) {
-				return true;
-			}
+			final Integer number = Integer.valueOf(getValue());
+			return checkValidRange(number);
 		}
 		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
@@ -83,18 +71,33 @@ public class IntegerComboFieldEditor extends NumberComboFieldEditor {
 		}
 	}
 
-	public void setValidRange(final int min, final int max) {
-		minValidValue = min;
-		maxValidValue = max;
-		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
+	@Override
+	protected NumberType getNumberType() {
+		return NumberType.INTEGER;
 	}
 
-	public int getMinValidValue() {
-		return minValidValue;
+	@Override
+	public Integer getMinValidValue() {
+		return (Integer) super.getMinValidValue();
 	}
 
-	public int getMaxValidValue() {
-		return maxValidValue;
+	@Override
+	public void setMinValidValue(final Number min) {
+		super.setMinValidValue(min != null ? min.intValue() : null);
+	}
+
+	@Override
+	public Integer getMaxValidValue() {
+		return (Integer) super.getMaxValidValue();
+	}
+
+	@Override
+	public void setMaxValidValue(final Number max) {
+		super.setMaxValidValue(max != null ? max.intValue() : null);
+	}
+
+	public Integer getIntegerValue() throws NumberFormatException {
+		return Integer.valueOf(getValue());
 	}
 
 }

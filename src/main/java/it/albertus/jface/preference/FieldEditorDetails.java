@@ -37,14 +37,14 @@ public class FieldEditorDetails {
 	private Integer textHeight;
 	private Integer textValidateStrategy;
 
-	// IntegerFieldEditor & FloatFieldEditor
-	private Number numberMinValidValue;
-	private Number numberMaxValidValue;
+	// Numeric FieldEditors
+	private Number numberMinimum;
+	private Number numberMaximum;
 
 	// DateFieldEditor
 	private String datePattern;
-	private Date dateMinValidValue;
-	private Date dateMaxValidValue;
+	private Date dateFrom;
+	private Date dateTo;
 
 	// DirectoryFieldEditor & PathEditor
 	private Localized directoryDialogMessage;
@@ -180,20 +180,20 @@ public class FieldEditorDetails {
 		this.textValidateStrategy = textValidateStrategy;
 	}
 
-	public Number getNumberMinValidValue() {
-		return numberMinValidValue;
+	public Number getNumberMinimum() {
+		return numberMinimum;
 	}
 
-	public void setNumberMinValidValue(final Number numberMinValidValue) {
-		this.numberMinValidValue = numberMinValidValue;
+	public void setNumberMinimum(final Number numberMinimum) {
+		this.numberMinimum = numberMinimum;
 	}
 
-	public Number getNumberMaxValidValue() {
-		return numberMaxValidValue;
+	public Number getNumberMaximum() {
+		return numberMaximum;
 	}
 
-	public void setNumberMaxValidValue(final Number numberMaxValidValue) {
-		this.numberMaxValidValue = numberMaxValidValue;
+	public void setNumberMaximum(final Number numberMaximum) {
+		this.numberMaximum = numberMaximum;
 	}
 
 	public Localized getDirectoryDialogMessage() {
@@ -244,29 +244,29 @@ public class FieldEditorDetails {
 		this.datePattern = datePattern;
 	}
 
-	public Date getDateMinValidValue() {
-		return dateMinValidValue;
+	public Date getDateFrom() {
+		return dateFrom;
 	}
 
-	public void setDateMinValidValue(final Date dateMinValidValue) {
-		this.dateMinValidValue = dateMinValidValue;
+	public void setDateFrom(final Date dateFrom) {
+		this.dateFrom = dateFrom;
 	}
 
-	public Date getDateMaxValidValue() {
-		return dateMaxValidValue;
+	public Date getDateTo() {
+		return dateTo;
 	}
 
-	public void setDateMaxValidValue(final Date dateMaxValidValue) {
-		this.dateMaxValidValue = dateMaxValidValue;
+	public void setDateTo(final Date dateTo) {
+		this.dateTo = dateTo;
 	}
 
 	@Override
 	public String toString() {
 		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "")
 				+ (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "")
-				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinValidValue != null ? "numberMinValidValue=" + numberMinValidValue + ", " : "") + (numberMaxValidValue != null ? "numberMaxValidValue=" + numberMaxValidValue + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "")
-				+ (dateMinValidValue != null ? "dateMinValidValue=" + dateMinValidValue + ", " : "") + (dateMaxValidValue != null ? "dateMaxValidValue=" + dateMaxValidValue + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "")
-				+ (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "")
+				+ (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "")
+				+ (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
@@ -283,11 +283,11 @@ public class FieldEditorDetails {
 		this.textWidth = builder.textWidth;
 		this.textHeight = builder.textHeight;
 		this.textValidateStrategy = builder.textValidateStrategy;
-		this.numberMinValidValue = builder.numberMinValidValue;
-		this.numberMaxValidValue = builder.numberMaxValidValue;
+		this.numberMinimum = builder.numberMinimum;
+		this.numberMaximum = builder.numberMaximum;
 		this.datePattern = builder.datePattern;
-		this.dateMinValidValue = builder.dateMinValidValue;
-		this.dateMaxValidValue = builder.dateMaxValidValue;
+		this.dateFrom = builder.dateFrom;
+		this.dateTo = builder.dateTo;
 		this.directoryDialogMessage = builder.directoryDialogMessage;
 		this.fileExtensions = builder.fileExtensions;
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
@@ -313,11 +313,11 @@ public class FieldEditorDetails {
 		private Integer textWidth;
 		private Integer textHeight;
 		private Integer textValidateStrategy;
-		private Number numberMinValidValue;
-		private Number numberMaxValidValue;
+		private Number numberMinimum;
+		private Number numberMaximum;
 		private String datePattern;
-		private Date dateMinValidValue;
-		private Date dateMaxValidValue;
+		private Date dateFrom;
+		private Date dateTo;
 		private Localized directoryDialogMessage;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
@@ -389,8 +389,18 @@ public class FieldEditorDetails {
 		}
 
 		public FieldEditorDetailsBuilder numberValidRange(final Number min, final Number max) {
-			this.numberMinValidValue = min;
-			this.numberMaxValidValue = max;
+			this.numberMinimum = min;
+			this.numberMaximum = max;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder numberMinimum(final Number min) {
+			this.numberMinimum = min;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder numberMaximum(final Number max) {
+			this.numberMaximum = max;
 			return this;
 		}
 
@@ -400,8 +410,18 @@ public class FieldEditorDetails {
 		}
 
 		public FieldEditorDetailsBuilder dateValidRange(final Date from, final Date to) {
-			this.dateMinValidValue = from;
-			this.dateMaxValidValue = to;
+			this.dateFrom = from;
+			this.dateTo = to;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder dateFrom(final Date from) {
+			this.dateFrom = from;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder dateTo(final Date to) {
+			this.dateTo = to;
 			return this;
 		}
 

@@ -74,10 +74,6 @@ public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparab
 		updateTextLimit();
 	}
 
-	public abstract T getNumberValue() throws NumberFormatException;
-
-	protected abstract void updateTextLimit();
-
 	protected boolean labelsContainWhitespace() {
 		for (final String entry[] : getEntryNamesAndValues()) {
 			if (entry[0].contains(" ")) {
@@ -86,8 +82,6 @@ public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparab
 		}
 		return false;
 	}
-
-	protected abstract void updateErrorMessage();
 
 	protected enum LabelsCase {
 		UPPER,
@@ -116,5 +110,11 @@ public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparab
 			return LabelsCase.MIXED;
 		}
 	}
+
+	public abstract T getNumberValue() throws NumberFormatException;
+
+	protected abstract void updateTextLimit();
+
+	protected abstract void updateErrorMessage();
 
 }

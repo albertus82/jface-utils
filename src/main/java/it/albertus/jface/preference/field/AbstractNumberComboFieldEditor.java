@@ -42,7 +42,7 @@ public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparab
 		return Preferences.MAX_VALUE_LENGTH;
 	}
 
-	protected boolean checkValidRange(Comparable<T> number) {
+	protected boolean checkValidRange(final Comparable<T> number) {
 		if ((getMinValidValue() == null || number.compareTo(getMinValidValue()) >= 0) && (getMaxValidValue() == null || number.compareTo(getMaxValidValue()) <= 0)) {
 			return true;
 		}

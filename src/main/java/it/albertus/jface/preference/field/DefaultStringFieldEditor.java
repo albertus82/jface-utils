@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class DefaultStringFieldEditor extends StringFieldEditor {
 
+	protected DefaultStringFieldEditor() {}
+
 	public DefaultStringFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		init();

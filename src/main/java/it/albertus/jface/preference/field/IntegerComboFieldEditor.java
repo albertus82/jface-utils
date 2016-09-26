@@ -8,6 +8,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 
 	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+		setMinValidValue(Integer.valueOf(0)); // Positive by default
 	}
 
 	@Override

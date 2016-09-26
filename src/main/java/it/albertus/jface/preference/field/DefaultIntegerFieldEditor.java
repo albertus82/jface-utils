@@ -14,6 +14,7 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 
 	public DefaultIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
+		setMinValidValue(Integer.valueOf(0)); // Positive by default
 		getTextControl().addVerifyListener(new IntegerVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {

@@ -14,6 +14,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
 	public DefaultLongFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
+		setMinValidValue(Long.valueOf(0L)); // Positive by default
 		getTextControl().addVerifyListener(new LongVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {

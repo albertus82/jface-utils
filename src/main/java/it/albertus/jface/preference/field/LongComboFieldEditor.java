@@ -8,6 +8,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 
 	public LongComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+		setMinValidValue(Long.valueOf(0L)); // Positive by default
 	}
 
 	@Override

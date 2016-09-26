@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 import it.albertus.jface.listener.FloatVerifyListener;
 import it.albertus.util.Configured;
 
@@ -10,111 +8,85 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultFloatFieldEditor extends FloatFieldEditor {
-
-	public DefaultFloatFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
-		super(name, labelText, parent, textLimit);
-		init();
-	}
+public class DefaultFloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 
 	public DefaultFloatFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		init();
+		getTextControl().addVerifyListener(new FloatVerifyListener(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return getMinValidValue() == null || getMinValidValue().floatValue() < 0;
+			}
+		}));
+		getTextControl().addFocusListener(new FloatFocusListener());
+	}
+
+	@Override
+	protected boolean doCheckState() {
+		final Text text = getTextControl();
+		try {
+			final Float number = Float.valueOf(text.getText());
+			if (checkValidRange(number)) {
+				clearErrorMessage();
+				return true;
+			}
+			showErrorMessage();
+		}
+		catch (final NumberFormatException nfe) {
+			showErrorMessage();
+		}
+		return false;
 	}
 
 	@Override
 	protected void doLoad() {
+		super.doLoad();
 		final Text text = getTextControl();
-		if (text != null && !text.isDisposed()) {
-			setToolTipText(getPreferenceStore().getDefaultFloat(getPreferenceName()));
+		if (text != null) {
 			String value;
 			try {
-				value = Float.toString(Float.parseFloat(getPreferenceStore().getString(getPreferenceName()).trim()));
+				value = Float.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
-			catch (final Exception e) {
+			catch (final NumberFormatException nfe) {
 				value = "";
 			}
 			text.setText(value);
 			oldValue = value;
-			updateFontStyle();
 		}
-	}
-
-	@Override
-	protected void doStore() {
-		if (!isEmptyStringAllowed()) {
-			super.doStore();
-		}
-		else {
-			final Text text = getTextControl();
-			if (text != null) {
-				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-			}
-		}
-	}
-
-	@Override
-	protected void doLoadDefault() {
-		if (!isEmptyStringAllowed()) {
-			super.doLoadDefault();
-		}
-		else {
-			Text text = getTextControl();
-			if (text != null) {
-				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-			}
-			valueChanged();
-		}
-	}
-
-	@Override
-	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return super.checkState();
-		}
-		else {
-			boolean state = super.checkState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
-		}
-
-	}
-
-	@Override
-	protected void valueChanged() {
-		super.valueChanged();
 		updateFontStyle();
 	}
 
-	protected void init() {
-		getTextControl().addVerifyListener(new FloatVerifyListener(new Configured<Boolean>() {
-			@Override
-			public Boolean getValue() {
-				return getMinValidValue() < 0;
+	@Override
+	protected void doStore() throws NumberFormatException {
+		final Text text = getTextControl();
+		if (text != null) {
+			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
+				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
-		}));
-		getTextControl().addFocusListener(new FloatFocusListener());
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal"));
-	}
-
-	protected void setToolTipText(final float defaultValue) {
-		if (defaultValue != 0) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			else {
+				final float value = Float.parseFloat(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value);
+			}
 		}
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+	@Override
+	protected String getDefaultValue() {
+		final String defaultValue = super.getDefaultValue();
+		try {
+			Float.parseFloat(defaultValue);
+			return defaultValue;
+		}
+		catch (final NumberFormatException nfe) {
+			return "";
+		}
 	}
 
-	/** Format the number when the field loses the focus */
+	@Override
+	public Float getNumberValue() throws NumberFormatException {
+		return Float.valueOf(getStringValue());
+	}
+
 	protected class FloatFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {

@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 import it.albertus.jface.listener.BigDecimalVerifyListener;
 import it.albertus.util.Configured;
 
@@ -12,92 +10,10 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultBigDecimalFieldEditor extends BigDecimalFieldEditor {
-
-	public DefaultBigDecimalFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
-		super(name, labelText, parent, textLimit);
-		init();
-	}
+public class DefaultBigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal> {
 
 	public DefaultBigDecimalFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		init();
-	}
-
-	@Override
-	protected void doLoad() {
-		final Text text = getTextControl();
-		if (text != null && !text.isDisposed()) {
-			try {
-				setToolTipText(new BigDecimal(getPreferenceStore().getDefaultString(getPreferenceName())));
-			}
-			catch (final Exception e) {/* Ignore */}
-			String value;
-			try {
-				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
-			}
-			catch (final Exception e) {
-				value = "";
-			}
-			text.setText(value);
-			oldValue = value;
-			updateFontStyle();
-		}
-	}
-
-	@Override
-	protected void doStore() {
-		if (!isEmptyStringAllowed()) {
-			super.doStore();
-		}
-		else {
-			final Text text = getTextControl();
-			if (text != null) {
-				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-			}
-		}
-	}
-
-	@Override
-	protected void doLoadDefault() {
-		if (!isEmptyStringAllowed()) {
-			super.doLoadDefault();
-		}
-		else {
-			Text text = getTextControl();
-			if (text != null) {
-				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-			}
-			valueChanged();
-		}
-	}
-
-	@Override
-	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return super.checkState();
-		}
-		else {
-			boolean state = super.checkState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
-		}
-
-	}
-
-	@Override
-	protected void valueChanged() {
-		super.valueChanged();
-		updateFontStyle();
-	}
-
-	protected void init() {
 		getTextControl().addVerifyListener(new BigDecimalVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
@@ -105,21 +21,74 @@ public class DefaultBigDecimalFieldEditor extends BigDecimalFieldEditor {
 			}
 		}));
 		getTextControl().addFocusListener(new BigDecimalFocusListener());
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal"));
 	}
 
-	protected void setToolTipText(final BigDecimal defaultValue) {
-		if (defaultValue != null) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	@Override
+	protected boolean doCheckState() {
+		final Text text = getTextControl();
+		try {
+			final BigDecimal number = new BigDecimal(text.getText());
+			if (checkValidRange(number)) {
+				clearErrorMessage();
+				return true;
+			}
+			showErrorMessage();
+		}
+		catch (final NumberFormatException nfe) {
+			showErrorMessage();
+		}
+		return false;
+	}
+
+	@Override
+	protected void doLoad() {
+		super.doLoad();
+		final Text text = getTextControl();
+		if (text != null) {
+			String value;
+			try {
+				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName())).toString();
+			}
+			catch (final NumberFormatException nfe) {
+				value = "";
+			}
+			text.setText(value);
+			oldValue = value;
+		}
+		updateFontStyle();
+	}
+
+	@Override
+	protected void doStore() throws NumberFormatException {
+		final Text text = getTextControl();
+		if (text != null) {
+			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
+				getPreferenceStore().setValue(getPreferenceName(), "");
+			}
+			else {
+				final BigDecimal value = new BigDecimal(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
+			}
 		}
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+	@Override
+	protected String getDefaultValue() {
+		final String defaultValue = super.getDefaultValue();
+		try {
+			new BigDecimal(defaultValue);
+			return defaultValue;
+		}
+		catch (final NumberFormatException nfe) {
+			return "";
+		}
 	}
 
-	/** Format the double when the field loses the focus */
+	@Override
+	public BigDecimal getNumberValue() throws NumberFormatException {
+		return new BigDecimal(getStringValue());
+	}
+
 	protected class BigDecimalFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {

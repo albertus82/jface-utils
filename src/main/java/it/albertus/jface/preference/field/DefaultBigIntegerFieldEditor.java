@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 import it.albertus.jface.listener.BigIntegerVerifyListener;
 import it.albertus.util.Configured;
 
@@ -12,114 +10,85 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultBigIntegerFieldEditor extends BigIntegerFieldEditor {
-
-	public DefaultBigIntegerFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
-		super(name, labelText, parent, textLimit);
-		init();
-	}
+public class DefaultBigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger> {
 
 	public DefaultBigIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		init();
+		getTextControl().addVerifyListener(new BigIntegerVerifyListener(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return getMinValidValue() == null || getMinValidValue().intValue() < 0;
+			}
+		}));
+		getTextControl().addFocusListener(new BigIntegerFocusListener());
+	}
+
+	@Override
+	protected boolean doCheckState() {
+		final Text text = getTextControl();
+		try {
+			final BigInteger number = new BigInteger(text.getText());
+			if (checkValidRange(number)) {
+				clearErrorMessage();
+				return true;
+			}
+			showErrorMessage();
+		}
+		catch (final NumberFormatException nfe) {
+			showErrorMessage();
+		}
+		return false;
 	}
 
 	@Override
 	protected void doLoad() {
+		super.doLoad();
 		final Text text = getTextControl();
-		if (text != null && !text.isDisposed()) {
-			try {
-				setToolTipText(new BigInteger(getPreferenceStore().getDefaultString(getPreferenceName())));
-			}
-			catch (final Exception e) {/* Ignore */}
+		if (text != null) {
 			String value;
 			try {
-				value = new BigInteger(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
+				value = new BigInteger(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
-			catch (final Exception e) {
+			catch (final NumberFormatException nfe) {
 				value = "";
 			}
 			text.setText(value);
 			oldValue = value;
-			updateFontStyle();
 		}
-	}
-
-	@Override
-	protected void doStore() {
-		if (!isEmptyStringAllowed()) {
-			super.doStore();
-		}
-		else {
-			final Text text = getTextControl();
-			if (text != null) {
-				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-			}
-		}
-	}
-
-	@Override
-	protected void doLoadDefault() {
-		if (!isEmptyStringAllowed()) {
-			super.doLoadDefault();
-		}
-		else {
-			Text text = getTextControl();
-			if (text != null) {
-				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-			}
-			valueChanged();
-		}
-	}
-
-	@Override
-	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return super.checkState();
-		}
-		else {
-			boolean state = super.checkState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
-		}
-
-	}
-
-	@Override
-	protected void valueChanged() {
-		super.valueChanged();
 		updateFontStyle();
 	}
 
-	protected void init() {
-		getTextControl().addVerifyListener(new BigIntegerVerifyListener(new Configured<Boolean>() {
-			@Override
-			public Boolean getValue() {
-				return getMinValidValue() == null || getMinValidValue().compareTo(BigInteger.ZERO) < 0;
+	@Override
+	protected void doStore() throws NumberFormatException {
+		final Text text = getTextControl();
+		if (text != null) {
+			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
+				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
-		}));
-		getTextControl().addFocusListener(new BigIntegerFocusListener());
-		setErrorMessage(JFaceMessages.get("err.preferences.integer"));
-	}
-
-	protected void setToolTipText(final BigInteger defaultValue) {
-		if (defaultValue != null) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			else {
+				final BigInteger value = new BigInteger(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
+			}
 		}
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+	@Override
+	protected String getDefaultValue() {
+		final String defaultValue = super.getDefaultValue();
+		try {
+			new BigInteger(defaultValue);
+			return defaultValue;
+		}
+		catch (final NumberFormatException nfe) {
+			return "";
+		}
 	}
 
-	/** Format the double when the field loses the focus */
+	@Override
+	public BigInteger getNumberValue() throws NumberFormatException {
+		return new BigInteger(getStringValue());
+	}
+
 	protected class BigIntegerFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {

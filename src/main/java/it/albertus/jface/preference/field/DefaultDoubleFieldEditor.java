@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 import it.albertus.jface.listener.DoubleVerifyListener;
 import it.albertus.util.Configured;
 
@@ -10,111 +8,85 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultDoubleFieldEditor extends DoubleFieldEditor {
-
-	public DefaultDoubleFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
-		super(name, labelText, parent, textLimit);
-		init();
-	}
+public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 
 	public DefaultDoubleFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		init();
+		getTextControl().addVerifyListener(new DoubleVerifyListener(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return getMinValidValue() == null || getMinValidValue().doubleValue() < 0;
+			}
+		}));
+		getTextControl().addFocusListener(new DoubleFocusListener());
+	}
+
+	@Override
+	protected boolean doCheckState() {
+		final Text text = getTextControl();
+		try {
+			final Double number = Double.valueOf(text.getText());
+			if (checkValidRange(number)) {
+				clearErrorMessage();
+				return true;
+			}
+			showErrorMessage();
+		}
+		catch (final NumberFormatException nfe) {
+			showErrorMessage();
+		}
+		return false;
 	}
 
 	@Override
 	protected void doLoad() {
+		super.doLoad();
 		final Text text = getTextControl();
-		if (text != null && !text.isDisposed()) {
-			setToolTipText(getPreferenceStore().getDefaultDouble(getPreferenceName()));
+		if (text != null) {
 			String value;
 			try {
-				value = Double.toString(Double.parseDouble(getPreferenceStore().getString(getPreferenceName()).trim()));
+				value = Double.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
-			catch (final Exception e) {
+			catch (final NumberFormatException nfe) {
 				value = "";
 			}
 			text.setText(value);
 			oldValue = value;
-			updateFontStyle();
 		}
-	}
-
-	@Override
-	protected void doStore() {
-		if (!isEmptyStringAllowed()) {
-			super.doStore();
-		}
-		else {
-			final Text text = getTextControl();
-			if (text != null) {
-				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-			}
-		}
-	}
-
-	@Override
-	protected void doLoadDefault() {
-		if (!isEmptyStringAllowed()) {
-			super.doLoadDefault();
-		}
-		else {
-			Text text = getTextControl();
-			if (text != null) {
-				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-			}
-			valueChanged();
-		}
-	}
-
-	@Override
-	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return super.checkState();
-		}
-		else {
-			boolean state = super.checkState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
-		}
-
-	}
-
-	@Override
-	protected void valueChanged() {
-		super.valueChanged();
 		updateFontStyle();
 	}
 
-	protected void init() {
-		getTextControl().addVerifyListener(new DoubleVerifyListener(new Configured<Boolean>() {
-			@Override
-			public Boolean getValue() {
-				return getMinValidValue() < 0;
+	@Override
+	protected void doStore() throws NumberFormatException {
+		final Text text = getTextControl();
+		if (text != null) {
+			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
+				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
-		}));
-		getTextControl().addFocusListener(new DoubleFocusListener());
-		setErrorMessage(JFaceMessages.get("err.preferences.decimal"));
-	}
-
-	protected void setToolTipText(final double defaultValue) {
-		if (defaultValue != 0) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			else {
+				final double value = Double.parseDouble(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value);
+			}
 		}
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+	@Override
+	protected String getDefaultValue() {
+		final String defaultValue = super.getDefaultValue();
+		try {
+			Double.parseDouble(defaultValue);
+			return defaultValue;
+		}
+		catch (final NumberFormatException nfe) {
+			return "";
+		}
 	}
 
-	/** Format the double when the field loses the focus */
+	@Override
+	public Double getNumberValue() throws NumberFormatException {
+		return Double.valueOf(getStringValue());
+	}
+
 	protected class DoubleFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {

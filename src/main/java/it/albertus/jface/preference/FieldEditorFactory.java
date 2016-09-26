@@ -2,9 +2,7 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
-import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
-import it.albertus.jface.preference.field.BigIntegerFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
 import it.albertus.jface.preference.field.DefaultBigIntegerFieldEditor;
@@ -21,11 +19,9 @@ import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
-import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
-import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
@@ -61,12 +57,6 @@ public class FieldEditorFactory {
 		}
 		if (BigDecimalComboFieldEditor.class.equals(type)) {
 			return createBigDecimalComboFieldEditor(name, label, parent, details);
-		}
-		if (BigDecimalFieldEditor.class.equals(type)) {
-			return createBigDecimalFieldEditor(name, label, parent, details);
-		}
-		if (BigIntegerFieldEditor.class.equals(type)) {
-			return createBigIntegerFieldEditor(name, label, parent, details);
 		}
 		if (BooleanFieldEditor.class.equals(type)) {
 			return new BooleanFieldEditor(name, label, parent);
@@ -131,9 +121,6 @@ public class FieldEditorFactory {
 		if (DoubleComboFieldEditor.class.equals(type)) {
 			return createDoubleComboFieldEditor(name, label, parent, details);
 		}
-		if (DoubleFieldEditor.class.equals(type)) {
-			return createDoubleFieldEditor(name, label, parent, details);
-		}
 		if (EditableComboFieldEditor.class.equals(type)) {
 			return new EditableComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
@@ -145,9 +132,6 @@ public class FieldEditorFactory {
 		}
 		if (FloatComboFieldEditor.class.equals(type)) {
 			return createFloatComboFieldEditor(name, label, parent, details);
-		}
-		if (FloatFieldEditor.class.equals(type)) {
-			return createFloatFieldEditor(name, label, parent, details);
 		}
 		if (FontFieldEditor.class.equals(type)) {
 			return createFontFieldEditor(name, label, parent, details);
@@ -240,38 +224,6 @@ public class FieldEditorFactory {
 		return bigDecimalComboFieldEditor;
 	}
 
-	protected BigDecimalFieldEditor createBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final BigDecimalFieldEditor bigDecimalFieldEditor = new BigDecimalFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				bigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				bigDecimalFieldEditor.setValidRange(data.getNumberMinimum(), data.getNumberMaximum());
-			}
-			if (data.getTextLimit() != null) {
-				bigDecimalFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return bigDecimalFieldEditor;
-	}
-
-	protected BigIntegerFieldEditor createBigIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final BigIntegerFieldEditor bigDecimalFieldEditor = new BigIntegerFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				bigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				bigDecimalFieldEditor.setValidRange(data.getNumberMinimum(), data.getNumberMaximum());
-			}
-			if (data.getTextLimit() != null) {
-				bigDecimalFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return bigDecimalFieldEditor;
-	}
-
 	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		final DateFieldEditor dateFieldEditor;
 		if (data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
@@ -303,8 +255,13 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultBigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultBigDecimalFieldEditor.setValidRange(data.getNumberMinimum(), data.getNumberMaximum());
+			final Number min = data.getNumberMinimum();
+			if (min != null) {
+				defaultBigDecimalFieldEditor.setMinValidValue(min instanceof BigDecimal ? (BigDecimal) min : BigDecimal.valueOf(min.doubleValue()));
+			}
+			final Number max = data.getNumberMaximum();
+			if (max != null) {
+				defaultBigDecimalFieldEditor.setMaxValidValue(max instanceof BigDecimal ? (BigDecimal) max : BigDecimal.valueOf(max.doubleValue()));
 			}
 			if (data.getTextLimit() != null) {
 				defaultBigDecimalFieldEditor.setTextLimit(data.getTextLimit());
@@ -319,8 +276,13 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultBigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultBigDecimalFieldEditor.setValidRange(data.getNumberMinimum(), data.getNumberMaximum());
+			final Number min = data.getNumberMinimum();
+			if (min != null) {
+				defaultBigDecimalFieldEditor.setMinValidValue(min instanceof BigInteger ? (BigInteger) min : BigInteger.valueOf(min.longValue()));
+			}
+			final Number max = data.getNumberMaximum();
+			if (max != null) {
+				defaultBigDecimalFieldEditor.setMaxValidValue(max instanceof BigInteger ? (BigInteger) max : BigInteger.valueOf(max.longValue()));
 			}
 			if (data.getTextLimit() != null) {
 				defaultBigDecimalFieldEditor.setTextLimit(data.getTextLimit());
@@ -376,8 +338,11 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultDoubleFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultDoubleFieldEditor.setValidRange(data.getNumberMinimum().doubleValue(), data.getNumberMaximum().doubleValue());
+			if (data.getNumberMinimum() != null) {
+				defaultDoubleFieldEditor.setMinValidValue(data.getNumberMinimum().doubleValue());
+			}
+			if (data.getNumberMaximum() != null) {
+				defaultDoubleFieldEditor.setMaxValidValue(data.getNumberMaximum().doubleValue());
 			}
 			if (data.getTextLimit() != null) {
 				defaultDoubleFieldEditor.setTextLimit(data.getTextLimit());
@@ -414,8 +379,11 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultFloatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultFloatFieldEditor.setValidRange(data.getNumberMinimum().floatValue(), data.getNumberMaximum().floatValue());
+			if (data.getNumberMinimum() != null) {
+				defaultFloatFieldEditor.setMinValidValue(data.getNumberMinimum().floatValue());
+			}
+			if (data.getNumberMaximum() != null) {
+				defaultFloatFieldEditor.setMaxValidValue(data.getNumberMaximum().floatValue());
 			}
 			if (data.getTextLimit() != null) {
 				defaultFloatFieldEditor.setTextLimit(data.getTextLimit());
@@ -430,9 +398,11 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultIntegerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultIntegerFieldEditor.setValidRange(data.getNumberMinimum().intValue(), data.getNumberMaximum().intValue());
-				defaultIntegerFieldEditor.setTextLimit(Math.max(Integer.valueOf(data.getNumberMaximum().intValue()).toString().length(), Integer.valueOf(data.getNumberMinimum().intValue()).toString().length()));
+			if (data.getNumberMinimum() != null) {
+				defaultIntegerFieldEditor.setMinValidValue(data.getNumberMinimum().intValue());
+			}
+			if (data.getNumberMaximum() != null) {
+				defaultIntegerFieldEditor.setMaxValidValue(data.getNumberMaximum().intValue());
 			}
 			if (data.getTextLimit() != null) {
 				defaultIntegerFieldEditor.setTextLimit(data.getTextLimit());
@@ -532,22 +502,6 @@ public class FieldEditorFactory {
 		return doubleComboFieldEditor;
 	}
 
-	protected DoubleFieldEditor createDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DoubleFieldEditor doubleFieldEditor = new DoubleFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				doubleFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				doubleFieldEditor.setValidRange(data.getNumberMinimum().doubleValue(), data.getNumberMaximum().doubleValue());
-			}
-			if (data.getTextLimit() != null) {
-				doubleFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return doubleFieldEditor;
-	}
-
 	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
 		if (data != null) {
 			return new EmailAddressesListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
@@ -594,22 +548,6 @@ public class FieldEditorFactory {
 			floatComboFieldEditor.setTextLimit(data.getTextLimit());
 		}
 		return floatComboFieldEditor;
-	}
-
-	protected FloatFieldEditor createFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final FloatFieldEditor floatFieldEditor = new FloatFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				floatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				floatFieldEditor.setValidRange(data.getNumberMinimum().floatValue(), data.getNumberMaximum().floatValue());
-			}
-			if (data.getTextLimit() != null) {
-				floatFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return floatFieldEditor;
 	}
 
 	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

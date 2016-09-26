@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Integer> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MIN_VALUE).length();
 
 	public IntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);

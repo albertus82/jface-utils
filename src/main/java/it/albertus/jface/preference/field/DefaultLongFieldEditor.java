@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MIN_VALUE).length();
 
 	public DefaultLongFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -38,7 +38,6 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				return true;
 			}
 			showErrorMessage();
-			return false;
 		}
 		catch (final NumberFormatException nfe) {
 			showErrorMessage();
@@ -46,33 +45,16 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		return false;
 	}
 
-	/** Removes trailing zeros when the field loses the focus */
-	protected class LongFocusListener extends FocusAdapter {
-		@Override
-		public void focusLost(final FocusEvent fe) {
-			final Text text = (Text) fe.widget;
-			final String oldText = text.getText();
-			try {
-				final String newText = Long.toString(Long.parseLong(oldText));
-				if (!oldText.equals(newText)) {
-					text.setText(newText);
-				}
-				valueChanged();
-			}
-			catch (final Exception e) {}
-		}
-	}
-
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		Text text = getTextControl();
+		final Text text = getTextControl();
 		if (text != null) {
 			String value;
 			try {
 				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
-			catch (final Exception e) {
+			catch (final NumberFormatException nfe) {
 				value = "";
 			}
 			text.setText(value);
@@ -83,7 +65,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
 	@Override
 	protected void doStore() throws NumberFormatException {
-		Text text = getTextControl();
+		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
 				getPreferenceStore().setValue(getPreferenceName(), "");
@@ -102,7 +84,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 			Long.parseLong(defaultValue);
 			return defaultValue;
 		}
-		catch (NumberFormatException nfe) {
+		catch (final NumberFormatException nfe) {
 			return "";
 		}
 	}
@@ -110,6 +92,22 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	@Override
 	public Long getNumberValue() throws NumberFormatException {
 		return Long.valueOf(getStringValue());
+	}
+
+	protected class LongFocusListener extends FocusAdapter {
+		@Override
+		public void focusLost(final FocusEvent fe) {
+			final Text text = (Text) fe.widget;
+			final String oldText = text.getText();
+			try {
+				final String newText = Long.toString(Long.parseLong(oldText));
+				if (!oldText.equals(newText)) {
+					text.setText(newText);
+				}
+				valueChanged();
+			}
+			catch (final Exception e) {}
+		}
 	}
 
 }

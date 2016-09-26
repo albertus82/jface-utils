@@ -71,8 +71,8 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final long value = Long.parseLong(text.getText());
-				getPreferenceStore().setValue(getPreferenceName(), value);
+				final Long value = Long.valueOf(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
 	}

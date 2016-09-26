@@ -64,8 +64,8 @@ public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double>
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final double value = Double.parseDouble(text.getText());
-				getPreferenceStore().setValue(getPreferenceName(), value);
+				final Double value = Double.valueOf(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
 	}

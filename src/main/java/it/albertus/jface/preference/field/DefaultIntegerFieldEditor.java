@@ -71,8 +71,8 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final int value = Integer.parseInt(text.getText());
-				getPreferenceStore().setValue(getPreferenceName(), value);
+				final Integer value = Integer.valueOf(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
 	}

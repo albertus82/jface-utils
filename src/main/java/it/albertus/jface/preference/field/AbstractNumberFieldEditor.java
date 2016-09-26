@@ -12,6 +12,7 @@ public abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? 
 
 	public AbstractNumberFieldEditor(final String name, final String labelText, final Composite parent) {
 		init(name, labelText);
+		setEmptyStringAllowed(false);
 		setTextLimit(getDefaultTextLimit());
 		createControl(parent);
 		updateErrorMessage();

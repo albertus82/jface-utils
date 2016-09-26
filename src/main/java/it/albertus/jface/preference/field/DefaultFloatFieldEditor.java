@@ -64,8 +64,8 @@ public class DefaultFloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final float value = Float.parseFloat(text.getText());
-				getPreferenceStore().setValue(getPreferenceName(), value);
+				final Float value = Float.valueOf(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
 	}

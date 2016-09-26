@@ -17,6 +17,7 @@ public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparab
 
 	public AbstractNumberComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+		setEmptyStringAllowed(false);
 		labelsCase = getLabelsCase();
 
 		// If all the labels are upper or lower case, force the input case.

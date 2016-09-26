@@ -43,9 +43,8 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getNameForValue(getDefaultValue()));
-		updateFontStyle();
-		cleanComboText();
+		setToolTipText();
+		updateValue();
 	}
 
 	@Override
@@ -72,7 +71,8 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 		return getPreferenceStore().getDefaultString(getPreferenceName());
 	}
 
-	protected void setToolTipText(final String defaultValue) {
+	protected void setToolTipText() {
+		final String defaultValue = getNameForValue(getDefaultValue());
 		if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
 			getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}

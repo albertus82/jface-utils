@@ -7,6 +7,7 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 public class DefaultStringFieldEditor extends StringFieldEditor {
 
@@ -30,8 +31,18 @@ public class DefaultStringFieldEditor extends StringFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getPreferenceStore().getDefaultString(getPreferenceName()));
+		setToolTipText();
 		updateFontStyle();
+	}
+
+	@Override
+	protected void doLoadDefault() {
+		final Text text = getTextControl();
+		if (text != null) {
+			final String value = getDefaultValue();
+			text.setText(value);
+		}
+		valueChanged();
 	}
 
 	@Override
@@ -40,14 +51,19 @@ public class DefaultStringFieldEditor extends StringFieldEditor {
 		updateFontStyle();
 	}
 
-	protected void setToolTipText(final String defaultValue) {
+	protected String getDefaultValue() {
+		return getPreferenceStore().getDefaultString(getPreferenceName());
+	}
+
+	protected void setToolTipText() {
+		final String defaultValue = getDefaultValue();
 		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
 			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
 		}
 	}
 
 	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
+		final String defaultValue = getDefaultValue();
 		if (defaultValue != null && !defaultValue.isEmpty()) {
 			TextFormatter.updateFontStyle(getTextControl(), defaultValue);
 		}

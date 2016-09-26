@@ -23,21 +23,15 @@ public abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? 
 
 	@Override
 	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return doCheckState();
+		final Text text = getTextControl();
+		if (text == null) {
+			return false;
 		}
-		else {
-			boolean state = doCheckState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
+		if (isEmptyStringAllowed() && text.getText().isEmpty()) {
+			clearErrorMessage();
+			return true;
 		}
-
+		return doCheckState();
 	}
 
 	protected boolean checkValidRange(final Comparable<T> number) {

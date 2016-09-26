@@ -30,13 +30,9 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
 	@Override
 	protected boolean doCheckState() {
-		Text text = getTextControl();
-		if (text == null) {
-			return false;
-		}
-		String numberString = text.getText();
+		final Text text = getTextControl();
 		try {
-			final Long number = Long.valueOf(numberString);
+			final Long number = Long.valueOf(text.getText());
 			if (checkValidRange(number)) {
 				clearErrorMessage();
 				return true;
@@ -49,59 +45,6 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		}
 		return false;
 	}
-
-//	@Override
-//	protected void doLoad() {
-//		final Text text = getTextControl();
-//		if (text != null && !text.isDisposed()) {
-//			setToolTipText(getPreferenceStore().getDefaultString(getPreferenceName()));
-//			String value;
-//			try {
-//				value = Long.toString(Long.parseLong(getPreferenceStore().getString(getPreferenceName()).trim()));
-//			}
-//			catch (final Exception e) {
-//				value = "";
-//			}
-//			text.setText(value);
-//			oldValue = value;
-//			updateFontStyle();
-//		}
-//	}
-
-//	@Override
-//	protected void doStore() {
-//		if (!isEmptyStringAllowed()) {
-//			Text text = getTextControl();
-//			if (text != null) {
-//				long f = Long.parseLong(text.getText());
-//				getPreferenceStore().setValue(getPreferenceName(), f);
-//			}
-//		}
-//		else {
-//			final Text text = getTextControl();
-//			if (text != null) {
-//				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-//			}
-//		}
-//	}
-
-//	@Override
-//	protected void doLoadDefault() {
-//		if (!isEmptyStringAllowed()) {
-//			Text text = getTextControl();
-//			if (text != null) {
-//				long value = getPreferenceStore().getDefaultLong(getPreferenceName());
-//				text.setText("" + value);
-//			}
-//		}
-//		else {
-//			Text text = getTextControl();
-//			if (text != null) {
-//				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-//			}
-//		}
-//		valueChanged();
-//	}
 
 	/** Removes trailing zeros when the field loses the focus */
 	protected class LongFocusListener extends FocusAdapter {
@@ -117,6 +60,50 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				valueChanged();
 			}
 			catch (final Exception e) {}
+		}
+	}
+
+	@Override
+	protected void doLoad() {
+		super.doLoad();
+		Text text = getTextControl();
+		if (text != null) {
+			String value;
+			try {
+				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+			}
+			catch (final Exception e) {
+				value = "";
+			}
+			text.setText(value);
+			oldValue = value;
+		}
+		updateFontStyle();
+	}
+
+	@Override
+	protected void doStore() throws NumberFormatException {
+		Text text = getTextControl();
+		if (text != null) {
+			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
+				getPreferenceStore().setValue(getPreferenceName(), "");
+			}
+			else {
+				final long value = Long.parseLong(text.getText());
+				getPreferenceStore().setValue(getPreferenceName(), value);
+			}
+		}
+	}
+
+	@Override
+	protected String getDefaultValue() {
+		final String defaultValue = super.getDefaultValue();
+		try {
+			Long.parseLong(defaultValue);
+			return defaultValue;
+		}
+		catch (NumberFormatException nfe) {
+			return "";
 		}
 	}
 

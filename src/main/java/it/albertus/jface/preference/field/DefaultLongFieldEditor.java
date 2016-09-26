@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 import it.albertus.jface.listener.LongVerifyListener;
 import it.albertus.util.Configured;
 
@@ -10,116 +8,100 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultLongFieldEditor extends LongFieldEditor {
+public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
-	protected static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
-
-	public DefaultLongFieldEditor(final String name, final String labelText, final Composite parent, final int textLimit) {
-		super(name, labelText, parent, textLimit);
-		init();
-	}
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length();
 
 	public DefaultLongFieldEditor(final String name, final String labelText, final Composite parent) {
-		this(name, labelText, parent, DEFAULT_TEXT_LIMIT);
-	}
-
-	@Override
-	public void setValidRange(final long min, final long max) {
-		super.setValidRange(min, max);
-		setErrorMessage(JFaceMessages.get("err.preferences.integer.range", min, max));
-	}
-
-	@Override
-	protected void doLoad() {
-		final Text text = getTextControl();
-		if (text != null && !text.isDisposed()) {
-			setToolTipText(getPreferenceStore().getDefaultLong(getPreferenceName()));
-			String value;
-			try {
-				value = Long.toString(Long.parseLong(getPreferenceStore().getString(getPreferenceName()).trim()));
-			}
-			catch (final Exception e) {
-				value = "";
-			}
-			text.setText(value);
-			oldValue = value;
-			updateFontStyle();
-		}
-	}
-
-	@Override
-	protected void doStore() {
-		if (!isEmptyStringAllowed()) {
-			super.doStore();
-		}
-		else {
-			final Text text = getTextControl();
-			if (text != null) {
-				getPreferenceStore().setValue(getPreferenceName(), text.getText());
-			}
-		}
-	}
-
-	@Override
-	protected void doLoadDefault() {
-		if (!isEmptyStringAllowed()) {
-			super.doLoadDefault();
-		}
-		else {
-			Text text = getTextControl();
-			if (text != null) {
-				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
-			}
-			valueChanged();
-		}
-	}
-
-	@Override
-	protected boolean checkState() {
-		if (!isEmptyStringAllowed()) {
-			return super.checkState();
-		}
-		else {
-			boolean state = super.checkState();
-			if (!state) {
-				final Text text = getTextControl();
-				if (text != null && text.getText().isEmpty()) {
-					clearErrorMessage();
-					state = true;
-				}
-			}
-			return state;
-		}
-
-	}
-
-	@Override
-	protected void valueChanged() {
-		super.valueChanged();
-		updateFontStyle();
-	}
-
-	protected void init() {
+		super(name, labelText, parent);
 		getTextControl().addVerifyListener(new LongVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
-				return getMinValidValue() < 0;
-			}	
+				return getMinValidValue() == null || getMinValidValue().longValue() < 0;
+			}
 		}));
 		getTextControl().addFocusListener(new LongFocusListener());
-		setErrorMessage(JFaceMessages.get("err.preferences.integer"));
 	}
 
-	protected void setToolTipText(final long defaultValue) {
-		if (defaultValue != 0) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	@Override
+	protected int getDefaultTextLimit() {
+		return DEFAULT_TEXT_LIMIT;
+	}
+
+	@Override
+	protected boolean doCheckState() {
+		Text text = getTextControl();
+		if (text == null) {
+			return false;
 		}
+		String numberString = text.getText();
+		try {
+			final Long number = Long.valueOf(numberString);
+			if (checkValidRange(number)) {
+				clearErrorMessage();
+				return true;
+			}
+			showErrorMessage();
+			return false;
+		}
+		catch (final NumberFormatException nfe) {
+			showErrorMessage();
+		}
+		return false;
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		TextFormatter.updateFontStyle(getTextControl(), defaultValue);
-	}
+//	@Override
+//	protected void doLoad() {
+//		final Text text = getTextControl();
+//		if (text != null && !text.isDisposed()) {
+//			setToolTipText(getPreferenceStore().getDefaultString(getPreferenceName()));
+//			String value;
+//			try {
+//				value = Long.toString(Long.parseLong(getPreferenceStore().getString(getPreferenceName()).trim()));
+//			}
+//			catch (final Exception e) {
+//				value = "";
+//			}
+//			text.setText(value);
+//			oldValue = value;
+//			updateFontStyle();
+//		}
+//	}
+
+//	@Override
+//	protected void doStore() {
+//		if (!isEmptyStringAllowed()) {
+//			Text text = getTextControl();
+//			if (text != null) {
+//				long f = Long.parseLong(text.getText());
+//				getPreferenceStore().setValue(getPreferenceName(), f);
+//			}
+//		}
+//		else {
+//			final Text text = getTextControl();
+//			if (text != null) {
+//				getPreferenceStore().setValue(getPreferenceName(), text.getText());
+//			}
+//		}
+//	}
+
+//	@Override
+//	protected void doLoadDefault() {
+//		if (!isEmptyStringAllowed()) {
+//			Text text = getTextControl();
+//			if (text != null) {
+//				long value = getPreferenceStore().getDefaultLong(getPreferenceName());
+//				text.setText("" + value);
+//			}
+//		}
+//		else {
+//			Text text = getTextControl();
+//			if (text != null) {
+//				text.setText(getPreferenceStore().getDefaultString(getPreferenceName()));
+//			}
+//		}
+//		valueChanged();
+//	}
 
 	/** Removes trailing zeros when the field loses the focus */
 	protected class LongFocusListener extends FocusAdapter {
@@ -136,6 +118,11 @@ public class DefaultLongFieldEditor extends LongFieldEditor {
 			}
 			catch (final Exception e) {}
 		}
+	}
+
+	@Override
+	public Long getNumberValue() throws NumberFormatException {
+		return Long.valueOf(getStringValue());
 	}
 
 }

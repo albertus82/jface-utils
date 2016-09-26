@@ -29,7 +29,6 @@ import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
-import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
@@ -164,9 +163,6 @@ public class FieldEditorFactory {
 		}
 		if (LongComboFieldEditor.class.equals(type)) {
 			return createLongComboFieldEditor(name, label, parent, details);
-		}
-		if (LongFieldEditor.class.equals(type)) {
-			return createLongFieldEditor(name, label, parent, details);
 		}
 		if (PasswordFieldEditor.class.equals(type)) {
 			return createPasswordFieldEditor(name, label, parent, details);
@@ -451,9 +447,11 @@ public class FieldEditorFactory {
 			if (data.getEmptyStringAllowed() != null) {
 				defaultLongFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				defaultLongFieldEditor.setValidRange(data.getNumberMinimum().longValue(), data.getNumberMaximum().longValue());
-				defaultLongFieldEditor.setTextLimit(Math.max(Long.valueOf(data.getNumberMaximum().longValue()).toString().length(), Long.valueOf(data.getNumberMinimum().longValue()).toString().length()));
+			if (data.getNumberMinimum() != null) {
+				defaultLongFieldEditor.setMinValidValue(data.getNumberMinimum().longValue());
+			}
+			if (data.getNumberMaximum() != null) {
+				defaultLongFieldEditor.setMaxValidValue(data.getNumberMaximum().longValue());
 			}
 			if (data.getTextLimit() != null) {
 				defaultLongFieldEditor.setTextLimit(data.getTextLimit());
@@ -663,23 +661,6 @@ public class FieldEditorFactory {
 			}
 		}
 		return integerFieldEditor;
-	}
-
-	protected LongFieldEditor createLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final LongFieldEditor longFieldEditor = new LongFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				longFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				longFieldEditor.setValidRange(data.getNumberMinimum().longValue(), data.getNumberMaximum().longValue());
-				longFieldEditor.setTextLimit(Math.max(Long.valueOf(data.getNumberMaximum().longValue()).toString().length(), Long.valueOf(data.getNumberMinimum().longValue()).toString().length()));
-			}
-			if (data.getTextLimit() != null) {
-				longFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return longFieldEditor;
 	}
 
 	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {

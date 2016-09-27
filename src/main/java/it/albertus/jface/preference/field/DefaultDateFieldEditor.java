@@ -10,7 +10,10 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultDateFieldEditor extends DateFieldEditor {
+public class DefaultDateFieldEditor extends DateFieldEditor implements DefaultFieldEditor {
+
+	private boolean defaultToolTip = true;
+	private boolean boldCustomValues = true;
 
 	public DefaultDateFieldEditor(final String name, final String labelText, final String pattern, final Composite parent) {
 		super(name, labelText, pattern, parent);
@@ -33,7 +36,7 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getPreferenceStore().getDefaultString(getPreferenceName()));
+		setToolTipText();
 		updateFontStyle();
 	}
 
@@ -43,16 +46,25 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 		updateFontStyle();
 	}
 
-	protected void setToolTipText(final String defaultValue) {
-		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	protected String getDefaultValue() {
+		return getPreferenceStore().getDefaultString(getPreferenceName());
+	}
+
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			final String defaultValue = getDefaultValue();
+			if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
 		}
 	}
 
 	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		if (defaultValue != null && !defaultValue.isEmpty()) {
-			TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+		if (boldCustomValues) {
+			final String defaultValue = getDefaultValue();
+			if (defaultValue != null && !defaultValue.isEmpty()) {
+				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+			}
 		}
 	}
 
@@ -72,6 +84,26 @@ public class DefaultDateFieldEditor extends DateFieldEditor {
 				catch (final ParseException pe) {/* Ignore */}
 			}
 		}
+	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
 	}
 
 }

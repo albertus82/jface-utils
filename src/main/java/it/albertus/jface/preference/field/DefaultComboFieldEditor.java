@@ -9,7 +9,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultComboFieldEditor extends ComboFieldEditor {
+public class DefaultComboFieldEditor extends ComboFieldEditor implements DefaultFieldEditor {
+
+	private boolean defaultToolTip = true;
+	private boolean boldCustomValues = true;
 
 	public DefaultComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -40,7 +43,7 @@ public class DefaultComboFieldEditor extends ComboFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getNameForValue(getDefaultValue()));
+		setToolTipText();
 		updateFontStyle();
 	}
 
@@ -63,13 +66,6 @@ public class DefaultComboFieldEditor extends ComboFieldEditor {
 		updateFontStyle();
 	}
 
-	protected void updateFontStyle() {
-		final String defaultValue = getDefaultValue();
-		if (defaultValue != null && !defaultValue.isEmpty()) {
-			TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
-		}
-	}
-
 	protected String getNameForValue(final String value) {
 		final String[][] entryNamesAndValues = getEntryNamesAndValues();
 		for (int i = 0; i < entryNamesAndValues.length; i++) {
@@ -81,10 +77,42 @@ public class DefaultComboFieldEditor extends ComboFieldEditor {
 		return entryNamesAndValues[0][1];
 	}
 
-	protected void setToolTipText(final String defaultValue) {
-		if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	protected void updateFontStyle() {
+		if (boldCustomValues) {
+			final String defaultValue = getDefaultValue();
+			if (defaultValue != null && !defaultValue.isEmpty()) {
+				TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+			}
 		}
+	}
+
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			String defaultValue = getNameForValue(getDefaultValue());
+			if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
+		}
+	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
 	}
 
 }

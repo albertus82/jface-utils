@@ -9,13 +9,16 @@ import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultFileFieldEditor extends FileFieldEditor {
+public class DefaultFileFieldEditor extends FileFieldEditor implements DefaultFieldEditor {
 
 	public static final int MAX_PATH = 255;
 
 	private boolean localized; // Do not set any value here!
 
 	private boolean enforceAbsolute;
+
+	private boolean defaultToolTip = true;
+	private boolean boldCustomValues = true;
 
 	protected DefaultFileFieldEditor() {}
 
@@ -43,7 +46,7 @@ public class DefaultFileFieldEditor extends FileFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getPreferenceStore().getDefaultString(getPreferenceName()));
+		setToolTipText();
 		updateFontStyle();
 	}
 
@@ -97,22 +100,51 @@ public class DefaultFileFieldEditor extends FileFieldEditor {
 		return false;
 	}
 
-	protected void setToolTipText(final String defaultValue) {
-		if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	protected String getDefaultValue() {
+		return getPreferenceStore().getDefaultString(getPreferenceName());
+	}
+
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			final String defaultValue = getDefaultValue();
+			if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
 		}
 	}
 
 	protected void updateFontStyle() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		if (defaultValue != null && !defaultValue.isEmpty()) {
-			TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+		if (boldCustomValues) {
+			final String defaultValue = getDefaultValue();
+			if (defaultValue != null && !defaultValue.isEmpty()) {
+				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+			}
 		}
 	}
 
 	protected void init() {
 		setErrorMessage(JFaceMessages.get("err.preferences.file.existing"));
 		setTextLimit(MAX_PATH);
+	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
 	}
 
 }

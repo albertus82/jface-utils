@@ -6,9 +6,10 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultBooleanFieldEditor extends BooleanFieldEditor {
+public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements DefaultFieldEditor {
 
 	private Button checkBox;
+	private boolean defaultToolTip = true;
 
 	protected DefaultBooleanFieldEditor() {}
 
@@ -29,18 +30,43 @@ public class DefaultBooleanFieldEditor extends BooleanFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getPreferenceStore().getDefaultBoolean(getPreferenceName()));
+		setToolTipText();
 	}
 
-	protected void setToolTipText(final boolean defaultValue) {
-		if (checkBox != null && !checkBox.isDisposed()) {
-			final String value = JFaceMessages.get(defaultValue ? "lbl.preferences.default.value.true" : "lbl.preferences.default.value.false");
-			checkBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", value));
+	protected boolean getDefaultValue() {
+		return getPreferenceStore().getDefaultBoolean(getPreferenceName());
+	}
+
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			boolean defaultValue = getDefaultValue();
+			if (checkBox != null && !checkBox.isDisposed()) {
+				final String value = JFaceMessages.get(defaultValue ? "lbl.preferences.default.value.true" : "lbl.preferences.default.value.false");
+				checkBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", value));
+			}
 		}
 	}
 
 	protected Button getChangeControl() {
 		return checkBox;
 	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return false;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {}
 
 }

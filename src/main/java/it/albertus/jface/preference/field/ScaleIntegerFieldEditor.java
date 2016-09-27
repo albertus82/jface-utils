@@ -16,9 +16,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
+public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements DefaultFieldEditor {
 
 	private final Text text;
+
+	private boolean defaultToolTip = true;
+	private boolean boldCustomValues = true;
 
 	public Text getTextControl() {
 		return text;
@@ -64,8 +67,19 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getPreferenceStore().getDefaultInt(getPreferenceName()));
+		setToolTipText();
 		updateText();
+	}
+
+	protected String getDefaultValue() {
+		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
+		try {
+			Integer.parseInt(defaultValue);
+			return defaultValue;
+		}
+		catch (final NumberFormatException nfe) {
+			return "";
+		}
 	}
 
 	@Override
@@ -75,9 +89,12 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 		this.text.setEnabled(enabled);
 	}
 
-	protected void setToolTipText(final int defaultValue) {
-		if (text != null && !text.isDisposed() && defaultValue != 0) {
-			text.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			final String defaultValue = getDefaultValue();
+			if (text != null && !text.isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				text.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
 		}
 	}
 
@@ -97,7 +114,9 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 	protected class TextKeyListener extends KeyAdapter {
 		@Override
 		public void keyReleased(final KeyEvent ke) {
-			TextFormatter.updateFontStyle((Text) ke.widget, getPreferenceStore().getDefaultInt(getPreferenceName()));
+			if (boldCustomValues) {
+				TextFormatter.updateFontStyle((Text) ke.widget, getPreferenceStore().getDefaultInt(getPreferenceName()));
+			}
 		}
 	}
 
@@ -119,6 +138,26 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor {
 				setText(scale.getSelection());
 			}
 		}
+	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
 	}
 
 }

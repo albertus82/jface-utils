@@ -7,11 +7,14 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 
-public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
+public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements DefaultFieldEditor {
 
 	private boolean valid = true;
 	private String errorMessage;
 	private boolean emptyStringAllowed = true;
+
+	private boolean defaultToolTip = true;
+	private boolean boldCustomValues = true;
 
 	public ValidatedComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -72,16 +75,20 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 	}
 
 	protected void setToolTipText() {
-		final String defaultValue = getNameForValue(getDefaultValue());
-		if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+		if (defaultToolTip) {
+			final String defaultValue = getNameForValue(getDefaultValue());
+			if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
 		}
 	}
 
 	protected void updateFontStyle() {
-		final String defaultValue = getDefaultValue();
-		if (defaultValue != null && !defaultValue.isEmpty()) {
-			TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+		if (boldCustomValues) {
+			final String defaultValue = getDefaultValue();
+			if (defaultValue != null && !defaultValue.isEmpty()) {
+				TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+			}
 		}
 	}
 
@@ -145,6 +152,26 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor {
 		public void keyReleased(final KeyEvent ke) {
 			validate();
 		}
+	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
 	}
 
 }

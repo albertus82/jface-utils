@@ -18,6 +18,7 @@ import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.EnhancedDirectoryFieldEditor;
 import it.albertus.jface.preference.field.EnhancedFileFieldEditor;
 import it.albertus.jface.preference.field.EnhancedIntegerFieldEditor;
+import it.albertus.jface.preference.field.FieldEditorDefault;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
@@ -50,126 +51,146 @@ import org.eclipse.swt.widgets.Composite;
 public class FieldEditorFactory {
 
 	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final FieldEditor fieldEditor;
+
 		final Class<? extends FieldEditor> type = details.getFieldEditorClass();
 
 		if (BigIntegerComboFieldEditor.class.equals(type)) {
-			return createBigIntegerComboFieldEditor(name, label, parent, details);
+			fieldEditor = createBigIntegerComboFieldEditor(name, label, parent, details);
 		}
-		if (BigDecimalComboFieldEditor.class.equals(type)) {
-			return createBigDecimalComboFieldEditor(name, label, parent, details);
+		else if (BigDecimalComboFieldEditor.class.equals(type)) {
+			fieldEditor = createBigDecimalComboFieldEditor(name, label, parent, details);
 		}
-		if (BooleanFieldEditor.class.equals(type)) {
-			return new BooleanFieldEditor(name, label, parent);
+		else if (BooleanFieldEditor.class.equals(type)) {
+			fieldEditor = new BooleanFieldEditor(name, label, parent);
 		}
-		if (ColorFieldEditor.class.equals(type)) {
-			return new ColorFieldEditor(name, label, parent);
+		else if (ColorFieldEditor.class.equals(type)) {
+			fieldEditor = new ColorFieldEditor(name, label, parent);
 		}
-		if (ComboFieldEditor.class.equals(type)) {
-			return new ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		else if (ComboFieldEditor.class.equals(type)) {
+			fieldEditor = new ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		if (BigDecimalFieldEditor.class.equals(type)) {
-			return createBigDecimalFieldEditor(name, label, parent, details);
+		else if (BigDecimalFieldEditor.class.equals(type)) {
+			fieldEditor = createBigDecimalFieldEditor(name, label, parent, details);
 		}
-		if (BigIntegerFieldEditor.class.equals(type)) {
-			return createBigIntegerFieldEditor(name, label, parent, details);
+		else if (BigIntegerFieldEditor.class.equals(type)) {
+			fieldEditor = createBigIntegerFieldEditor(name, label, parent, details);
 		}
-		if (DefaultBooleanFieldEditor.class.equals(type)) {
-			return new DefaultBooleanFieldEditor(name, label, parent);
+		else if (DefaultBooleanFieldEditor.class.equals(type)) {
+			fieldEditor = new DefaultBooleanFieldEditor(name, label, parent);
 		}
-		if (DefaultComboFieldEditor.class.equals(type)) {
-			return new DefaultComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		else if (DefaultComboFieldEditor.class.equals(type)) {
+			fieldEditor = new DefaultComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		if (DateFieldEditor.class.equals(type)) {
-			return createDateFieldEditor(name, label, parent, details);
+		else if (DateFieldEditor.class.equals(type)) {
+			fieldEditor = createDateFieldEditor(name, label, parent, details);
 		}
-		if (EnhancedDirectoryFieldEditor.class.equals(type)) {
-			return createEnhancedDirectoryFieldEditor(name, label, parent, details);
+		else if (EnhancedDirectoryFieldEditor.class.equals(type)) {
+			fieldEditor = createEnhancedDirectoryFieldEditor(name, label, parent, details);
 		}
-		if (DoubleFieldEditor.class.equals(type)) {
-			return createDoubleFieldEditor(name, label, parent, details);
+		else if (DoubleFieldEditor.class.equals(type)) {
+			fieldEditor = createDoubleFieldEditor(name, label, parent, details);
 		}
-		if (EnhancedFileFieldEditor.class.equals(type)) {
-			return createEnhancedFileFieldEditor(name, label, parent, details);
+		else if (EnhancedFileFieldEditor.class.equals(type)) {
+			fieldEditor = createEnhancedFileFieldEditor(name, label, parent, details);
 		}
-		if (FloatFieldEditor.class.equals(type)) {
-			return createFloatFieldEditor(name, label, parent, details);
+		else if (FloatFieldEditor.class.equals(type)) {
+			fieldEditor = createFloatFieldEditor(name, label, parent, details);
 		}
-		if (EnhancedIntegerFieldEditor.class.equals(type)) {
-			return createEnhancedIntegerFieldEditor(name, label, parent, details);
+		else if (EnhancedIntegerFieldEditor.class.equals(type)) {
+			fieldEditor = createEnhancedIntegerFieldEditor(name, label, parent, details);
 		}
-		if (LongFieldEditor.class.equals(type)) {
-			return createLongFieldEditor(name, label, parent, details);
+		else if (LongFieldEditor.class.equals(type)) {
+			fieldEditor = createLongFieldEditor(name, label, parent, details);
 		}
-		if (DefaultRadioGroupFieldEditor.class.equals(type)) {
-			return createDefaultRadioGroupFieldEditor(name, label, parent, details);
+		else if (DefaultRadioGroupFieldEditor.class.equals(type)) {
+			fieldEditor = createDefaultRadioGroupFieldEditor(name, label, parent, details);
 		}
-		if (DefaultStringFieldEditor.class.equals(type)) {
-			return createDefaultStringFieldEditor(name, label, parent, details);
+		else if (DefaultStringFieldEditor.class.equals(type)) {
+			fieldEditor = createDefaultStringFieldEditor(name, label, parent, details);
 		}
-		if (DelimiterComboFieldEditor.class.equals(type)) {
-			return createDelimiterComboFieldEditor(name, label, parent, details);
+		else if (DelimiterComboFieldEditor.class.equals(type)) {
+			fieldEditor = createDelimiterComboFieldEditor(name, label, parent, details);
 		}
-		if (DirectoryFieldEditor.class.equals(type)) {
-			return createDirectoryFieldEditor(name, label, parent, details);
+		else if (DirectoryFieldEditor.class.equals(type)) {
+			fieldEditor = createDirectoryFieldEditor(name, label, parent, details);
 		}
-		if (DoubleComboFieldEditor.class.equals(type)) {
-			return createDoubleComboFieldEditor(name, label, parent, details);
+		else if (DoubleComboFieldEditor.class.equals(type)) {
+			fieldEditor = createDoubleComboFieldEditor(name, label, parent, details);
 		}
-		if (EditableComboFieldEditor.class.equals(type)) {
-			return new EditableComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		else if (EditableComboFieldEditor.class.equals(type)) {
+			fieldEditor = new EditableComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		if (EmailAddressesListEditor.class.equals(type)) {
-			return createEmailAddressesListEditor(name, label, parent, details);
+		else if (EmailAddressesListEditor.class.equals(type)) {
+			fieldEditor = createEmailAddressesListEditor(name, label, parent, details);
 		}
-		if (FileFieldEditor.class.equals(type)) {
-			return createFileFieldEditor(name, label, parent, details);
+		else if (FileFieldEditor.class.equals(type)) {
+			fieldEditor = createFileFieldEditor(name, label, parent, details);
 		}
-		if (FloatComboFieldEditor.class.equals(type)) {
-			return createFloatComboFieldEditor(name, label, parent, details);
+		else if (FloatComboFieldEditor.class.equals(type)) {
+			fieldEditor = createFloatComboFieldEditor(name, label, parent, details);
 		}
-		if (FontFieldEditor.class.equals(type)) {
-			return createFontFieldEditor(name, label, parent, details);
+		else if (FontFieldEditor.class.equals(type)) {
+			fieldEditor = createFontFieldEditor(name, label, parent, details);
 		}
-		if (IntegerFieldEditor.class.equals(type)) {
-			return createIntegerFieldEditor(name, label, parent, details);
+		else if (IntegerFieldEditor.class.equals(type)) {
+			fieldEditor = createIntegerFieldEditor(name, label, parent, details);
 		}
-		if (IntegerComboFieldEditor.class.equals(type)) {
-			return createIntegerComboFieldEditor(name, label, parent, details);
+		else if (IntegerComboFieldEditor.class.equals(type)) {
+			fieldEditor = createIntegerComboFieldEditor(name, label, parent, details);
 		}
-		if (LocalizedPathEditor.class.equals(type)) {
-			return createLocalizedPathEditor(name, label, parent, details);
+		else if (LocalizedPathEditor.class.equals(type)) {
+			fieldEditor = createLocalizedPathEditor(name, label, parent, details);
 		}
-		if (LongComboFieldEditor.class.equals(type)) {
-			return createLongComboFieldEditor(name, label, parent, details);
+		else if (LongComboFieldEditor.class.equals(type)) {
+			fieldEditor = createLongComboFieldEditor(name, label, parent, details);
 		}
-		if (PasswordFieldEditor.class.equals(type)) {
-			return createPasswordFieldEditor(name, label, parent, details);
+		else if (PasswordFieldEditor.class.equals(type)) {
+			fieldEditor = createPasswordFieldEditor(name, label, parent, details);
 		}
-		if (PathEditor.class.equals(type)) {
-			return new PathEditor(name, label, details != null && details.getDirectoryDialogMessage() != null ? details.getDirectoryDialogMessage().toString() : null, parent);
+		else if (PathEditor.class.equals(type)) {
+			fieldEditor = new PathEditor(name, label, details != null && details.getDirectoryDialogMessage() != null ? details.getDirectoryDialogMessage().toString() : null, parent);
 		}
-		if (RadioGroupFieldEditor.class.equals(type)) {
-			return createRadioGroupFieldEditor(name, label, parent, details);
+		else if (RadioGroupFieldEditor.class.equals(type)) {
+			fieldEditor = createRadioGroupFieldEditor(name, label, parent, details);
 		}
-		if (ScaleFieldEditor.class.equals(type)) {
-			return createScaleFieldEditor(name, label, parent, details);
+		else if (ScaleFieldEditor.class.equals(type)) {
+			fieldEditor = createScaleFieldEditor(name, label, parent, details);
 		}
-		if (ScaleIntegerFieldEditor.class.equals(type)) {
-			return createScaleIntegerFieldEditor(name, label, parent, details);
+		else if (ScaleIntegerFieldEditor.class.equals(type)) {
+			fieldEditor = createScaleIntegerFieldEditor(name, label, parent, details);
 		}
-		if (StringFieldEditor.class.equals(type)) {
-			return createStringFieldEditor(name, label, parent, details);
+		else if (StringFieldEditor.class.equals(type)) {
+			fieldEditor = createStringFieldEditor(name, label, parent, details);
 		}
-		if (UriListEditor.class.equals(type)) {
-			return createUriListEditor(name, label, parent, details);
+		else if (UriListEditor.class.equals(type)) {
+			fieldEditor = createUriListEditor(name, label, parent, details);
 		}
-		if (ValidatedComboFieldEditor.class.equals(type)) {
-			return createValidatedComboFieldEditor(name, label, parent, details);
+		else if (ValidatedComboFieldEditor.class.equals(type)) {
+			fieldEditor = createValidatedComboFieldEditor(name, label, parent, details);
 		}
-		if (WrapStringFieldEditor.class.equals(type)) {
-			return createWrapStringFieldEditor(name, label, parent, details);
+		else if (WrapStringFieldEditor.class.equals(type)) {
+			fieldEditor = createWrapStringFieldEditor(name, label, parent, details);
 		}
-		throw new IllegalStateException("Unsupported FieldEditor: " + type);
+		else {
+			throw new IllegalStateException("Unsupported FieldEditor: " + type);
+		}
+
+		postConstruct(fieldEditor, details);
+
+		return fieldEditor;
+	}
+
+	protected void postConstruct(final FieldEditor fieldEditor, final FieldEditorDetails details) {
+		if (details != null && fieldEditor instanceof FieldEditorDefault) {
+			final FieldEditorDefault fieldEditorDefault = (FieldEditorDefault) fieldEditor;
+			if (details.getBoldCustomValues() != null) {
+				fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
+			}
+			if (details.getDefaultToolTip() != null) {
+				fieldEditorDefault.setDefaultToolTip(details.getDefaultToolTip());
+			}
+		}
 	}
 
 	protected BigIntegerComboFieldEditor createBigIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {

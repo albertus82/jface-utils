@@ -17,6 +17,8 @@ public class FieldEditorDetails {
 	private Boolean emptyStringAllowed;
 	private Integer horizontalSpan;
 	private Image[] icons;
+	private Boolean defaultToolTip;
+	private Boolean boldCustomValues;
 
 	// ComboFieldEditor & RadioGroupFieldEditor
 	private LabelsAndValues labelsAndValues;
@@ -260,13 +262,29 @@ public class FieldEditorDetails {
 		this.dateTo = dateTo;
 	}
 
+	public Boolean getDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	public void setDefaultToolTip(final Boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	public Boolean getBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	public void setBoldCustomValues(final Boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
+	}
+
 	@Override
 	public String toString() {
-		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "")
-				+ (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "")
-				+ (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "")
-				+ (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "")
-				+ (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (defaultToolTip != null ? "defaultToolTip=" + defaultToolTip + ", " : "") + (boldCustomValues != null ? "boldCustomValues=" + boldCustomValues + ", " : "")
+				+ (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "") + (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "")
+				+ (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "")
+				+ (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "")
+				+ (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
@@ -295,6 +313,8 @@ public class FieldEditorDetails {
 		this.radioUseGroup = builder.radioUseGroup;
 		this.fontPreviewAreaText = builder.fontPreviewAreaText;
 		this.fontChangeButtonText = builder.fontChangeButtonText;
+		this.boldCustomValues = builder.boldCustomValues;
+		this.defaultToolTip = builder.defaultToolTip;
 	}
 
 	public static class FieldEditorDetailsBuilder {
@@ -302,6 +322,8 @@ public class FieldEditorDetails {
 		private Boolean emptyStringAllowed;
 		private Integer horizontalSpan;
 		private Image[] icons;
+		private Boolean defaultToolTip;
+		private Boolean boldCustomValues;
 		private LabelsAndValues labelsAndValues;
 		private Boolean radioUseGroup;
 		private Integer radioNumColumns;
@@ -487,6 +509,16 @@ public class FieldEditorDetails {
 					return fontChangeButtonText;
 				}
 			};
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder defaultToolTip(final boolean defaultToolTip) {
+			this.defaultToolTip = defaultToolTip;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder boldCustomValues(final boolean boldCustomValues) {
+			this.boldCustomValues = boldCustomValues;
 			return this;
 		}
 

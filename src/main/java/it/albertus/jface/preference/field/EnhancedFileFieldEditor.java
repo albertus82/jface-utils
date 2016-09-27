@@ -9,7 +9,7 @@ import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultFileFieldEditor extends FileFieldEditor implements DefaultFieldEditor {
+public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEditorDefault {
 
 	public static final int MAX_PATH = 255;
 
@@ -20,14 +20,14 @@ public class DefaultFileFieldEditor extends FileFieldEditor implements DefaultFi
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
-	protected DefaultFileFieldEditor() {}
+	protected EnhancedFileFieldEditor() {}
 
-	public DefaultFileFieldEditor(final String name, final String labelText, final Composite parent) {
+	public EnhancedFileFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		init();
 	}
 
-	public DefaultFileFieldEditor(final String name, final String labelText, final boolean enforceAbsolute, final Composite parent) {
+	public EnhancedFileFieldEditor(final String name, final String labelText, final boolean enforceAbsolute, final Composite parent) {
 		super(name, labelText, enforceAbsolute, parent);
 		this.enforceAbsolute = enforceAbsolute;
 		init();

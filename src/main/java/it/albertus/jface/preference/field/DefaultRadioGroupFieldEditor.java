@@ -5,11 +5,13 @@ import it.albertus.jface.JFaceMessages;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor {
+public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implements FieldEditorDefault {
 
 	private final String[][] labelsAndValues;
 
 	private Composite radioBox;
+
+	private boolean defaultToolTip = true;
 
 	public DefaultRadioGroupFieldEditor(final String name, final String labelText, final int numColumns, final String[][] labelsAndValues, final Composite parent) {
 		super(name, labelText, numColumns, labelsAndValues, parent);
@@ -23,14 +25,17 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor {
 
 	@Override
 	public Composite getRadioBoxControl(final Composite parent) {
-		radioBox = super.getRadioBoxControl(parent);
-		return radioBox;
+		return radioBox = super.getRadioBoxControl(parent);
 	}
 
 	@Override
 	protected void doLoad() {
 		super.doLoad();
-		setToolTipText(getNameForValue(getPreferenceStore().getDefaultString(getPreferenceName())));
+		setToolTipText();
+	}
+
+	protected String getDefaultValue() {
+		return getPreferenceStore().getDefaultString(getPreferenceName());
 	}
 
 	protected String getNameForValue(final String value) {
@@ -43,9 +48,12 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor {
 		return labelsAndValues[0][1];
 	}
 
-	protected void setToolTipText(final String defaultValue) {
-		if (radioBox != null && !radioBox.isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-			radioBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+	protected void setToolTipText() {
+		if (defaultToolTip) {
+			final String defaultValue = getNameForValue(getDefaultValue());
+			if (radioBox != null && !radioBox.isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
+				radioBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			}
 		}
 	}
 
@@ -56,5 +64,23 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor {
 	protected Composite getRadioBox() {
 		return radioBox;
 	}
+
+	@Override
+	public boolean isDefaultToolTip() {
+		return defaultToolTip;
+	}
+
+	@Override
+	public void setDefaultToolTip(final boolean defaultToolTip) {
+		this.defaultToolTip = defaultToolTip;
+	}
+
+	@Override
+	public boolean isBoldCustomValues() {
+		return false;
+	}
+
+	@Override
+	public void setBoldCustomValues(final boolean boldCustomValues) {}
 
 }

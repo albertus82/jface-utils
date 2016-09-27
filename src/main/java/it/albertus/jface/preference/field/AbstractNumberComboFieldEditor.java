@@ -8,7 +8,7 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? extends Number>> extends ValidatedComboFieldEditor {
+abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? extends Number>> extends ValidatedComboFieldEditor {
 
 	protected final LabelsCase labelsCase;
 

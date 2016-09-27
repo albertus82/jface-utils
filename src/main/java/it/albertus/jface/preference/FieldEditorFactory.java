@@ -2,29 +2,28 @@ package it.albertus.jface.preference;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
+import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
+import it.albertus.jface.preference.field.BigIntegerFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
-import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
-import it.albertus.jface.preference.field.DefaultBigIntegerFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
-import it.albertus.jface.preference.field.DefaultDateFieldEditor;
-import it.albertus.jface.preference.field.DefaultDirectoryFieldEditor;
-import it.albertus.jface.preference.field.DefaultDoubleFieldEditor;
-import it.albertus.jface.preference.field.DefaultFileFieldEditor;
-import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
-import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
-import it.albertus.jface.preference.field.DefaultLongFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
 import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
+import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
+import it.albertus.jface.preference.field.EnhancedDirectoryFieldEditor;
+import it.albertus.jface.preference.field.EnhancedFileFieldEditor;
+import it.albertus.jface.preference.field.EnhancedIntegerFieldEditor;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
+import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
+import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
@@ -36,6 +35,7 @@ import java.math.BigInteger;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FileFieldEditor;
@@ -64,20 +64,14 @@ public class FieldEditorFactory {
 		if (ColorFieldEditor.class.equals(type)) {
 			return new ColorFieldEditor(name, label, parent);
 		}
-		if (org.eclipse.jface.preference.ComboFieldEditor.class.equals(type)) {
-			return new org.eclipse.jface.preference.ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (ComboFieldEditor.class.equals(type)) {
+			return new ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		if (it.albertus.jface.preference.field.ComboFieldEditor.class.equals(type)) {
-			return new it.albertus.jface.preference.field.ComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (BigDecimalFieldEditor.class.equals(type)) {
+			return createBigDecimalFieldEditor(name, label, parent, details);
 		}
-		if (DateFieldEditor.class.equals(type)) {
-			return createDateFieldEditor(name, label, parent, details);
-		}
-		if (DefaultBigDecimalFieldEditor.class.equals(type)) {
-			return createDefaultBigDecimalFieldEditor(name, label, parent, details);
-		}
-		if (DefaultBigIntegerFieldEditor.class.equals(type)) {
-			return createDefaultBigIntegerFieldEditor(name, label, parent, details);
+		if (BigIntegerFieldEditor.class.equals(type)) {
+			return createBigIntegerFieldEditor(name, label, parent, details);
 		}
 		if (DefaultBooleanFieldEditor.class.equals(type)) {
 			return new DefaultBooleanFieldEditor(name, label, parent);
@@ -85,26 +79,26 @@ public class FieldEditorFactory {
 		if (DefaultComboFieldEditor.class.equals(type)) {
 			return new DefaultComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
 		}
-		if (DefaultDateFieldEditor.class.equals(type)) {
-			return createDefaultDateFieldEditor(name, label, parent, details);
+		if (DateFieldEditor.class.equals(type)) {
+			return createDateFieldEditor(name, label, parent, details);
 		}
-		if (DefaultDirectoryFieldEditor.class.equals(type)) {
-			return createDefaultDirectoryFieldEditor(name, label, parent, details);
+		if (EnhancedDirectoryFieldEditor.class.equals(type)) {
+			return createEnhancedDirectoryFieldEditor(name, label, parent, details);
 		}
-		if (DefaultDoubleFieldEditor.class.equals(type)) {
-			return createDefaultDoubleFieldEditor(name, label, parent, details);
+		if (DoubleFieldEditor.class.equals(type)) {
+			return createDoubleFieldEditor(name, label, parent, details);
 		}
-		if (DefaultFileFieldEditor.class.equals(type)) {
-			return createDefaultFileFieldEditor(name, label, parent, details);
+		if (EnhancedFileFieldEditor.class.equals(type)) {
+			return createEnhancedFileFieldEditor(name, label, parent, details);
 		}
-		if (DefaultFloatFieldEditor.class.equals(type)) {
-			return createDefaultFloatFieldEditor(name, label, parent, details);
+		if (FloatFieldEditor.class.equals(type)) {
+			return createFloatFieldEditor(name, label, parent, details);
 		}
-		if (DefaultIntegerFieldEditor.class.equals(type)) {
-			return createDefaultIntegerFieldEditor(name, label, parent, details);
+		if (EnhancedIntegerFieldEditor.class.equals(type)) {
+			return createEnhancedIntegerFieldEditor(name, label, parent, details);
 		}
-		if (DefaultLongFieldEditor.class.equals(type)) {
-			return createDefaultLongFieldEditor(name, label, parent, details);
+		if (LongFieldEditor.class.equals(type)) {
+			return createLongFieldEditor(name, label, parent, details);
 		}
 		if (DefaultRadioGroupFieldEditor.class.equals(type)) {
 			return createDefaultRadioGroupFieldEditor(name, label, parent, details);
@@ -178,581 +172,560 @@ public class FieldEditorFactory {
 		throw new IllegalStateException("Unsupported FieldEditor: " + type);
 	}
 
-	protected BigIntegerComboFieldEditor createBigIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final BigIntegerComboFieldEditor bigIntegerComboFieldEditor = new BigIntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			bigIntegerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected BigIntegerComboFieldEditor createBigIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final BigIntegerComboFieldEditor fieldEditor = new BigIntegerComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		if (data.getNumberMinimum() == null || data.getNumberMinimum() instanceof BigInteger) {
-			bigIntegerComboFieldEditor.setMinValidValue((BigInteger) data.getNumberMinimum());
-		}
-		else {
-			bigIntegerComboFieldEditor.setMinValidValue(BigInteger.valueOf(data.getNumberMinimum().longValue()));
-		}
-		if (data.getNumberMaximum() == null || data.getNumberMaximum() instanceof BigInteger) {
-			bigIntegerComboFieldEditor.setMaxValidValue((BigInteger) data.getNumberMaximum());
+		if (details.getNumberMinimum() == null || details.getNumberMinimum() instanceof BigInteger) {
+			fieldEditor.setMinValidValue((BigInteger) details.getNumberMinimum());
 		}
 		else {
-			bigIntegerComboFieldEditor.setMaxValidValue(BigInteger.valueOf(data.getNumberMaximum().longValue()));
+			fieldEditor.setMinValidValue(BigInteger.valueOf(details.getNumberMinimum().longValue()));
 		}
-		if (data.getTextLimit() != null) {
-			bigIntegerComboFieldEditor.setTextLimit(data.getTextLimit());
+		if (details.getNumberMaximum() == null || details.getNumberMaximum() instanceof BigInteger) {
+			fieldEditor.setMaxValidValue((BigInteger) details.getNumberMaximum());
 		}
-		return bigIntegerComboFieldEditor;
+		else {
+			fieldEditor.setMaxValidValue(BigInteger.valueOf(details.getNumberMaximum().longValue()));
+		}
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
+		}
+		return fieldEditor;
 	}
 
-	protected BigDecimalComboFieldEditor createBigDecimalComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final BigDecimalComboFieldEditor bigDecimalComboFieldEditor = new BigDecimalComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			bigDecimalComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected BigDecimalComboFieldEditor createBigDecimalComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final BigDecimalComboFieldEditor fieldEditor = new BigDecimalComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		if (data.getNumberMinimum() == null || data.getNumberMinimum() instanceof BigDecimal) {
-			bigDecimalComboFieldEditor.setMinValidValue((BigDecimal) data.getNumberMinimum());
-		}
-		else {
-			bigDecimalComboFieldEditor.setMinValidValue(BigDecimal.valueOf(data.getNumberMinimum().doubleValue()));
-		}
-		if (data.getNumberMaximum() == null || data.getNumberMaximum() instanceof BigDecimal) {
-			bigDecimalComboFieldEditor.setMaxValidValue((BigDecimal) data.getNumberMaximum());
+		if (details.getNumberMinimum() == null || details.getNumberMinimum() instanceof BigDecimal) {
+			fieldEditor.setMinValidValue((BigDecimal) details.getNumberMinimum());
 		}
 		else {
-			bigDecimalComboFieldEditor.setMaxValidValue(BigDecimal.valueOf(data.getNumberMaximum().doubleValue()));
+			fieldEditor.setMinValidValue(BigDecimal.valueOf(details.getNumberMinimum().doubleValue()));
 		}
-		if (data.getTextLimit() != null) {
-			bigDecimalComboFieldEditor.setTextLimit(data.getTextLimit());
+		if (details.getNumberMaximum() == null || details.getNumberMaximum() instanceof BigDecimal) {
+			fieldEditor.setMaxValidValue((BigDecimal) details.getNumberMaximum());
 		}
-		return bigDecimalComboFieldEditor;
+		else {
+			fieldEditor.setMaxValidValue(BigDecimal.valueOf(details.getNumberMaximum().doubleValue()));
+		}
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
+		}
+		return fieldEditor;
 	}
 
-	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DateFieldEditor dateFieldEditor;
-		if (data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
-			dateFieldEditor = new DateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), data.getTextValidateStrategy(), parent);
-		}
-		else if (data.getTextValidateStrategy() != null) {
-			dateFieldEditor = new DateFieldEditor(name, label, data.getDatePattern(), StringFieldEditor.UNLIMITED, data.getTextValidateStrategy(), parent);
-		}
-		else if (data.getTextWidth() != null) {
-			dateFieldEditor = new DateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), parent);
-		}
-		else {
-			dateFieldEditor = new DateFieldEditor(name, label, data.getDatePattern(), parent);
-		}
-		if (data.getEmptyStringAllowed() != null) {
-			dateFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-		}
-		dateFieldEditor.setMinValidValue(data.getDateFrom());
-		dateFieldEditor.setMaxValidValue(data.getDateTo());
-		if (data.getTextLimit() != null) {
-			dateFieldEditor.setTextLimit(data.getTextLimit());
-		}
-		return dateFieldEditor;
-	}
-
-	protected DefaultBigDecimalFieldEditor createDefaultBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultBigDecimalFieldEditor defaultBigDecimalFieldEditor = new DefaultBigDecimalFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultBigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected BigDecimalFieldEditor createBigDecimalFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final BigDecimalFieldEditor fieldEditor = new BigDecimalFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			final Number min = data.getNumberMinimum();
+			final Number min = details.getNumberMinimum();
 			if (min != null) {
-				defaultBigDecimalFieldEditor.setMinValidValue(min instanceof BigDecimal ? (BigDecimal) min : BigDecimal.valueOf(min.doubleValue()));
+				fieldEditor.setMinValidValue(min instanceof BigDecimal ? (BigDecimal) min : BigDecimal.valueOf(min.doubleValue()));
 			}
-			final Number max = data.getNumberMaximum();
+			final Number max = details.getNumberMaximum();
 			if (max != null) {
-				defaultBigDecimalFieldEditor.setMaxValidValue(max instanceof BigDecimal ? (BigDecimal) max : BigDecimal.valueOf(max.doubleValue()));
+				fieldEditor.setMaxValidValue(max instanceof BigDecimal ? (BigDecimal) max : BigDecimal.valueOf(max.doubleValue()));
 			}
-			if (data.getTextLimit() != null) {
-				defaultBigDecimalFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return defaultBigDecimalFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultBigIntegerFieldEditor createDefaultBigIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultBigIntegerFieldEditor defaultBigDecimalFieldEditor = new DefaultBigIntegerFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultBigDecimalFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected BigIntegerFieldEditor createBigIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final BigIntegerFieldEditor fieldEditor = new BigIntegerFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			final Number min = data.getNumberMinimum();
+			final Number min = details.getNumberMinimum();
 			if (min != null) {
-				defaultBigDecimalFieldEditor.setMinValidValue(min instanceof BigInteger ? (BigInteger) min : BigInteger.valueOf(min.longValue()));
+				fieldEditor.setMinValidValue(min instanceof BigInteger ? (BigInteger) min : BigInteger.valueOf(min.longValue()));
 			}
-			final Number max = data.getNumberMaximum();
+			final Number max = details.getNumberMaximum();
 			if (max != null) {
-				defaultBigDecimalFieldEditor.setMaxValidValue(max instanceof BigInteger ? (BigInteger) max : BigInteger.valueOf(max.longValue()));
+				fieldEditor.setMaxValidValue(max instanceof BigInteger ? (BigInteger) max : BigInteger.valueOf(max.longValue()));
 			}
-			if (data.getTextLimit() != null) {
-				defaultBigDecimalFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return defaultBigDecimalFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultDateFieldEditor createDefaultDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultDateFieldEditor formattedDateFieldEditor;
-		if (data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
-			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), data.getTextValidateStrategy(), parent);
+	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DateFieldEditor fieldEditor;
+		if (details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
-		else if (data.getTextValidateStrategy() != null) {
-			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), StringFieldEditor.UNLIMITED, data.getTextValidateStrategy(), parent);
+		else if (details.getTextValidateStrategy() != null) {
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
-		else if (data.getTextWidth() != null) {
-			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), data.getTextWidth(), parent);
+		else if (details.getTextWidth() != null) {
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), details.getTextWidth(), parent);
 		}
 		else {
-			formattedDateFieldEditor = new DefaultDateFieldEditor(name, label, data.getDatePattern(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), parent);
 		}
-		if (data.getEmptyStringAllowed() != null) {
-			formattedDateFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		formattedDateFieldEditor.setMinValidValue(data.getDateFrom());
-		formattedDateFieldEditor.setMaxValidValue(data.getDateTo());
-		if (data.getTextLimit() != null) {
-			formattedDateFieldEditor.setTextLimit(data.getTextLimit());
+		if (details.getDateFrom() != null) {
+			fieldEditor.setMinValidValue(details.getDateFrom());
 		}
-		return formattedDateFieldEditor;
+		if (details.getDateTo() != null) {
+			fieldEditor.setMaxValidValue(details.getDateTo());
+		}
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
+		}
+		return fieldEditor;
 	}
 
-	protected DefaultDirectoryFieldEditor createDefaultDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultDirectoryFieldEditor formattedDirectoryFieldEditor = new DefaultDirectoryFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getTextLimit() != null) {
-				formattedDirectoryFieldEditor.setTextLimit(data.getTextLimit());
+	protected EnhancedDirectoryFieldEditor createEnhancedDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final EnhancedDirectoryFieldEditor fieldEditor = new EnhancedDirectoryFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
-			if (data.getEmptyStringAllowed() != null) {
-				formattedDirectoryFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getDirectoryDialogMessage() != null) {
-				formattedDirectoryFieldEditor.setDialogMessage(data.getDirectoryDialogMessage());
-			}
-		}
-		return formattedDirectoryFieldEditor;
-	}
-
-	protected DefaultDoubleFieldEditor createDefaultDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultDoubleFieldEditor defaultDoubleFieldEditor = new DefaultDoubleFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultDoubleFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null) {
-				defaultDoubleFieldEditor.setMinValidValue(data.getNumberMinimum().doubleValue());
-			}
-			if (data.getNumberMaximum() != null) {
-				defaultDoubleFieldEditor.setMaxValidValue(data.getNumberMaximum().doubleValue());
-			}
-			if (data.getTextLimit() != null) {
-				defaultDoubleFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getDirectoryDialogMessage() != null) {
+				fieldEditor.setDialogMessage(details.getDirectoryDialogMessage());
 			}
 		}
-		return defaultDoubleFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultFileFieldEditor createDefaultFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultFileFieldEditor formattedFileFieldEditor;
-		if (data != null && data.getFileEnforceAbsolute() != null) {
-			formattedFileFieldEditor = new DefaultFileFieldEditor(name, label, data.getFileEnforceAbsolute(), parent);
+	protected DoubleFieldEditor createDoubleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DoubleFieldEditor fieldEditor = new DoubleFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().doubleValue());
+			}
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().doubleValue());
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected EnhancedFileFieldEditor createEnhancedFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final EnhancedFileFieldEditor fieldEditor;
+		if (details != null && details.getFileEnforceAbsolute() != null) {
+			fieldEditor = new EnhancedFileFieldEditor(name, label, details.getFileEnforceAbsolute(), parent);
 		}
 		else {
-			formattedFileFieldEditor = new DefaultFileFieldEditor(name, label, parent);
+			fieldEditor = new EnhancedFileFieldEditor(name, label, parent);
 		}
-		if (data != null) {
-			if (data.getTextLimit() != null) {
-				formattedFileFieldEditor.setTextLimit(data.getTextLimit());
+		if (details != null) {
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
-			if (data.getEmptyStringAllowed() != null) {
-				formattedFileFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getFileExtensions() != null && data.getFileExtensions().length != 0) {
-				formattedFileFieldEditor.setFileExtensions(data.getFileExtensions());
+			if (details.getFileExtensions() != null && details.getFileExtensions().length != 0) {
+				fieldEditor.setFileExtensions(details.getFileExtensions());
 			}
 		}
-		return formattedFileFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultFloatFieldEditor createDefaultFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultFloatFieldEditor defaultFloatFieldEditor = new DefaultFloatFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultFloatFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected FloatFieldEditor createFloatFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final FloatFieldEditor fieldEditor = new FloatFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null) {
-				defaultFloatFieldEditor.setMinValidValue(data.getNumberMinimum().floatValue());
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().floatValue());
 			}
-			if (data.getNumberMaximum() != null) {
-				defaultFloatFieldEditor.setMaxValidValue(data.getNumberMaximum().floatValue());
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().floatValue());
 			}
-			if (data.getTextLimit() != null) {
-				defaultFloatFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return defaultFloatFieldEditor;
-	}
-
-	protected DefaultIntegerFieldEditor createDefaultIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultIntegerFieldEditor defaultIntegerFieldEditor = new DefaultIntegerFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultIntegerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null) {
-				defaultIntegerFieldEditor.setMinValidValue(data.getNumberMinimum().intValue());
-			}
-			if (data.getNumberMaximum() != null) {
-				defaultIntegerFieldEditor.setMaxValidValue(data.getNumberMaximum().intValue());
-			}
-			if (data.getTextLimit() != null) {
-				defaultIntegerFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return defaultIntegerFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultLongFieldEditor createDefaultLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultLongFieldEditor defaultLongFieldEditor = new DefaultLongFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				defaultLongFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected EnhancedIntegerFieldEditor createEnhancedIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final EnhancedIntegerFieldEditor fieldEditor = new EnhancedIntegerFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getNumberMinimum() != null) {
-				defaultLongFieldEditor.setMinValidValue(data.getNumberMinimum().longValue());
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().intValue());
 			}
-			if (data.getNumberMaximum() != null) {
-				defaultLongFieldEditor.setMaxValidValue(data.getNumberMaximum().longValue());
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().intValue());
 			}
-			if (data.getTextLimit() != null) {
-				defaultLongFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return defaultLongFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		if (data.getRadioUseGroup() != null) {
-			return new DefaultRadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent, data.getRadioUseGroup());
+	protected LongFieldEditor createLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final LongFieldEditor fieldEditor = new LongFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().longValue());
+			}
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().longValue());
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected DefaultRadioGroupFieldEditor createDefaultRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		if (details.getRadioUseGroup() != null) {
+			return new DefaultRadioGroupFieldEditor(name, label, details.getRadioNumColumns(), details.getLabelsAndValues().toArray(), parent, details.getRadioUseGroup());
 		}
 		else {
-			return new DefaultRadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent);
+			return new DefaultRadioGroupFieldEditor(name, label, details.getRadioNumColumns(), details.getLabelsAndValues().toArray(), parent);
 		}
 	}
 
-	protected DefaultStringFieldEditor createDefaultStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DefaultStringFieldEditor formattedStringFieldEditor;
-		if (data != null && data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
-			formattedStringFieldEditor = new DefaultStringFieldEditor(name, label, data.getTextWidth(), data.getTextValidateStrategy(), parent);
+	protected DefaultStringFieldEditor createDefaultStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DefaultStringFieldEditor fieldEditor;
+		if (details != null && details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
+			fieldEditor = new DefaultStringFieldEditor(name, label, details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
-		else if (data != null && data.getTextValidateStrategy() != null) {
-			formattedStringFieldEditor = new DefaultStringFieldEditor(name, label, StringFieldEditor.UNLIMITED, data.getTextValidateStrategy(), parent);
+		else if (details != null && details.getTextValidateStrategy() != null) {
+			fieldEditor = new DefaultStringFieldEditor(name, label, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
-		else if (data != null && data.getTextWidth() != null) {
-			formattedStringFieldEditor = new DefaultStringFieldEditor(name, label, data.getTextWidth(), parent);
+		else if (details != null && details.getTextWidth() != null) {
+			fieldEditor = new DefaultStringFieldEditor(name, label, details.getTextWidth(), parent);
 		}
 		else {
-			formattedStringFieldEditor = new DefaultStringFieldEditor(name, label, parent);
+			fieldEditor = new DefaultStringFieldEditor(name, label, parent);
 		}
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				formattedStringFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getTextLimit() != null) {
-				formattedStringFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return formattedStringFieldEditor;
-	}
-
-	protected DelimiterComboFieldEditor createDelimiterComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DelimiterComboFieldEditor delimiterComboFieldEditor = new DelimiterComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			delimiterComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-		}
-		return delimiterComboFieldEditor;
-	}
-
-	protected DirectoryFieldEditor createDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DirectoryFieldEditor directoryFieldEditor = new DirectoryFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getTextLimit() != null) {
-				directoryFieldEditor.setTextLimit(data.getTextLimit());
-			}
-			if (data.getEmptyStringAllowed() != null) {
-				directoryFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return directoryFieldEditor;
+		return fieldEditor;
 	}
 
-	protected DoubleComboFieldEditor createDoubleComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final DoubleComboFieldEditor doubleComboFieldEditor = new DoubleComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			doubleComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected DelimiterComboFieldEditor createDelimiterComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DelimiterComboFieldEditor fieldEditor = new DelimiterComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		if (data.getNumberMinimum() != null) {
-			doubleComboFieldEditor.setMinValidValue(data.getNumberMinimum().doubleValue());
-		}
-		if (data.getNumberMaximum() != null) {
-			doubleComboFieldEditor.setMaxValidValue(data.getNumberMaximum().doubleValue());
-		}
-		if (data.getTextLimit() != null) {
-			doubleComboFieldEditor.setTextLimit(data.getTextLimit());
-		}
-		return doubleComboFieldEditor;
+		return fieldEditor;
 	}
 
-	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		if (data != null) {
-			return new EmailAddressesListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+	protected DirectoryFieldEditor createDirectoryFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DirectoryFieldEditor fieldEditor = new DirectoryFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected DoubleComboFieldEditor createDoubleComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final DoubleComboFieldEditor fieldEditor = new DoubleComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+		}
+		if (details.getNumberMinimum() != null) {
+			fieldEditor.setMinValidValue(details.getNumberMinimum().doubleValue());
+		}
+		if (details.getNumberMaximum() != null) {
+			fieldEditor.setMaxValidValue(details.getNumberMaximum().doubleValue());
+		}
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
+		}
+		return fieldEditor;
+	}
+
+	protected EmailAddressesListEditor createEmailAddressesListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		if (details != null) {
+			return new EmailAddressesListEditor(name, label, parent, details.getHorizontalSpan(), details.getIcons());
 		}
 		else {
 			return new EmailAddressesListEditor(name, label, parent, null, null);
 		}
 	}
 
-	protected FileFieldEditor createFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final FileFieldEditor fileFieldEditor;
-		if (data != null && data.getFileEnforceAbsolute() != null) {
-			fileFieldEditor = new FileFieldEditor(name, label, data.getFileEnforceAbsolute(), parent);
+	protected FileFieldEditor createFileFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final FileFieldEditor fieldEditor;
+		if (details != null && details.getFileEnforceAbsolute() != null) {
+			fieldEditor = new FileFieldEditor(name, label, details.getFileEnforceAbsolute(), parent);
 		}
 		else {
-			fileFieldEditor = new FileFieldEditor(name, label, parent);
+			fieldEditor = new FileFieldEditor(name, label, parent);
 		}
-		if (data != null) {
-			if (data.getTextLimit() != null) {
-				fileFieldEditor.setTextLimit(data.getTextLimit());
+		if (details != null) {
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
-			if (data.getEmptyStringAllowed() != null) {
-				fileFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getFileExtensions() != null && data.getFileExtensions().length != 0) {
-				fileFieldEditor.setFileExtensions(data.getFileExtensions());
+			if (details.getFileExtensions() != null && details.getFileExtensions().length != 0) {
+				fieldEditor.setFileExtensions(details.getFileExtensions());
 			}
 		}
-		return fileFieldEditor;
+		return fieldEditor;
 	}
 
-	protected FloatComboFieldEditor createFloatComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final FloatComboFieldEditor floatComboFieldEditor = new FloatComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			floatComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected FloatComboFieldEditor createFloatComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final FloatComboFieldEditor fieldEditor = new FloatComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		if (data.getNumberMinimum() != null) {
-			floatComboFieldEditor.setMinValidValue(data.getNumberMinimum().floatValue());
+		if (details.getNumberMinimum() != null) {
+			fieldEditor.setMinValidValue(details.getNumberMinimum().floatValue());
 		}
-		if (data.getNumberMaximum() != null) {
-			floatComboFieldEditor.setMaxValidValue(data.getNumberMaximum().floatValue());
+		if (details.getNumberMaximum() != null) {
+			fieldEditor.setMaxValidValue(details.getNumberMaximum().floatValue());
 		}
-		if (data.getTextLimit() != null) {
-			floatComboFieldEditor.setTextLimit(data.getTextLimit());
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
 		}
-		return floatComboFieldEditor;
+		return fieldEditor;
 	}
 
-	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final FontFieldEditor fontFieldEditor;
-		if (data != null && data.getFontPreviewAreaText() != null) {
-			fontFieldEditor = new FontFieldEditor(name, label, data.getFontPreviewAreaText().getString(), parent);
+	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final FontFieldEditor fieldEditor;
+		if (details != null && details.getFontPreviewAreaText() != null) {
+			fieldEditor = new FontFieldEditor(name, label, details.getFontPreviewAreaText().getString(), parent);
 		}
 		else {
-			fontFieldEditor = new FontFieldEditor(name, label, parent);
+			fieldEditor = new FontFieldEditor(name, label, parent);
 		}
-		if (data != null && data.getFontChangeButtonText() != null) {
-			fontFieldEditor.setChangeButtonText(data.getFontChangeButtonText().getString());
-		}
-		else {
-			fontFieldEditor.setChangeButtonText(JFaceMessages.get("lbl.button.change"));
-		}
-		return fontFieldEditor;
-	}
-
-	protected IntegerComboFieldEditor createIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final IntegerComboFieldEditor integerComboFieldEditor = new IntegerComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			integerComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-		}
-		if (data.getNumberMinimum() != null) {
-			integerComboFieldEditor.setMinValidValue(data.getNumberMinimum().intValue());
-		}
-		if (data.getNumberMaximum() != null) {
-			integerComboFieldEditor.setMaxValidValue(data.getNumberMaximum().intValue());
-		}
-		if (data.getTextLimit() != null) {
-			integerComboFieldEditor.setTextLimit(data.getTextLimit());
-		}
-		return integerComboFieldEditor;
-	}
-
-	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				integerFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getNumberMinimum() != null && data.getNumberMaximum() != null) {
-				integerFieldEditor.setValidRange(data.getNumberMinimum().intValue(), data.getNumberMaximum().intValue());
-				integerFieldEditor.setTextLimit(Math.max(Integer.valueOf(data.getNumberMaximum().intValue()).toString().length(), Integer.valueOf(data.getNumberMinimum().intValue()).toString().length()));
-			}
-			if (data.getTextLimit() != null) {
-				integerFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return integerFieldEditor;
-	}
-
-	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final LocalizedPathEditor localizedPathEditor;
-		if (data != null) {
-			localizedPathEditor = new LocalizedPathEditor(name, label, data.getDirectoryDialogMessage(), parent, data.getHorizontalSpan());
+		if (details != null && details.getFontChangeButtonText() != null) {
+			fieldEditor.setChangeButtonText(details.getFontChangeButtonText().getString());
 		}
 		else {
-			localizedPathEditor = new LocalizedPathEditor(name, label, null, parent);
+			fieldEditor.setChangeButtonText(JFaceMessages.get("lbl.button.change"));
 		}
-		return localizedPathEditor;
+		return fieldEditor;
 	}
 
-	protected LongComboFieldEditor createLongComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final LongComboFieldEditor longComboFieldEditor = new LongComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			longComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected IntegerComboFieldEditor createIntegerComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final IntegerComboFieldEditor fieldEditor = new IntegerComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		if (data.getNumberMinimum() != null) {
-			longComboFieldEditor.setMinValidValue(data.getNumberMinimum().longValue());
+		if (details.getNumberMinimum() != null) {
+			fieldEditor.setMinValidValue(details.getNumberMinimum().intValue());
 		}
-		if (data.getNumberMaximum() != null) {
-			longComboFieldEditor.setMaxValidValue(data.getNumberMaximum().longValue());
+		if (details.getNumberMaximum() != null) {
+			fieldEditor.setMaxValidValue(details.getNumberMaximum().intValue());
 		}
-		if (data.getTextLimit() != null) {
-			longComboFieldEditor.setTextLimit(data.getTextLimit());
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
 		}
-		return longComboFieldEditor;
+		return fieldEditor;
 	}
 
-	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final PasswordFieldEditor passwordFieldEditor;
-		if (data != null && data.getTextWidth() != null) {
-			passwordFieldEditor = new PasswordFieldEditor(name, label, data.getTextWidth(), parent);
+	protected IntegerFieldEditor createIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final IntegerFieldEditor fieldEditor = new IntegerFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getNumberMinimum() != null && details.getNumberMaximum() != null) {
+				fieldEditor.setValidRange(details.getNumberMinimum().intValue(), details.getNumberMaximum().intValue());
+				fieldEditor.setTextLimit(Math.max(Integer.valueOf(details.getNumberMaximum().intValue()).toString().length(), Integer.valueOf(details.getNumberMinimum().intValue()).toString().length()));
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected LocalizedPathEditor createLocalizedPathEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final LocalizedPathEditor fieldEditor;
+		if (details != null) {
+			fieldEditor = new LocalizedPathEditor(name, label, details.getDirectoryDialogMessage(), parent, details.getHorizontalSpan());
 		}
 		else {
-			passwordFieldEditor = new PasswordFieldEditor(name, label, parent);
+			fieldEditor = new LocalizedPathEditor(name, label, null, parent);
 		}
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				passwordFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
-			}
-			if (data.getTextLimit() != null) {
-				passwordFieldEditor.setTextLimit(data.getTextLimit());
-			}
-		}
-		return passwordFieldEditor;
+		return fieldEditor;
 	}
 
-	protected RadioGroupFieldEditor createRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		if (data.getRadioUseGroup() != null) {
-			return new RadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent, data.getRadioUseGroup());
+	protected LongComboFieldEditor createLongComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final LongComboFieldEditor fieldEditor = new LongComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+		}
+		if (details.getNumberMinimum() != null) {
+			fieldEditor.setMinValidValue(details.getNumberMinimum().longValue());
+		}
+		if (details.getNumberMaximum() != null) {
+			fieldEditor.setMaxValidValue(details.getNumberMaximum().longValue());
+		}
+		if (details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
+		}
+		return fieldEditor;
+	}
+
+	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final PasswordFieldEditor fieldEditor;
+		if (details != null && details.getTextWidth() != null) {
+			fieldEditor = new PasswordFieldEditor(name, label, details.getTextWidth(), parent);
 		}
 		else {
-			return new RadioGroupFieldEditor(name, label, data.getRadioNumColumns(), data.getLabelsAndValues().toArray(), parent);
+			fieldEditor = new PasswordFieldEditor(name, label, parent);
+		}
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected RadioGroupFieldEditor createRadioGroupFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		if (details.getRadioUseGroup() != null) {
+			return new RadioGroupFieldEditor(name, label, details.getRadioNumColumns(), details.getLabelsAndValues().toArray(), parent, details.getRadioUseGroup());
+		}
+		else {
+			return new RadioGroupFieldEditor(name, label, details.getRadioNumColumns(), details.getLabelsAndValues().toArray(), parent);
 		}
 	}
 
-	protected ScaleFieldEditor createScaleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final ScaleFieldEditor scaleFieldEditor = new ScaleFieldEditor(name, label, parent);
-		if (data != null) {
-			if (data.getScaleMinimum() != null) {
-				scaleFieldEditor.setMinimum(data.getScaleMinimum());
+	protected ScaleFieldEditor createScaleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final ScaleFieldEditor fieldEditor = new ScaleFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getScaleMinimum() != null) {
+				fieldEditor.setMinimum(details.getScaleMinimum());
 			}
-			if (data.getScaleMaximum() != null) {
-				scaleFieldEditor.setMaximum(data.getScaleMaximum());
+			if (details.getScaleMaximum() != null) {
+				fieldEditor.setMaximum(details.getScaleMaximum());
 			}
-			if (data.getScaleIncrement() != null) {
-				scaleFieldEditor.setIncrement(data.getScaleIncrement());
+			if (details.getScaleIncrement() != null) {
+				fieldEditor.setIncrement(details.getScaleIncrement());
 			}
-			if (data.getScalePageIncrement() != null) {
-				scaleFieldEditor.setPageIncrement(data.getScalePageIncrement());
+			if (details.getScalePageIncrement() != null) {
+				fieldEditor.setPageIncrement(details.getScalePageIncrement());
 			}
 		}
-		return scaleFieldEditor;
+		return fieldEditor;
 	}
 
-	protected ScaleIntegerFieldEditor createScaleIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
+	protected ScaleIntegerFieldEditor createScaleIntegerFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		int min = 0;
 		int max = 10;
 		int increment = 1;
 		int pageIncrement = 1;
 
-		if (data != null) {
-			if (data.getScaleMinimum() != null) {
-				min = data.getScaleMinimum();
+		if (details != null) {
+			if (details.getScaleMinimum() != null) {
+				min = details.getScaleMinimum();
 			}
-			if (data.getScaleMaximum() != null) {
-				max = data.getScaleMaximum();
+			if (details.getScaleMaximum() != null) {
+				max = details.getScaleMaximum();
 			}
-			if (data.getScaleIncrement() != null) {
-				increment = data.getScaleIncrement();
+			if (details.getScaleIncrement() != null) {
+				increment = details.getScaleIncrement();
 			}
-			if (data.getScalePageIncrement() != null) {
-				pageIncrement = data.getScalePageIncrement();
+			if (details.getScalePageIncrement() != null) {
+				pageIncrement = details.getScalePageIncrement();
 			}
 		}
 		return new ScaleIntegerFieldEditor(name, label, parent, min, max, increment, pageIncrement);
 	}
 
-	protected StringFieldEditor createStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final StringFieldEditor stringFieldEditor;
-		if (data != null && data.getTextWidth() != null && data.getTextValidateStrategy() != null) {
-			stringFieldEditor = new StringFieldEditor(name, label, data.getTextWidth(), data.getTextValidateStrategy(), parent);
+	protected StringFieldEditor createStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final StringFieldEditor fieldEditor;
+		if (details != null && details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
+			fieldEditor = new StringFieldEditor(name, label, details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
-		else if (data != null && data.getTextValidateStrategy() != null) {
-			stringFieldEditor = new StringFieldEditor(name, label, StringFieldEditor.UNLIMITED, data.getTextValidateStrategy(), parent);
+		else if (details != null && details.getTextValidateStrategy() != null) {
+			fieldEditor = new StringFieldEditor(name, label, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
-		else if (data != null && data.getTextWidth() != null) {
-			stringFieldEditor = new StringFieldEditor(name, label, data.getTextWidth(), parent);
+		else if (details != null && details.getTextWidth() != null) {
+			fieldEditor = new StringFieldEditor(name, label, details.getTextWidth(), parent);
 		}
 		else {
-			stringFieldEditor = new StringFieldEditor(name, label, parent);
+			fieldEditor = new StringFieldEditor(name, label, parent);
 		}
-		if (data != null) {
-			if (data.getEmptyStringAllowed() != null) {
-				stringFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}
-			if (data.getTextLimit() != null) {
-				stringFieldEditor.setTextLimit(data.getTextLimit());
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
 			}
 		}
-		return stringFieldEditor;
+		return fieldEditor;
 	}
 
-	protected UriListEditor createUriListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		if (data != null) {
-			return new UriListEditor(name, label, parent, data.getHorizontalSpan(), data.getIcons());
+	protected UriListEditor createUriListEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		if (details != null) {
+			return new UriListEditor(name, label, parent, details.getHorizontalSpan(), details.getIcons());
 		}
 		else {
 			return new UriListEditor(name, label, parent, null, null);
 		}
 	}
 
-	protected ValidatedComboFieldEditor createValidatedComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final ValidatedComboFieldEditor validatedComboFieldEditor = new ValidatedComboFieldEditor(name, label, data.getLabelsAndValues().toArray(), parent);
-		if (data.getEmptyStringAllowed() != null) {
-			validatedComboFieldEditor.setEmptyStringAllowed(data.getEmptyStringAllowed());
+	protected ValidatedComboFieldEditor createValidatedComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final ValidatedComboFieldEditor fieldEditor = new ValidatedComboFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
-		return validatedComboFieldEditor;
+		return fieldEditor;
 	}
 
-	protected WrapStringFieldEditor createWrapStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails data) {
-		final WrapStringFieldEditor wrapStringFieldEditor;
-		if (data != null && data.getTextHeight() != null) {
-			wrapStringFieldEditor = new WrapStringFieldEditor(name, label, parent, data.getTextHeight());
+	protected WrapStringFieldEditor createWrapStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final WrapStringFieldEditor fieldEditor;
+		if (details != null && details.getTextHeight() != null) {
+			fieldEditor = new WrapStringFieldEditor(name, label, parent, details.getTextHeight());
 		}
 		else {
-			wrapStringFieldEditor = new WrapStringFieldEditor(name, label, parent);
+			fieldEditor = new WrapStringFieldEditor(name, label, parent);
 		}
-		if (data != null && data.getTextLimit() != null) {
-			wrapStringFieldEditor.setTextLimit(data.getTextLimit());
+		if (details != null && details.getTextLimit() != null) {
+			fieldEditor.setTextLimit(details.getTextLimit());
 		}
-		return wrapStringFieldEditor;
+		return fieldEditor;
 	}
 
 }

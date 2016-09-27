@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-public interface DefaultFieldEditor {
+public interface FieldEditorDefault {
 
 	boolean isDefaultToolTip();
 

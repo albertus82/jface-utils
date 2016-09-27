@@ -3,19 +3,19 @@ package it.albertus.jface.preference;
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
+import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
-import it.albertus.jface.preference.field.DefaultBigDecimalFieldEditor;
-import it.albertus.jface.preference.field.DefaultBigIntegerFieldEditor;
+import it.albertus.jface.preference.field.BigIntegerFieldEditor;
+import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
-import it.albertus.jface.preference.field.DefaultDateFieldEditor;
-import it.albertus.jface.preference.field.DefaultDoubleFieldEditor;
-import it.albertus.jface.preference.field.DefaultFloatFieldEditor;
-import it.albertus.jface.preference.field.DefaultIntegerFieldEditor;
-import it.albertus.jface.preference.field.DefaultLongFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
+import it.albertus.jface.preference.field.DoubleFieldEditor;
+import it.albertus.jface.preference.field.EnhancedIntegerFieldEditor;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
+import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
+import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.page.IPageDefinition;
@@ -34,14 +34,14 @@ public enum MyPreference implements IPreference {
 
 	AUTHENTICATION(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("authentication").label("Enable authentication").defaultValue(true).restartRequired().build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
 	PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("password").label("Password").parent(AUTHENTICATION).build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
-	PORT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("port").label("Port").separate().defaultValue(8080).build(), new FieldEditorDetailsBuilder(DefaultIntegerFieldEditor.class).numberValidRange(1, 65535).build()),
+	PORT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("port").label("Port").separate().defaultValue(8080).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).numberValidRange(1, 65535).build()),
 	DEBUG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("debug").label("Enable debug mode").separate().defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
-	DATE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("date").label("Date").defaultValue("15/08/2016").separate().build(), new FieldEditorDetailsBuilder(DefaultDateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).dateTo(new Date()).build()),
-	LONG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("long").label("Long").defaultValue("50").build(), new FieldEditorDetailsBuilder(DefaultLongFieldEditor.class).emptyStringAllowed(true).numberMinimum(3).build()),
-	BIGINTEGER(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigInteger").label("BigInteger").defaultValue(10000).build(), new FieldEditorDetailsBuilder(DefaultBigIntegerFieldEditor.class).build()),
-	FLOAT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("float").label("Float").defaultValue("2.5").build(), new FieldEditorDetailsBuilder(DefaultFloatFieldEditor.class).emptyStringAllowed(true).build()),
-	DOUBLE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("double").label("Double").build(), new FieldEditorDetailsBuilder(DefaultDoubleFieldEditor.class).emptyStringAllowed(true).build()),
-	BIGDECIMAL(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigDecimal").label("BigDecimal").build(), new FieldEditorDetailsBuilder(DefaultBigDecimalFieldEditor.class).emptyStringAllowed(true).numberValidRange(-200, 1500).build()),
+	DATE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("date").label("Date").defaultValue("15/08/2016").separate().build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).dateTo(new Date()).build()),
+	LONG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("long").label("Long").defaultValue("50").build(), new FieldEditorDetailsBuilder(LongFieldEditor.class).emptyStringAllowed(true).numberMinimum(3).build()),
+	BIGINTEGER(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigInteger").label("BigInteger").defaultValue(10000).build(), new FieldEditorDetailsBuilder(BigIntegerFieldEditor.class).build()),
+	FLOAT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("float").label("Float").defaultValue("2.5").build(), new FieldEditorDetailsBuilder(FloatFieldEditor.class).emptyStringAllowed(true).build()),
+	DOUBLE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("double").label("Double").build(), new FieldEditorDetailsBuilder(DoubleFieldEditor.class).emptyStringAllowed(true).build()),
+	BIGDECIMAL(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigDecimal").label("BigDecimal").build(), new FieldEditorDetailsBuilder(BigDecimalFieldEditor.class).emptyStringAllowed(true).numberValidRange(-200, 1500).build()),
 	INTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("integerCombo").label("IntegerCombo").defaultValue(1).build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("InTeGeR", 1)).numberValidRange(-1000000, 9999).emptyStringAllowed(true).build()),
 	LONG_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("longCombo").label("LongCombo").defaultValue(100).build(), new FieldEditorDetailsBuilder(LongComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("long", 1)).emptyStringAllowed(false).build()),
 	BIGINTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigIntegerCombo").label("BigIntegerCombo").defaultValue(123456).build(), new FieldEditorDetailsBuilder(BigIntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("bigInteger", 1)).numberValidRange(-50, 999999).emptyStringAllowed(false).build()),

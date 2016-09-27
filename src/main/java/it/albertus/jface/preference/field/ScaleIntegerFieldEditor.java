@@ -16,7 +16,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements DefaultFieldEditor {
+public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
 
 	private final Text text;
 

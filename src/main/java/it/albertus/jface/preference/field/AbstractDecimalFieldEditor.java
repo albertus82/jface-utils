@@ -4,7 +4,7 @@ import it.albertus.jface.JFaceMessages;
 
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractDecimalFieldEditor<T extends Number & Comparable<? extends Number>> extends AbstractNumberFieldEditor<T> {
+abstract class AbstractDecimalFieldEditor<T extends Number & Comparable<? extends Number>> extends AbstractNumberFieldEditor<T> {
 
 	public AbstractDecimalFieldEditor(String name, String labelText, Composite parent) {
 		super(name, labelText, parent);

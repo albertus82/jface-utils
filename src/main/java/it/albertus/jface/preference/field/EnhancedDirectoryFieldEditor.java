@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-public class DefaultDirectoryFieldEditor extends DirectoryFieldEditor implements DefaultFieldEditor {
+public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implements FieldEditorDefault {
 
 	public static final int MAX_PATH = 255;
 
@@ -24,7 +24,7 @@ public class DefaultDirectoryFieldEditor extends DirectoryFieldEditor implements
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
-	public DefaultDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
+	public EnhancedDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setErrorMessage(JFaceMessages.get("err.preferences.directory"));
 		setTextLimit(MAX_PATH);

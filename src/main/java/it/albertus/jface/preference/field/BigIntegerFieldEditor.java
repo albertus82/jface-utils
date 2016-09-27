@@ -10,9 +10,9 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultBigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger> {
+public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger> {
 
-	public DefaultBigIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
+	public BigIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		getTextControl().addVerifyListener(new BigIntegerVerifyListener(new Configured<Boolean>() {
 			@Override

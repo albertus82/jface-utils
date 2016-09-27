@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
  * 
  * @since 3.3
  */
-public class ComboFieldEditor extends FieldEditor {
+abstract class ComboFieldEditor extends FieldEditor {
 
 	/**
 	 * The <code>Combo</code> widget.

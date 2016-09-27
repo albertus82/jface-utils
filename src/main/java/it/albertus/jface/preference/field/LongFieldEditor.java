@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.IntegerVerifyListener;
+import it.albertus.jface.listener.LongVerifyListener;
 import it.albertus.util.Configured;
 
 import org.eclipse.swt.events.FocusAdapter;
@@ -8,20 +8,20 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Integer> {
+public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MIN_VALUE).length();
 
-	public DefaultIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
+	public LongFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		setMinValidValue(Integer.valueOf(0)); // Positive by default
-		getTextControl().addVerifyListener(new IntegerVerifyListener(new Configured<Boolean>() {
+		setMinValidValue(Long.valueOf(0L)); // Positive by default
+		getTextControl().addVerifyListener(new LongVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
-				return getMinValidValue() == null || getMinValidValue().intValue() < 0;
+				return getMinValidValue() == null || getMinValidValue().longValue() < 0;
 			}
 		}));
-		getTextControl().addFocusListener(new IntegerFocusListener());
+		getTextControl().addFocusListener(new LongFocusListener());
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 	protected boolean doCheckState() {
 		final Text text = getTextControl();
 		try {
-			final Integer number = Integer.valueOf(text.getText());
+			final Long number = Long.valueOf(text.getText());
 			if (checkValidRange(number)) {
 				clearErrorMessage();
 				return true;
@@ -53,7 +53,7 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 		if (text != null) {
 			String value;
 			try {
-				value = Integer.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";
@@ -72,7 +72,7 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final Integer value = Integer.valueOf(text.getText());
+				final Long value = Long.valueOf(text.getText());
 				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
@@ -82,7 +82,7 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Integer.parseInt(defaultValue);
+			Long.parseLong(defaultValue);
 			return defaultValue;
 		}
 		catch (final NumberFormatException nfe) {
@@ -91,17 +91,17 @@ public class DefaultIntegerFieldEditor extends AbstractIntegerFieldEditor<Intege
 	}
 
 	@Override
-	public Integer getNumberValue() throws NumberFormatException {
-		return Integer.valueOf(getStringValue());
+	public Long getNumberValue() throws NumberFormatException {
+		return Long.valueOf(getStringValue());
 	}
 
-	protected class IntegerFocusListener extends FocusAdapter {
+	protected class LongFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {
 			final Text text = (Text) fe.widget;
 			final String oldText = text.getText();
 			try {
-				final String newText = Integer.toString(Integer.parseInt(oldText));
+				final String newText = Long.toString(Long.parseLong(oldText));
 				if (!oldText.equals(newText)) {
 					text.setText(newText);
 				}

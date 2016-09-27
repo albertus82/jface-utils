@@ -6,7 +6,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements DefaultFieldEditor {
+public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements FieldEditorDefault {
 
 	private Button checkBox;
 	private boolean defaultToolTip = true;

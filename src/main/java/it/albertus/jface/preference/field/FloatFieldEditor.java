@@ -1,6 +1,6 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.LongVerifyListener;
+import it.albertus.jface.listener.FloatVerifyListener;
 import it.albertus.util.Configured;
 
 import org.eclipse.swt.events.FocusAdapter;
@@ -8,20 +8,19 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
+public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = 16;
 
-	public DefaultLongFieldEditor(final String name, final String labelText, final Composite parent) {
+	public FloatFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		setMinValidValue(Long.valueOf(0L)); // Positive by default
-		getTextControl().addVerifyListener(new LongVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new FloatVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
-				return getMinValidValue() == null || getMinValidValue().longValue() < 0;
+				return getMinValidValue() == null || getMinValidValue().floatValue() < 0;
 			}
 		}));
-		getTextControl().addFocusListener(new LongFocusListener());
+		getTextControl().addFocusListener(new FloatFocusListener());
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	protected boolean doCheckState() {
 		final Text text = getTextControl();
 		try {
-			final Long number = Long.valueOf(text.getText());
+			final Float number = Float.valueOf(text.getText());
 			if (checkValidRange(number)) {
 				clearErrorMessage();
 				return true;
@@ -53,7 +52,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		if (text != null) {
 			String value;
 			try {
-				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Float.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";
@@ -72,7 +71,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final Long value = Long.valueOf(text.getText());
+				final Float value = Float.valueOf(text.getText());
 				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
@@ -82,7 +81,7 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Long.parseLong(defaultValue);
+			Float.parseFloat(defaultValue);
 			return defaultValue;
 		}
 		catch (final NumberFormatException nfe) {
@@ -91,17 +90,17 @@ public class DefaultLongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	}
 
 	@Override
-	public Long getNumberValue() throws NumberFormatException {
-		return Long.valueOf(getStringValue());
+	public Float getNumberValue() throws NumberFormatException {
+		return Float.valueOf(getStringValue());
 	}
 
-	protected class LongFocusListener extends FocusAdapter {
+	protected class FloatFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {
 			final Text text = (Text) fe.widget;
 			final String oldText = text.getText();
 			try {
-				final String newText = Long.toString(Long.parseLong(oldText));
+				final String newText = Float.toString(Float.parseFloat(oldText));
 				if (!oldText.equals(newText)) {
 					text.setText(newText);
 				}

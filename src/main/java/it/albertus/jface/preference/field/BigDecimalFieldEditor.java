@@ -1,31 +1,33 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.DoubleVerifyListener;
+import it.albertus.jface.listener.BigDecimalVerifyListener;
 import it.albertus.util.Configured;
+
+import java.math.BigDecimal;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
+public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal> {
 
-	public DefaultDoubleFieldEditor(final String name, final String labelText, final Composite parent) {
+	public BigDecimalFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		getTextControl().addVerifyListener(new DoubleVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new BigDecimalVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
-				return getMinValidValue() == null || getMinValidValue().doubleValue() < 0;
+				return getMinValidValue() == null || getMinValidValue().compareTo(BigDecimal.ZERO) < 0;
 			}
 		}));
-		getTextControl().addFocusListener(new DoubleFocusListener());
+		getTextControl().addFocusListener(new BigDecimalFocusListener());
 	}
 
 	@Override
 	protected boolean doCheckState() {
 		final Text text = getTextControl();
 		try {
-			final Double number = Double.valueOf(text.getText());
+			final BigDecimal number = new BigDecimal(text.getText());
 			if (checkValidRange(number)) {
 				clearErrorMessage();
 				return true;
@@ -45,7 +47,7 @@ public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double>
 		if (text != null) {
 			String value;
 			try {
-				value = Double.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName())).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";
@@ -64,7 +66,7 @@ public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double>
 				getPreferenceStore().setValue(getPreferenceName(), "");
 			}
 			else {
-				final Double value = Double.valueOf(text.getText());
+				final BigDecimal value = new BigDecimal(text.getText());
 				getPreferenceStore().setValue(getPreferenceName(), value.toString());
 			}
 		}
@@ -74,7 +76,7 @@ public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double>
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Double.parseDouble(defaultValue);
+			new BigDecimal(defaultValue);
 			return defaultValue;
 		}
 		catch (final NumberFormatException nfe) {
@@ -83,17 +85,17 @@ public class DefaultDoubleFieldEditor extends AbstractDecimalFieldEditor<Double>
 	}
 
 	@Override
-	public Double getNumberValue() throws NumberFormatException {
-		return Double.valueOf(getStringValue());
+	public BigDecimal getNumberValue() throws NumberFormatException {
+		return new BigDecimal(getStringValue());
 	}
 
-	protected class DoubleFocusListener extends FocusAdapter {
+	protected class BigDecimalFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {
 			final Text text = (Text) fe.widget;
 			final String oldText = text.getText();
 			try {
-				final String newText = Double.toString(Double.parseDouble(oldText));
+				final String newText = new BigDecimal(oldText).toString();
 				if (!oldText.equals(newText)) {
 					text.setText(newText);
 				}

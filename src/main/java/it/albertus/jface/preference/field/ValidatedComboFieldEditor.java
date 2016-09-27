@@ -7,7 +7,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 
-public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements DefaultFieldEditor {
+public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements FieldEditorDefault {
 
 	private boolean valid = true;
 	private String errorMessage;

@@ -9,7 +9,7 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultStringFieldEditor extends StringFieldEditor implements DefaultFieldEditor {
+public class DefaultStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;

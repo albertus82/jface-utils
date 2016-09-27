@@ -9,7 +9,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultComboFieldEditor extends ComboFieldEditor implements DefaultFieldEditor {
+public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEditorDefault {
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;

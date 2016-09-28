@@ -23,8 +23,7 @@ public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements Fie
 
 	@Override
 	protected Button getChangeControl(final Composite parent) {
-		checkBox = super.getChangeControl(parent);
-		return checkBox;
+		return checkBox = super.getChangeControl(parent);
 	}
 
 	@Override

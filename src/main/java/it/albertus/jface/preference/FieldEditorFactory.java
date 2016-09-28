@@ -46,6 +46,7 @@ import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 public class FieldEditorFactory {
@@ -283,20 +284,19 @@ public class FieldEditorFactory {
 
 	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final DateFieldEditor fieldEditor;
+		final boolean emptyStringAllowed = details.getEmptyStringAllowed() != null ? details.getEmptyStringAllowed() : true;
+		final int style = details.getStyle() != null ? details.getStyle() : SWT.DATE;
 		if (details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), details.getTextWidth(), details.getTextValidateStrategy(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
 		else if (details.getTextValidateStrategy() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
 		else if (details.getTextWidth() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), details.getTextWidth(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, details.getTextWidth(), parent);
 		}
 		else {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), parent);
-		}
-		if (details.getEmptyStringAllowed() != null) {
-			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, parent);
 		}
 		if (details.getDateFrom() != null) {
 			fieldEditor.setMinValidValue(details.getDateFrom());

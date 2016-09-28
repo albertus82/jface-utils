@@ -15,22 +15,24 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final Composite parent) {
-		super(name, labelText, pattern, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final Composite parent) {
+		super(name, labelText, pattern, emptyStringAllowed, style, parent);
 	}
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final int width, final Composite parent) {
-		super(name, labelText, pattern, width, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final Composite parent) {
+		super(name, labelText, pattern, emptyStringAllowed, style, width, parent);
 	}
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final int width, final int strategy, final Composite parent) {
-		super(name, labelText, pattern, width, strategy, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final int strategy, final Composite parent) {
+		super(name, labelText, pattern, emptyStringAllowed, style, width, strategy, parent);
 	}
 
 	@Override
 	protected void init() {
 		super.init();
-		getTextControl().addFocusListener(new DateFocusListener());
+		if (getTextControl() != null) {
+			getTextControl().addFocusListener(new DateFocusListener());
+		}
 	}
 
 	@Override
@@ -71,9 +73,9 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 	protected class DateFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent fe) {
-			final Text text = (Text) fe.widget;
-			final String oldText = text.getText();
 			if (getValidateStrategy() == VALIDATE_ON_KEY_STROKE) {
+				final Text text = (Text) fe.widget;
+				final String oldText = text.getText();
 				try {
 					final String newText = formatDate(parseDate(getTextControl().getText()));
 					if (!oldText.equals(newText)) {

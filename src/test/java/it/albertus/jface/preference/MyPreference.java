@@ -21,13 +21,13 @@ import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.page.IPageDefinition;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.Set;
 
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 public enum MyPreference implements IPreference {
@@ -36,7 +36,7 @@ public enum MyPreference implements IPreference {
 	PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("password").label("Password").parent(AUTHENTICATION).build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
 	PORT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("port").label("Port").separate().defaultValue(8080).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).numberValidRange(1, 65535).build()),
 	DEBUG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("debug").label("Enable debug mode").separate().defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
-	DATE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("date").label("Date").defaultValue("15/08/2016").separate().build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).dateTo(new Date()).build()),
+	DATE(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("date").label("Date").defaultValue("15/08/2016").separate().build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).emptyStringAllowed(false).style(SWT.DROP_DOWN).build()),
 	LONG(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("long").label("Long").defaultValue("50").build(), new FieldEditorDetailsBuilder(LongFieldEditor.class).emptyStringAllowed(true).numberMinimum(3).build()),
 	BIGINTEGER(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("bigInteger").label("BigInteger").defaultValue(10000).build(), new FieldEditorDetailsBuilder(BigIntegerFieldEditor.class).build()),
 	FLOAT(new PreferenceDetailsBuilder(MyPageDefinition.GENERAL).name("float").label("Float").defaultValue("2.5").build(), new FieldEditorDetailsBuilder(FloatFieldEditor.class).emptyStringAllowed(true).build()),

@@ -15,16 +15,16 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final Composite parent) {
-		super(name, labelText, pattern, emptyStringAllowed, style, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final int style, final Composite parent) {
+		super(name, labelText, pattern, style, parent);
 	}
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final Composite parent) {
-		super(name, labelText, pattern, emptyStringAllowed, style, width, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final Composite parent) {
+		super(name, labelText, pattern, style, width, parent);
 	}
 
-	public DateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final int strategy, final Composite parent) {
-		super(name, labelText, pattern, emptyStringAllowed, style, width, strategy, parent);
+	public DateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
+		super(name, labelText, pattern, style, width, strategy, parent);
 	}
 
 	@Override

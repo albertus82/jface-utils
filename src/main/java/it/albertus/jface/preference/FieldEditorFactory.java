@@ -284,19 +284,21 @@ public class FieldEditorFactory {
 
 	protected DateFieldEditor createDateFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final DateFieldEditor fieldEditor;
-		final boolean emptyStringAllowed = details.getEmptyStringAllowed() != null ? details.getEmptyStringAllowed() : true;
-		final int style = details.getStyle() != null ? details.getStyle() : SWT.DATE;
+		final int style = details.getStyle() != null ? details.getStyle() : SWT.NONE;
 		if (details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, details.getTextWidth(), details.getTextValidateStrategy(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), style, details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
 		else if (details.getTextValidateStrategy() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), style, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
 		else if (details.getTextWidth() != null) {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, details.getTextWidth(), parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), style, details.getTextWidth(), parent);
 		}
 		else {
-			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), emptyStringAllowed, style, parent);
+			fieldEditor = new DateFieldEditor(name, label, details.getDatePattern(), style, parent);
+		}
+		if (details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 		}
 		if (details.getDateFrom() != null) {
 			fieldEditor.setMinValidValue(details.getDateFrom());

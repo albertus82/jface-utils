@@ -50,38 +50,35 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		return dateFormat.format(date);
 	}
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final Composite parent) {
+	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final Composite parent) {
 		super(name, labelText, parent);
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.parent = parent;
 		this.style = style;
 		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
-		setEmptyStringAllowed(emptyStringAllowed);
 		this.dateFormat = new SimpleDateFormat(pattern);
 		init();
 	}
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final Composite parent) {
+	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.parent = parent;
 		this.style = style;
 		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
-		setEmptyStringAllowed(emptyStringAllowed);
 		this.dateFormat = new SimpleDateFormat(pattern);
 		init();
 	}
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final boolean emptyStringAllowed, final int style, final int width, final int strategy, final Composite parent) {
+	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
 		checkPattern(pattern);
 		this.pattern = pattern;
 		this.parent = parent;
 		this.style = style;
 		this.validateStrategy = strategy;
-		setEmptyStringAllowed(emptyStringAllowed);
 		this.dateFormat = new SimpleDateFormat(pattern);
 		init();
 	}
@@ -117,7 +114,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	@Override
 	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
-		if (isEmptyStringAllowed() || style == SWT.NONE) {
+		if (style == SWT.NONE) {
 			super.doFillIntoGrid(parent, numColumns);
 		}
 		else {
@@ -208,7 +205,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	protected boolean doCheckState() {
 		boolean result;
 		Date date = null;
-		if (isEmptyStringAllowed() && getTextControl().getText().isEmpty()) {
+		if (isEmptyStringAllowed() && getTextControl() != null && getTextControl().getText().isEmpty()) {
 			result = true;
 		}
 		else {
@@ -237,9 +234,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			try {
 				calendar.setTime(parseDate(value));
 			}
-			catch (final ParseException pe) {
-				pe.printStackTrace();/* Ignore */
-			}
+			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
 			oldValue = value;
 		}
@@ -256,9 +251,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			try {
 				calendar.setTime(parseDate(value));
 			}
-			catch (final ParseException pe) {
-				pe.printStackTrace();/* Ignore */
-			}
+			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
 			valueChanged();
 		}

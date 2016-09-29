@@ -29,6 +29,13 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implemen
 	}
 
 	@Override
+	protected void doLoadDefault() {
+		if (getDefaultValue() != null && !getDefaultValue().isEmpty()) {
+			super.doLoadDefault();
+		}
+	}
+
+	@Override
 	protected void doLoad() {
 		super.doLoad();
 		setToolTipText();
@@ -45,11 +52,11 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implemen
 				return entry[0];
 			}
 		}
-		return labelsAndValues[0][1];
+		return labelsAndValues[0][0];
 	}
 
 	protected void setToolTipText() {
-		if (defaultToolTip) {
+		if (defaultToolTip && getDefaultValue() != null && !getDefaultValue().isEmpty()) {
 			final String defaultValue = getNameForValue(getDefaultValue());
 			if (radioBox != null && !radioBox.isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
 				radioBox.setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));

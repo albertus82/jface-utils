@@ -49,8 +49,10 @@ public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEd
 
 	@Override
 	protected void doLoadDefault() {
-		super.doLoadDefault();
-		updateFontStyle();
+		if (getDefaultValue() != null && !getDefaultValue().isEmpty()) {
+			super.doLoadDefault();
+			updateFontStyle();
+		}
 	}
 
 	protected String getDefaultValue() {
@@ -74,7 +76,7 @@ public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEd
 				return entry[0];
 			}
 		}
-		return entryNamesAndValues[0][1];
+		return entryNamesAndValues[0][0];
 	}
 
 	protected void updateFontStyle() {
@@ -87,7 +89,7 @@ public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEd
 	}
 
 	protected void setToolTipText() {
-		if (defaultToolTip) {
+		if (defaultToolTip && getDefaultValue() != null && !getDefaultValue().isEmpty()) {
 			String defaultValue = getNameForValue(getDefaultValue());
 			if (getComboBoxControl() != null && !getComboBoxControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
 				getComboBoxControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));

@@ -4,15 +4,17 @@ import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.jface.preference.page.PageDefinitionDetails;
 import it.albertus.jface.preference.page.PageDefinitionDetails.PageDefinitionDetailsBuilder;
-import it.albertus.jface.preference.page.RestartHeaderPreferencePage;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
 public enum MyPageDefinition implements IPageDefinition {
 
-	GENERAL(new PageDefinitionDetailsBuilder().nodeId("general").label("General").build()),
-	APPEARANCE(new PageDefinitionDetailsBuilder().nodeId("appearance").label("Appearance").pageClass(RestartHeaderPreferencePage.class).build()),
-	COLORS(new PageDefinitionDetailsBuilder().nodeId("appearance.colors").label("Colors").parent(APPEARANCE).build());
+	TEXT(new PageDefinitionDetailsBuilder().nodeId("text").label("Text").build()),
+	TEXT_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("text.numeric").parent(TEXT).label("Numeric").build()),
+	COMBO(new PageDefinitionDetailsBuilder().nodeId("combo").label("Combo").build()),
+	COMBO_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("combo.numeric").parent(COMBO).label("Numeric").build()),
+	PAGE(new PageDefinitionDetailsBuilder().nodeId("page").label("Page").build()),
+	VARIOUS(new PageDefinitionDetailsBuilder().nodeId("various").label("Various").build());
 
 	private PageDefinitionDetails pageDefinitionDetails;
 

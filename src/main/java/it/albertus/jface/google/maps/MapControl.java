@@ -62,6 +62,14 @@ package it.albertus.jface.google.maps;
  * You can override this behavior by explicitly setting the control to be
  * visible.
  * </p>
+ * 
+ * <p>
+ * Portions of this page are reproduced from work created and shared by Google
+ * and used according to terms described in the Creative Commons 3.0 Attribution
+ * License. <a
+ * href="https://developers.google.com/maps/documentation/javascript/controls"
+ * >See documentation online</a>.
+ * </p>
  */
 public enum MapControl {
 

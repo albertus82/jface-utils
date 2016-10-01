@@ -31,9 +31,9 @@ public enum MapControl {
 
 	/**
 	 * Enables/disables the appearance of a Rotate control for controlling the
-	 * orientation of 45° imagery. By default, the control's presence is
-	 * determined by the presence or absence of 45° imagery for the given map
-	 * type at the current zoom and location.
+	 * orientation of 45&deg; imagery. By default, the control's presence is
+	 * determined by the presence or absence of 45&deg; imagery for the given
+	 * map type at the current zoom and location.
 	 */
 	ROTATE("rotateControl"),
 

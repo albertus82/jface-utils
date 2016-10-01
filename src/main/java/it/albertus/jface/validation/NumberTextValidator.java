@@ -44,7 +44,7 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 		return minValidValue;
 	}
 
-	public void setMinValidValue(T minValidValue) {
+	public void setMinValidValue(final T minValidValue) {
 		this.minValidValue = minValidValue;
 	}
 
@@ -52,7 +52,7 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 		return maxValidValue;
 	}
 
-	public void setMaxValidValue(T maxValidValue) {
+	public void setMaxValidValue(final T maxValidValue) {
 		this.maxValidValue = maxValidValue;
 	}
 

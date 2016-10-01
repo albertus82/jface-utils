@@ -1,6 +1,8 @@
 package it.albertus.jface.google.maps;
 
 import java.io.Serializable;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class MapOptions implements Serializable {
 
@@ -13,6 +15,7 @@ public class MapOptions implements Serializable {
 	private double centerLng;
 	private int zoom = DEFAULT_ZOOM;
 	private MapType type = DEFAULT_TYPE;
+	private final Map<MapControl, Boolean> controls = new EnumMap<MapControl, Boolean>(MapControl.class);
 
 	public MapOptions() {}
 
@@ -58,9 +61,13 @@ public class MapOptions implements Serializable {
 		this.type = type;
 	}
 
+	public Map<MapControl, Boolean> getControls() {
+		return controls;
+	}
+
 	@Override
 	public String toString() {
-		return "MapOptions [centerLat=" + centerLat + ", centerLng=" + centerLng + ", zoom=" + zoom + ", type=" + type + "]";
+		return "MapOptions [centerLat=" + centerLat + ", centerLng=" + centerLng + ", zoom=" + zoom + ", type=" + type + ", controls=" + controls + "]";
 	}
 
 	@Override
@@ -72,6 +79,7 @@ public class MapOptions implements Serializable {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(centerLng);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((controls == null) ? 0 : controls.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + zoom;
 		return result;
@@ -93,6 +101,14 @@ public class MapOptions implements Serializable {
 			return false;
 		}
 		if (Double.doubleToLongBits(centerLng) != Double.doubleToLongBits(other.centerLng)) {
+			return false;
+		}
+		if (controls == null) {
+			if (other.controls != null) {
+				return false;
+			}
+		}
+		else if (!controls.equals(other.controls)) {
 			return false;
 		}
 		if (type != other.type) {

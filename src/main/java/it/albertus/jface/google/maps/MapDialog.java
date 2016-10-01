@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -31,13 +32,14 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MapDialog extends Dialog {
 
-	public static final String API_URL = "http://maps.googleapis.com/maps/api/js";
+	public static final String DEFAULT_URL = "http://maps.googleapis.com/maps/api/js";
 	public static final String OPTIONS_PLACEHOLDER = "/* Options */";
 	public static final String MARKERS_PLACEHOLDER = "/* Markers */";
 
 	protected static final String HTML_FILE_NAME = "map.html";
 	protected static final int BUTTON_WIDTH = 90;
 
+	private String url = DEFAULT_URL;
 	private final MapOptions options = new MapOptions();
 	private final Set<MapMarker> markers = new HashSet<MapMarker>();
 
@@ -133,8 +135,8 @@ public class MapDialog extends Dialog {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				// Language
-				if (line.contains(API_URL) && !JFaceMessages.getLanguage().getLocale().getLanguage().isEmpty()) {
-					line = line.replace(API_URL, API_URL + "?language=" + JFaceMessages.getLanguage().getLocale().getLanguage());
+				if (line.contains(DEFAULT_URL) && !JFaceMessages.getLanguage().getLocale().getLanguage().isEmpty()) {
+					line = line.replace(DEFAULT_URL, url + "?language=" + JFaceMessages.getLanguage().getLocale().getLanguage());
 				}
 				// Options
 				else if (line.contains(OPTIONS_PLACEHOLDER)) {
@@ -142,6 +144,12 @@ public class MapDialog extends Dialog {
 					optionsBlock.append('\t').append("center: new google.maps.LatLng(").append(options.getCenterLat()).append(", ").append(options.getCenterLng()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					optionsBlock.append('\t').append("zoom: ").append(options.getZoom()).append(',').append(NewLine.SYSTEM_LINE_SEPARATOR);
 					optionsBlock.append('\t').append("mapTypeId: google.maps.MapTypeId.").append(options.getType().name());
+					for (final Entry<MapControl, Boolean> control : options.getControls().entrySet()) {
+						if (control.getKey() != null && control.getValue() != null) {
+							optionsBlock.append(',').append(NewLine.SYSTEM_LINE_SEPARATOR);
+							optionsBlock.append('\t').append(control.getKey().getFieldName()).append(": ").append(control.getValue().toString());
+						}
+					}
 					line = optionsBlock.toString();
 				}
 				// Markers
@@ -215,6 +223,14 @@ public class MapDialog extends Dialog {
 
 	public void setImages(final Image[] images) {
 		this.images = images;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(final String url) {
+		this.url = url;
 	}
 
 	public MapOptions getOptions() {

@@ -97,7 +97,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null && isValid()) {
+		if (controlDecorator != null && doCheckState()) {
 			controlDecorator.hide();
 		}
 	}

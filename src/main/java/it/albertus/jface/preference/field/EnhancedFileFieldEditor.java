@@ -64,8 +64,21 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 
 	@Override
 	protected boolean checkState() {
-		String msg = null;
+		if (doCheckState()) {
+			clearErrorMessage();
+			return true;
+		}
+		else {
+			final String msg = getErrorMessage();
+			if (msg != null) {
+				showErrorMessage(msg);
+			}
+			return false;
+		}
+	}
 
+	@Override
+	protected boolean doCheckState() {
 		String path = getTextControl().getText();
 		if (path != null) {
 			path = path.trim();
@@ -73,37 +86,28 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		else {
 			path = "";
 		}
+
+		String msg = null;
 		if (path.length() == 0) {
 			if (!isEmptyStringAllowed()) {
-				msg = getErrorMessage();
+				msg = JFaceMessages.get("err.preferences.file.existing");
 			}
 		}
 		else {
-			File file = new File(path);
+			final File file = new File(path);
 			if (file.isFile()) {
 				if (enforceAbsolute && !file.isAbsolute()) {
 					msg = JFaceMessages.get("err.preferences.file.absolute.path");
 				}
 			}
 			else {
-				msg = getErrorMessage();
+				msg = JFaceMessages.get("err.preferences.file.existing");
 			}
 		}
-
 		if (msg != null) {
-			showErrorMessage(msg);
-			return false;
+			setErrorMessage(msg);
 		}
-
-		if (doCheckState()) {
-			clearErrorMessage();
-			return true;
-		}
-		msg = getErrorMessage();
-		if (msg != null) {
-			showErrorMessage(msg);
-		}
-		return false;
+		return msg == null;
 	}
 
 	protected String getDefaultValue() {
@@ -153,7 +157,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null && isValid()) {
+		if (controlDecorator != null && doCheckState()) {
 			controlDecorator.hide();
 		}
 	}

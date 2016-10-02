@@ -64,9 +64,11 @@ public class WrapStringFieldEditor extends StringFieldEditor {
 	}
 
 	protected void adjustTextHeight(final int height) {
-		final GridData gd = (GridData) getTextControl().getLayoutData();
-		gd.heightHint = getTextControl().getLineHeight() * height;
-		gd.widthHint = 0;
+		if (getTextControl().getLayoutData() instanceof GridData) {
+			final GridData gd = (GridData) getTextControl().getLayoutData();
+			gd.heightHint = getTextControl().getLineHeight() * height;
+			gd.widthHint = 0;
+		}
 	}
 
 	protected Text getTextField() {

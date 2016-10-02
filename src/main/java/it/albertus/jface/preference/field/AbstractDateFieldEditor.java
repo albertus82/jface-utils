@@ -1,9 +1,6 @@
 package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.preference.decoration.StringFieldEditorDecoration;
-import it.albertus.jface.preference.validation.StringFieldEditorValidator;
-import it.albertus.jface.validation.TextValidator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -12,12 +9,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -44,6 +44,8 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	private Date maxValidValue;
 
 	private int validateStrategy;
+
+	private ControlDecoration controlDecorator;
 
 	protected synchronized Date parseDate(final String source) throws ParseException {
 		return dateFormat.parse(source);
@@ -320,8 +322,27 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	}
 
 	protected void addDecoration() {
-		final TextValidator validator = new StringFieldEditorValidator(getTextControl(), this);
-		new StringFieldEditorDecoration(validator, this);
+		controlDecorator = new ControlDecoration(getTextControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	public void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null) {
+			controlDecorator.hide();
+		}
 	}
 
 	public DateTime getDateTimeControl() {

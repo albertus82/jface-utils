@@ -2,14 +2,14 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
-import it.albertus.jface.preference.decoration.StringFieldEditorDecoration;
-import it.albertus.jface.preference.validation.StringFieldEditorValidator;
-import it.albertus.jface.validation.TextValidator;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -17,6 +17,8 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
+
+	private ControlDecoration controlDecorator;
 
 	protected DefaultStringFieldEditor() {}
 
@@ -50,7 +52,6 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 			text.setText(value);
 		}
 		valueChanged();
-		getTextControl().notifyListeners(SWT.KeyUp, null); // Refresh error status
 	}
 
 	@Override
@@ -88,8 +89,27 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 	}
 
 	protected void addDecoration() {
-		final TextValidator validator = new StringFieldEditorValidator(getTextControl(), this);
-		new StringFieldEditorDecoration(validator, this);
+		controlDecorator = new ControlDecoration(getTextControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	public void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null) {
+			controlDecorator.hide();
+		}
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerFieldEditor;
+import it.albertus.jface.preference.field.ByteFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
@@ -26,6 +27,7 @@ import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
+import it.albertus.jface.preference.field.ShortFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
@@ -48,6 +50,8 @@ public enum MyPreference implements IPreference {
 	STRING_2(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string2").label("String 2").defaultValue("Validate on focus lost.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).textValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST).build()),
 	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).emptyStringAllowed(false).build()),
 
+	BYTE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("byte").label("Byte").defaultValue(123).build(), new FieldEditorDetailsBuilder(ByteFieldEditor.class).numberMinimum(-100).build()),
+	SHORT(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("short").label("Short").defaultValue(1234).build(), new FieldEditorDetailsBuilder(ShortFieldEditor.class).emptyStringAllowed(true).build()),
 	INTEGER(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("integer").label("Integer").defaultValue(12345).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).emptyStringAllowed(true).numberMinimum(-67890).build()),
 	LONG(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("long").label("Long").defaultValue(135791357913579L).build(), new FieldEditorDetailsBuilder(LongFieldEditor.class).emptyStringAllowed(true).numberMaximum(1000000000000000000L).build()),
 	BIGINTEGER(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("bigInteger").label("BigInteger").defaultValue(-246802468024680L).build(), new FieldEditorDetailsBuilder(BigIntegerFieldEditor.class).build()),

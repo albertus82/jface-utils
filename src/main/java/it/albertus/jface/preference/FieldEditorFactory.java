@@ -5,6 +5,7 @@ import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerFieldEditor;
+import it.albertus.jface.preference.field.ByteFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
@@ -27,6 +28,7 @@ import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
+import it.albertus.jface.preference.field.ShortFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
@@ -103,6 +105,12 @@ public class FieldEditorFactory {
 		}
 		else if (LongFieldEditor.class.equals(type)) {
 			fieldEditor = createLongFieldEditor(name, label, parent, details);
+		}
+		else if (ShortFieldEditor.class.equals(type)) {
+			fieldEditor = createShortFieldEditor(name, label, parent, details);
+		}
+		else if (ByteFieldEditor.class.equals(type)) {
+			fieldEditor = createByteFieldEditor(name, label, parent, details);
 		}
 		else if (DefaultRadioGroupFieldEditor.class.equals(type)) {
 			fieldEditor = createDefaultRadioGroupFieldEditor(name, label, parent, details);
@@ -274,6 +282,25 @@ public class FieldEditorFactory {
 			final Number max = details.getNumberMaximum();
 			if (max != null) {
 				fieldEditor.setMaxValidValue(max instanceof BigInteger ? (BigInteger) max : BigInteger.valueOf(max.longValue()));
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
+	}
+
+	protected ByteFieldEditor createByteFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final ByteFieldEditor fieldEditor = new ByteFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().byteValue());
+			}
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().byteValue());
 			}
 			if (details.getTextLimit() != null) {
 				fieldEditor.setTextLimit(details.getTextLimit());
@@ -693,6 +720,25 @@ public class FieldEditorFactory {
 			}
 		}
 		return new ScaleIntegerFieldEditor(name, label, parent, min, max, increment, pageIncrement);
+	}
+
+	protected ShortFieldEditor createShortFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final ShortFieldEditor fieldEditor = new ShortFieldEditor(name, label, parent);
+		if (details != null) {
+			if (details.getEmptyStringAllowed() != null) {
+				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+			}
+			if (details.getNumberMinimum() != null) {
+				fieldEditor.setMinValidValue(details.getNumberMinimum().shortValue());
+			}
+			if (details.getNumberMaximum() != null) {
+				fieldEditor.setMaxValidValue(details.getNumberMaximum().shortValue());
+			}
+			if (details.getTextLimit() != null) {
+				fieldEditor.setTextLimit(details.getTextLimit());
+			}
+		}
+		return fieldEditor;
 	}
 
 	protected StringFieldEditor createStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {

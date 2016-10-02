@@ -5,12 +5,21 @@ import it.albertus.util.Configured;
 import org.eclipse.swt.events.VerifyEvent;
 
 /** Accepts only numeric inputs and trims automatically. */
-public abstract class NumberVerifyListener extends TrimVerifyListener {
+abstract class AbstractNumberVerifyListener<T extends Number> extends TrimVerifyListener {
 
 	protected final Configured<Boolean> allowNegatives;
 
-	protected NumberVerifyListener(final Configured<Boolean> allowNegatives) {
+	protected AbstractNumberVerifyListener(final Configured<Boolean> allowNegatives) {
 		this.allowNegatives = allowNegatives;
+	}
+
+	protected AbstractNumberVerifyListener(final boolean allowNegatives) {
+		this(new Configured<Boolean>() {
+			@Override
+			public Boolean getValue() {
+				return allowNegatives;
+			}
+		});
 	}
 
 	@Override
@@ -22,5 +31,7 @@ public abstract class NumberVerifyListener extends TrimVerifyListener {
 	}
 
 	protected abstract boolean isNumeric(String string);
+
+	protected abstract T parseNumber(String string) throws NumberFormatException;
 
 }

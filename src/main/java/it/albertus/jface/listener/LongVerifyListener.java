@@ -2,34 +2,20 @@ package it.albertus.jface.listener;
 
 import it.albertus.util.Configured;
 
-/** Accepts only integer inputs and trims automatically. */
-public class LongVerifyListener extends NumberVerifyListener {
+/** Accepts only {@code Long} inputs and trims automatically. */
+public class LongVerifyListener extends AbstractIntegerVerifyListener<Long> {
 
 	public LongVerifyListener(final Configured<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 
-	public LongVerifyListener(final boolean allowNegatives) {
-		this(new Configured<Boolean>() {
-			@Override
-			public Boolean getValue() {
-				return allowNegatives;
-			}
-		});
+	public LongVerifyListener(boolean allowNegatives) {
+		super(allowNegatives);
 	}
 
 	@Override
-	protected boolean isNumeric(final String string) {
-		try {
-			Long.parseLong(string);
-			return true;
-		}
-		catch (final Exception e) {
-			if (allowNegatives.getValue() && string.equals("-")) {
-				return true;
-			}
-			return false;
-		}
+	protected Long parseNumber(final String string) throws NumberFormatException {
+		return Long.valueOf(string);
 	}
 
 }

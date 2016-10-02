@@ -29,14 +29,10 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 		try {
 			final BigInteger number = new BigInteger(text.getText());
 			if (checkValidRange(number)) {
-				clearErrorMessage();
 				return true;
 			}
-			showErrorMessage();
 		}
-		catch (final NumberFormatException nfe) {
-			showErrorMessage();
-		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
 	}
 

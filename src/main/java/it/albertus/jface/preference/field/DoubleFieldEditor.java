@@ -34,14 +34,10 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 		try {
 			final Double number = Double.valueOf(text.getText());
 			if (checkValidRange(number)) {
-				clearErrorMessage();
 				return true;
 			}
-			showErrorMessage();
 		}
-		catch (final NumberFormatException nfe) {
-			showErrorMessage();
-		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
 	}
 

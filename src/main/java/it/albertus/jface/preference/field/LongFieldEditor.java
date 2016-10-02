@@ -35,14 +35,10 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		try {
 			final Long number = Long.valueOf(text.getText());
 			if (checkValidRange(number)) {
-				clearErrorMessage();
 				return true;
 			}
-			showErrorMessage();
 		}
-		catch (final NumberFormatException nfe) {
-			showErrorMessage();
-		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
 	}
 

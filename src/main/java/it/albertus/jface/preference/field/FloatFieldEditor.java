@@ -34,14 +34,10 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 		try {
 			final Float number = Float.valueOf(text.getText());
 			if (checkValidRange(number)) {
-				clearErrorMessage();
 				return true;
 			}
-			showErrorMessage();
 		}
-		catch (final NumberFormatException nfe) {
-			showErrorMessage();
-		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
 	}
 

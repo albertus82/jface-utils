@@ -29,14 +29,10 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 		try {
 			final BigDecimal number = new BigDecimal(text.getText());
 			if (checkValidRange(number)) {
-				clearErrorMessage();
 				return true;
 			}
-			showErrorMessage();
 		}
-		catch (final NumberFormatException nfe) {
-			showErrorMessage();
-		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
 		return false;
 	}
 

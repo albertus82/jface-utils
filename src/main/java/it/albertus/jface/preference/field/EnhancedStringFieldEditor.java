@@ -96,6 +96,55 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	}
 
 	@Override
+	protected boolean checkState() {
+		final Text text = getTextControl();
+		if (text == null) {
+			return false;
+		}
+		if (text.getText().isEmpty()) {
+			if (isEmptyStringAllowed()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return doCheckState();
+	}
+
+	/**
+	 * <p>
+	 * Determine if the value is valid or not.
+	 * </p>
+	 * 
+	 * <p>
+	 * You can invoke {@link #setErrorMessage(String) setErrorMessage} method,
+	 * but <strong>never invoke {@link #showErrorMessage() showErrorMessage} or
+	 * {@link #clearErrorMessage() clearErrorMessage} methods from
+	 * here</strong>; these methods should be invoked only from
+	 * {@link #refreshValidState() refreshValidState}.
+	 * </p>
+	 */
+	@Override
+	protected boolean doCheckState() {
+		return super.doCheckState();
+	}
+
+	@Override
+	protected void refreshValidState() {
+		super.refreshValidState();
+		final String errorMessage = getErrorMessage();
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			if (isValid()) {
+				clearErrorMessage();
+			}
+			else {
+				showErrorMessage();
+			}
+		}
+	}
+
+	@Override
 	protected void showErrorMessage(final String msg) {
 		super.showErrorMessage(msg);
 		if (controlDecorator != null) {

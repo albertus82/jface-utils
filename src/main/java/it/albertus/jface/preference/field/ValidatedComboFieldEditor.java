@@ -3,8 +3,12 @@ package it.albertus.jface.preference.field;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements FieldEditorDefault {
@@ -16,9 +20,12 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
+	private ControlDecoration controlDecorator;
+
 	public ValidatedComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setErrorMessage(JFaceMessages.get("err.preferences.combo.empty"));
+		addDecoration();
 		getComboBoxControl().addKeyListener(new ValidateKeyListener());
 	}
 
@@ -115,7 +122,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 
 	protected boolean checkState() {
 		if (getValue() == null || getValue().isEmpty()) {
-			if (emptyStringAllowed) {
+			if (isEmptyStringAllowed()) {
 				return true;
 			}
 			else {
@@ -123,8 +130,36 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 			}
 		}
 		else {
-			return true && doCheckState();
+			return doCheckState();
 		}
+	}
+
+	protected void addDecoration() {
+		controlDecorator = new ControlDecoration(getComboBoxControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	protected void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null && isValid()) {
+			controlDecorator.hide();
+		}
+	}
+
+	protected ControlDecoration getControlDecorator() {
+		return controlDecorator;
 	}
 
 	protected boolean doCheckState() {

@@ -178,4 +178,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		this.boldCustomValues = boldCustomValues;
 	}
 
+	protected ControlDecoration getControlDecorator() {
+		return controlDecorator;
+	}
 }

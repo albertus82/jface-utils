@@ -177,4 +177,8 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		this.boldCustomValues = boldCustomValues;
 	}
 
+	protected ControlDecoration getControlDecorator() {
+		return controlDecorator;
+	}
+
 }

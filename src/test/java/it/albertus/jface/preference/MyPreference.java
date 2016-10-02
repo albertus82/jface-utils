@@ -10,15 +10,16 @@ import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
-import it.albertus.jface.preference.field.EnhancedStringFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
 import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.EnhancedIntegerFieldEditor;
+import it.albertus.jface.preference.field.EnhancedStringFieldEditor;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
+import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
@@ -67,9 +68,10 @@ public enum MyPreference implements IPreference {
 	DATE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("date").label("Date").defaultValue("24/12/2015").build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).style(SWT.DROP_DOWN).build()),
 	SCALE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("scale").label("Scale").defaultValue(25).build(), new FieldEditorDetailsBuilder(ScaleIntegerFieldEditor.class).scaleMinimum(0).scaleMaximum(100).scalePageIncrement(5).build()),
 	RADIO(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("radio").label("Radio").build(), new FieldEditorDetailsBuilder(DefaultRadioGroupFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 6", "value 6").put("Label 7", "value 7")).radioNumColumns(2).radioUseGroup(true).build()),
-
+	
 	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
-	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build());
+	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build()),
+	PATH(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("path").label("Path").build(), new FieldEditorDetailsBuilder(LocalizedPathEditor.class).build());
 
 	private PreferenceDetails preferenceDetails;
 	private FieldEditorDetails fieldEditorDetails;

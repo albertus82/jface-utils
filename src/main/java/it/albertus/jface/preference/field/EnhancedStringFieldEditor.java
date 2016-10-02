@@ -132,4 +132,8 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 		this.boldCustomValues = boldCustomValues;
 	}
 
+	protected ControlDecoration getControlDecorator() {
+		return controlDecorator;
+	}
+
 }

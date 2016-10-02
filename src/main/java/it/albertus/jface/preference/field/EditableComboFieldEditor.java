@@ -144,4 +144,8 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 		}
 	}
 
+	protected ControlDecoration getControlDecorator() {
+		return controlDecorator;
+	}
+
 }

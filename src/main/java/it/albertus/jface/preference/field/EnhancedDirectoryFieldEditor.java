@@ -78,6 +78,41 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		this.filterPath = filterPath;
 	}
 
+	@Override
+	protected boolean checkState() {
+		boolean result = false;
+		if (isEmptyStringAllowed()) {
+			result = true;
+		}
+
+		if (getTextControl() == null) {
+			result = false;
+		}
+
+		String txt = getTextControl().getText();
+
+		result = (txt.trim().length() > 0) || isEmptyStringAllowed();
+
+		// call hook for subclasses
+		result = result && doCheckState();
+
+		return result;
+	}
+
+	@Override
+	protected void refreshValidState() {
+		super.refreshValidState();
+		final String errorMessage = getErrorMessage();
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			if (isValid()) {
+				clearErrorMessage();
+			}
+			else {
+				showErrorMessage();
+			}
+		}
+	}
+
 	protected void addDecoration() {
 		controlDecorator = new ControlDecoration(getTextControl(), SWT.TOP | SWT.LEFT);
 		controlDecorator.hide();
@@ -97,7 +132,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null && doCheckState()) {
+		if (controlDecorator != null && isValid()) {
 			controlDecorator.hide();
 		}
 	}

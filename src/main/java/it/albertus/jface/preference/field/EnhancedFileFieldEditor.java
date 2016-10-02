@@ -63,22 +63,21 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 	}
 
 	@Override
-	protected boolean checkState() {
-		if (doCheckState()) {
-			clearErrorMessage();
-			return true;
-		}
-		else {
-			final String msg = getErrorMessage();
-			if (msg != null) {
-				showErrorMessage(msg);
+	protected void refreshValidState() {
+		super.refreshValidState();
+		final String errorMessage = getErrorMessage();
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			if (isValid()) {
+				clearErrorMessage();
 			}
-			return false;
+			else {
+				showErrorMessage();
+			}
 		}
 	}
 
 	@Override
-	protected boolean doCheckState() {
+	protected boolean checkState() {
 		String path = getTextControl().getText();
 		if (path != null) {
 			path = path.trim();
@@ -104,10 +103,14 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 				msg = JFaceMessages.get("err.preferences.file.existing");
 			}
 		}
+
 		if (msg != null) {
 			setErrorMessage(msg);
+			return false;
 		}
-		return msg == null;
+		else {
+			return doCheckState();
+		}
 	}
 
 	protected String getDefaultValue() {
@@ -157,7 +160,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null && doCheckState()) {
+		if (controlDecorator != null && isValid()) {
 			controlDecorator.hide();
 		}
 	}

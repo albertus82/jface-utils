@@ -4,6 +4,7 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -55,8 +56,13 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 	protected void setToolTipText() {
 		if (defaultToolTip) {
 			final String defaultValue = getDefaultValue();
-			if (getTextControl() != null && !getTextControl().isDisposed() && defaultValue != null && !defaultValue.isEmpty()) {
-				getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+			if (defaultValue != null && !defaultValue.isEmpty()) {
+				if (getTextControl() != null && !getTextControl().isDisposed()) {
+					getTextControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+				}
+				else if (getDateTimeControl() != null && !getDateTimeControl().isDisposed()) {
+					getDateTimeControl().setToolTipText(JFaceMessages.get("lbl.preferences.default.value", defaultValue));
+				}
 			}
 		}
 	}
@@ -65,7 +71,24 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+				if (getTextControl() != null) {
+					TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+				}
+				else if (getDateTimeControl() != null && !getDateTimeControl().isDisposed()) {
+					try {
+						final Date date = getDateValue();
+						final String dateString = formatDate(date);
+						if (defaultValue.equals(dateString)) {
+							TextFormatter.setNormalFontStyle(getDateTimeControl());
+						}
+						else {
+							TextFormatter.setBoldFontStyle(getDateTimeControl());
+						}
+					}
+					catch (final ParseException pe) {
+						pe.printStackTrace();
+					}
+				}
 			}
 		}
 	}

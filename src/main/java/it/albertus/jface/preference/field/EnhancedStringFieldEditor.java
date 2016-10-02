@@ -95,6 +95,21 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 		controlDecorator.setImage(image);
 	}
 
+	/**
+	 * Determine if the current value is valid or not.
+	 * 
+	 * <p>
+	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
+	 * it's not recommended, but <strong>never invoke
+	 * {@link #showErrorMessage() showErrorMessage} or
+	 * {@link #clearErrorMessage() clearErrorMessage} methods from
+	 * here</strong>; these methods should be invoked only from
+	 * {@link #refreshValidState() refreshValidState}.
+	 * </p>
+	 * 
+	 * @return {@code true} if the field value is valid, and {@code false} if
+	 *         invalid.
+	 */
 	@Override
 	protected boolean checkState() {
 		final Text text = getTextControl();
@@ -113,17 +128,19 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	}
 
 	/**
-	 * <p>
-	 * Determine if the value is valid or not.
-	 * </p>
+	 * Hook for subclasses to do specific state checks.
 	 * 
 	 * <p>
-	 * You can invoke {@link #setErrorMessage(String) setErrorMessage} method,
-	 * but <strong>never invoke {@link #showErrorMessage() showErrorMessage} or
+	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
+	 * it's not recommended, but <strong>never invoke
+	 * {@link #showErrorMessage() showErrorMessage} or
 	 * {@link #clearErrorMessage() clearErrorMessage} methods from
 	 * here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
+	 * 
+	 * @return {@code true} if the field value is valid, and {@code false} if
+	 *         invalid.
 	 */
 	@Override
 	protected boolean doCheckState() {

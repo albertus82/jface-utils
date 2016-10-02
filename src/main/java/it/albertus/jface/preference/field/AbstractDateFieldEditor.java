@@ -329,7 +329,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	}
 
 	@Override
-	public void showErrorMessage(final String msg) {
+	protected void showErrorMessage(final String msg) {
 		super.showErrorMessage(msg);
 		if (controlDecorator != null) {
 			controlDecorator.setDescriptionText(msg);

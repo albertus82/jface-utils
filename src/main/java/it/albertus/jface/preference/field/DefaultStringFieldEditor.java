@@ -96,7 +96,7 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 	}
 
 	@Override
-	public void showErrorMessage(final String msg) {
+	protected void showErrorMessage(final String msg) {
 		super.showErrorMessage(msg);
 		if (controlDecorator != null) {
 			controlDecorator.setDescriptionText(msg);

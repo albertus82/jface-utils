@@ -2,12 +2,15 @@ package it.albertus.jface.preference.field;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -16,8 +19,11 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 
 	private int textLimit = Preferences.MAX_VALUE_LENGTH;
 
+	private ControlDecoration controlDecorator;
+
 	public EditableComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
+		addDecoration();
 	}
 
 	@Override
@@ -112,6 +118,30 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 			}
 		}
 		return length;
+	}
+
+	protected void addDecoration() {
+		controlDecorator = new ControlDecoration(getComboBoxControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	protected void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null) {
+			controlDecorator.hide();
+		}
 	}
 
 }

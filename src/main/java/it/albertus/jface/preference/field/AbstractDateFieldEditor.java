@@ -30,7 +30,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	 * instead.
 	 */
 	@Deprecated
-	protected final DateFormat dateFormat;
+	private final DateFormat dateFormat;
 
 	private final Composite parent;
 

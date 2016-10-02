@@ -14,7 +14,7 @@ public class DateTextValidator extends TextValidator {
 	 * instead.
 	 */
 	@Deprecated
-	protected final DateFormat dateFormat;
+	private final DateFormat dateFormat;
 
 	private final String pattern;
 	private Date minValidValue;

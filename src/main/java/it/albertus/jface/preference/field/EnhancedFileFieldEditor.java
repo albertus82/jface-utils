@@ -5,7 +5,11 @@ import it.albertus.jface.TextFormatter;
 
 import java.io.File;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -19,6 +23,8 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
+
+	private ControlDecoration controlDecorator;
 
 	protected EnhancedFileFieldEditor() {}
 
@@ -125,6 +131,31 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 	protected void init() {
 		setErrorMessage(JFaceMessages.get("err.preferences.file.existing"));
 		setTextLimit(MAX_PATH);
+		addDecoration();
+	}
+
+	protected void addDecoration() {
+		controlDecorator = new ControlDecoration(getTextControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	protected void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null && isValid()) {
+			controlDecorator.hide();
+		}
 	}
 
 	@Override

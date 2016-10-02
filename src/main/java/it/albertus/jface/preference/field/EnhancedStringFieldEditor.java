@@ -13,26 +13,26 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class DefaultStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
+public class EnhancedStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
 	private ControlDecoration controlDecorator;
 
-	protected DefaultStringFieldEditor() {}
+	protected EnhancedStringFieldEditor() {}
 
-	public DefaultStringFieldEditor(final String name, final String labelText, final Composite parent) {
+	public EnhancedStringFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		init();
 	}
 
-	public DefaultStringFieldEditor(final String name, final String labelText, final int width, final Composite parent) {
+	public EnhancedStringFieldEditor(final String name, final String labelText, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
 		init();
 	}
 
-	public DefaultStringFieldEditor(final String name, final String labelText, final int width, final int strategy, final Composite parent) {
+	public EnhancedStringFieldEditor(final String name, final String labelText, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
 		init();
 	}
@@ -107,7 +107,7 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null) {
+		if (controlDecorator != null && isValid()) {
 			controlDecorator.hide();
 		}
 	}

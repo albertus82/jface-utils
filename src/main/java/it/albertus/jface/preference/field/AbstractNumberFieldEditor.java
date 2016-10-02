@@ -5,7 +5,7 @@ import java.util.prefs.Preferences;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends DefaultStringFieldEditor {
+abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends EnhancedStringFieldEditor {
 
 	private T minValidValue;
 	private T maxValidValue;

@@ -6,8 +6,11 @@ import it.albertus.util.Localized;
 
 import java.io.File;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -24,10 +27,13 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
+	private ControlDecoration controlDecorator;
+
 	public EnhancedDirectoryFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setErrorMessage(JFaceMessages.get("err.preferences.directory"));
 		setTextLimit(MAX_PATH);
+		addDecoration();
 	}
 
 	@Override
@@ -70,6 +76,30 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 	public void setFilterPath(final File filterPath) {
 		super.setFilterPath(filterPath);
 		this.filterPath = filterPath;
+	}
+
+	protected void addDecoration() {
+		controlDecorator = new ControlDecoration(getTextControl(), SWT.TOP | SWT.LEFT);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+		controlDecorator.setImage(image);
+	}
+
+	@Override
+	protected void showErrorMessage(final String msg) {
+		super.showErrorMessage(msg);
+		if (controlDecorator != null) {
+			controlDecorator.setDescriptionText(msg);
+			controlDecorator.show();
+		}
+	}
+
+	@Override
+	protected void clearErrorMessage() {
+		super.clearErrorMessage();
+		if (controlDecorator != null && isValid()) {
+			controlDecorator.hide();
+		}
 	}
 
 	public File getFilterPath() {

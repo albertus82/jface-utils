@@ -9,7 +9,6 @@ import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
-import it.albertus.jface.preference.field.DefaultStringFieldEditor;
 import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleFieldEditor;
@@ -18,6 +17,7 @@ import it.albertus.jface.preference.field.EmailAddressesListEditor;
 import it.albertus.jface.preference.field.EnhancedDirectoryFieldEditor;
 import it.albertus.jface.preference.field.EnhancedFileFieldEditor;
 import it.albertus.jface.preference.field.EnhancedIntegerFieldEditor;
+import it.albertus.jface.preference.field.EnhancedStringFieldEditor;
 import it.albertus.jface.preference.field.FieldEditorDefault;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
@@ -107,8 +107,8 @@ public class FieldEditorFactory {
 		else if (DefaultRadioGroupFieldEditor.class.equals(type)) {
 			fieldEditor = createDefaultRadioGroupFieldEditor(name, label, parent, details);
 		}
-		else if (DefaultStringFieldEditor.class.equals(type)) {
-			fieldEditor = createDefaultStringFieldEditor(name, label, parent, details);
+		else if (EnhancedStringFieldEditor.class.equals(type)) {
+			fieldEditor = createEnhancedStringFieldEditor(name, label, parent, details);
 		}
 		else if (DelimiterComboFieldEditor.class.equals(type)) {
 			fieldEditor = createDelimiterComboFieldEditor(name, label, parent, details);
@@ -435,19 +435,19 @@ public class FieldEditorFactory {
 		}
 	}
 
-	protected DefaultStringFieldEditor createDefaultStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
-		final DefaultStringFieldEditor fieldEditor;
+	protected EnhancedStringFieldEditor createEnhancedStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		final EnhancedStringFieldEditor fieldEditor;
 		if (details != null && details.getTextWidth() != null && details.getTextValidateStrategy() != null) {
-			fieldEditor = new DefaultStringFieldEditor(name, label, details.getTextWidth(), details.getTextValidateStrategy(), parent);
+			fieldEditor = new EnhancedStringFieldEditor(name, label, details.getTextWidth(), details.getTextValidateStrategy(), parent);
 		}
 		else if (details != null && details.getTextValidateStrategy() != null) {
-			fieldEditor = new DefaultStringFieldEditor(name, label, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
+			fieldEditor = new EnhancedStringFieldEditor(name, label, StringFieldEditor.UNLIMITED, details.getTextValidateStrategy(), parent);
 		}
 		else if (details != null && details.getTextWidth() != null) {
-			fieldEditor = new DefaultStringFieldEditor(name, label, details.getTextWidth(), parent);
+			fieldEditor = new EnhancedStringFieldEditor(name, label, details.getTextWidth(), parent);
 		}
 		else {
-			fieldEditor = new DefaultStringFieldEditor(name, label, parent);
+			fieldEditor = new EnhancedStringFieldEditor(name, label, parent);
 		}
 		if (details != null) {
 			if (details.getEmptyStringAllowed() != null) {

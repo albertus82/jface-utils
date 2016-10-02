@@ -139,7 +139,7 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 	@Override
 	protected void clearErrorMessage() {
 		super.clearErrorMessage();
-		if (controlDecorator != null) {
+		if (controlDecorator != null && isValid()) {
 			controlDecorator.hide();
 		}
 	}

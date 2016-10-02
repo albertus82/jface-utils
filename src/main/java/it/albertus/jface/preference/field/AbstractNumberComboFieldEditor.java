@@ -39,6 +39,15 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 		updateErrorMessage();
 	}
 
+	@Override
+	protected boolean doCheckState() {
+		try {
+			return checkValidRange(getNumberValue());
+		}
+		catch (final NumberFormatException nfe) {/* Ignore */}
+		return false;
+	}
+
 	protected int getDefaultTextLimit() {
 		return Preferences.MAX_VALUE_LENGTH;
 	}
@@ -112,7 +121,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 		}
 	}
 
-	public abstract T getNumberValue() throws NumberFormatException;
+	public abstract Comparable<T> getNumberValue() throws NumberFormatException;
 
 	protected abstract void updateTextLimit();
 

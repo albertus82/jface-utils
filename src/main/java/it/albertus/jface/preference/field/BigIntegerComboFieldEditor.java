@@ -11,16 +11,6 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		try {
-			final BigInteger number = new BigInteger(getValue());
-			return checkValidRange(number);
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {

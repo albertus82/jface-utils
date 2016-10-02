@@ -11,16 +11,6 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		try {
-			final BigDecimal number = new BigDecimal(getValue());
-			return checkValidRange(number);
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {

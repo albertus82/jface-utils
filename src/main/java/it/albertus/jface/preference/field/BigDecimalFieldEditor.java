@@ -24,19 +24,6 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		final Text text = getTextControl();
-		try {
-			final BigDecimal number = new BigDecimal(text.getText());
-			if (checkValidRange(number)) {
-				return true;
-			}
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected void doLoad() {
 		super.doLoad();
 		final Text text = getTextControl();

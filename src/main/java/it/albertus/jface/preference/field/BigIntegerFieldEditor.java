@@ -24,19 +24,6 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		final Text text = getTextControl();
-		try {
-			final BigInteger number = new BigInteger(text.getText());
-			if (checkValidRange(number)) {
-				return true;
-			}
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected void doLoad() {
 		super.doLoad();
 		final Text text = getTextControl();

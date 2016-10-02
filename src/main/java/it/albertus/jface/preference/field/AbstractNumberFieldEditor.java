@@ -3,7 +3,6 @@ package it.albertus.jface.preference.field;
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends EnhancedStringFieldEditor {
 
@@ -24,16 +23,12 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 	}
 
 	@Override
-	protected boolean checkState() {
-		final Text text = getTextControl();
-		if (text == null) {
-			return false;
+	protected boolean doCheckState() {
+		try {
+			return checkValidRange(getNumberValue());
 		}
-		if (isEmptyStringAllowed() && text.getText().isEmpty()) {
-			clearErrorMessage();
-			return true;
-		}
-		return doCheckState();
+		catch (final NumberFormatException nfe) {/* Ignore */}
+		return false;
 	}
 
 	protected boolean checkValidRange(final Comparable<T> number) {
@@ -68,7 +63,7 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 		updateTextLimit();
 	}
 
-	public abstract T getNumberValue() throws NumberFormatException;
+	public abstract Comparable<T> getNumberValue() throws NumberFormatException;
 
 	protected abstract void updateTextLimit();
 

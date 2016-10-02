@@ -17,17 +17,6 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		try {
-			final Integer number = Integer.valueOf(getValue());
-			return checkValidRange(number);
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	/** Trims value and tries to convert it to integer (removes trailing zeros). */
-	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {
@@ -37,7 +26,6 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		return value;
 	}
 
-	/** Trims combo text and converts it to integer (removes trailing zeros). */
 	@Override
 	protected void cleanComboText() {
 		final String oldText = getComboBoxControl().getText();

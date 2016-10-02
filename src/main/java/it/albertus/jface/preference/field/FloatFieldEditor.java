@@ -29,19 +29,6 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		final Text text = getTextControl();
-		try {
-			final Float number = Float.valueOf(text.getText());
-			if (checkValidRange(number)) {
-				return true;
-			}
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected void doLoad() {
 		super.doLoad();
 		final Text text = getTextControl();

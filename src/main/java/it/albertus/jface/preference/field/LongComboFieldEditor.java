@@ -17,17 +17,6 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		try {
-			final long number = Long.parseLong(getValue());
-			return super.checkValidRange(number);
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	/** Trims value and tries to convert it to long (removes trailing zeros). */
-	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {
@@ -37,7 +26,6 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 		return value;
 	}
 
-	/** Trims combo text and converts it to long (removes trailing zeros). */
 	@Override
 	protected void cleanComboText() {
 		final String oldText = getComboBoxControl().getText();

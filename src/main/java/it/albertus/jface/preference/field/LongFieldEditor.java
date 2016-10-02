@@ -30,19 +30,6 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		final Text text = getTextControl();
-		try {
-			final Long number = Long.valueOf(text.getText());
-			if (checkValidRange(number)) {
-				return true;
-			}
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected void doLoad() {
 		super.doLoad();
 		final Text text = getTextControl();

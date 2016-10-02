@@ -16,16 +16,6 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 	}
 
 	@Override
-	protected boolean doCheckState() {
-		try {
-			final float number = Float.parseFloat(getValue());
-			return checkValidRange(number);
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return false;
-	}
-
-	@Override
 	protected String cleanValue(String value) {
 		value = super.cleanValue(value);
 		try {

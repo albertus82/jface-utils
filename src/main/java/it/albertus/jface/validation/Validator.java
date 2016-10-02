@@ -1,7 +1,7 @@
 package it.albertus.jface.validation;
 
-public interface IValidator {
-	
+public interface Validator {
+
 	boolean isValid();
 
 }

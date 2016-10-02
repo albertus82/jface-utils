@@ -9,9 +9,9 @@ import org.eclipse.swt.events.KeyEvent;
 
 public class TextDecorationKeyListener extends KeyAdapter {
 
-	private final ControlDecoration controlDecoration;
-	private final TextValidator validator;
-	private final Localized message;
+	protected final ControlDecoration controlDecoration;
+	protected final TextValidator validator;
+	protected final Localized message;
 
 	public TextDecorationKeyListener(final ControlDecoration controlDecoration, final TextValidator validator, final Localized message) {
 		this.controlDecoration = controlDecoration;

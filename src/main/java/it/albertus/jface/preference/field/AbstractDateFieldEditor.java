@@ -1,6 +1,9 @@
 package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.decoration.StringFieldEditorDecoration;
+import it.albertus.jface.preference.validation.StringFieldEditorValidator;
+import it.albertus.jface.validation.TextValidator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -116,6 +119,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
 		if (style == SWT.NONE) {
 			super.doFillIntoGrid(parent, numColumns);
+			addDecoration();
 		}
 		else {
 			getLabelControl(parent);
@@ -244,6 +248,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	protected void doLoadDefault() {
 		if (dateTime == null) {
 			super.doLoadDefault();
+			getTextControl().notifyListeners(SWT.KeyUp, null);
 		}
 		else {
 			final String value = getPreferenceStore().getDefaultString(getPreferenceName());
@@ -312,6 +317,11 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		layout.horizontalSpacing = HORIZONTAL_GAP;
 		parent.setLayout(layout);
 		doFillIntoGrid(parent, layout.numColumns);
+	}
+
+	protected void addDecoration() {
+		final TextValidator validator = new StringFieldEditorValidator(getTextControl(), this);
+		new StringFieldEditorDecoration(validator, this);
 	}
 
 	public DateTime getDateTimeControl() {

@@ -2,10 +2,14 @@ package it.albertus.jface.preference.field;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.TextFormatter;
+import it.albertus.jface.preference.decoration.StringFieldEditorDecoration;
+import it.albertus.jface.preference.validation.StringFieldEditorValidator;
+import it.albertus.jface.validation.TextValidator;
 
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -46,6 +50,7 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 			text.setText(value);
 		}
 		valueChanged();
+		getTextControl().notifyListeners(SWT.KeyUp, null); // Refresh error status
 	}
 
 	@Override
@@ -79,6 +84,12 @@ public class DefaultStringFieldEditor extends StringFieldEditor implements Field
 	protected void init() {
 		setErrorMessage(JFaceMessages.get("err.preferences.string"));
 		setTextLimit(Preferences.MAX_VALUE_LENGTH);
+		addDecoration();
+	}
+
+	protected void addDecoration() {
+		final TextValidator validator = new StringFieldEditorValidator(getTextControl(), this);
+		new StringFieldEditorDecoration(validator, this);
 	}
 
 	@Override

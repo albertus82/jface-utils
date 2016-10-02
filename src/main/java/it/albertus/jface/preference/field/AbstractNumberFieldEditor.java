@@ -5,7 +5,7 @@ import java.util.prefs.Preferences;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends DefaultStringFieldEditor {
+public abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends DefaultStringFieldEditor {
 
 	private T minValidValue;
 	private T maxValidValue;
@@ -16,6 +16,7 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 		setTextLimit(getDefaultTextLimit());
 		createControl(parent);
 		updateErrorMessage();
+		addDecoration();
 	}
 
 	protected int getDefaultTextLimit() {

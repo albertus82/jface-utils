@@ -2,7 +2,7 @@ package it.albertus.jface.validation;
 
 import org.eclipse.swt.widgets.Text;
 
-public abstract class TextValidator implements IValidator {
+public abstract class TextValidator implements Validator {
 
 	protected final Text text;
 

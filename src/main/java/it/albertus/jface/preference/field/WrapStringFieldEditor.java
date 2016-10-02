@@ -4,7 +4,6 @@ import it.albertus.jface.JFaceMessages;
 
 import java.util.prefs.Preferences;
 
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -16,7 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class WrapStringFieldEditor extends StringFieldEditor {
+public class WrapStringFieldEditor extends EnhancedStringFieldEditor {
 
 	public static final int DEFAULT_TEXT_HEIGHT = 4;
 
@@ -69,10 +68,6 @@ public class WrapStringFieldEditor extends StringFieldEditor {
 			gd.heightHint = getTextControl().getLineHeight() * height;
 			gd.widthHint = 0;
 		}
-	}
-
-	protected Text getTextField() {
-		return textField;
 	}
 
 }

@@ -748,6 +748,9 @@ public class FieldEditorFactory {
 		if (details != null && details.getTextLimit() != null) {
 			fieldEditor.setTextLimit(details.getTextLimit());
 		}
+		if (details != null && details.getEmptyStringAllowed() != null) {
+			fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
+		}
 		return fieldEditor;
 	}
 

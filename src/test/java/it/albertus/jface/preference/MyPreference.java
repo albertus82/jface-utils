@@ -46,7 +46,7 @@ public enum MyPreference implements IPreference {
 
 	STRING_1(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string1").label("String 1").defaultValue("Validate on key up.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).build()),
 	STRING_2(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string2").label("String 2").defaultValue("Validate on focus lost.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).textValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST).build()),
-	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).build()),
+	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).emptyStringAllowed(false).build()),
 
 	INTEGER(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("integer").label("Integer").defaultValue(12345).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).emptyStringAllowed(true).numberMinimum(-67890).build()),
 	LONG(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("long").label("Long").defaultValue(135791357913579L).build(), new FieldEditorDetailsBuilder(LongFieldEditor.class).emptyStringAllowed(true).numberMaximum(1000000000000000000L).build()),

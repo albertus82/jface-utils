@@ -23,12 +23,12 @@ public class TextDecorationKeyListener extends KeyAdapter {
 	public void keyReleased(final KeyEvent ke) {
 		if (validator.isValid()) {
 			controlDecoration.hide();
-			validator.whenValid();
+			validator.onValid();
 		}
 		else {
 			controlDecoration.setDescriptionText(message.getString());
 			controlDecoration.show();
-			validator.whenInvalid();
+			validator.onInvalid();
 		}
 	}
 

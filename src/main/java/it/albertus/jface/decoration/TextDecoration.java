@@ -7,12 +7,14 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
 public class TextDecoration {
 
+	/** SWT.TOP | SWT.LEFT */
 	public static final int DEFAULT_STYLE = SWT.TOP | SWT.LEFT;
+
+	/** FieldDecorationRegistry.DEC_ERROR */
 	public static final String DEFAULT_TYPE = FieldDecorationRegistry.DEC_ERROR;
 
 	private final TextValidator validator;
@@ -50,15 +52,11 @@ public class TextDecoration {
 		controlDecorator.hide();
 		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(type).getImage();
 		controlDecorator.setImage(image);
-		text.addKeyListener(new TextDecorationKeyListener(controlDecorator, validator, message));
 		adjustLayoutData(text, image);
+		text.addKeyListener(new TextDecorationKeyListener(controlDecorator, validator, message));
 	}
 
-	protected void adjustLayoutData(final Text text, final Image image) {
-		if (text.getLayoutData() instanceof GridData) {
-			((GridData) text.getLayoutData()).horizontalIndent = image.getBounds().width;
-		}
-	}
+	protected void adjustLayoutData(final Text text, final Image image) {}
 
 	public int getStyle() {
 		return style;

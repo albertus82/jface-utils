@@ -32,11 +32,8 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 			if ((minValidValue == null || number.compareTo(minValidValue) >= 0) && (maxValidValue == null || number.compareTo(maxValidValue) <= 0)) {
 				return true;
 			}
-			else {
-				throw new IllegalArgumentException(value);
-			}
 		}
-		catch (final IllegalArgumentException nfe) {/* Ignore */}
+		catch (final RuntimeException re) {/* Ignore */}
 		return false;
 	}
 

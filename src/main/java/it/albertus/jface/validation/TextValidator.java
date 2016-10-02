@@ -2,7 +2,7 @@ package it.albertus.jface.validation;
 
 import org.eclipse.swt.widgets.Text;
 
-public abstract class TextValidator {
+public abstract class TextValidator implements IValidator {
 
 	protected final Text text;
 
@@ -10,11 +10,12 @@ public abstract class TextValidator {
 		this.text = text;
 	}
 
+	@Override
 	public abstract boolean isValid();
 
-	public void whenValid() {}
+	public void onValid() {}
 
-	public void whenInvalid() {}
+	public void onInvalid() {}
 
 	public Text getText() {
 		return text;

@@ -63,10 +63,10 @@ package it.albertus.jface.google.maps;
  * visible.
  * </p>
  * 
- * <p>
+ * <p><em>
  * Portions of this page are reproduced from work created and shared by Google
  * and used according to terms described in the Creative Commons 3.0 Attribution
- * License. <a
+ * License.</em> <a
  * href="https://developers.google.com/maps/documentation/javascript/controls"
  * >See documentation online</a>.
  * </p>

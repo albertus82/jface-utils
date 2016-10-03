@@ -37,13 +37,13 @@ public class DateTextValidator extends TextValidator {
 
 	@Override
 	public boolean isValid() {
-		final String value = text.getText();
-		if (emptyStringAllowed && value.isEmpty()) {
+		final String value = getText().getText();
+		if (isEmptyStringAllowed() && value.isEmpty()) {
 			return true;
 		}
 		try {
 			final Date date = parseDate(value);
-			if (!((minValidValue != null && date.before(minValidValue)) || (maxValidValue != null && date.after(maxValidValue)))) {
+			if (!((getMinValidValue() != null && date.before(getMinValidValue())) || (getMaxValidValue() != null && date.after(getMaxValidValue())))) {
 				return true;
 			}
 		}

@@ -23,13 +23,13 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 
 	@Override
 	public boolean isValid() {
-		final String value = text.getText();
-		if (emptyStringAllowed && value.isEmpty()) {
+		final String value = getText().getText();
+		if (isEmptyStringAllowed() && value.isEmpty()) {
 			return true;
 		}
 		try {
 			final Comparable<T> number = toNumber(value);
-			if ((minValidValue == null || number.compareTo(minValidValue) >= 0) && (maxValidValue == null || number.compareTo(maxValidValue) <= 0)) {
+			if ((getMinValidValue() == null || number.compareTo(getMinValidValue()) >= 0) && (getMaxValidValue() == null || number.compareTo(getMaxValidValue()) <= 0)) {
 				return true;
 			}
 		}

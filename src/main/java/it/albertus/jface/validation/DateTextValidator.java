@@ -25,6 +25,7 @@ public class DateTextValidator extends TextValidator {
 		super(text);
 		this.pattern = pattern;
 		this.dateFormat = new SimpleDateFormat(pattern);
+		this.dateFormat.setLenient(false);
 	}
 
 	public DateTextValidator(final Text text, final String pattern, final Date minValidValue, final Date maxValidValue, final boolean emptyStringAllowed) {

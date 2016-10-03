@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
@@ -15,6 +13,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
 
 public class PasswordFieldEditor extends StringFieldEditor {
 
@@ -130,6 +130,10 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		return result;
 	}
 
+	/**
+	 * Use the character-oriented method: {@link #getCharArrayValue()
+	 * getCharArrayValue}.
+	 */
 	@Override
 	@Deprecated
 	public String getStringValue() {
@@ -139,9 +143,13 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		return getPreferenceStore().getString(getPreferenceName());
 	}
 
+	/**
+	 * Use the character-oriented method: {@link #setCharArrayValue()
+	 * setCharArrayValue}.
+	 */
 	@Override
 	@Deprecated
-	public void setStringValue(String value) {
+	public void setStringValue(final String value) {
 		setCharArrayValue(value.toCharArray());
 	}
 

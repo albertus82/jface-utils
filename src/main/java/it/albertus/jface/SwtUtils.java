@@ -58,4 +58,8 @@ public abstract class SwtUtils {
 		return false;
 	}
 
+	public static boolean isGtk() {
+		return SWT.getPlatform().toUpperCase().contains("GTK");
+	}
+
 }

@@ -1,8 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
 import java.text.ParseException;
 import java.util.Date;
 
@@ -10,6 +7,9 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.TextFormatter;
 
 public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEditorDefault {
 
@@ -74,16 +74,10 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 				if (getTextControl() != null) {
 					TextFormatter.updateFontStyle(getTextControl(), defaultValue);
 				}
-				else if (getDateTimeControl() != null && !getDateTimeControl().isDisposed()) {
+				else if (getDateTimeControl() != null) {
 					try {
 						final Date date = getDateValue();
-						final String dateString = formatDate(date);
-						if (defaultValue.equals(dateString)) {
-							TextFormatter.setNormalFontStyle(getDateTimeControl());
-						}
-						else {
-							TextFormatter.setBoldFontStyle(getDateTimeControl());
-						}
+						TextFormatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
 					}
 					catch (final ParseException pe) {
 						pe.printStackTrace();

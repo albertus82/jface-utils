@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class TextDecoration {
 
-	/** SWT.TOP | SWT.LEFT */
+	/** {@code SWT.TOP | SWT.LEFT} */
 	public static final int DEFAULT_STYLE = SWT.TOP | SWT.LEFT;
 
 	/** FieldDecorationRegistry.DEC_ERROR */

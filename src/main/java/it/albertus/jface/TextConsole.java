@@ -1,17 +1,18 @@
 package it.albertus.jface;
 
-import it.albertus.jface.listener.TextConsoleDisposeListener;
-import it.albertus.util.Configured;
-import it.albertus.util.NewLine;
-
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.listener.TextConsoleDisposeListener;
+import it.albertus.util.Configured;
+import it.albertus.util.NewLine;
 
 public class TextConsole extends OutputStream {
 
@@ -36,7 +37,7 @@ public class TextConsole extends OutputStream {
 		this.scrollable = createText(parent);
 		scrollable.setLayoutData(layoutData);
 		scrollable.setFont(JFaceResources.getTextFont());
-		if (SWT.getPlatform().toLowerCase().startsWith("win")) {
+		if (Util.isWindows()) {
 			scrollable.setBackground(scrollable.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		}
 		redirectStreams(); // SystemConsole & System.out will print on this SWT Text Widget. 

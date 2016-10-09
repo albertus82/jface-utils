@@ -7,14 +7,25 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TrayItem;
 
+/**
+ * Listener that restores shell and optionally hides tray icon. You can add this
+ * listener to both {@link org.eclipse.swt.widgets.Shell Shell} and
+ * {@link org.eclipse.swt.widgets.TrayItem TrayItem}.
+ */
 public class TrayRestoreListener extends ShellAdapter implements Listener {
 
 	private final Shell shell;
 	private final TrayItem trayItem;
 
+	/** Create a listener that restores shell and hides tray icon. */
 	public TrayRestoreListener(final Shell shell, final TrayItem trayItem) {
 		this.shell = shell;
 		this.trayItem = trayItem;
+	}
+
+	/** Create a listener that restores shell without hiding tray icon. */
+	public TrayRestoreListener(final Shell shell) {
+		this(shell, null);
 	}
 
 	@Override

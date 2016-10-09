@@ -1,11 +1,8 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+
+import it.albertus.jface.JFaceMessages;
 
 public class RestartHeaderPreferencePage extends BasePreferencePage {
 
@@ -13,11 +10,7 @@ public class RestartHeaderPreferencePage extends BasePreferencePage {
 
 	@Override
 	protected Control createHeader() {
-		// return createNoteComposite(null, getFieldEditorParent(), restartMessage, "");
-		final Label header = new Label(getFieldEditorParent(), SWT.WRAP);
-		TextFormatter.setBoldFontStyle(header);
-		header.setText(restartMessage);
-		return header;
+		return createNoteComposite(null, getFieldEditorParent(), restartMessage, "");
 	}
 
 	public String getRestartMessage() {

@@ -1,8 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
@@ -10,6 +7,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements FieldEditorDefault {
 
@@ -94,7 +93,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+				textFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
 			}
 		}
 	}
@@ -125,10 +124,9 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke
-	 * {@link #showErrorMessage() showErrorMessage} or
-	 * {@link #clearErrorMessage() clearErrorMessage} methods from
-	 * here</strong>; these methods should be invoked only from
+	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
+	 * methods from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 
@@ -154,10 +152,9 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke
-	 * {@link #showErrorMessage() showErrorMessage} or
-	 * {@link #clearErrorMessage() clearErrorMessage} methods from
-	 * here</strong>; these methods should be invoked only from
+	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
+	 * methods from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 

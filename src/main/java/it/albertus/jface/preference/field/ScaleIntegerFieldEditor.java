@@ -1,10 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-import it.albertus.jface.listener.IntegerVerifyListener;
-import it.albertus.util.Configured;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
@@ -15,6 +10,10 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.listener.IntegerVerifyListener;
+import it.albertus.util.Configured;
 
 public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
 
@@ -34,7 +33,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 
 	protected Text createTextControl(final Composite parent) {
 		final Text text = new Text(parent, SWT.BORDER | SWT.TRAIL);
-		final int widthHint = TextFormatter.getWidthHint(text, Integer.toString(getMaximum()).length(), SWT.BOLD);
+		final int widthHint = textFormatter.getWidthHint(text, Integer.toString(getMaximum()).length(), SWT.BOLD);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).hint(widthHint, SWT.DEFAULT).applyTo(text);
 		text.setTextLimit(Integer.toString(getMaximum()).length());
 		text.addFocusListener(new TextFocusListener());
@@ -107,7 +106,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 	protected void setText(final int value) {
 		if (text != null && !text.isDisposed()) {
 			text.setText(Integer.toString(value));
-			TextFormatter.updateFontStyle(text, getPreferenceStore().getDefaultInt(getPreferenceName()));
+			textFormatter.updateFontStyle(text, getPreferenceStore().getDefaultInt(getPreferenceName()));
 		}
 	}
 
@@ -115,7 +114,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 		@Override
 		public void keyReleased(final KeyEvent ke) {
 			if (boldCustomValues) {
-				TextFormatter.updateFontStyle((Text) ke.widget, getPreferenceStore().getDefaultInt(getPreferenceName()));
+				textFormatter.updateFontStyle((Text) ke.widget, getPreferenceStore().getDefaultInt(getPreferenceName()));
 			}
 		}
 	}

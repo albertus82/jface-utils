@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
 
 public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEditorDefault {
 
@@ -72,12 +71,12 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
 				if (getTextControl() != null) {
-					TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+					textFormatter.updateFontStyle(getTextControl(), defaultValue);
 				}
 				else if (getDateTimeControl() != null) {
 					try {
 						final Date date = getDateValue();
-						TextFormatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
+						textFormatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
 					}
 					catch (final ParseException pe) {
 						pe.printStackTrace();

@@ -1,8 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
 import java.io.File;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -12,6 +9,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEditorDefault {
 
@@ -130,7 +129,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+				textFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}

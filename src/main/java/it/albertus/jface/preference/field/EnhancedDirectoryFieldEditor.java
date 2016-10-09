@@ -1,9 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-import it.albertus.util.Localized;
-
 import java.io.File;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -14,6 +10,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.Localized;
 
 public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implements FieldEditorDefault {
 
@@ -158,7 +157,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+				textFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}

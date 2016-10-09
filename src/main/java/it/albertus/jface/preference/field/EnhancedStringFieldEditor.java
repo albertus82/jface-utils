@@ -1,8 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -12,6 +9,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
 
 public class EnhancedStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
 
@@ -77,7 +76,7 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getTextControl(), defaultValue);
+				textFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}
@@ -100,10 +99,9 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke
-	 * {@link #showErrorMessage() showErrorMessage} or
-	 * {@link #clearErrorMessage() clearErrorMessage} methods from
-	 * here</strong>; these methods should be invoked only from
+	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
+	 * methods from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 
@@ -132,10 +130,9 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke
-	 * {@link #showErrorMessage() showErrorMessage} or
-	 * {@link #clearErrorMessage() clearErrorMessage} methods from
-	 * here</strong>; these methods should be invoked only from
+	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
+	 * methods from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 

@@ -9,24 +9,28 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-public final class TextFormatter {
-
-	private static final String FONT_KEY = "it.albertus.jface.font.property";
+public class FontFormatter {
 
 	private static final char SAMPLE_CHAR = '9';
 
 	private static final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
 
+	private final String fontKey;
+
+	public FontFormatter(final String fontKey) {
+		this.fontKey = fontKey;
+	}
+
 	/** Calls {@code updateFontStyle(text, String.valueOf(defaultValue))}. */
-	public static void updateFontStyle(final Text text, final Object defaultValue) {
+	public void updateFontStyle(final Text text, final Object defaultValue) {
 		updateFontStyle(text, String.valueOf(defaultValue));
 	}
 
-	public static void updateFontStyle(final Text text, final String defaultValue) {
+	public void updateFontStyle(final Text text, final String defaultValue) {
 		updateFontStyle(text, defaultValue, text.getText());
 	}
 
-	public static void updateFontStyle(final Control control, final String defaultValue, final String actualValue) {
+	public void updateFontStyle(final Control control, final String defaultValue, final String actualValue) {
 		if (checkControl(control)) {
 			if (!defaultValue.equals(actualValue)) {
 				setBoldFontStyle(control);
@@ -37,37 +41,37 @@ public final class TextFormatter {
 		}
 	}
 
-	private static boolean checkControl(final Control control) {
+	private boolean checkControl(final Control control) {
 		return control != null && !control.isDisposed() && control.getFont() != null && !control.getFont().isDisposed() && control.getFont().getFontData() != null && control.getFont().getFontData().length != 0;
 	}
 
-	public static void setNormalFontStyle(final Control control) {
-		if (!fontRegistry.hasValueFor(FONT_KEY)) {
-			fontRegistry.put(FONT_KEY, control.getFont().getFontData());
+	public void setNormalFontStyle(final Control control) {
+		if (!fontRegistry.hasValueFor(fontKey)) {
+			fontRegistry.put(fontKey, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.get(FONT_KEY));
+		control.setFont(fontRegistry.get(fontKey));
 	}
 
-	public static void setBoldFontStyle(final Control control) {
-		if (!fontRegistry.hasValueFor(FONT_KEY)) {
-			fontRegistry.put(FONT_KEY, control.getFont().getFontData());
+	public void setBoldFontStyle(final Control control) {
+		if (!fontRegistry.hasValueFor(fontKey)) {
+			fontRegistry.put(fontKey, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.getBold(FONT_KEY));
+		control.setFont(fontRegistry.getBold(fontKey));
 	}
 
-	public static int getWidthHint(final Control control, final int size, final int weight) {
+	public int getWidthHint(final Control control, final int size, final int weight) {
 		return getWidthHint(control, size, weight, Character.toString(SAMPLE_CHAR));
 	}
 
-	public static int getWidthHint(final Control control, final int size, final int weight, final char character) {
+	public int getWidthHint(final Control control, final int size, final int weight, final char character) {
 		return getWidthHint(control, size, weight, Character.toString(character));
 	}
 
-	public static int getWidthHint(final Control control, final int weight, final String string) {
+	public int getWidthHint(final Control control, final int weight, final String string) {
 		return getWidthHint(control, 1, weight, string);
 	}
 
-	private static int getWidthHint(final Control control, final int multiplier, final int weight, final String string) {
+	private int getWidthHint(final Control control, final int multiplier, final int weight, final String string) {
 		int widthHint = SWT.DEFAULT;
 		if (control != null && !control.isDisposed()) {
 			final Font font = control.getFont(); // Backup initial font.
@@ -89,8 +93,5 @@ public final class TextFormatter {
 		}
 		return widthHint;
 	}
-
-	/** Instantiation not permitted. */
-	private TextFormatter() {}
 
 }

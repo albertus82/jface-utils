@@ -1,13 +1,12 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.TextFormatter;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEditorDefault {
 
@@ -83,7 +82,7 @@ public class DefaultComboFieldEditor extends ComboFieldEditor implements FieldEd
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				TextFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+				textFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 
 	protected Text createTextControl(final Composite parent) {
 		final Text text = new Text(parent, SWT.BORDER | SWT.TRAIL);
-		final int widthHint = textFormatter.getWidthHint(text, Integer.toString(getMaximum()).length(), SWT.BOLD);
+		final int widthHint = textFormatter.computeWidth(text, Integer.toString(getMaximum()).length(), SWT.BOLD);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).hint(widthHint, SWT.DEFAULT).applyTo(text);
 		text.setTextLimit(Integer.toString(getMaximum()).length());
 		text.addFocusListener(new TextFocusListener());

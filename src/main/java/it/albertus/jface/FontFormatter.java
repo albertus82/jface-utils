@@ -59,19 +59,19 @@ public class FontFormatter {
 		control.setFont(fontRegistry.getBold(fontKey));
 	}
 
-	public int getWidthHint(final Control control, final int size, final int weight) {
-		return getWidthHint(control, size, weight, Character.toString(SAMPLE_CHAR));
+	public int computeWidth(final Control control, final int size, final int weight) {
+		return computeWidth(control, size, weight, Character.toString(SAMPLE_CHAR));
 	}
 
-	public int getWidthHint(final Control control, final int size, final int weight, final char character) {
-		return getWidthHint(control, size, weight, Character.toString(character));
+	public int computeWidth(final Control control, final int size, final int weight, final char character) {
+		return computeWidth(control, size, weight, Character.toString(character));
 	}
 
-	public int getWidthHint(final Control control, final int weight, final String string) {
-		return getWidthHint(control, 1, weight, string);
+	public int computeWidth(final Control control, final int weight, final String string) {
+		return computeWidth(control, 1, weight, string);
 	}
 
-	private int getWidthHint(final Control control, final int multiplier, final int weight, final String string) {
+	private int computeWidth(final Control control, final int multiplier, final int weight, final String string) {
 		int widthHint = SWT.DEFAULT;
 		if (control != null && !control.isDisposed()) {
 			final Font font = control.getFont(); // Backup initial font.

@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.listener.IntegerVerifyListener;
-import it.albertus.util.Configured;
 
 public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
 
@@ -38,12 +37,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 		text.setTextLimit(Integer.toString(getMaximum()).length());
 		text.addFocusListener(new TextFocusListener());
 		text.addKeyListener(new TextKeyListener());
-		text.addVerifyListener(new IntegerVerifyListener(new Configured<Boolean>() {
-			@Override
-			public Boolean getValue() {
-				return false;
-			}
-		}));
+		text.addVerifyListener(new IntegerVerifyListener(false));
 		return text;
 	}
 

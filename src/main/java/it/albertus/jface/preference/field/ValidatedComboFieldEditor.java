@@ -93,7 +93,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				fontFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
+				textFormatter.updateFontStyle(getComboBoxControl(), defaultValue, getValue());
 			}
 		}
 	}

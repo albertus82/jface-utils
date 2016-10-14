@@ -157,7 +157,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				fontFormatter.updateFontStyle(getTextControl(), defaultValue);
+				textFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}

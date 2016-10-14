@@ -71,12 +71,12 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
 				if (getTextControl() != null) {
-					fontFormatter.updateFontStyle(getTextControl(), defaultValue);
+					textFormatter.updateFontStyle(getTextControl(), defaultValue);
 				}
 				else if (getDateTimeControl() != null) {
 					try {
 						final Date date = getDateValue();
-						fontFormatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
+						textFormatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
 					}
 					catch (final ParseException pe) {
 						pe.printStackTrace();

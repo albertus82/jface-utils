@@ -76,7 +76,7 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				fontFormatter.updateFontStyle(getTextControl(), defaultValue);
+				textFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}

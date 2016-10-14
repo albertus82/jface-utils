@@ -4,7 +4,7 @@ import it.albertus.jface.FontFormatter;
 
 public interface FieldEditorDefault {
 
-	FontFormatter fontFormatter = new FontFormatter(FieldEditorDefault.class.getName());
+	FontFormatter textFormatter = new FontFormatter(FieldEditorDefault.class.getName());
 
 	boolean isDefaultToolTip();
 

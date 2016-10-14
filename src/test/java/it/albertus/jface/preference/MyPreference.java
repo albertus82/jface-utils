@@ -1,16 +1,5 @@
 package it.albertus.jface.preference;
 
-import java.util.Calendar;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.Set;
-
-import org.eclipse.jface.preference.ColorFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
@@ -44,12 +33,22 @@ import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
 import it.albertus.jface.preference.page.IPageDefinition;
 
+import java.util.Calendar;
+import java.util.EnumSet;
+import java.util.GregorianCalendar;
+import java.util.Set;
+
+import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 public enum MyPreference implements IPreference {
 
 	STRING_1(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string1").label("String 1").defaultValue("Validate on key up.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).build()),
 	STRING_2(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string2").label("String 2").defaultValue("Validate on focus lost.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).textValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST).build()),
 	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).emptyStringAllowed(false).build()),
-	SCALE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("scale").label("Scale").defaultValue(25).build(), new FieldEditorDetailsBuilder(ScaleIntegerFieldEditor.class).scaleMinimum(0).scaleMaximum(100).scalePageIncrement(5).build()),
 
 	BYTE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("byte").label("Byte").defaultValue(123).build(), new FieldEditorDetailsBuilder(ByteFieldEditor.class).numberMinimum(-100).build()),
 	SHORT(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("short").label("Short").defaultValue(1234).build(), new FieldEditorDetailsBuilder(ShortFieldEditor.class).emptyStringAllowed(true).build()),
@@ -78,6 +77,7 @@ public enum MyPreference implements IPreference {
 	PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("password").label("Password").build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
 	DATE_1(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("date1").label("Date 1").defaultValue("24/12/2015").build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).style(SWT.DROP_DOWN).build()),
 	DATE_2(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("date2").label("Date 2").defaultValue("12/06/2015").build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2000, Calendar.JUNE, 15).getTime()).emptyStringAllowed(true).build()),
+	SCALE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("scale").label("Scale").defaultValue(25).build(), new FieldEditorDetailsBuilder(ScaleIntegerFieldEditor.class).scaleMinimum(0).scaleMaximum(100).scalePageIncrement(5).build()),
 	RADIO(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("radio").label("Radio").build(), new FieldEditorDetailsBuilder(DefaultRadioGroupFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 6", "value 6").put("Label 7", "value 7")).radioNumColumns(2).radioUseGroup(true).build()),
 	FILE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("file").label("File").build(), new FieldEditorDetailsBuilder(EnhancedFileFieldEditor.class).fileExtensions(new String[] { "*.txt;*.TXT" }).build()),
 	DIRECTORY(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("directory").label("Directory").build(), new FieldEditorDetailsBuilder(EnhancedDirectoryFieldEditor.class).build()),

@@ -21,7 +21,6 @@ public class FontFormatter {
 		this.fontKey = fontKey;
 	}
 
-	/** Calls {@code updateFontStyle(text, String.valueOf(defaultValue))}. */
 	public void updateFontStyle(final Text text, final Object defaultValue) {
 		updateFontStyle(text, String.valueOf(defaultValue));
 	}

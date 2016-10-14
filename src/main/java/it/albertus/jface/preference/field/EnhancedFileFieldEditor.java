@@ -129,7 +129,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		if (boldCustomValues) {
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
-				textFormatter.updateFontStyle(getTextControl(), defaultValue);
+				fontFormatter.updateFontStyle(getTextControl(), defaultValue);
 			}
 		}
 	}

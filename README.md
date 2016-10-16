@@ -196,7 +196,7 @@ public enum MyPreference implements IPreference {
 		fieldEditorFactory.setBoldCustomValues(false);
 	}
 
-	/* The enum values... */
+	/* Enum values... */
 }
 ```
 

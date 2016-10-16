@@ -5,6 +5,7 @@ import java.util.prefs.Preferences;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -77,6 +78,9 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 			final String defaultValue = getDefaultValue();
 			if (defaultValue != null && !defaultValue.isEmpty()) {
 				textFormatter.updateFontStyle(getTextControl(), defaultValue);
+				if (Util.isCocoa()) {
+					getTextControl().getShell().layout(true, true); // El Capitan fix for Text control
+				}
 			}
 		}
 	}

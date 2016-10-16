@@ -176,13 +176,31 @@ The interface [`IPreferencesCallback`](src/main/java/it/albertus/jface/preferenc
 You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/it/albertus/jface/preference/PreferencesCallback.java) or use/extend [`PropertiesConfiguration`] (src/main/java/it/albertus/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/it/albertus/util/Configuration.java) depending on your needs.
 
 
-### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) extension
+### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java)
+
+The [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) helps you to create FieldEditor objects, as you saw in the previous [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) example.
+
 
 The [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interface already declares a ready-to-use [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) variable:
 
 ```java
 public static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
 ```
+
+By default, custom values are presented in *bold* format. If you don't like this behaviour, you can disable it invoking the `setBoldCustomValues(boolean)` method of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java):
+
+```java
+public enum MyPreference implements IPreference {
+
+	static {
+		fieldEditorFactory.setBoldCustomValues(false);
+	}
+
+	/* The enum values... */
+}
+```
+
+#### Extension
 
 If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new objects:
 

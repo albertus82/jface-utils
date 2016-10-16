@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 public class PreferencesExample {
 
 	public static void main(final String... args) {
+		Display.setAppName("Preferences Example");
 		new PreferencesExample().run();
 	}
 

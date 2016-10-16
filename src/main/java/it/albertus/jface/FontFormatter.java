@@ -2,6 +2,7 @@ package it.albertus.jface;
 
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -56,6 +57,11 @@ public class FontFormatter {
 			fontRegistry.put(fontKey, control.getFont().getFontData());
 		}
 		control.setFont(fontRegistry.getBold(fontKey));
+
+		// Fix Text control "height" bug with OS X El Capitan
+		if (Util.isCocoa() && control instanceof Text) {
+			control.getParent().layout(new Control[] { control });
+		}
 	}
 
 	public int computeWidth(final Control control, final int size, final int weight) {

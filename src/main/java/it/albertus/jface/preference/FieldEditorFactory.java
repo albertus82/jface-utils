@@ -1,5 +1,23 @@
 package it.albertus.jface.preference;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.jface.preference.FontFieldEditor;
+import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.PathEditor;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.jface.preference.ScaleFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
@@ -35,25 +53,17 @@ import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.ColorFieldEditor;
-import org.eclipse.jface.preference.ComboFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.jface.preference.FontFieldEditor;
-import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.jface.preference.PathEditor;
-import org.eclipse.jface.preference.RadioGroupFieldEditor;
-import org.eclipse.jface.preference.ScaleFieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
 public class FieldEditorFactory {
+
+	private boolean boldCustomValues = true;
+
+	public boolean isBoldCustomValues() {
+		return boldCustomValues;
+	}
+
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		this.boldCustomValues = boldCustomValues;
+	}
 
 	public FieldEditor createFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final FieldEditor fieldEditor;
@@ -201,11 +211,14 @@ public class FieldEditorFactory {
 	protected void postConstruct(final FieldEditor fieldEditor, final FieldEditorDetails details) {
 		if (details != null && fieldEditor instanceof FieldEditorDefault) {
 			final FieldEditorDefault fieldEditorDefault = (FieldEditorDefault) fieldEditor;
-			if (details.getBoldCustomValues() != null) {
-				fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
-			}
 			if (details.getDefaultToolTip() != null) {
 				fieldEditorDefault.setDefaultToolTip(details.getDefaultToolTip());
+			}
+			if (!isBoldCustomValues()) {
+				fieldEditorDefault.setBoldCustomValues(false);
+			}
+			else if (details.getBoldCustomValues() != null) {
+				fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
 			}
 		}
 	}

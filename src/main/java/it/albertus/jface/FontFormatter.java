@@ -14,7 +14,7 @@ public class FontFormatter {
 
 	private static final char SAMPLE_CHAR = '9';
 
-	private static final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+	private final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
 
 	private final String fontKey;
 

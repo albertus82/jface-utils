@@ -14,8 +14,6 @@ public class FontFormatter {
 
 	private static final char SAMPLE_CHAR = '9';
 
-	private final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-
 	private final String fontKey;
 
 	public FontFormatter(final String fontKey) {
@@ -46,6 +44,7 @@ public class FontFormatter {
 	}
 
 	public void setNormalFontStyle(final Control control) {
+		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
 		if (!fontRegistry.hasValueFor(fontKey)) {
 			fontRegistry.put(fontKey, control.getFont().getFontData());
 		}
@@ -53,6 +52,7 @@ public class FontFormatter {
 	}
 
 	public void setBoldFontStyle(final Control control) {
+		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
 		if (!fontRegistry.hasValueFor(fontKey)) {
 			fontRegistry.put(fontKey, control.getFont().getFontData());
 		}

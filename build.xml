@@ -3,7 +3,7 @@
 <project name="JFaceUtils" default="jars">
 
 	<property environment="env" />
-	<property name="env.JAVA_HOME_BOOTCLASSPATH" value="${env.JAVA_HOME}/../jdk1.6.0_45" />
+	<property name="env.JRE6_HOME" value="${env.JAVA_HOME}/../jdk1.6.0_45/jre" />
 
 	<property file="build.properties" />
 	<property file="${build.resourcesDirectory}/version.properties" />

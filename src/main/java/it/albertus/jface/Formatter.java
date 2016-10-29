@@ -10,14 +10,18 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-public class FontFormatter {
+public class Formatter {
 
 	private static final char SAMPLE_CHAR = '9';
 
-	private final String fontKey;
+	private final String symbolicName;
 
-	public FontFormatter(final String fontKey) {
-		this.fontKey = fontKey;
+	public Formatter(final String symbolicName) {
+		this.symbolicName = symbolicName;
+	}
+
+	public Formatter(final Class<?> clazz) {
+		this.symbolicName = clazz.getName();
 	}
 
 	public void updateFontStyle(final Text text, final Object defaultValue) {
@@ -45,18 +49,18 @@ public class FontFormatter {
 
 	public void setNormalFontStyle(final Control control) {
 		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(fontKey)) {
-			fontRegistry.put(fontKey, control.getFont().getFontData());
+		if (!fontRegistry.hasValueFor(symbolicName)) {
+			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.get(fontKey));
+		control.setFont(fontRegistry.get(symbolicName));
 	}
 
 	public void setBoldFontStyle(final Control control) {
 		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(fontKey)) {
-			fontRegistry.put(fontKey, control.getFont().getFontData());
+		if (!fontRegistry.hasValueFor(symbolicName)) {
+			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.getBold(fontKey));
+		control.setFont(fontRegistry.getBold(symbolicName));
 
 		// Fix Text control "height" bug with OS X El Capitan
 		if (Util.isCocoa() && control instanceof Text) {

@@ -1,10 +1,10 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.FontFormatter;
+import it.albertus.jface.Formatter;
 
 public interface FieldEditorDefault {
 
-	FontFormatter textFormatter = new FontFormatter(FieldEditorDefault.class.getName());
+	Formatter formatter = new Formatter(FieldEditorDefault.class);
 
 	boolean isDefaultToolTip();
 

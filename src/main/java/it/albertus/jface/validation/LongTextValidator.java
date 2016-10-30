@@ -8,8 +8,12 @@ public class LongTextValidator extends NumberTextValidator<Long> {
 		super(text);
 	}
 
-	public LongTextValidator(final Text text, final Long minValidValue, final Long maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public LongTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public LongTextValidator(final Text text, final boolean emptyStringAllowed, final Long minValidValue, final Long maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

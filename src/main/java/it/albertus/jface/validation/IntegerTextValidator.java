@@ -8,8 +8,12 @@ public class IntegerTextValidator extends NumberTextValidator<Integer> {
 		super(text);
 	}
 
-	public IntegerTextValidator(final Text text, final Integer minValidValue, final Integer maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public IntegerTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public IntegerTextValidator(final Text text, final boolean emptyStringAllowed, final Integer minValidValue, final Integer maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

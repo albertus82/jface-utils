@@ -8,8 +8,12 @@ public class DoubleTextValidator extends NumberTextValidator<Double> {
 		super(text);
 	}
 
-	public DoubleTextValidator(final Text text, final Double minValidValue, final Double maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public DoubleTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public DoubleTextValidator(final Text text, final boolean emptyStringAllowed, final Double minValidValue, final Double maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

@@ -8,8 +8,12 @@ public class FloatTextValidator extends NumberTextValidator<Float> {
 		super(text);
 	}
 
-	public FloatTextValidator(final Text text, final Float minValidValue, final Float maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public FloatTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public FloatTextValidator(final Text text, final boolean emptyStringAllowed, final Float minValidValue, final Float maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

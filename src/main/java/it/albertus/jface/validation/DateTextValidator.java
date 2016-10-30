@@ -7,7 +7,9 @@ import java.util.Date;
 
 import org.eclipse.swt.widgets.Text;
 
-public class DateTextValidator extends ControlValidator<Text> {
+public class DateTextValidator extends StringTextValidator {
+
+	public static final boolean EMPTY_STRING_ALLOWED = true;
 
 	/**
 	 * Use {@link #parseDate} and {@link #formatDate} synchronized methods
@@ -19,20 +21,22 @@ public class DateTextValidator extends ControlValidator<Text> {
 	private final String pattern;
 	private Date minValidValue;
 	private Date maxValidValue;
-	private boolean emptyStringAllowed = true; // Default
 
 	public DateTextValidator(final Text text, final String pattern) {
-		super(text);
+		this(text, pattern, EMPTY_STRING_ALLOWED);
+	}
+
+	public DateTextValidator(final Text text, final String pattern, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
 		this.pattern = pattern;
 		this.dateFormat = new SimpleDateFormat(pattern);
 		this.dateFormat.setLenient(false);
 	}
 
-	public DateTextValidator(final Text text, final String pattern, final Date minValidValue, final Date maxValidValue, final boolean emptyStringAllowed) {
-		this(text, pattern);
+	public DateTextValidator(final Text text, final String pattern, final boolean emptyStringAllowed, final Date minValidValue, final Date maxValidValue) {
+		this(text, pattern, emptyStringAllowed);
 		this.minValidValue = minValidValue;
 		this.maxValidValue = maxValidValue;
-		this.emptyStringAllowed = emptyStringAllowed;
 	}
 
 	@Override
@@ -77,14 +81,6 @@ public class DateTextValidator extends ControlValidator<Text> {
 
 	public void setMaxValidValue(final Date maxValidValue) {
 		this.maxValidValue = maxValidValue;
-	}
-
-	public boolean isEmptyStringAllowed() {
-		return emptyStringAllowed;
-	}
-
-	public void setEmptyStringAllowed(final boolean emptyStringAllowed) {
-		this.emptyStringAllowed = emptyStringAllowed;
 	}
 
 }

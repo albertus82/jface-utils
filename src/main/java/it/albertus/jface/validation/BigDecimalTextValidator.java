@@ -10,8 +10,12 @@ public class BigDecimalTextValidator extends NumberTextValidator<BigDecimal> {
 		super(text);
 	}
 
-	public BigDecimalTextValidator(final Text text, final BigDecimal minValidValue, final BigDecimal maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public BigDecimalTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public BigDecimalTextValidator(final Text text, final boolean emptyStringAllowed, final BigDecimal minValidValue, final BigDecimal maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

@@ -10,8 +10,12 @@ public class BigIntegerTextValidator extends NumberTextValidator<BigInteger> {
 		super(text);
 	}
 
-	public BigIntegerTextValidator(final Text text, final BigInteger minValidValue, final BigInteger maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public BigIntegerTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public BigIntegerTextValidator(final Text text, final boolean emptyStringAllowed, final BigInteger minValidValue, final BigInteger maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

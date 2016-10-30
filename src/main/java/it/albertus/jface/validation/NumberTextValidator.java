@@ -2,21 +2,25 @@ package it.albertus.jface.validation;
 
 import org.eclipse.swt.widgets.Text;
 
-public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends ControlValidator<Text> {
+public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends StringTextValidator {
+
+	public static final boolean EMPTY_STRING_ALLOWED = false;
 
 	private T minValidValue;
 	private T maxValidValue;
-	private boolean emptyStringAllowed = false; // Default
 
 	public NumberTextValidator(final Text text) {
-		super(text);
+		super(text, EMPTY_STRING_ALLOWED);
 	}
 
-	public NumberTextValidator(final Text text, final T minValidValue, final T maxValidValue, final boolean emptyStringAllowed) {
-		this(text);
+	public NumberTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public NumberTextValidator(final Text text, final boolean emptyStringAllowed, final T minValidValue, final T maxValidValue) {
+		this(text, emptyStringAllowed);
 		this.minValidValue = minValidValue;
 		this.maxValidValue = maxValidValue;
-		this.emptyStringAllowed = emptyStringAllowed;
 	}
 
 	protected abstract Comparable<T> toNumber(String value) throws NumberFormatException;
@@ -51,14 +55,6 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 
 	public void setMaxValidValue(final T maxValidValue) {
 		this.maxValidValue = maxValidValue;
-	}
-
-	public boolean isEmptyStringAllowed() {
-		return emptyStringAllowed;
-	}
-
-	public void setEmptyStringAllowed(final boolean emptyStringAllowed) {
-		this.emptyStringAllowed = emptyStringAllowed;
 	}
 
 }

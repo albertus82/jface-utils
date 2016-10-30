@@ -8,8 +8,12 @@ public class ShortTextValidator extends NumberTextValidator<Short> {
 		super(text);
 	}
 
-	public ShortTextValidator(final Text text, final Short minValidValue, final Short maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public ShortTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public ShortTextValidator(final Text text, final boolean emptyStringAllowed, final Short minValidValue, final Short maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

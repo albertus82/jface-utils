@@ -8,8 +8,12 @@ public class ByteTextValidator extends NumberTextValidator<Byte> {
 		super(text);
 	}
 
-	public ByteTextValidator(final Text text, final Byte minValidValue, final Byte maxValidValue, final boolean emptyStringAllowed) {
-		super(text, minValidValue, maxValidValue, emptyStringAllowed);
+	public ByteTextValidator(final Text text, final boolean emptyStringAllowed) {
+		super(text, emptyStringAllowed);
+	}
+
+	public ByteTextValidator(final Text text, final boolean emptyStringAllowed, final Byte minValidValue, final Byte maxValidValue) {
+		super(text, emptyStringAllowed, minValidValue, maxValidValue);
 	}
 
 	@Override

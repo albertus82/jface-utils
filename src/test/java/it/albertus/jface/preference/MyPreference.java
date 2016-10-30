@@ -1,11 +1,23 @@
 package it.albertus.jface.preference;
 
+import java.util.Calendar;
+import java.util.EnumSet;
+import java.util.GregorianCalendar;
+import java.util.Set;
+
+import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
 import it.albertus.jface.preference.field.BigDecimalComboFieldEditor;
 import it.albertus.jface.preference.field.BigDecimalFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerComboFieldEditor;
 import it.albertus.jface.preference.field.BigIntegerFieldEditor;
+import it.albertus.jface.preference.field.ByteComboFieldEditor;
 import it.albertus.jface.preference.field.ByteFieldEditor;
 import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
@@ -27,22 +39,12 @@ import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
 import it.albertus.jface.preference.field.PasswordFieldEditor;
 import it.albertus.jface.preference.field.ScaleIntegerFieldEditor;
+import it.albertus.jface.preference.field.ShortComboFieldEditor;
 import it.albertus.jface.preference.field.ShortFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
 import it.albertus.jface.preference.page.IPageDefinition;
-
-import java.util.Calendar;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.Set;
-
-import org.eclipse.jface.preference.ColorFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 
 public enum MyPreference implements IPreference {
 
@@ -63,8 +65,8 @@ public enum MyPreference implements IPreference {
 	EDITABLE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("editableCombo").label("Editable Combo").build(), new FieldEditorDetailsBuilder(EditableComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 3", "value 3").put("Label 4", "value 4")).emptyStringAllowed(true).build()),
 	VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("validatedCombo").label("Validated Combo").defaultValue("value 5").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 5", "value 5")).emptyStringAllowed(false).build()),
 
-	BYTE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("byteCombo").label("Byte Combo").defaultValue(123).build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 123", 123)).emptyStringAllowed(true).build()),
-	SHORT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("shortCombo").label("Short Combo").defaultValue(1234).build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 321", 321)).numberMaximum(2000).build()),
+	BYTE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("byteCombo").label("Byte Combo").defaultValue(123).build(), new FieldEditorDetailsBuilder(ByteComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 123", 123)).emptyStringAllowed(true).build()),
+	SHORT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("shortCombo").label("Short Combo").defaultValue(1234).build(), new FieldEditorDetailsBuilder(ShortComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 321", 321)).numberMaximum(2000).build()),
 	INTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("integerCombo").label("Integer Combo").defaultValue(12345).build(), new FieldEditorDetailsBuilder(IntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("InTeGeR", 1)).numberValidRange(-67890, 67890).emptyStringAllowed(true).build()),
 	LONG_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("longCombo").label("Long Combo").defaultValue(135791357913579L).build(), new FieldEditorDetailsBuilder(LongComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("long", 1)).emptyStringAllowed(false).build()),
 	BIGINTEGER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("bigIntegerCombo").label("BigInteger Combo").defaultValue(-246802468024680L).build(), new FieldEditorDetailsBuilder(BigIntegerComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("bigInteger", 1)).emptyStringAllowed(false).build()),

@@ -4,11 +4,12 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
 	public ByteComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setMinValidValue((byte) 0); // Positive by default
+		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly
 	}
 
 	@Override

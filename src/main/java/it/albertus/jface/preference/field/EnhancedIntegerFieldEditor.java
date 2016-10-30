@@ -1,16 +1,16 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.IntegerVerifyListener;
-import it.albertus.util.Configured;
-
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.listener.IntegerVerifyListener;
+import it.albertus.util.Configured;
+
 public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integer> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
 	public EnhancedIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);

@@ -4,11 +4,12 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MAX_VALUE).length();
 
 	public ShortComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setMinValidValue((short) 0); // Positive by default
+		setMaxValidValue(Short.MAX_VALUE); // Not so ugly
 	}
 
 	@Override

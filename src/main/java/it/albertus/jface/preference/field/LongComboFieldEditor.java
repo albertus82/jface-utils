@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
 
 	public LongComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);

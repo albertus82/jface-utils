@@ -1,16 +1,16 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.LongVerifyListener;
-import it.albertus.util.Configured;
-
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.listener.LongVerifyListener;
+import it.albertus.util.Configured;
+
 public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
 
 	public LongFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);

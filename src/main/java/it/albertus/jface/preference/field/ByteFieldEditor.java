@@ -1,20 +1,21 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.ByteVerifyListener;
-import it.albertus.util.Configured;
-
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.listener.ByteVerifyListener;
+import it.albertus.util.Configured;
+
 public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
 	public ByteFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setMinValidValue((byte) 0); // Positive by default
+		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly
 		getTextControl().addVerifyListener(new ByteVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {

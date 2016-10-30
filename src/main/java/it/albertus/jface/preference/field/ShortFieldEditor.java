@@ -1,20 +1,21 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.ShortVerifyListener;
-import it.albertus.util.Configured;
-
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.listener.ShortVerifyListener;
+import it.albertus.util.Configured;
+
 public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 
-	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MIN_VALUE).length();
+	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MAX_VALUE).length();
 
 	public ShortFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setMinValidValue((short) 0); // Positive by default
+		setMaxValidValue(Short.MAX_VALUE); // Not so ugly
 		getTextControl().addVerifyListener(new ShortVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {

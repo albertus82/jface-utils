@@ -4,6 +4,7 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.DecorationKeyListener;
@@ -45,16 +46,16 @@ public class TextDecoration {
 		});
 	}
 
-	private void applyTo(final Text text) {
-		final ControlDecoration controlDecorator = new ControlDecoration(text, style);
+	private void applyTo(final Control control) {
+		final ControlDecoration controlDecorator = new ControlDecoration(control, style);
 		controlDecorator.hide();
 		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(type).getImage();
 		controlDecorator.setImage(image);
-		adjustLayoutData(text, image);
-		text.addKeyListener(new DecorationKeyListener(controlDecorator, validator, message));
+		adjustLayoutData(control, image);
+		control.addKeyListener(new DecorationKeyListener(controlDecorator, validator, message));
 	}
 
-	protected void adjustLayoutData(final Text text, final Image image) {}
+	protected void adjustLayoutData(final Control control, final Image image) {}
 
 	public int getStyle() {
 		return style;

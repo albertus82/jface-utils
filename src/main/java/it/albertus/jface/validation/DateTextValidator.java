@@ -37,7 +37,7 @@ public class DateTextValidator extends TextValidator {
 
 	@Override
 	public boolean isValid() {
-		final String value = getText().getText();
+		final String value = getControl().getText();
 		if (isEmptyStringAllowed() && value.isEmpty()) {
 			return true;
 		}

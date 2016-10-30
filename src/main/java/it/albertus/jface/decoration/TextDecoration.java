@@ -1,14 +1,14 @@
 package it.albertus.jface.decoration;
 
-import it.albertus.jface.listener.DecorationKeyListener;
-import it.albertus.jface.validation.TextValidator;
-import it.albertus.util.Localized;
-
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.listener.DecorationKeyListener;
+import it.albertus.jface.validation.TextValidator;
+import it.albertus.util.Localized;
 
 public class TextDecoration {
 
@@ -28,15 +28,12 @@ public class TextDecoration {
 		this.message = message;
 		this.style = style;
 		this.type = type;
-		applyTo(validator.getText());
+		applyTo(validator.getControl());
 	}
 
 	public TextDecoration(final TextValidator validator, final Localized message) {
-		this.validator = validator;
-		this.message = message;
-		this.style = DEFAULT_STYLE;
-		this.type = DEFAULT_TYPE;
-		applyTo(validator.getText());
+		this(validator, message, DEFAULT_STYLE, DEFAULT_TYPE);
+		applyTo(validator.getControl());
 	}
 
 	public TextDecoration(final TextValidator validator, final String message) {

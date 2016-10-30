@@ -23,7 +23,7 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 
 	@Override
 	public boolean isValid() {
-		final String value = getText().getText();
+		final String value = getControl().getText();
 		if (isEmptyStringAllowed() && value.isEmpty()) {
 			return true;
 		}

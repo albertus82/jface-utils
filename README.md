@@ -5,7 +5,7 @@ JFaceUtils
 
 **Java SWT/JFace Utilities Library** with a **Preferences Framework**.
 
-![Screenshot](https://cloud.githubusercontent.com/assets/8672431/18028808/b4825704-6c87-11e6-96db-79f1fc46f931.png)
+![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 
 ## The Preferences Framework
 

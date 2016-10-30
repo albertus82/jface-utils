@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.eclipse.swt.widgets.Text;
 
-public class DateTextValidator extends TextValidator {
+public class DateTextValidator extends ControlValidator<Text> {
 
 	/**
 	 * Use {@link #parseDate} and {@link #formatDate} synchronized methods

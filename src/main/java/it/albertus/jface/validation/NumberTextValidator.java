@@ -2,7 +2,7 @@ package it.albertus.jface.validation;
 
 import org.eclipse.swt.widgets.Text;
 
-public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends TextValidator {
+public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends ControlValidator<Text> {
 
 	private T minValidValue;
 	private T maxValidValue;

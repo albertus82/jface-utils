@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.DecorationKeyListener;
-import it.albertus.jface.validation.TextValidator;
+import it.albertus.jface.validation.ControlValidator;
 import it.albertus.util.Localized;
 
 public class TextDecoration {
@@ -18,12 +18,12 @@ public class TextDecoration {
 	/** FieldDecorationRegistry.DEC_ERROR */
 	public static final String DEFAULT_TYPE = FieldDecorationRegistry.DEC_ERROR;
 
-	private final TextValidator validator;
+	private final ControlValidator<Text> validator;
 	private final Localized message;
 	private final int style;
 	private final String type;
 
-	public TextDecoration(final TextValidator validator, final Localized message, final int style, final String type) {
+	public TextDecoration(final ControlValidator<Text> validator, final Localized message, final int style, final String type) {
 		this.validator = validator;
 		this.message = message;
 		this.style = style;
@@ -31,12 +31,12 @@ public class TextDecoration {
 		applyTo(validator.getControl());
 	}
 
-	public TextDecoration(final TextValidator validator, final Localized message) {
+	public TextDecoration(final ControlValidator<Text> validator, final Localized message) {
 		this(validator, message, DEFAULT_STYLE, DEFAULT_TYPE);
 		applyTo(validator.getControl());
 	}
 
-	public TextDecoration(final TextValidator validator, final String message) {
+	public TextDecoration(final ControlValidator<Text> validator, final String message) {
 		this(validator, new Localized() {
 			@Override
 			public String getString() {
@@ -64,7 +64,7 @@ public class TextDecoration {
 		return type;
 	}
 
-	public TextValidator getValidator() {
+	public ControlValidator<Text> getValidator() {
 		return validator;
 	}
 

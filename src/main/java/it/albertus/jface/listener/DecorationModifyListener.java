@@ -34,7 +34,7 @@ public class DecorationModifyListener implements ModifyListener, Listener {
 
 	@Override
 	public void handleEvent(final Event event) {
-		modifyText(null);
+		modifyText(new ModifyEvent(event));
 	}
 
 }

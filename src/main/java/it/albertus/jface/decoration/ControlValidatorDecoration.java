@@ -5,13 +5,12 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.DecorationKeyListener;
 import it.albertus.jface.validation.ControlValidator;
 import it.albertus.util.Localized;
 
-public class TextDecoration {
+public class ControlValidatorDecoration {
 
 	/** {@code SWT.TOP | SWT.LEFT} */
 	public static final int DEFAULT_STYLE = SWT.TOP | SWT.LEFT;
@@ -19,12 +18,12 @@ public class TextDecoration {
 	/** FieldDecorationRegistry.DEC_ERROR */
 	public static final String DEFAULT_TYPE = FieldDecorationRegistry.DEC_ERROR;
 
-	private final ControlValidator<Text> validator;
+	private final ControlValidator<?> validator;
 	private final Localized message;
 	private final int style;
 	private final String type;
 
-	public TextDecoration(final ControlValidator<Text> validator, final Localized message, final int style, final String type) {
+	public ControlValidatorDecoration(final ControlValidator<?> validator, final Localized message, final int style, final String type) {
 		this.validator = validator;
 		this.message = message;
 		this.style = style;
@@ -32,12 +31,11 @@ public class TextDecoration {
 		applyTo(validator.getControl());
 	}
 
-	public TextDecoration(final ControlValidator<Text> validator, final Localized message) {
+	public ControlValidatorDecoration(final ControlValidator<?> validator, final Localized message) {
 		this(validator, message, DEFAULT_STYLE, DEFAULT_TYPE);
-		applyTo(validator.getControl());
 	}
 
-	public TextDecoration(final ControlValidator<Text> validator, final String message) {
+	public ControlValidatorDecoration(final ControlValidator<?> validator, final String message) {
 		this(validator, new Localized() {
 			@Override
 			public String getString() {
@@ -65,7 +63,7 @@ public class TextDecoration {
 		return type;
 	}
 
-	public ControlValidator<Text> getValidator() {
+	public ControlValidator<?> getValidator() {
 		return validator;
 	}
 

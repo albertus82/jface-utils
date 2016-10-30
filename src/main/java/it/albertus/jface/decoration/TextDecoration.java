@@ -1,5 +1,6 @@
 package it.albertus.jface.decoration;
 
+import it.albertus.jface.listener.DecorationKeyListener;
 import it.albertus.jface.validation.TextValidator;
 import it.albertus.util.Localized;
 
@@ -53,7 +54,7 @@ public class TextDecoration {
 		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(type).getImage();
 		controlDecorator.setImage(image);
 		adjustLayoutData(text, image);
-		text.addKeyListener(new TextDecorationKeyListener(controlDecorator, validator, message));
+		text.addKeyListener(new DecorationKeyListener(controlDecorator, validator, message));
 	}
 
 	protected void adjustLayoutData(final Text text, final Image image) {}

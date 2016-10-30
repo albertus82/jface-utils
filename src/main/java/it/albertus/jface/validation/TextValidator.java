@@ -10,13 +10,6 @@ public abstract class TextValidator implements Validator {
 		this.text = text;
 	}
 
-	@Override
-	public abstract boolean isValid();
-
-	public void onValid() {}
-
-	public void onInvalid() {}
-
 	public Text getText() {
 		return text;
 	}

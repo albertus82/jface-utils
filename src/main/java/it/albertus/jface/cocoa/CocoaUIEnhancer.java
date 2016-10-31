@@ -15,11 +15,11 @@ public class CocoaUIEnhancer {
 	private static final int kAboutMenuItem = 0;
 	private static final int kPreferencesMenuItem = 2;
 
-	static Callback proc3Args;
+	private static Callback proc3Args;
 
-	static long sel_aboutMenuItemSelected_;
-	static long sel_preferencesMenuItemSelected_;
-	static long sel_toolbarButtonClicked_;
+	private static long sel_aboutMenuItemSelected_;
+	private static long sel_preferencesMenuItemSelected_;
+	private static long sel_toolbarButtonClicked_;
 
 	private static Object invoke(final Class<?> clazz, final Object target, final String methodName, final Object[] args) {
 		try {
@@ -66,69 +66,16 @@ public class CocoaUIEnhancer {
 	}
 
 	public void hookApplicationMenu(final Display display, final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) {
-		final Object target = new Object() {
-			@SuppressWarnings("unused")
-			int actionProc(int id, int sel, int arg0) {
-				// Casts the parameters to long so and use the method for 64 bit Cocoa.
-				return (int) actionProc((long) id, (long) sel, (long) arg0);
-			}
-
-			long actionProc(long id, long sel, long arg0) {
-				if (sel == sel_aboutMenuItemSelected_ && aboutListener != null) {
-					aboutListener.handleEvent(null);
-				}
-				else if (sel == sel_preferencesMenuItemSelected_ && preferencesListener != null) {
-					preferencesListener.handleEvent(null);
-				}
-				return 99;
-			}
-		};
-
-		try {
-			initialize(target);
-		}
-		catch (final RuntimeException re) {
-			throw re;
-		}
-		catch (final Exception e) {
-			throw new IllegalStateException(e);
-		}
-
-		// Connect the quit/exit menu.
-		if (!display.isDisposed() && quitListener != null) {
-			display.addListener(SWT.Close, quitListener);
-		}
-
-		// Schedule disposal of callback object.
-		display.disposeExec(new Runnable() {
-			@Override
-			public void run() {
-				invoke(proc3Args, "dispose");
-			}
-		});
+		hookApplicationMenu(display, quitListener, new ListenerCallbackObject(preferencesListener, aboutListener));
 	}
 
 	public void hookApplicationMenu(final Display display, final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) {
-		final Object target = new Object() {
-			@SuppressWarnings("unused")
-			int actionProc(final int id, final int sel, final int arg0) {
-				// Casts the parameters to long so and use the method for 64 bit Cocoa.
-				return (int) actionProc((long) id, (long) sel, (long) arg0);
-			}
+		hookApplicationMenu(display, quitListener, new ActionCallbackObject(preferencesAction, aboutAction));
+	}
 
-			long actionProc(final long id, final long sel, final long arg0) {
-				if (sel == sel_aboutMenuItemSelected_ && aboutAction != null) {
-					aboutAction.run();
-				}
-				else if (sel == sel_preferencesMenuItemSelected_ && preferencesAction != null) {
-					preferencesAction.run();
-				}
-				return 99;
-			}
-		};
-
+	private void hookApplicationMenu(final Display display, final Listener quitListener, final CallbackObject callbackObject) {
 		try {
-			initialize(target);
+			initialize(callbackObject);
 		}
 		catch (final RuntimeException re) {
 			throw re;
@@ -146,7 +93,7 @@ public class CocoaUIEnhancer {
 		display.disposeExec(new Runnable() {
 			@Override
 			public void run() {
-				invoke(proc3Args, "dispose");
+				proc3Args.dispose();
 			}
 		});
 	}
@@ -173,7 +120,7 @@ public class CocoaUIEnhancer {
 		return 0;
 	}
 
-	private void initialize(final Object callbackObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	private void initialize(final CallbackObject callbackObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final Class<?> osCls = classForName("org.eclipse.swt.internal.cocoa.OS");
 
 		// Register names in Objective-C.
@@ -184,23 +131,20 @@ public class CocoaUIEnhancer {
 
 		// Create an SWT Callback object that will invoke the actionProc method of our internal callbackObject.
 		proc3Args = new Callback(callbackObject, "actionProc", 3);
-		final Method getAddress = Callback.class.getMethod("getAddress", new Class[0]);
-		Object object = getAddress.invoke(proc3Args, (Object[]) null);
-		final long proc3 = convertToLong(object);
+		final long proc3 = proc3Args.getAddress();
 		if (proc3 == 0) {
 			SWT.error(SWT.ERROR_NO_MORE_CALLBACKS);
 		}
 
-		final Class<?> nsmenuCls = classForName("org.eclipse.swt.internal.cocoa.NSMenu");
-		final Class<?> nsmenuitemCls = classForName("org.eclipse.swt.internal.cocoa.NSMenuItem");
-		final Class<?> nsapplicationCls = classForName("org.eclipse.swt.internal.cocoa.NSApplication");
-
-		object = invoke(osCls, "objc_lookUpClass", new Object[] { "SWTApplicationDelegate" });
+		final Object object = invoke(osCls, "objc_lookUpClass", new Object[] { "SWTApplicationDelegate" });
 		final long cls = convertToLong(object);
 
 		// Add the action callbacks for Preferences and About menu items.
 		invoke(osCls, "class_addMethod", new Object[] { wrapPointer(cls), wrapPointer(sel_preferencesMenuItemSelected_), wrapPointer(proc3), "@:@" });
 		invoke(osCls, "class_addMethod", new Object[] { wrapPointer(cls), wrapPointer(sel_aboutMenuItemSelected_), wrapPointer(proc3), "@:@" });
+
+		final Class<?> nsapplicationCls = classForName("org.eclipse.swt.internal.cocoa.NSApplication");
+		final Class<?> nsmenuCls = classForName("org.eclipse.swt.internal.cocoa.NSMenu");
 
 		// Get the Mac OS X Application menu.
 		final Object sharedApplication = invoke(nsapplicationCls, "sharedApplication");
@@ -210,6 +154,8 @@ public class CocoaUIEnhancer {
 
 		final Object aboutMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Object[] { wrapPointer(kAboutMenuItem) });
 		final Object prefMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Object[] { wrapPointer(kPreferencesMenuItem) });
+
+		final Class<?> nsmenuitemCls = classForName("org.eclipse.swt.internal.cocoa.NSMenuItem");
 
 		invoke(nsmenuitemCls, prefMenuItem, "setAction", new Object[] { wrapPointer(sel_preferencesMenuItemSelected_) });
 		invoke(nsmenuitemCls, aboutMenuItem, "setAction", new Object[] { wrapPointer(sel_aboutMenuItemSelected_) });
@@ -249,9 +195,63 @@ public class CocoaUIEnhancer {
 		}
 	}
 
-	private long registerName(Class<?> osCls, String name) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	private long registerName(final Class<?> osCls, final String name) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		final Object object = invoke(osCls, "sel_registerName", new Object[] { name });
 		return convertToLong(object);
+	}
+
+	private abstract class CallbackObject {
+		static final long RETURN_VALUE = 99;
+
+		@SuppressWarnings("unused")
+		int actionProc(final int id, final int sel, final int arg0) {
+			// Casts the parameters to long so and use the method for 64 bit Cocoa.
+			return (int) actionProc((long) id, (long) sel, (long) arg0);
+		}
+
+		abstract long actionProc(final long id, final long sel, final long arg0);
+	}
+
+	private class ListenerCallbackObject extends CallbackObject {
+		private final Listener preferencesListener;
+		private final Listener aboutListener;
+
+		private ListenerCallbackObject(final Listener preferencesListener, final Listener aboutListener) {
+			this.preferencesListener = preferencesListener;
+			this.aboutListener = aboutListener;
+		}
+
+		@Override
+		long actionProc(final long id, final long sel, final long arg0) {
+			if (sel == sel_aboutMenuItemSelected_ && aboutListener != null) {
+				aboutListener.handleEvent(null);
+			}
+			else if (sel == sel_preferencesMenuItemSelected_ && preferencesListener != null) {
+				preferencesListener.handleEvent(null);
+			}
+			return RETURN_VALUE;
+		}
+	}
+
+	private class ActionCallbackObject extends CallbackObject {
+		private final IAction preferencesAction;
+		private final IAction aboutAction;
+
+		private ActionCallbackObject(final IAction preferencesAction, final IAction aboutAction) {
+			this.preferencesAction = preferencesAction;
+			this.aboutAction = aboutAction;
+		}
+
+		@Override
+		long actionProc(final long id, final long sel, final long arg0) {
+			if (sel == sel_aboutMenuItemSelected_ && aboutAction != null) {
+				aboutAction.run();
+			}
+			else if (sel == sel_preferencesMenuItemSelected_ && preferencesAction != null) {
+				preferencesAction.run();
+			}
+			return RETURN_VALUE;
+		}
 	}
 
 }

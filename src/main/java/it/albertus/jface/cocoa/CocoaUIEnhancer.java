@@ -111,12 +111,12 @@ public class CocoaUIEnhancer {
 	public void hookApplicationMenu(final Display display, final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) {
 		final Object target = new Object() {
 			@SuppressWarnings("unused")
-			int actionProc(int id, int sel, int arg0) {
+			int actionProc(final int id, final int sel, final int arg0) {
 				// Casts the parameters to long so and use the method for 64 bit Cocoa.
 				return (int) actionProc((long) id, (long) sel, (long) arg0);
 			}
 
-			long actionProc(long id, long sel, long arg0) {
+			long actionProc(final long id, final long sel, final long arg0) {
 				if (sel == sel_aboutMenuItemSelected_ && aboutAction != null) {
 					aboutAction.run();
 				}
@@ -184,9 +184,9 @@ public class CocoaUIEnhancer {
 
 		// Create an SWT Callback object that will invoke the actionProc method of our internal callbackObject.
 		proc3Args = new Callback(callbackObject, "actionProc", 3);
-		Method getAddress = Callback.class.getMethod("getAddress", new Class[0]);
+		final Method getAddress = Callback.class.getMethod("getAddress", new Class[0]);
 		Object object = getAddress.invoke(proc3Args, (Object[]) null);
-		long proc3 = convertToLong(object);
+		final long proc3 = convertToLong(object);
 		if (proc3 == 0) {
 			SWT.error(SWT.ERROR_NO_MORE_CALLBACKS);
 		}

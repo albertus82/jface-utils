@@ -15,13 +15,13 @@ public class CocoaUIEnhancer {
 	private static final int kAboutMenuItem = 0;
 	private static final int kPreferencesMenuItem = 2;
 
-	private static Callback proc3Args;
-
-	private static long sel_aboutMenuItemSelected_;
-	private static long sel_preferencesMenuItemSelected_;
-	private static long sel_toolbarButtonClicked_;
-
 	private final Display display;
+
+	private Callback proc3Args;
+
+	private long sel_aboutMenuItemSelected_;
+	private long sel_preferencesMenuItemSelected_;
+	private long sel_toolbarButtonClicked_;
 
 	public CocoaUIEnhancer(final Display display) {
 		this.display = display;
@@ -93,7 +93,7 @@ public class CocoaUIEnhancer {
 		invoke(nsmenuitemCls, aboutMenuItem, "setAction", new Number[] { wrapPointer(sel_aboutMenuItemSelected_) });
 	}
 
-	private Class<?> classForName(final String className) {
+	private static Class<?> classForName(final String className) {
 		try {
 			final Class<?> cls = Class.forName(className);
 			return cls;
@@ -103,7 +103,7 @@ public class CocoaUIEnhancer {
 		}
 	}
 
-	private long convertToLong(final Object object) {
+	private static long convertToLong(final Object object) {
 		if (object instanceof Integer) {
 			final Integer i = (Integer) object;
 			return i.longValue();
@@ -153,25 +153,25 @@ public class CocoaUIEnhancer {
 		}
 	}
 
-	private Object invoke(final Class<?> cls, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private static Object invoke(final Class<?> cls, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(cls, methodName, (Class<?>[]) null, (Object[]) null);
 	}
 
-	private Object invoke(final Class<?> cls, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		final Method m = cls.getDeclaredMethod(methodName, paramTypes);
-		return m.invoke(null, arguments);
+	private static Object invoke(final Class<?> cls, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method method = cls.getDeclaredMethod(methodName, paramTypes);
+		return method.invoke(null, arguments);
 	}
 
-	private Object invoke(final Object obj, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private static Object invoke(final Object obj, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(obj, methodName, (Class<?>[]) null, (Object[]) null);
 	}
 
-	private Object invoke(final Object obj, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		final Method m = obj.getClass().getDeclaredMethod(methodName, paramTypes);
-		return m.invoke(obj, arguments);
+	private static Object invoke(final Object obj, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method method = obj.getClass().getDeclaredMethod(methodName, paramTypes);
+		return method.invoke(obj, arguments);
 	}
 
-	private long registerName(final Class<?> osCls, final String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private static long registerName(final Class<?> osCls, final String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		final Object object = invoke(osCls, "sel_registerName", new Object[] { name });
 		return convertToLong(object);
 	}

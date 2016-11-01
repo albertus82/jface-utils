@@ -21,24 +21,22 @@ public class CocoaUIEnhancer {
 	private static long sel_preferencesMenuItemSelected_;
 	private static long sel_toolbarButtonClicked_;
 
-	public void hookApplicationMenu(final Display display, final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) {
-		hookApplicationMenu(display, quitListener, new ListenerCallbackObject(preferencesListener, aboutListener));
+	private final Display display;
+
+	public CocoaUIEnhancer(final Display display) {
+		this.display = display;
 	}
 
-	public void hookApplicationMenu(final Display display, final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) {
-		hookApplicationMenu(display, quitListener, new ActionCallbackObject(preferencesAction, aboutAction));
+	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) {
+		hookApplicationMenu(quitListener, new ListenerCallbackObject(preferencesListener, aboutListener));
 	}
 
-	private void hookApplicationMenu(final Display display, final Listener quitListener, final CallbackObject callbackObject) {
-		try {
-			initialize(callbackObject);
-		}
-		catch (final RuntimeException re) {
-			throw re;
-		}
-		catch (final Exception e) {
-			throw new IllegalStateException(e);
-		}
+	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) {
+		hookApplicationMenu(quitListener, new ActionCallbackObject(preferencesAction, aboutAction));
+	}
+
+	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) {
+		initialize(callbackObject);
 
 		// Connect the quit/exit menu.
 		if (!display.isDisposed() && quitListener != null) {
@@ -54,7 +52,7 @@ public class CocoaUIEnhancer {
 		});
 	}
 
-	private void initialize(final CallbackObject callbackObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	private void initialize(final CallbackObject callbackObject) {
 		final Class<?> osCls = classForName("org.eclipse.swt.internal.cocoa.OS");
 
 		// Register names in Objective-C.
@@ -100,8 +98,8 @@ public class CocoaUIEnhancer {
 			final Class<?> cls = Class.forName(className);
 			return cls;
 		}
-		catch (final ClassNotFoundException e) {
-			throw new IllegalStateException(e);
+		catch (final ClassNotFoundException cnfe) {
+			throw new RuntimeException(cnfe);
 		}
 	}
 
@@ -141,11 +139,14 @@ public class CocoaUIEnhancer {
 			final Method method = clazz.getMethod(methodName, signature);
 			return method.invoke(target, args);
 		}
-		catch (final RuntimeException re) {
-			throw re;
+		catch (final IllegalAccessException iae) {
+			throw new RuntimeException(iae);
 		}
-		catch (final Exception e) {
-			throw new IllegalStateException(e);
+		catch (final InvocationTargetException ite) {
+			throw new RuntimeException(ite);
+		}
+		catch (final NoSuchMethodException nsme) {
+			throw new RuntimeException(nsme);
 		}
 	}
 
@@ -172,11 +173,14 @@ public class CocoaUIEnhancer {
 			final Method m = cls.getDeclaredMethod(methodName, paramTypes);
 			return m.invoke(null, arguments);
 		}
-		catch (final RuntimeException re) {
-			throw re;
+		catch (final IllegalAccessException iae) {
+			throw new RuntimeException(iae);
 		}
-		catch (final Exception e) {
-			throw new IllegalStateException(e);
+		catch (final InvocationTargetException ite) {
+			throw new RuntimeException(ite);
+		}
+		catch (final NoSuchMethodException nsme) {
+			throw new RuntimeException(nsme);
 		}
 	}
 
@@ -189,15 +193,18 @@ public class CocoaUIEnhancer {
 			final Method m = obj.getClass().getDeclaredMethod(methodName, paramTypes);
 			return m.invoke(obj, arguments);
 		}
-		catch (final RuntimeException re) {
-			throw re;
+		catch (final IllegalAccessException iae) {
+			throw new RuntimeException(iae);
 		}
-		catch (final Exception e) {
-			throw new IllegalStateException(e);
+		catch (final InvocationTargetException ite) {
+			throw new RuntimeException(ite);
+		}
+		catch (final NoSuchMethodException nsme) {
+			throw new RuntimeException(nsme);
 		}
 	}
 
-	private long registerName(final Class<?> osCls, final String name) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	private long registerName(final Class<?> osCls, final String name) {
 		final Object object = invoke(osCls, "sel_registerName", new Object[] { name });
 		return convertToLong(object);
 	}

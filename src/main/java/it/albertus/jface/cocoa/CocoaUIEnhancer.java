@@ -28,11 +28,11 @@ public class CocoaUIEnhancer {
 	}
 
 	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		hookApplicationMenu(quitListener, new ListenerCallbackObject(preferencesListener, aboutListener));
+		hookApplicationMenu(quitListener, new ListenerCallbackObject(aboutListener, preferencesListener));
 	}
 
 	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		hookApplicationMenu(quitListener, new ActionCallbackObject(preferencesAction, aboutAction));
+		hookApplicationMenu(quitListener, new ActionCallbackObject(aboutAction, preferencesAction));
 	}
 
 	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -89,8 +89,15 @@ public class CocoaUIEnhancer {
 
 		final Class<?> nsmenuitemCls = classForName("org.eclipse.swt.internal.cocoa.NSMenuItem");
 
-		invoke(nsmenuitemCls, prefMenuItem, "setAction", new Number[] { wrapPointer(sel_preferencesMenuItemSelected_) });
-		invoke(nsmenuitemCls, aboutMenuItem, "setAction", new Number[] { wrapPointer(sel_aboutMenuItemSelected_) });
+		if (callbackObject.aboutEnabled) {
+			invoke(nsmenuitemCls, aboutMenuItem, "setAction", new Number[] { wrapPointer(sel_aboutMenuItemSelected_) });
+		}
+		invoke(nsmenuitemCls, aboutMenuItem, "setEnabled", new Boolean[] { callbackObject.aboutEnabled });
+
+		if (callbackObject.preferencesEnabled) {
+			invoke(nsmenuitemCls, prefMenuItem, "setAction", new Number[] { wrapPointer(sel_preferencesMenuItemSelected_) });
+		}
+		invoke(nsmenuitemCls, prefMenuItem, "setEnabled", new Boolean[] { callbackObject.preferencesEnabled });
 	}
 
 	private static Class<?> classForName(final String className) {
@@ -179,6 +186,14 @@ public class CocoaUIEnhancer {
 	private abstract class CallbackObject {
 		static final long RETURN_VALUE = 99;
 
+		private final boolean aboutEnabled;
+		private final boolean preferencesEnabled;
+
+		protected CallbackObject(final boolean aboutEnabled, final boolean preferencesEnabled) {
+			this.aboutEnabled = aboutEnabled;
+			this.preferencesEnabled = preferencesEnabled;
+		}
+
 		@SuppressWarnings("unused")
 		int actionProc(final int id, final int sel, final int arg0) {
 			// Casts the parameters to long so and use the method for 64 bit Cocoa.
@@ -189,12 +204,13 @@ public class CocoaUIEnhancer {
 	}
 
 	private class ListenerCallbackObject extends CallbackObject {
-		private final Listener preferencesListener;
 		private final Listener aboutListener;
+		private final Listener preferencesListener;
 
-		private ListenerCallbackObject(final Listener preferencesListener, final Listener aboutListener) {
-			this.preferencesListener = preferencesListener;
+		private ListenerCallbackObject(final Listener aboutListener, final Listener preferencesListener) {
+			super(aboutListener != null, preferencesListener != null);
 			this.aboutListener = aboutListener;
+			this.preferencesListener = preferencesListener;
 		}
 
 		@Override
@@ -213,9 +229,10 @@ public class CocoaUIEnhancer {
 		private final IAction preferencesAction;
 		private final IAction aboutAction;
 
-		private ActionCallbackObject(final IAction preferencesAction, final IAction aboutAction) {
-			this.preferencesAction = preferencesAction;
+		private ActionCallbackObject(final IAction aboutAction, final IAction preferencesAction) {
+			super(aboutAction != null, preferencesAction != null);
 			this.aboutAction = aboutAction;
+			this.preferencesAction = preferencesAction;
 		}
 
 		@Override

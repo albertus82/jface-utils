@@ -27,15 +27,15 @@ public class CocoaUIEnhancer {
 		this.display = display;
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) {
+	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		hookApplicationMenu(quitListener, new ListenerCallbackObject(preferencesListener, aboutListener));
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) {
+	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		hookApplicationMenu(quitListener, new ActionCallbackObject(preferencesAction, aboutAction));
 	}
 
-	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) {
+	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		initialize(callbackObject);
 
 		// Connect the quit/exit menu.
@@ -52,7 +52,7 @@ public class CocoaUIEnhancer {
 		});
 	}
 
-	private void initialize(final CallbackObject callbackObject) {
+	private void initialize(final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		final Class<?> osCls = classForName("org.eclipse.swt.internal.cocoa.OS");
 
 		// Register names in Objective-C.
@@ -115,42 +115,31 @@ public class CocoaUIEnhancer {
 		return 0;
 	}
 
-	private static Object invoke(final Class<?> clazz, final Object target, final String methodName, final Object[] args) {
-		try {
-			final Class<?>[] signature = new Class<?>[args.length];
-			for (int i = 0; i < args.length; i++) {
-				final Class<?> thisClass = args[i].getClass();
-				if (thisClass == Integer.class) {
-					signature[i] = int.class;
-				}
-				else if (thisClass == Long.class) {
-					signature[i] = long.class;
-				}
-				else if (thisClass == Byte.class) {
-					signature[i] = byte.class;
-				}
-				else if (thisClass == Boolean.class) {
-					signature[i] = boolean.class;
-				}
-				else {
-					signature[i] = thisClass;
-				}
+	private static Object invoke(final Class<?> clazz, final Object target, final String methodName, final Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Class<?>[] signature = new Class<?>[args.length];
+		for (int i = 0; i < args.length; i++) {
+			final Class<?> thisClass = args[i].getClass();
+			if (thisClass == Integer.class) {
+				signature[i] = int.class;
 			}
-			final Method method = clazz.getMethod(methodName, signature);
-			return method.invoke(target, args);
+			else if (thisClass == Long.class) {
+				signature[i] = long.class;
+			}
+			else if (thisClass == Byte.class) {
+				signature[i] = byte.class;
+			}
+			else if (thisClass == Boolean.class) {
+				signature[i] = boolean.class;
+			}
+			else {
+				signature[i] = thisClass;
+			}
 		}
-		catch (final IllegalAccessException iae) {
-			throw new RuntimeException(iae);
-		}
-		catch (final InvocationTargetException ite) {
-			throw new RuntimeException(ite);
-		}
-		catch (final NoSuchMethodException nsme) {
-			throw new RuntimeException(nsme);
-		}
+		final Method method = clazz.getMethod(methodName, signature);
+		return method.invoke(target, args);
 	}
 
-	private static Object invoke(final Class<?> clazz, final String methodName, final Object[] args) {
+	private static Object invoke(final Class<?> clazz, final String methodName, final Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(clazz, null, methodName, args);
 	}
 
@@ -164,47 +153,25 @@ public class CocoaUIEnhancer {
 		}
 	}
 
-	private Object invoke(final Class<?> cls, final String methodName) {
+	private Object invoke(final Class<?> cls, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(cls, methodName, (Class<?>[]) null, (Object[]) null);
 	}
 
-	private Object invoke(final Class<?> cls, final String methodName, final Class<?>[] paramTypes, final Object... arguments) {
-		try {
-			final Method m = cls.getDeclaredMethod(methodName, paramTypes);
-			return m.invoke(null, arguments);
-		}
-		catch (final IllegalAccessException iae) {
-			throw new RuntimeException(iae);
-		}
-		catch (final InvocationTargetException ite) {
-			throw new RuntimeException(ite);
-		}
-		catch (final NoSuchMethodException nsme) {
-			throw new RuntimeException(nsme);
-		}
+	private Object invoke(final Class<?> cls, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method m = cls.getDeclaredMethod(methodName, paramTypes);
+		return m.invoke(null, arguments);
 	}
 
-	private Object invoke(final Object obj, final String methodName) {
+	private Object invoke(final Object obj, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(obj, methodName, (Class<?>[]) null, (Object[]) null);
 	}
 
-	private Object invoke(final Object obj, final String methodName, final Class<?>[] paramTypes, final Object... arguments) {
-		try {
-			final Method m = obj.getClass().getDeclaredMethod(methodName, paramTypes);
-			return m.invoke(obj, arguments);
-		}
-		catch (final IllegalAccessException iae) {
-			throw new RuntimeException(iae);
-		}
-		catch (final InvocationTargetException ite) {
-			throw new RuntimeException(ite);
-		}
-		catch (final NoSuchMethodException nsme) {
-			throw new RuntimeException(nsme);
-		}
+	private Object invoke(final Object obj, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method m = obj.getClass().getDeclaredMethod(methodName, paramTypes);
+		return m.invoke(obj, arguments);
 	}
 
-	private long registerName(final Class<?> osCls, final String name) {
+	private long registerName(final Class<?> osCls, final String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		final Object object = invoke(osCls, "sel_registerName", new Object[] { name });
 		return convertToLong(object);
 	}

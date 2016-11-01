@@ -53,6 +53,11 @@ public class Formatter {
 			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
 		control.setFont(fontRegistry.get(symbolicName));
+
+		// Fix Text control "height" bug with OS X El Capitan
+		if (Util.isCocoa() && control instanceof Text) {
+			control.getParent().layout(new Control[] { control });
+		}
 	}
 
 	public void setBoldFontStyle(final Control control) {

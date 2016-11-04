@@ -10,6 +10,7 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 
+/* http://www.transparentech.com/opensource/cocoauienhancer */
 public class CocoaUIEnhancer {
 
 	private static final int kAboutMenuItem = 0;

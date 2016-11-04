@@ -243,4 +243,4 @@ Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/Coco
 new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());
 ```
 
-The `hookApplicationMenu` method is overloaded in order to accept **SWT Listeners** or **JFace Actions** for **About** and **Preferences** functions. When one argument is `null`, then the respective menu item will be disabled; so, for instance, if your application does not have a preferences management, you can pass `null` in place of `preferencesListener` or `preferencesAction` and the **Preferences...** menu item will be grayed.
+The `hookApplicationMenu` method is overloaded in order to accept **SWT Listeners** or **JFace Actions** for **About** and **Preferences** functions. When one argument is `null`, then the respective menu item will be disabled; so, for instance, if your application does not have a preferences management, you can pass `null` in place of `preferencesListener` or `preferencesAction` and the **Preferences...** menu item will be grayed out.

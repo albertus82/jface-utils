@@ -225,10 +225,10 @@ public class MyFieldEditorFactory extends FieldEditorFactory {
 
 After that, you can use your new factory instead of the standard one made available by [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java).
 
-## OS X integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer)
+## OS X integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java)
 
-The [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer) class provides a hook to connecting the **Preferences**, **About** and **Quit** menu items of the **Mac OS X** application menu.
-This is a modified version of the (`CocoaUIEnhancer`)[http://www.transparentech.com/files/CocoaUIEnhancer.java] class available at [TransparenTech](http://www.transparentech.com/opensource/cocoauienhancer), and it is released under the Eclipse Public License ([EPL](https://www.eclipse.org/legal/epl-v10.html)).
+The [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) class provides a hook to connecting the **Preferences**, **About** and **Quit** menu items of the **Mac OS X** application menu.
+This is a modified version of the [`CocoaUIEnhancer`](http://www.transparentech.com/files/CocoaUIEnhancer.java) class available at [TransparenTech](http://www.transparentech.com/opensource/cocoauienhancer), and it is released under the Eclipse Public License ([EPL](https://www.eclipse.org/legal/epl-v10.html)).
 
 In order to better integrate your JFace application with OS X, you should first call the following static methods of `Display` before its creation:
 
@@ -237,7 +237,7 @@ Display.setAppName("My JFace Application");
 Display.setAppVersion("1.0.0");
 ```
 
-Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer) before opening the shell:
+Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) before opening the shell:
 
 ```java
 new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());

@@ -240,7 +240,8 @@ Display.setAppVersion("1.0.0");
 Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) before opening the shell:
 
 ```java
-new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());
+if (Util.isCocoa())
+	new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());
 ```
 
 The `hookApplicationMenu` method is overloaded in order to accept **SWT Listeners** or **JFace Actions** for **About** and **Preferences** functions. When one argument is `null`, then the respective menu item will be disabled; so, for instance, if your application does not have a preferences management, you can pass `null` in place of `preferencesListener` or `preferencesAction` and the **Preferences...** menu item will be grayed out.

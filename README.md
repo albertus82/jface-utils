@@ -202,7 +202,7 @@ public enum MyPreference implements IPreference {
 
 #### Extension
 
-If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support of these new objects:
+If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support for these new objects:
 
 ```java
 public class MyFieldEditorFactory extends FieldEditorFactory {

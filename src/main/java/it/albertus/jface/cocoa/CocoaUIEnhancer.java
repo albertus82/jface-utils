@@ -2,8 +2,11 @@ package it.albertus.jface.cocoa;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.C;
 import org.eclipse.swt.internal.Callback;
@@ -28,15 +31,20 @@ public class CocoaUIEnhancer {
 		this.display = display;
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 		hookApplicationMenu(quitListener, new ListenerCallbackObject(aboutListener, preferencesListener));
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 		hookApplicationMenu(quitListener, new ActionCallbackObject(aboutAction, preferencesAction));
 	}
 
-	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+		// Check platform
+		if (!Util.isCocoa()) {
+			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Cocoa platform not detected!");
+		}
+
 		initialize(callbackObject);
 
 		// Connect the quit/exit menu.
@@ -53,8 +61,8 @@ public class CocoaUIEnhancer {
 		});
 	}
 
-	private void initialize(final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		final Class<?> osCls = classForName("org.eclipse.swt.internal.cocoa.OS");
+	private void initialize(final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+		final Class<?> osCls = Class.forName("org.eclipse.swt.internal.cocoa.OS");
 
 		// Register names in Objective-C.
 		if (sel_toolbarButtonClicked_ == 0) {
@@ -76,8 +84,8 @@ public class CocoaUIEnhancer {
 		invoke(osCls, "class_addMethod", new Object[] { wrapPointer(cls), wrapPointer(sel_preferencesMenuItemSelected_), wrapPointer(proc3), "@:@" });
 		invoke(osCls, "class_addMethod", new Object[] { wrapPointer(cls), wrapPointer(sel_aboutMenuItemSelected_), wrapPointer(proc3), "@:@" });
 
-		final Class<?> nsapplicationCls = classForName("org.eclipse.swt.internal.cocoa.NSApplication");
-		final Class<?> nsmenuCls = classForName("org.eclipse.swt.internal.cocoa.NSMenu");
+		final Class<?> nsapplicationCls = Class.forName("org.eclipse.swt.internal.cocoa.NSApplication");
+		final Class<?> nsmenuCls = Class.forName("org.eclipse.swt.internal.cocoa.NSMenu");
 
 		// Get the Mac OS X Application menu.
 		final Object sharedApplication = invoke(nsapplicationCls, "sharedApplication");
@@ -88,7 +96,7 @@ public class CocoaUIEnhancer {
 		final Object aboutMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Number[] { wrapPointer(kAboutMenuItem) });
 		final Object prefMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Number[] { wrapPointer(kPreferencesMenuItem) });
 
-		final Class<?> nsmenuitemCls = classForName("org.eclipse.swt.internal.cocoa.NSMenuItem");
+		final Class<?> nsmenuitemCls = Class.forName("org.eclipse.swt.internal.cocoa.NSMenuItem");
 
 		if (callbackObject.aboutEnabled) {
 			invoke(nsmenuitemCls, aboutMenuItem, "setAction", new Number[] { wrapPointer(sel_aboutMenuItemSelected_) });
@@ -99,28 +107,6 @@ public class CocoaUIEnhancer {
 			invoke(nsmenuitemCls, prefMenuItem, "setAction", new Number[] { wrapPointer(sel_preferencesMenuItemSelected_) });
 		}
 		invoke(nsmenuitemCls, prefMenuItem, "setEnabled", new Boolean[] { callbackObject.preferencesEnabled });
-	}
-
-	private static Class<?> classForName(final String className) {
-		try {
-			final Class<?> cls = Class.forName(className);
-			return cls;
-		}
-		catch (final ClassNotFoundException cnfe) {
-			throw new RuntimeException(cnfe);
-		}
-	}
-
-	private static long convertToLong(final Object object) {
-		if (object instanceof Integer) {
-			final Integer i = (Integer) object;
-			return i.longValue();
-		}
-		if (object instanceof Long) {
-			final Long l = (Long) object;
-			return l.longValue();
-		}
-		return 0;
 	}
 
 	private static Object invoke(final Class<?> clazz, final Object target, final String methodName, final Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -151,16 +137,6 @@ public class CocoaUIEnhancer {
 		return invoke(clazz, null, methodName, args);
 	}
 
-	private static Number wrapPointer(final long value) {
-		final Class<?> ptrClass = C.PTR_SIZEOF == 8 ? long.class : int.class;
-		if (ptrClass == long.class) {
-			return Long.valueOf(value);
-		}
-		else {
-			return Integer.valueOf((int) value);
-		}
-	}
-
 	private static Object invoke(final Class<?> cls, final String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return invoke(cls, methodName, (Class<?>[]) null, (Object[]) null);
 	}
@@ -177,6 +153,28 @@ public class CocoaUIEnhancer {
 	private static Object invoke(final Object obj, final String methodName, final Class<?>[] paramTypes, final Object... arguments) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		final Method method = obj.getClass().getDeclaredMethod(methodName, paramTypes);
 		return method.invoke(obj, arguments);
+	}
+
+	private static long convertToLong(final Object object) {
+		if (object instanceof Integer) {
+			final Integer i = (Integer) object;
+			return i.longValue();
+		}
+		if (object instanceof Long) {
+			final Long l = (Long) object;
+			return l.longValue();
+		}
+		return 0;
+	}
+
+	private static Number wrapPointer(final long value) {
+		final Class<?> ptrClass = C.PTR_SIZEOF == 8 ? long.class : int.class;
+		if (ptrClass == long.class) {
+			return Long.valueOf(value);
+		}
+		else {
+			return Integer.valueOf((int) value);
+		}
 	}
 
 	private static long registerName(final Class<?> osCls, final String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {

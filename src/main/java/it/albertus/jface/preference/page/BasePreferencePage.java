@@ -1,15 +1,6 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.preference.IPreference;
-import it.albertus.jface.preference.IPreferencesCallback;
-import it.albertus.jface.preference.StaticLabelsAndValues;
-import it.albertus.util.NewLine;
-
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,6 +16,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.IPreference;
+import it.albertus.jface.preference.IPreferencesCallback;
+import it.albertus.jface.preference.StaticLabelsAndValues;
+import it.albertus.util.NewLine;
 
 public class BasePreferencePage extends FieldEditorPreferencePage {
 
@@ -86,19 +83,11 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		super.performApply();
 
 		// Save configuration file...
-		OutputStream configurationOutputStream = null;
 		try {
-			configurationOutputStream = new BufferedOutputStream(new FileOutputStream(preferencesCallback.getFileName()));
-			((PreferenceStore) getPreferenceStore()).save(configurationOutputStream, null);
+			((PreferenceStore) getPreferenceStore()).save();
 		}
 		catch (final IOException ioe) {
 			throw new RuntimeException(ioe);
-		}
-		finally {
-			try {
-				configurationOutputStream.close();
-			}
-			catch (final Exception exception) {}
 		}
 
 		// Reload RouterLogger configuration...

@@ -1,9 +1,7 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.preference.page.IPageDefinition;
-
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +17,9 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.page.IPageDefinition;
 
 public class Preferences {
 
@@ -111,7 +112,17 @@ public class Preferences {
 	}
 
 	protected PreferenceStore createPreferenceStore() {
-		final PreferenceStore preferenceStore = new PreferenceStore(preferencesCallback.getFileName());
+		final String fileName = preferencesCallback.getFileName();
+		final PreferenceStore preferenceStore = new PreferenceStore(fileName) {
+			@Override
+			public void save() throws IOException {
+				final File parentFile = new File(fileName).getParentFile();
+				if (parentFile != null && !parentFile.exists()) {
+					parentFile.mkdirs(); // Create directories if not exists
+				}
+				super.save();
+			}
+		};
 
 		// Set default values...
 		for (final IPreference preference : preferences) {

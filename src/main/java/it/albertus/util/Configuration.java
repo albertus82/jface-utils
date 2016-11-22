@@ -1,18 +1,31 @@
 package it.albertus.util;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Conviene estendere questa classe con un <b>Singleton</b> che richiami il
- * costruttore {@link #Configuration(String)} passando come parametro il nome
- * del file di configurazione da caricare.
- */
 public class Configuration extends PropertiesConfiguration {
+
+	public static String getOsSpecificUserAppDataDir() {
+		final String os = System.getProperty("os.name").toLowerCase();
+		if (os.contains("win")) {
+			return System.getenv("APPDATA") + File.separator;
+		}
+		else if (os.contains("mac")) {
+			return System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator;
+		}
+		else {
+			return System.getProperty("user.home") + File.separator;
+		}
+	}
 
 	public Configuration(final String fileName) {
 		super(fileName);
+	}
+
+	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) {
+		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + fileName : fileName);
 	}
 
 	public String getString(final String key) {

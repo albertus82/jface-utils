@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="JFaceUtils" default="jars">
+<project name="JFaceUtils" default="dist">
 
 	<property environment="env" />
 	<property name="env.JRE6_HOME" value="${env.JAVA_HOME}/../jdk1.6.0_45/jre" />
@@ -31,7 +31,7 @@
 		</copy>
 	</target>
 
-	<target name="jars" depends="compile, resources">
+	<target name="dist" depends="compile, resources">
 		<fileset id="docs" dir="">
 			<include name="README*" />
 			<include name="LICENSE*" />

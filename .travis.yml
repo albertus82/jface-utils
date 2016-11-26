@@ -1,5 +1,4 @@
 language: java
-script: ant dist
 env: JRE6_HOME=/usr/lib/jvm/java-6-openjdk-amd64/jre
 jdk:
   - oraclejdk8

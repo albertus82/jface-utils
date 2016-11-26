@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="JFaceUtils" default="dist">
+<project name="JFaceUtils" default="all">
 
 	<property environment="env" />
 	<property name="env.JRE6_HOME" value="${env.JAVA_HOME}/../jdk1.6.0_45/jre" />
@@ -12,7 +12,7 @@
 		<delete dir="${build.directory}" />
 	</target>
 
-	<target name="compile" depends="clean">
+	<target name="compile">
 		<mkdir dir="${build.outputDirectory}" />
 		<javac srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">
 			<classpath>
@@ -46,5 +46,7 @@
 			<fileset dir="${build.resourcesDirectory}" />
 		</jar>
 	</target>
+
+	<target name="all" depends="clean, dist" />
 
 </project>

@@ -68,7 +68,7 @@
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
-			<batchtest skipNonTests="true">
+			<batchtest>
 				<fileset dir="${build.outputTestDirectory}" />
 			</batchtest>
 			<formatter type="plain" usefile="false" />

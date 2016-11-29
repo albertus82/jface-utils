@@ -19,7 +19,7 @@ public class StringUtils {
 	}
 
 	public static boolean isNumeric(final String str) {
-		if (str == null) {
+		if (str == null || str.length() == 0) {
 			return false;
 		}
 		for (int i = 0; i < str.length(); i++) {
@@ -49,6 +49,10 @@ public class StringUtils {
 			return "";
 		}
 		return str.substring(str.indexOf(separator) + separator.length());
+	}
+
+	public static String trim(final String str) {
+		return str != null ? str.trim() : null;
 	}
 
 	public static String trimToEmpty(final String str) {

@@ -30,7 +30,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 		if (text != null) {
 			String value;
 			try {
-				value = new BigInteger(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = new BigInteger(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

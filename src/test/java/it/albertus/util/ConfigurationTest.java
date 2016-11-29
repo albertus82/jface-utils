@@ -92,7 +92,9 @@ public class ConfigurationTest {
 		bw.newLine();
 		bw.write("double.null.2=");
 		bw.newLine();
-		bw.write("char.ok=X");
+		bw.write("char.ok.1=X");
+		bw.newLine();
+		bw.write("char.ok.2=\\ ");
 		bw.newLine();
 		bw.write("char.ko=YY");
 		bw.newLine();
@@ -316,7 +318,8 @@ public class ConfigurationTest {
 	@Test
 	public void getChar() {
 		final String type = "char";
-		Assert.assertEquals(Character.valueOf('X'), configuration.getChar(type + ".ok"));
+		Assert.assertEquals(Character.valueOf('X'), configuration.getChar(type + ".ok.1"));
+		Assert.assertEquals(Character.valueOf(' '), configuration.getChar(type + ".ok.2"));
 		Assert.assertEquals(Character.valueOf('Z'), Character.valueOf(configuration.getChar(type + ".null.1", 'Z')));
 		Assert.assertEquals(Character.valueOf('Y'), Character.valueOf(configuration.getChar(type + ".ko", 'Y')));
 		Assert.assertNull(configuration.getChar(type + ".null.2"));

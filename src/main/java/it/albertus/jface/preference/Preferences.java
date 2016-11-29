@@ -1,7 +1,6 @@
 package it.albertus.jface.preference;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -113,16 +112,7 @@ public class Preferences {
 
 	protected PreferenceStore createPreferenceStore() {
 		final String fileName = preferencesCallback.getFileName();
-		final PreferenceStore preferenceStore = new PreferenceStore(fileName) {
-			@Override
-			public void save() throws IOException {
-				final File parentFile = new File(fileName).getParentFile();
-				if (parentFile != null && !parentFile.exists()) {
-					parentFile.mkdirs(); // Create directories if not exists
-				}
-				super.save();
-			}
-		};
+		final PreferenceStore preferenceStore = new ConfigurationStore(fileName);
 
 		// Set default values...
 		for (final IPreference preference : preferences) {

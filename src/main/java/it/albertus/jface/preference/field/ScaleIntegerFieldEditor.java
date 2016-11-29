@@ -65,7 +65,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 	}
 
 	protected String getDefaultValue() {
-		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
+		final String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName()).trim();
 		try {
 			Integer.parseInt(defaultValue);
 			return defaultValue;

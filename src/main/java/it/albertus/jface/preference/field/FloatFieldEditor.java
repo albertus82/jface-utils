@@ -35,7 +35,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 		if (text != null) {
 			String value;
 			try {
-				value = Float.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Float.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

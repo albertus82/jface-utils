@@ -36,7 +36,7 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		if (text != null) {
 			String value;
 			try {
-				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

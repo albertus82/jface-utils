@@ -57,13 +57,7 @@ public class Configuration extends PropertiesConfiguration {
 		if (trimmedValue.isEmpty()) {
 			return null;
 		}
-		if ("1".equals(trimmedValue) || "Y".equalsIgnoreCase(trimmedValue)) {
-			return true;
-		}
-		if ("0".equals(trimmedValue) || "N".equalsIgnoreCase(trimmedValue)) {
-			return false;
-		}
-		return Boolean.valueOf(trimmedValue);
+		return parseBoolean(trimmedValue);
 	}
 
 	public boolean getBoolean(final String key, final boolean defaultValue) {
@@ -328,15 +322,6 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	private char parseChar(final String value) throws IllegalArgumentException {
-		if (value.length() == 1) {
-			return value.charAt(0);
-		}
-		else {
-			throw new IllegalArgumentException("value length != 1");
-		}
-	}
-
 	public boolean contains(final String key) {
 		return getProperties().containsKey(key);
 	}
@@ -386,6 +371,25 @@ public class Configuration extends PropertiesConfiguration {
 			message.append(' ').append(JFaceMessages.get("err.configuration.using.default", defaultValue));
 		}
 		return message.append(' ').append(JFaceMessages.get("err.configuration.review", getFileName())).toString();
+	}
+
+	public static boolean parseBoolean(final String value) {
+		if ("1".equals(value) || "Y".equalsIgnoreCase(value)) {
+			return true;
+		}
+		if ("0".equals(value) || "N".equalsIgnoreCase(value)) {
+			return false;
+		}
+		return Boolean.parseBoolean(value);
+	}
+
+	public static char parseChar(final String value) throws IllegalArgumentException {
+		if (value.length() == 1) {
+			return value.charAt(0);
+		}
+		else {
+			throw new IllegalArgumentException("value length != 1");
+		}
 	}
 
 }

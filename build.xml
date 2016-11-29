@@ -68,7 +68,9 @@
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
-			<test name="it.albertus.util.ConfigurationTest" />
+			<batchtest skipNonTests="true">
+				<fileset dir="${build.outputTestDirectory}" />
+			</batchtest>
 			<formatter type="plain" usefile="false" />
 		</junit>
 	</target>

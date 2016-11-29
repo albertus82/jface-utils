@@ -35,7 +35,7 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 		if (text != null) {
 			String value;
 			try {
-				value = Double.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Double.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

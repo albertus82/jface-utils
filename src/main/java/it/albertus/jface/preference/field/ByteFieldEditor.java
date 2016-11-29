@@ -37,7 +37,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 		if (text != null) {
 			String value;
 			try {
-				value = Byte.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Byte.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

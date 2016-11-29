@@ -36,7 +36,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 		if (text != null) {
 			String value;
 			try {
-				value = Integer.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Integer.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

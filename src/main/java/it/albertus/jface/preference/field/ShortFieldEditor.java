@@ -37,7 +37,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 		if (text != null) {
 			String value;
 			try {
-				value = Short.valueOf(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = Short.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

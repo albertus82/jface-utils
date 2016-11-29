@@ -30,7 +30,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 		if (text != null) {
 			String value;
 			try {
-				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName())).toString();
+				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException nfe) {
 				value = "";

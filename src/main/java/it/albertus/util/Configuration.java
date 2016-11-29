@@ -2,8 +2,11 @@ package it.albertus.util;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.TreeMap;
+
+import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
 
@@ -47,149 +50,285 @@ public class Configuration extends PropertiesConfiguration {
 
 	public Boolean getBoolean(final String key) {
 		final String value = getString(key);
-		if (value != null) {
-			return Boolean.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		if ("1".equals(trimmedValue) || "Y".equalsIgnoreCase(trimmedValue)) {
+			return true;
+		}
+		if ("0".equals(trimmedValue) || "N".equalsIgnoreCase(trimmedValue)) {
+			return false;
+		}
+		return Boolean.valueOf(trimmedValue);
 	}
 
 	public boolean getBoolean(final String key, final boolean defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Boolean.parseBoolean(value.trim());
-		}
-		return defaultValue;
+		final Boolean value = getBoolean(key);
+		return value != null ? value.booleanValue() : defaultValue;
 	}
 
-	public Long getLong(final String key) {
+	public Long getLong(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Long.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Long.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public long getLong(final String key, final long defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Long.parseLong(value.trim());
+		Long value;
+		try {
+			value = getLong(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Integer getInt(final String key) {
+	public Integer getInt(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Integer.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Integer.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public int getInt(final String key, final int defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Integer.parseInt(value.trim());
+		Integer value;
+		try {
+			value = getInt(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Short getShort(final String key) {
+	public Short getShort(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Short.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Short.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public short getShort(final String key, final short defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Short.parseShort(value.trim());
+		Short value;
+		try {
+			value = getShort(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Byte getByte(final String key) {
+	public Byte getByte(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Byte.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Byte.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public byte getByte(final String key, final byte defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Byte.parseByte(value.trim());
+		Byte value;
+		try {
+			value = getByte(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Float getFloat(final String key) {
+	public Float getFloat(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Float.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Float.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public float getFloat(final String key, final float defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Float.parseFloat(value.trim());
+		Float value;
+		try {
+			value = getFloat(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Double getDouble(final String key) {
+	public Double getDouble(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return Double.valueOf(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return Double.valueOf(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE), nfe, key);
+		}
 	}
 
 	public double getDouble(final String key, final double defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return Double.parseDouble(value.trim());
+		Double value;
+		try {
+			value = getDouble(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public BigDecimal getBigDecimal(final String key) {
+	public BigDecimal getBigDecimal(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
-			return new BigDecimal(value.trim());
+		if (value == null) {
+			return null;
 		}
-		return null;
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return new BigDecimal(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key), nfe, key);
+		}
 	}
 
 	public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return new BigDecimal(value.trim());
+		BigDecimal value;
+		try {
+			value = getBigDecimal(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	public Character getChar(final String key) {
+	public BigInteger getBigInteger(final String key) throws ConfigurationException {
 		final String value = getString(key);
-		if (value != null) {
+		if (value == null) {
+			return null;
+		}
+		final String trimmedValue = value.trim();
+		if (trimmedValue.isEmpty()) {
+			return null;
+		}
+		try {
+			return new BigInteger(trimmedValue);
+		}
+		catch (final NumberFormatException nfe) {
+			throw new ConfigurationException(getInvalidNumberErrorMessage(key), nfe, key);
+		}
+	}
+
+	public BigInteger getBigInteger(final String key, final BigInteger defaultValue) {
+		BigInteger value;
+		try {
+			value = getBigInteger(key);
+		}
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidNumberErrorMessage(key, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
+	}
+
+	public Character getChar(final String key) throws ConfigurationException {
+		final String value = getString(key);
+		if (value == null || value.isEmpty()) {
+			return null;
+		}
+		try {
 			return parseChar(value);
 		}
-		return null;
+		catch (final IllegalArgumentException iae) {
+			throw new ConfigurationException(getInvalidCharacterErrorMessage(key), iae, key);
+		}
 	}
 
 	public char getChar(final String key, final char defaultValue) {
-		final String value = getString(key);
-		if (value != null) {
-			return parseChar(value);
+		Character value;
+		try {
+			value = getChar(key);
 		}
-		return defaultValue;
+		catch (final ConfigurationException ce) {
+			System.err.println(getInvalidCharacterErrorMessage(key, defaultValue));
+			value = defaultValue;
+		}
+		return value != null ? value : defaultValue;
 	}
 
-	private char parseChar(final String value) {
+	private char parseChar(final String value) throws IllegalArgumentException {
 		if (value.length() == 1) {
 			return value.charAt(0);
 		}
@@ -199,7 +338,7 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	public boolean contains(final String key) {
-		return getProperties().get(key) != null;
+		return getProperties().containsKey(key);
 	}
 
 	@Override
@@ -209,6 +348,44 @@ public class Configuration extends PropertiesConfiguration {
 			properties.put((String) key, getProperties().getProperty((String) key));
 		}
 		return properties.toString();
+	}
+
+	private String getInvalidCharacterErrorMessage(final String key) {
+		return getInvalidCharacterErrorMessage(key, null);
+	}
+
+	private String getInvalidCharacterErrorMessage(final String key, final Character defaultValue) {
+		final StringBuilder message = new StringBuilder(JFaceMessages.get("err.configuration.invalid.char", key));
+		if (defaultValue != null) {
+			message.append(' ').append(JFaceMessages.get("err.configuration.using.default", "'" + defaultValue.toString() + "'"));
+		}
+		return message.append(' ').append(JFaceMessages.get("err.configuration.review", getFileName())).toString();
+	}
+
+	private String getInvalidNumberErrorMessage(final String key) {
+		return getInvalidNumberErrorMessage(key, null);
+	}
+
+	private String getInvalidNumberErrorMessage(final String key, final Number defaultValue) {
+		return getInvalidNumberErrorMessage(key, null, null, defaultValue);
+	}
+
+	private String getInvalidNumberErrorMessage(final String key, final Number min, final Number max) {
+		return getInvalidNumberErrorMessage(key, min, max, null);
+	}
+
+	private String getInvalidNumberErrorMessage(final String key, final Number min, final Number max, final Number defaultValue) {
+		final StringBuilder message = new StringBuilder();
+		if (min != null && max != null) {
+			message.append(JFaceMessages.get("err.configuration.invalid.number", key, min, max));
+		}
+		else {
+			message.append(JFaceMessages.get("err.configuration.invalid", key));
+		}
+		if (defaultValue != null) {
+			message.append(' ').append(JFaceMessages.get("err.configuration.using.default", defaultValue));
+		}
+		return message.append(' ').append(JFaceMessages.get("err.configuration.review", getFileName())).toString();
 	}
 
 }

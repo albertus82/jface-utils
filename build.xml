@@ -47,6 +47,32 @@
 		</jar>
 	</target>
 
-	<target name="all" depends="clean, dist" />
+	<target name="test" depends="dist">
+		<mkdir dir="${build.outputTestDirectory}" />
+		<javac srcdir="${build.testSourceDirectory}" destdir="${build.outputTestDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">
+			<classpath path="${build.outputDirectory}">
+				<fileset dir="${dependencies.directory}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<!-- Compilazione per JRE specifico -->
+			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
+		</javac>
+
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath path="${build.outputTestDirectory}">
+				<fileset dir="${dependencies.directory}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${build.distDirectory}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<test name="it.albertus.util.ConfigurationTest" />
+			<formatter type="plain" usefile="false" />
+		</junit>
+	</target>
+
+	<target name="all" depends="clean, dist, test" />
 
 </project>

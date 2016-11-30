@@ -11,7 +11,7 @@ public class ConfigurationStore extends PreferenceStore {
 
 	protected final String filename;
 
-	public ConfigurationStore(String filename) {
+	public ConfigurationStore(final String filename) {
 		super(filename);
 		this.filename = filename;
 	}

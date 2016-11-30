@@ -6,3 +6,7 @@ jdk:
   - oraclejdk7
   - openjdk7
   - openjdk6
+sudo: required
+before_script:
+  - sudo apt-get -qq update 
+  - sudo apt-get -y --force-yes install ant

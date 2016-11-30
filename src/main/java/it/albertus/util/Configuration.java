@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.filechooser.FileSystemView;
+
 import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
@@ -21,6 +23,10 @@ public class Configuration extends PropertiesConfiguration {
 		else {
 			return System.getProperty("user.home") + File.separator;
 		}
+	}
+
+	public static synchronized String getOsSpecificDocumentsDir() {
+		return FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
 	}
 
 	public Configuration(final String fileName) {

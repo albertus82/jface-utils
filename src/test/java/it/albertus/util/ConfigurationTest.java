@@ -129,7 +129,10 @@ public class ConfigurationTest {
 		bw.close();
 
 		System.out.println(propertiesFile);
-		System.out.println("----------------------------------------------");
+		for (int i = 0; i < propertiesFile.toString().length(); i++) {
+			System.out.print("-");
+		}
+		System.out.println();
 		final BufferedReader br = new BufferedReader(new FileReader(propertiesFile));
 		final Properties properties = new Properties();
 		properties.load(br);

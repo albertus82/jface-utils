@@ -68,8 +68,10 @@
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
-			<batchtest skipnontests="true">
-				<fileset dir="${build.outputTestDirectory}" />
+			<batchtest>
+				<fileset dir="${build.outputTestDirectory}">
+					<include name="**/*Test*" />
+				</fileset>
 			</batchtest>
 			<formatter type="plain" usefile="false" />
 		</junit>

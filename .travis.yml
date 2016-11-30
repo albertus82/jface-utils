@@ -1,5 +1,4 @@
 language: java
-dist: trusty
 script: ant all
 env: JRE6_HOME=/usr/lib/jvm/java-6-openjdk-amd64/jre
 jdk:

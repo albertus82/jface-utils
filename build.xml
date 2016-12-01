@@ -77,6 +77,19 @@
 		</junit>
 	</target>
 
-	<target name="all" depends="clean, dist, test" />
+	<target name="sonar">
+		<echo file="sonar-project.properties">
+			sonar.projectKey=it.albertus:${artifactId}
+			sonar.projectName=${name}
+			sonar.projectVersion=${version.number}
+			sonar.sources=${build.sourceDirectory}
+			sonar.language=java
+			sonar.java.source=${build.compiler.source}
+			sonar.java.target=${build.compiler.target}
+			sonar.sourceEncoding=UTF-8
+		</echo>
+	</target>
+
+	<target name="all" depends="clean, dist, test, sonar" />
 
 </project>

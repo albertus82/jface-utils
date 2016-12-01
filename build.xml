@@ -86,6 +86,7 @@
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}
+			sonar.java.libraries=${dependencies.directory}/*.jar
 			sonar.sourceEncoding=UTF-8
 		</echo>
 	</target>

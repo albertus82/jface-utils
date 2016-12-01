@@ -1,4 +1,5 @@
 /bin/
 /target/
 /.settings/
+/sonar-project.properties
 /configuration.properties

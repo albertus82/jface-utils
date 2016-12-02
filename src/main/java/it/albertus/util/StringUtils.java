@@ -2,6 +2,10 @@ package it.albertus.util;
 
 public class StringUtils {
 
+	private StringUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	public static boolean isEmpty(final String str) {
 		return !isNotEmpty(str);
 	}

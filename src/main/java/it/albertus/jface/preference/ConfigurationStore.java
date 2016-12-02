@@ -27,12 +27,12 @@ public class ConfigurationStore extends PreferenceStore {
 
 	@Override
 	public boolean getBoolean(final String name) {
-		return Configuration.parseBoolean(getString(name));
+		return Configuration.parseBoolean(getString(name).trim());
 	}
 
 	@Override
 	public boolean getDefaultBoolean(final String name) {
-		return Configuration.parseBoolean(getDefaultString(name));
+		return Configuration.parseBoolean(getDefaultString(name).trim());
 	}
 
 	@Override

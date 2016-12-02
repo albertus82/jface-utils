@@ -380,10 +380,10 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	public static boolean parseBoolean(final String value) {
-		if ("1".equals(value) || "Y".equalsIgnoreCase(value)) {
+		if ("1".equals(value)) {
 			return true;
 		}
-		if ("0".equals(value) || "N".equalsIgnoreCase(value)) {
+		if ("0".equals(value)) {
 			return false;
 		}
 		return Boolean.parseBoolean(value);

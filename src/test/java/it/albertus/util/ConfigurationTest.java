@@ -108,19 +108,11 @@ public class ConfigurationTest {
 		bw.newLine();
 		bw.write("boolean.true.3=1");
 		bw.newLine();
-		bw.write("boolean.true.4=Y");
-		bw.newLine();
-		bw.write("boolean.true.5=y");
-		bw.newLine();
 		bw.write("boolean.false.1=FALSE");
 		bw.newLine();
 		bw.write("boolean.false.2=false");
 		bw.newLine();
 		bw.write("boolean.false.3=0");
-		bw.newLine();
-		bw.write("boolean.false.4=n");
-		bw.newLine();
-		bw.write("boolean.false.5=N");
 		bw.newLine();
 		bw.write("boolean.null.1=  ");
 		bw.newLine();
@@ -342,7 +334,7 @@ public class ConfigurationTest {
 	@Test
 	public void getBoolean() {
 		final String type = "boolean";
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 1; i <= 3; i++) {
 			Assert.assertTrue(configuration.getBoolean(type + ".true." + i));
 			Assert.assertFalse(configuration.getBoolean(type + ".false." + i));
 		}

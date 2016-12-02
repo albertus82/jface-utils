@@ -68,10 +68,12 @@ public class Zipper {
 
 	public boolean test(final File zipFile) {
 		ZipFile zf = null;
+		FileInputStream fis = null;
 		ZipInputStream zis = null;
 		try {
 			zf = new ZipFile(zipFile);
-			zis = new ZipInputStream(new FileInputStream(zipFile));
+			fis = new FileInputStream(zipFile);
+			zis = new ZipInputStream(fis);
 			ZipEntry ze = zis.getNextEntry();
 			if (ze == null) {
 				return false;
@@ -91,11 +93,15 @@ public class Zipper {
 			try {
 				zf.close();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 			try {
 				zis.close();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
+			try {
+				fis.close();
+			}
+			catch (final Exception e) {/* Ignore */}
 		}
 		return true;
 	}

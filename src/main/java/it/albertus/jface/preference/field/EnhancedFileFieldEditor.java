@@ -10,9 +10,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 
 public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEditorDefault {
+
+	private static final Formatter formatter = new Formatter(EnhancedFileFieldEditor.class);
 
 	public static final int MAX_PATH = 255;
 

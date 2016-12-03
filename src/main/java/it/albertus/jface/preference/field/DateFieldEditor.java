@@ -8,9 +8,12 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 
 public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEditorDefault {
+
+	private static final Formatter formatter = new Formatter(DateFieldEditor.class);
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;

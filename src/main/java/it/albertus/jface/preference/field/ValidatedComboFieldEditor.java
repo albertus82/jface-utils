@@ -8,9 +8,12 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 
 public class ValidatedComboFieldEditor extends EditableComboFieldEditor implements FieldEditorDefault {
+
+	private static final Formatter formatter = new Formatter(ValidatedComboFieldEditor.class);
 
 	private boolean valid = true;
 	private String errorMessage;

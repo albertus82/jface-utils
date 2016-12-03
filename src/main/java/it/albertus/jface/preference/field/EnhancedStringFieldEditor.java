@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.util.prefs.Preferences;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -12,8 +10,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.Formatter;
+import it.albertus.jface.JFaceMessages;
+
 public class EnhancedStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
 
+	private static final Formatter formatter = new Formatter(EnhancedStringFieldEditor.class);
+	
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 

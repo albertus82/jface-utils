@@ -26,7 +26,13 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	public static synchronized String getOsSpecificDocumentsDir() {
-		return FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+		final String os = System.getProperty("os.name").toLowerCase();
+		if (os.contains("win")) {
+			return FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+		}
+		else {
+			return System.getProperty("user.home");
+		}
 	}
 
 	public Configuration(final String fileName) {

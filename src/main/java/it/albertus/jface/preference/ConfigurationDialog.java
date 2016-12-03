@@ -8,10 +8,18 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.resource.FontDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.Util;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
 
 public class ConfigurationDialog extends PreferenceDialog {
 
@@ -54,6 +62,23 @@ public class ConfigurationDialog extends PreferenceDialog {
 			((BasePreferencePage) currentPage).updateCrossChildrenStatus();
 		}
 		return success;
+	}
+
+	@Override
+	protected void constrainShellSize() {
+		super.constrainShellSize();
+		if (Util.isCocoa()) {
+			final Tree tree = getTreeViewer().getTree();
+			final FontDescriptor treeFontDescriptor = FontDescriptor.createFrom(JFaceResources.getBannerFont()).setStyle(SWT.NORMAL);
+			final Font treeFont = treeFontDescriptor.createFont(tree.getDisplay());
+			updateTreeFont(treeFont);
+			tree.addDisposeListener(new DisposeListener() {
+				@Override
+				public void widgetDisposed(DisposeEvent e) {
+					treeFontDescriptor.destroyFont(treeFont);
+				}
+			});
+		}
 	}
 
 }

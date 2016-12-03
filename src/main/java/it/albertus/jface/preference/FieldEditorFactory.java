@@ -653,7 +653,7 @@ public class FieldEditorFactory {
 			}
 			if (details.getNumberMinimum() != null && details.getNumberMaximum() != null) {
 				fieldEditor.setValidRange(details.getNumberMinimum().intValue(), details.getNumberMaximum().intValue());
-				fieldEditor.setTextLimit(Math.max(Integer.valueOf(details.getNumberMaximum().intValue()).toString().length(), Integer.valueOf(details.getNumberMinimum().intValue()).toString().length()));
+				fieldEditor.setTextLimit(Math.max(Integer.toString(details.getNumberMaximum().intValue()).length(), Integer.toString(details.getNumberMinimum().intValue()).length()));
 			}
 			if (details.getTextLimit() != null) {
 				fieldEditor.setTextLimit(details.getTextLimit());

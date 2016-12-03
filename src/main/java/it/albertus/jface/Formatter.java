@@ -52,7 +52,10 @@ public class Formatter {
 		if (!fontRegistry.hasValueFor(symbolicName)) {
 			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.get(symbolicName));
+		final Font normal = fontRegistry.get(symbolicName);
+		if (!normal.equals(control.getFont())) {
+			control.setFont(normal);
+		}
 
 		// Fix Text control "height" bug with OS X El Capitan
 		if (Util.isCocoa() && control instanceof Text) {
@@ -65,7 +68,10 @@ public class Formatter {
 		if (!fontRegistry.hasValueFor(symbolicName)) {
 			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
-		control.setFont(fontRegistry.getBold(symbolicName));
+		final Font bold = fontRegistry.getBold(symbolicName);
+		if (!bold.equals(control.getFont())) {
+			control.setFont(bold);
+		}
 
 		// Fix Text control "height" bug with OS X El Capitan
 		if (Util.isCocoa() && control instanceof Text) {

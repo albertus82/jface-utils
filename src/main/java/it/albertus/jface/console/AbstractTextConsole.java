@@ -1,4 +1,4 @@
-package it.albertus.jface;
+package it.albertus.jface.console;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -8,33 +8,29 @@ import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
-import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.SwtThreadExecutor;
 import it.albertus.jface.listener.TextConsoleDisposeListener;
 import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 
-public class TextConsole extends OutputStream {
+public abstract class AbstractTextConsole<T extends Scrollable> extends OutputStream {
 
 	protected static final PrintStream defaultSysOut = System.out;
 	protected static final PrintStream defaultSysErr = System.err;
 	protected static final String newLine = NewLine.SYSTEM_LINE_SEPARATOR;
 
-	public interface Defaults {
-		int GUI_CONSOLE_MAX_CHARS = 100000;
+	public static final class Defaults {
+		public static final int GUI_CONSOLE_MAX_CHARS = 100000;
 	}
 
 	protected final Configured<Integer> maxChars;
-	protected final Scrollable scrollable;
+	protected final T scrollable;
 	protected StringBuilder buffer = new StringBuilder();
 
-	public TextConsole(final Composite parent, final Object layoutData) {
-		this(parent, layoutData, null);
-	}
-
-	public TextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
+	protected AbstractTextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
 		this.maxChars = maxChars;
-		this.scrollable = createText(parent);
+		scrollable = createScrollable(parent);
 		scrollable.setLayoutData(layoutData);
 		scrollable.setFont(JFaceResources.getTextFont());
 		if (Util.isWindows()) {
@@ -43,21 +39,15 @@ public class TextConsole extends OutputStream {
 		redirectStreams(); // SystemConsole & System.out will print on this SWT Text Widget. 
 	}
 
-	protected Scrollable createText(final Composite parent) {
-		return new Text(parent, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.H_SCROLL);
+	public T getScrollable() {
+		return scrollable;
 	}
 
-	protected void redirectStreams() {
-		scrollable.addDisposeListener(new TextConsoleDisposeListener(defaultSysOut, defaultSysErr));
-		final PrintStream ps = new PrintStream(this);
-		try {
-			System.setOut(ps);
-			System.setErr(ps);
-		}
-		catch (final Exception e) {
-			e.printStackTrace();
-		}
-	}
+	protected abstract T createScrollable(Composite parent);
+
+	protected abstract void doPrint(String value, int maxChars);
+
+	public abstract void clear();
 
 	@Override
 	public void write(final int b) {
@@ -79,29 +69,6 @@ public class TextConsole extends OutputStream {
 	public void close() {
 		flush();
 		buffer = null;
-	}
-
-	public Text getText() {
-		return (Text) scrollable;
-	}
-
-	public void clear() {
-		getText().setText("");
-	}
-
-	protected void failSafePrint(final String value) {
-		defaultSysOut.print(value);
-	}
-
-	protected void doPrint(final String value, final int maxChars) {
-		final Text text = getText();
-		if (text.getCharCount() < maxChars) {
-			text.append(value);
-		}
-		else {
-			text.setText(value.startsWith(newLine) ? value.substring(newLine.length()) : value);
-		}
-		text.setTopIndex(text.getLineCount() - 1);
 	}
 
 	protected void print(final String value) {
@@ -130,6 +97,10 @@ public class TextConsole extends OutputStream {
 		}.start();
 	}
 
+	protected void failSafePrint(final String value) {
+		defaultSysOut.print(value);
+	}
+
 	protected int getMaxChars() {
 		int mc;
 		try {
@@ -140,6 +111,18 @@ public class TextConsole extends OutputStream {
 		}
 		final int maxChars = mc;
 		return maxChars;
+	}
+
+	protected void redirectStreams() {
+		scrollable.addDisposeListener(new TextConsoleDisposeListener(defaultSysOut, defaultSysErr));
+		final PrintStream ps = new PrintStream(this);
+		try {
+			System.setOut(ps);
+			System.setErr(ps);
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

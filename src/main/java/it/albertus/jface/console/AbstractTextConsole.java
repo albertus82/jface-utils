@@ -1,16 +1,18 @@
 package it.albertus.jface.console;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
 
 import it.albertus.jface.SwtThreadExecutor;
-import it.albertus.jface.listener.TextConsoleDisposeListener;
 import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 
@@ -24,23 +26,31 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 		public static final int GUI_CONSOLE_MAX_CHARS = 100000;
 	}
 
-	protected final Configured<Integer> maxChars;
+	protected final boolean redirectSystemStream;
 	protected final T scrollable;
 	protected StringBuilder buffer = new StringBuilder();
 
-	protected AbstractTextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
-		this.maxChars = maxChars;
+	private Configured<Integer> maxChars;
+
+	protected AbstractTextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
+		this.redirectSystemStream = redirectSystemStream;
+
 		scrollable = createScrollable(parent);
 		scrollable.setLayoutData(layoutData);
 		scrollable.setFont(JFaceResources.getTextFont());
 		if (Util.isWindows()) {
 			scrollable.setBackground(scrollable.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		}
-		redirectStreams(); // SystemConsole & System.out will print on this SWT Text Widget. 
-	}
 
-	public T getScrollable() {
-		return scrollable;
+		if (redirectSystemStream) {
+			scrollable.addDisposeListener(new DisposeListener() {
+				@Override
+				public void widgetDisposed(final DisposeEvent de) {
+					resetStreams();
+				}
+			});
+			redirectStreams(); // SystemConsole & System.out will print on this SWT Text Widget.
+		}
 	}
 
 	protected abstract T createScrollable(Composite parent);
@@ -50,7 +60,8 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	public abstract void clear();
 
 	@Override
-	public void write(final int b) {
+	public void write(final int b) throws IOException {
+		ensureOpen();
 		buffer.append((char) b);
 		if (b == newLine.charAt(newLine.length() - 1)) {
 			flush();
@@ -58,7 +69,8 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	}
 
 	@Override
-	public void flush() {
+	public void flush() throws IOException {
+		ensureOpen();
 		if (buffer.length() != 0) {
 			print(buffer.toString());
 			buffer = new StringBuilder();
@@ -67,7 +79,15 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 
 	@Override
 	public void close() {
-		flush();
+		try {
+			flush();
+		}
+		catch (final Exception e) {
+			return; // Already closed
+		}
+		if (redirectSystemStream) {
+			resetStreams();
+		}
 		buffer = null;
 	}
 
@@ -101,28 +121,58 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 		defaultSysOut.print(value);
 	}
 
-	protected int getMaxChars() {
-		int mc;
-		try {
-			mc = this.maxChars != null ? this.maxChars.getValue() : Defaults.GUI_CONSOLE_MAX_CHARS;
-		}
-		catch (final Exception exception) {
-			mc = Defaults.GUI_CONSOLE_MAX_CHARS;
-		}
-		final int maxChars = mc;
-		return maxChars;
-	}
-
 	protected void redirectStreams() {
-		scrollable.addDisposeListener(new TextConsoleDisposeListener(defaultSysOut, defaultSysErr));
 		final PrintStream ps = new PrintStream(this);
 		try {
 			System.setOut(ps);
 			System.setErr(ps);
 		}
-		catch (final Exception e) {
-			e.printStackTrace();
+		catch (final RuntimeException re) {
+			re.printStackTrace();
 		}
+	}
+
+	protected void resetStreams() {
+		try {
+			System.setOut(defaultSysOut);
+			System.setErr(defaultSysErr);
+		}
+		catch (final RuntimeException re) {
+			re.printStackTrace();
+		}
+	}
+
+	private void ensureOpen() throws IOException {
+		if (buffer == null) {
+			throw new IOException("Stream closed");
+		}
+	}
+
+	public int getMaxChars() {
+		try {
+			return maxChars != null && maxChars.getValue() != null ? maxChars.getValue() : Defaults.GUI_CONSOLE_MAX_CHARS;
+		}
+		catch (final RuntimeException re) {
+			re.printStackTrace();
+			return Defaults.GUI_CONSOLE_MAX_CHARS;
+		}
+	}
+
+	public void setMaxChars(final Configured<Integer> maxChars) {
+		this.maxChars = maxChars;
+	}
+
+	public void setMaxChars(final int maxChars) {
+		this.maxChars = new Configured<Integer>() {
+			@Override
+			public Integer getValue() {
+				return maxChars;
+			}
+		};
+	}
+
+	public T getScrollable() {
+		return scrollable;
 	}
 
 }

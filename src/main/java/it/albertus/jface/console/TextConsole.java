@@ -4,16 +4,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import it.albertus.util.Configured;
-
 public class TextConsole extends AbstractTextConsole<Text> {
 
-	public TextConsole(final Composite parent, final Object layoutData) {
-		this(parent, layoutData, null);
-	}
-
-	public TextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
-		super(parent, layoutData, maxChars);
+	public TextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStreams) {
+		super(parent, layoutData, redirectSystemStreams);
 	}
 
 	@Override

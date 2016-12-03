@@ -4,16 +4,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 
-import it.albertus.util.Configured;
-
 public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 
-	public StyledTextConsole(final Composite parent, final Object layoutData) {
-		this(parent, layoutData, null);
-	}
-
-	public StyledTextConsole(final Composite parent, final Object layoutData, final Configured<Integer> maxChars) {
-		super(parent, layoutData, maxChars);
+	public StyledTextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStreams) {
+		super(parent, layoutData, redirectSystemStreams);
 		scrollable.setMargins(4, 4, 4, 4); // like the Text control
 	}
 

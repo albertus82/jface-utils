@@ -50,34 +50,20 @@ public class Formatter {
 	}
 
 	public void setNormalFontStyle(final Control control) {
-		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(symbolicName)) {
-			fontRegistry.put(symbolicName, control.getFont().getFontData());
-		}
-		final Font normal = fontRegistry.get(symbolicName);
+		registerFont(control);
+		final Font normal = JFaceResources.getFontRegistry().get(symbolicName);
 		if (!Arrays.equals(normal.getFontData(), control.getFont().getFontData())) {
 			control.setFont(normal);
-		}
-
-		// Fix Text control "height" bug with OS X El Capitan
-		if (Util.isCocoa() && control instanceof Text) {
-			control.getParent().layout(new Control[] { control });
+			fixTextControlHeight(control);
 		}
 	}
 
 	public void setBoldFontStyle(final Control control) {
-		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(symbolicName)) {
-			fontRegistry.put(symbolicName, control.getFont().getFontData());
-		}
-		final Font bold = fontRegistry.getBold(symbolicName);
+		registerFont(control);
+		final Font bold = JFaceResources.getFontRegistry().getBold(symbolicName);
 		if (!Arrays.equals(bold.getFontData(), control.getFont().getFontData())) {
 			control.setFont(bold);
-		}
-
-		// Fix Text control "height" bug with OS X El Capitan
-		if (Util.isCocoa() && control instanceof Text) {
-			control.getParent().layout(new Control[] { control });
+			fixTextControlHeight(control);
 		}
 	}
 
@@ -116,4 +102,16 @@ public class Formatter {
 		return widthHint;
 	}
 
+	private void registerFont(final Control control) {
+		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+		if (!fontRegistry.hasValueFor(symbolicName)) {
+			fontRegistry.put(symbolicName, control.getFont().getFontData());
+		}
+	}
+
+	private void fixTextControlHeight(final Control control) {
+		if (Util.isCocoa() && control instanceof Text) {
+			control.getParent().layout(new Control[] { control });
+		}
+	}
 }

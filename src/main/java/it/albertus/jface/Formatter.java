@@ -1,5 +1,7 @@
 package it.albertus.jface;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Util;
@@ -48,28 +50,20 @@ public class Formatter {
 	}
 
 	public void setNormalFontStyle(final Control control) {
-		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(symbolicName)) {
-			fontRegistry.put(symbolicName, control.getFont().getFontData());
-		}
-		control.setFont(fontRegistry.get(symbolicName));
-
-		// Fix Text control "height" bug with OS X El Capitan
-		if (Util.isCocoa() && control instanceof Text) {
-			control.getParent().layout(new Control[] { control });
+		registerFont(control);
+		final Font normal = JFaceResources.getFontRegistry().get(symbolicName);
+		if (!Arrays.equals(normal.getFontData(), control.getFont().getFontData())) {
+			control.setFont(normal);
+			fixTextControlHeight(control);
 		}
 	}
 
 	public void setBoldFontStyle(final Control control) {
-		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		if (!fontRegistry.hasValueFor(symbolicName)) {
-			fontRegistry.put(symbolicName, control.getFont().getFontData());
-		}
-		control.setFont(fontRegistry.getBold(symbolicName));
-
-		// Fix Text control "height" bug with OS X El Capitan
-		if (Util.isCocoa() && control instanceof Text) {
-			control.getParent().layout(new Control[] { control });
+		registerFont(control);
+		final Font bold = JFaceResources.getFontRegistry().getBold(symbolicName);
+		if (!Arrays.equals(bold.getFontData(), control.getFont().getFontData())) {
+			control.setFont(bold);
+			fixTextControlHeight(control);
 		}
 	}
 
@@ -108,4 +102,16 @@ public class Formatter {
 		return widthHint;
 	}
 
+	private void registerFont(final Control control) {
+		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
+		if (!fontRegistry.hasValueFor(symbolicName)) {
+			fontRegistry.put(symbolicName, control.getFont().getFontData());
+		}
+	}
+
+	private void fixTextControlHeight(final Control control) {
+		if (Util.isCocoa() && control instanceof Text) {
+			control.getParent().layout(new Control[] { control });
+		}
+	}
 }

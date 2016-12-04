@@ -11,10 +11,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
+import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.Localized;
 
 public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implements FieldEditorDefault {
+
+	private static final Formatter formatter = new Formatter(EnhancedDirectoryFieldEditor.class);
 
 	public static final int MAX_PATH = 255;
 

@@ -11,10 +11,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.listener.IntegerVerifyListener;
 
 public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
+
+	private static final Formatter formatter = new Formatter(ScaleIntegerFieldEditor.class);
 
 	private final Text text;
 

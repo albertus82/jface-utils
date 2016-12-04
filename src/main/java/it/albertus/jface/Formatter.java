@@ -1,5 +1,7 @@
 package it.albertus.jface;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Util;
@@ -53,7 +55,7 @@ public class Formatter {
 			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
 		final Font normal = fontRegistry.get(symbolicName);
-		if (!normal.equals(control.getFont())) {
+		if (!Arrays.equals(normal.getFontData(), control.getFont().getFontData())) {
 			control.setFont(normal);
 		}
 
@@ -69,7 +71,7 @@ public class Formatter {
 			fontRegistry.put(symbolicName, control.getFont().getFontData());
 		}
 		final Font bold = fontRegistry.getBold(symbolicName);
-		if (!bold.equals(control.getFont())) {
+		if (!Arrays.equals(bold.getFontData(), control.getFont().getFontData())) {
 			control.setFont(bold);
 		}
 

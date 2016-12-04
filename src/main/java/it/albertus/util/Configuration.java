@@ -12,27 +12,39 @@ import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
 
-	public static String getOsSpecificUserAppDataDir() {
-		final String os = System.getProperty("os.name").toLowerCase();
-		if (os.contains("win")) {
-			return System.getenv("APPDATA") + File.separator;
+	private static String osSpecificDocumentsDir; // Cache
+	private static String osSpecificUserAppDataDir; // Cache
+
+	public static synchronized String getOsSpecificUserAppDataDir() {
+		if (osSpecificUserAppDataDir == null) {
+			final String os = System.getProperty("os.name").toLowerCase();
+			if (os.contains("win")) {
+				osSpecificUserAppDataDir = System.getenv("APPDATA");
+			}
+			else if (os.contains("mac")) {
+				osSpecificUserAppDataDir = System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support";
+			}
+			else {
+				osSpecificUserAppDataDir = System.getProperty("user.home");
+			}
 		}
-		else if (os.contains("mac")) {
-			return System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator;
-		}
-		else {
-			return System.getProperty("user.home") + File.separator;
-		}
+		return osSpecificUserAppDataDir;
 	}
 
 	public static synchronized String getOsSpecificDocumentsDir() {
-		final String os = System.getProperty("os.name").toLowerCase();
-		if (os.contains("win")) {
-			return FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+		if (osSpecificDocumentsDir == null) {
+			final String os = System.getProperty("os.name").toLowerCase();
+			if (os.contains("win")) {
+				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // Slow
+			}
+			else if (os.contains("mac")) {
+				osSpecificDocumentsDir = System.getProperty("user.home") + File.separator + "Documents";
+			}
+			else {
+				osSpecificDocumentsDir = System.getProperty("user.home");
+			}
 		}
-		else {
-			return System.getProperty("user.home");
-		}
+		return osSpecificDocumentsDir;
 	}
 
 	public Configuration(final String fileName) {
@@ -40,7 +52,7 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) {
-		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + fileName : fileName);
+		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + File.separator + fileName : fileName);
 	}
 
 	public String getString(final String key) {

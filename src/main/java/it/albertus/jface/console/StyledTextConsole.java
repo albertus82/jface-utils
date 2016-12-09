@@ -3,6 +3,8 @@ package it.albertus.jface.console;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,6 +19,8 @@ import it.albertus.jface.SwtUtils;
 public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 
 	protected static final int MARGIN = 4;
+
+	private boolean firstPrint = true;
 
 	private Menu contextMenu;
 	private MenuItem copyMenuItem;
@@ -85,7 +89,14 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 				styledText.invokeAction(ST.SELECT_ALL);
 			}
 		});
-		selectAllMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_SELECT_ALL); // Dummy
+		styledText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(final KeyEvent ke) {
+				if (ke.stateMask == SWT.MOD1 && ke.keyCode == SwtUtils.KEY_SELECT_ALL) {
+					styledText.invokeAction(ST.SELECT_ALL);
+				}
+			}
+		});
 		return selectAllMenuItem;
 	}
 
@@ -98,7 +109,6 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 				styledText.invokeAction(ST.COPY);
 			}
 		});
-		copyMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_COPY); // Dummy
 		return copyMenuItem;
 	}
 

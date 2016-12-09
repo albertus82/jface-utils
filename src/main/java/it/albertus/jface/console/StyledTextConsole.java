@@ -20,8 +20,6 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 
 	protected static final int MARGIN = 4;
 
-	private boolean firstPrint = true;
-
 	private Menu contextMenu;
 	private MenuItem copyMenuItem;
 	private MenuItem selectAllMenuItem;
@@ -125,7 +123,7 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 		else {
 			scrollable.setText(value.startsWith(newLine) ? value.substring(newLine.length()) : value);
 		}
-		scrollable.setTopIndex(scrollable.getLineCount() - 1);
+		scrollable.setTopPixel((scrollable.getLineCount() - 1) * scrollable.getLineHeight());
 	}
 
 	protected Menu getContextMenu() {

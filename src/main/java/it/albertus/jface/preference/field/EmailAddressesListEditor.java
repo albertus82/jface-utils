@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -9,8 +7,8 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -18,7 +16,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class EmailAddressesListEditor extends LocalizedListEditor {
+import it.albertus.jface.JFaceMessages;
+
+public class EmailAddressesListEditor extends EnhancedListEditor {
 
 	public static final String EMAIL_ADDRESSES_SPLIT_REGEX = "[,;\\s]+";
 	public static final char SEPARATOR = ',';
@@ -28,6 +28,13 @@ public class EmailAddressesListEditor extends LocalizedListEditor {
 	public EmailAddressesListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image[] images) {
 		super(name, labelText, parent, horizontalSpan);
 		this.images = images;
+	}
+
+	@Override
+	protected void createButtons(final Composite box) {
+		createAddButton(box);
+		createEditButton(box);
+		createRemoveButton(box);
 	}
 
 	@Override
@@ -47,7 +54,18 @@ public class EmailAddressesListEditor extends LocalizedListEditor {
 	@Override
 	protected String getNewInputObject() {
 		final EmailAddressDialog emailAddressDialog = new EmailAddressDialog(getShell());
-		emailAddressDialog.create();
+		emailAddressDialog.create(JFaceMessages.get("lbl.preferences.email.dialog.add.title"));
+		if (emailAddressDialog.open() == Window.OK) {
+			return emailAddressDialog.getEmailAddress();
+		}
+		return null;
+	}
+
+	@Override
+	protected String getModifiedInputObject(final String value) {
+		final EmailAddressDialog emailAddressDialog = new EmailAddressDialog(getShell());
+		emailAddressDialog.create(JFaceMessages.get("lbl.preferences.email.dialog.edit.title"));
+		emailAddressDialog.textEmailAddress.setText(value);
 		if (emailAddressDialog.open() == Window.OK) {
 			return emailAddressDialog.getEmailAddress();
 		}
@@ -81,17 +99,16 @@ public class EmailAddressesListEditor extends LocalizedListEditor {
 		@Override
 		protected void configureShell(final Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText(JFaceMessages.get("lbl.preferences.email.add.title"));
 			if (images != null) {
 				newShell.setImages(images);
 			}
 		}
 
-		@Override
-		public void create() {
+		public void create(final String title) {
 			super.create();
-			setTitle(JFaceMessages.get("lbl.preferences.email.add.title"));
-			setMessage(JFaceMessages.get("lbl.preferences.email.add.message"), IMessageProvider.INFORMATION);
+			getShell().setText(title);
+			setTitle(title);
+			setMessage(JFaceMessages.get("lbl.preferences.email.dialog.message"), IMessageProvider.INFORMATION);
 		}
 
 		@Override
@@ -102,13 +119,13 @@ public class EmailAddressesListEditor extends LocalizedListEditor {
 			GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(container);
 
 			final Label labelName = new Label(container, SWT.NONE);
-			labelName.setText(JFaceMessages.get("lbl.preferences.email.add.address"));
+			labelName.setText(JFaceMessages.get("lbl.preferences.email.dialog.address"));
 			GridDataFactory.swtDefaults().applyTo(labelName);
 
 			textEmailAddress = new Text(container, SWT.BORDER);
 			GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(textEmailAddress);
 			textEmailAddress.setTextLimit(MAX_LENGTH);
-			textEmailAddress.addKeyListener(new TextKeyListener());
+			textEmailAddress.addModifyListener(new TextModifyListener());
 
 			return area;
 		}
@@ -140,9 +157,9 @@ public class EmailAddressesListEditor extends LocalizedListEditor {
 			return emailAddress;
 		}
 
-		private class TextKeyListener extends KeyAdapter {
+		private class TextModifyListener implements ModifyListener {
 			@Override
-			public void keyReleased(final KeyEvent ke) {
+			public void modifyText(final ModifyEvent me) {
 				if (textEmailAddress.getText().trim().isEmpty() || !textEmailAddress.getText().trim().toLowerCase().matches(REGEX)) {
 					if (okButton.isEnabled()) {
 						okButton.setEnabled(false);

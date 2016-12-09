@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +10,8 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -21,7 +19,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class UriListEditor extends LocalizedListEditor {
+import it.albertus.jface.JFaceMessages;
+
+public class UriListEditor extends EnhancedListEditor {
 
 	public static final String URI_SPLIT_REGEX = "\\|";
 	public static final char SEPARATOR = '|';
@@ -34,6 +34,13 @@ public class UriListEditor extends LocalizedListEditor {
 	public UriListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image[] images) {
 		super(name, labelText, parent, horizontalSpan);
 		this.images = images;
+	}
+
+	@Override
+	protected void createButtons(final Composite box) {
+		createAddButton(box);
+		createEditButton(box);
+		createRemoveButton(box);
 	}
 
 	@Override
@@ -53,7 +60,18 @@ public class UriListEditor extends LocalizedListEditor {
 	@Override
 	protected String getNewInputObject() {
 		final UriDialog uriDialog = new UriDialog(getShell());
-		uriDialog.create();
+		uriDialog.create(JFaceMessages.get("lbl.preferences.uri.dialog.add.title"));
+		if (uriDialog.open() == Window.OK) {
+			return uriDialog.getUri();
+		}
+		return null;
+	}
+
+	@Override
+	protected String getModifiedInputObject(String value) {
+		final UriDialog uriDialog = new UriDialog(getShell());
+		uriDialog.create(JFaceMessages.get("lbl.preferences.uri.dialog.edit.title"));
+		uriDialog.textUri.setText(value);
 		if (uriDialog.open() == Window.OK) {
 			return uriDialog.getUri();
 		}
@@ -109,17 +127,16 @@ public class UriListEditor extends LocalizedListEditor {
 		@Override
 		protected void configureShell(final Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText(JFaceMessages.get("lbl.preferences.uri.add.title"));
 			if (images != null) {
 				newShell.setImages(images);
 			}
 		}
 
-		@Override
-		public void create() {
+		public void create(final String title) {
 			super.create();
-			setTitle(JFaceMessages.get("lbl.preferences.uri.add.title"));
-			setMessage(JFaceMessages.get("lbl.preferences.uri.add.message"), IMessageProvider.INFORMATION);
+			getShell().setText(title);
+			setTitle(title);
+			setMessage(JFaceMessages.get("lbl.preferences.uri.dialog.message"), IMessageProvider.INFORMATION);
 		}
 
 		@Override
@@ -130,13 +147,13 @@ public class UriListEditor extends LocalizedListEditor {
 			GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(container);
 
 			final Label labelName = new Label(container, SWT.NONE);
-			labelName.setText(JFaceMessages.get("lbl.preferences.uri.add.address"));
+			labelName.setText(JFaceMessages.get("lbl.preferences.uri.dialog.address"));
 			GridDataFactory.swtDefaults().applyTo(labelName);
 
 			textUri = new Text(container, SWT.BORDER);
 			GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(textUri);
 			textUri.setTextLimit(MAX_LENGTH);
-			textUri.addKeyListener(new TextKeyListener());
+			textUri.addModifyListener(new TextModifyListener());
 
 			return area;
 		}
@@ -168,9 +185,9 @@ public class UriListEditor extends LocalizedListEditor {
 			return uri;
 		}
 
-		private class TextKeyListener extends KeyAdapter {
+		private class TextModifyListener implements ModifyListener {
 			@Override
-			public void keyReleased(final KeyEvent ke) {
+			public void modifyText(final ModifyEvent me) {
 				if (!checkUri(textUri.getText().trim())) {
 					if (okButton.isEnabled()) {
 						okButton.setEnabled(false);

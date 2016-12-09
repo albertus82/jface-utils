@@ -1,5 +1,6 @@
 package it.albertus.jface.console;
 
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -12,7 +13,11 @@ public class TextConsole extends AbstractTextConsole<Text> {
 
 	@Override
 	protected Text createScrollable(final Composite parent) {
-		return new Text(parent, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.H_SCROLL);
+		final Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.H_SCROLL);
+		if (Util.isWindows()) {
+			text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		}
+		return text;
 	}
 
 	@Override

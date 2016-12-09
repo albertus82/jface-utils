@@ -5,8 +5,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.util.Util;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
@@ -38,9 +36,6 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 		scrollable = createScrollable(parent);
 		scrollable.setLayoutData(layoutData);
 		scrollable.setFont(JFaceResources.getTextFont());
-		if (Util.isWindows()) {
-			scrollable.setBackground(scrollable.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		}
 
 		if (redirectSystemStream) {
 			scrollable.addDisposeListener(new DisposeListener() {

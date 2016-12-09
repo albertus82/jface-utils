@@ -59,6 +59,10 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 
 	public abstract void clear();
 
+	public abstract boolean isEmpty();
+
+	public abstract boolean hasSelection();
+
 	@Override
 	public void write(final int b) throws IOException {
 		ensureOpen();

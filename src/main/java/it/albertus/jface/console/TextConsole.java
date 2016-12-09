@@ -21,6 +21,16 @@ public class TextConsole extends AbstractTextConsole<Text> {
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return scrollable == null || scrollable.isDisposed() || scrollable.getCharCount() == 0;
+	}
+
+	@Override
+	public boolean hasSelection() {
+		return scrollable != null && !scrollable.isDisposed() && scrollable.getSelectionCount() > 0;
+	}
+
+	@Override
 	protected void doPrint(final String value, final int maxChars) {
 		if (scrollable.getCharCount() < maxChars) {
 			scrollable.append(value);

@@ -68,7 +68,7 @@ public class ConfigurationTest {
 		bw.newLine();
 		bw.write("byte.null.2=  \t  ");
 		bw.newLine();
-		bw.write("short.ok=-12345");
+		bw.write("short.ok = -12345");
 		bw.newLine();
 		bw.write("short.ko=12ab5");
 		bw.newLine();

@@ -49,7 +49,7 @@ public class StyledTextConsoleExample {
 		shell.setSize(shell.getSize().x * 4, (short) (shell.getSize().y * 3));
 		shell.open();
 
-		Thread printerThread = new Thread() {
+		final Thread printerThread = new Thread() {
 			private boolean exit = false;
 
 			@Override

@@ -15,13 +15,12 @@ public class Version {
 	private static final String KEY_VERSION_DATE = "version.date";
 	private static final String ISO_8601_PATTERN = "yyyy-MM-dd";
 
-	/** Use {@link #parseDate} method instead. */
-	@Deprecated
-	private static final DateFormat dateFormat = new SimpleDateFormat(ISO_8601_PATTERN);
-
-	public static synchronized Date parseDate(final String source) throws ParseException {
-		return dateFormat.parse(source);
-	}
+	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+		@Override
+		protected DateFormat initialValue() {
+			return new SimpleDateFormat(ISO_8601_PATTERN);
+		}
+	};
 
 	private final Properties properties = new Properties();
 	private final String fileName;
@@ -67,7 +66,7 @@ public class Version {
 
 	public Date parseDate() throws IllegalArgumentException {
 		try {
-			return parseDate(getDate());
+			return dateFormat.get().parse(getDate());
 		}
 		catch (final ParseException pe) {
 			throw new IllegalArgumentException(pe);

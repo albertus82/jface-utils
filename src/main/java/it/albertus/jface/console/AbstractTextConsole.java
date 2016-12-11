@@ -20,8 +20,12 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	protected static final PrintStream defaultSysErr = System.err;
 	protected static final String newLine = NewLine.SYSTEM_LINE_SEPARATOR;
 
-	public static final class Defaults {
+	public static class Defaults {
 		public static final int GUI_CONSOLE_MAX_CHARS = 100000;
+
+		private Defaults() {
+			throw new IllegalAccessError("Constants class");
+		}
 	}
 
 	protected final boolean redirectSystemStream;

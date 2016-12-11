@@ -2,10 +2,6 @@ package it.albertus.util;
 
 public class StringUtils {
 
-	private StringUtils() {
-		throw new IllegalAccessError("Utility class");
-	}
-
 	public static boolean isEmpty(final String str) {
 		return !isNotEmpty(str);
 	}
@@ -61,6 +57,10 @@ public class StringUtils {
 
 	public static String trimToEmpty(final String str) {
 		return str != null ? str.trim() : "";
+	}
+
+	private StringUtils() {
+		throw new IllegalAccessError("Utility class");
 	}
 
 }

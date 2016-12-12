@@ -40,9 +40,21 @@
 
 		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}.jar" basedir="${build.outputDirectory}" level="9">
 			<metainf refid="docs" />
+			<manifest>
+				<attribute name="Implementation-Title" value="${name}" />
+				<attribute name="Implementation-Version" value="${version.number}" />
+				<attribute name="X-Compile-Source-JDK" value="${build.compiler.source}" />
+				<attribute name="X-Compile-Target-JDK" value="${build.compiler.target}" />
+			</manifest>
 		</jar>
 		<jar destfile="${build.distDirectory}/${artifactId}-${version.number}-sources.jar" basedir="${build.sourceDirectory}" level="9" includes="**/*.java">
 			<metainf refid="docs" />
+			<manifest>
+				<attribute name="Implementation-Title" value="${name}" />
+				<attribute name="Implementation-Version" value="${version.number}" />
+				<attribute name="X-Compile-Source-JDK" value="${build.compiler.source}" />
+				<attribute name="X-Compile-Target-JDK" value="${build.compiler.target}" />
+			</manifest>
 			<fileset dir="${build.resourcesDirectory}" />
 		</jar>
 	</target>

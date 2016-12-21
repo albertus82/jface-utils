@@ -1,5 +1,6 @@
 package it.albertus.jface.preference.field;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -31,8 +32,8 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 	}
 
 	@Override
-	protected void init() {
-		super.init();
+	protected void init(final String pattern, final int style, final int validateStrategy, final Composite parent) {
+		super.init(pattern, style, validateStrategy, parent);
 		if (getTextControl() != null) {
 			getTextControl().addFocusListener(new DateFocusListener());
 		}
@@ -79,7 +80,7 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 				else if (getDateTimeControl() != null) {
 					try {
 						final Date date = getDateValue();
-						formatter.updateFontStyle(getDateTimeControl(), defaultValue, formatDate(date));
+						formatter.updateFontStyle(getDateTimeControl(), defaultValue, dateFormat.get().format(date));
 					}
 					catch (final ParseException pe) {
 						pe.printStackTrace();
@@ -96,7 +97,8 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 				final Text text = (Text) fe.widget;
 				final String oldText = text.getText();
 				try {
-					final String newText = formatDate(parseDate(getTextControl().getText()));
+					final DateFormat df = dateFormat.get();
+					final String newText = df.format(df.parse(getTextControl().getText()));
 					if (!oldText.equals(newText)) {
 						text.setText(newText);
 					}

@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,21 +20,26 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
 
 abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
-	/**
-	 * Use {@link #parseDate} and {@link #formatDate} synchronized methods
-	 * instead.
-	 */
-	@Deprecated
-	private final DateFormat dateFormat;
+	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+		@Override
+		protected DateFormat initialValue() {
+			final DateFormat dateFormat = new SimpleDateFormat(pattern);
+			dateFormat.setLenient(false);
+			return dateFormat;
+		};
+	};
 
-	private final Composite parent;
+	private Composite parent;
 
-	private final String pattern;
+	private String pattern;
 
-	private final int style;
+	private int style;
 
 	private DateTime dateTime;
 
@@ -47,45 +50,19 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	private ControlDecoration controlDecorator;
 
-	protected synchronized Date parseDate(final String source) throws ParseException {
-		return dateFormat.parse(source);
-	}
-
-	protected synchronized String formatDate(final Date date) {
-		return dateFormat.format(date);
-	}
-
 	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final Composite parent) {
 		super(name, labelText, parent);
-		checkPattern(pattern);
-		this.pattern = pattern;
-		this.parent = parent;
-		this.style = style;
-		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
-		this.dateFormat = new SimpleDateFormat(pattern);
-		init();
+		init(pattern, style, VALIDATE_ON_KEY_STROKE, parent);
 	}
 
 	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
-		checkPattern(pattern);
-		this.pattern = pattern;
-		this.parent = parent;
-		this.style = style;
-		this.validateStrategy = VALIDATE_ON_KEY_STROKE;
-		this.dateFormat = new SimpleDateFormat(pattern);
-		init();
+		init(pattern, style, VALIDATE_ON_KEY_STROKE, parent);
 	}
 
 	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
-		checkPattern(pattern);
-		this.pattern = pattern;
-		this.parent = parent;
-		this.style = style;
-		this.validateStrategy = strategy;
-		this.dateFormat = new SimpleDateFormat(pattern);
-		init();
+		init(pattern, style, strategy, parent);
 	}
 
 	/** See {@link #doCreateControl}. */
@@ -105,7 +82,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				fireStateChanged(IS_VALID, oldState, isValid());
 			}
 			try {
-				final String newValue = formatDate(getDateValue());
+				final String newValue = dateFormat.get().format(getDateValue());
 				if (!newValue.equals(oldValue)) {
 					fireValueChanged(VALUE, oldValue, newValue);
 					oldValue = newValue;
@@ -232,13 +209,23 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	@Override
 	protected void doLoad() {
 		if (dateTime == null) {
-			super.doLoad();
+			final Text textField = getTextControl();
+			if (textField != null) {
+				String value = getPreferenceStore().getString(getPreferenceName());
+				try { // Format
+					final DateFormat df = dateFormat.get();
+					value = df.format(df.parse(value));
+				}
+				catch (final ParseException pe) {/* Ignore */}
+				textField.setText(value);
+				oldValue = value;
+			}
 		}
 		else {
 			final String value = getPreferenceStore().getString(getPreferenceName());
 			final Calendar calendar = Calendar.getInstance();
 			try {
-				calendar.setTime(parseDate(value));
+				calendar.setTime(dateFormat.get().parse(value));
 			}
 			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
@@ -256,7 +243,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			final String value = getPreferenceStore().getDefaultString(getPreferenceName());
 			final Calendar calendar = Calendar.getInstance();
 			try {
-				calendar.setTime(parseDate(value));
+				calendar.setTime(dateFormat.get().parse(value));
 			}
 			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
@@ -272,7 +259,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		else {
 			try {
 				final Date date = getDateValue();
-				final String dateString = formatDate(date);
+				final String dateString = dateFormat.get().format(date);
 				getPreferenceStore().setValue(getPreferenceName(), dateString);
 			}
 			catch (final ParseException pe) {
@@ -304,8 +291,12 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		}
 	}
 
-	protected void init() {
-		dateFormat.setLenient(false);
+	protected void init(final String pattern, final int style, final int validateStrategy, final Composite parent) {
+		checkPattern(pattern);
+		this.pattern = pattern;
+		this.parent = parent;
+		this.style = style;
+		this.validateStrategy = validateStrategy;
 		updateErrorMessage();
 		setTextLimit(Byte.MAX_VALUE);
 		doCreateControl();
@@ -359,7 +350,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	public Date getDateValue() throws ParseException {
 		if (dateTime == null) {
-			return parseDate(getTextControl().getText());
+			return dateFormat.get().parse(getTextControl().getText());
 		}
 		else {
 			final Calendar calendar = Calendar.getInstance();
@@ -402,14 +393,17 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		if (getMinValidValue() == null && getMaxValidValue() == null) {
 			setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
 		}
-		else if (getMinValidValue() != null && getMaxValidValue() == null) {
-			setErrorMessage(JFaceMessages.get("err.preferences.date.from", formatDate(getMinValidValue())));
-		}
-		else if (getMinValidValue() == null && getMaxValidValue() != null) {
-			setErrorMessage(JFaceMessages.get("err.preferences.date.to", formatDate(getMaxValidValue())));
-		}
 		else {
-			setErrorMessage(JFaceMessages.get("err.preferences.date.range", formatDate(getMinValidValue()), formatDate(getMaxValidValue())));
+			final DateFormat df = dateFormat.get();
+			if (getMinValidValue() != null && getMaxValidValue() == null) {
+				setErrorMessage(JFaceMessages.get("err.preferences.date.from", df.format(getMinValidValue())));
+			}
+			else if (getMinValidValue() == null && getMaxValidValue() != null) {
+				setErrorMessage(JFaceMessages.get("err.preferences.date.to", df.format(getMaxValidValue())));
+			}
+			else {
+				setErrorMessage(JFaceMessages.get("err.preferences.date.range", df.format(getMinValidValue()), df.format(getMaxValidValue())));
+			}
 		}
 	}
 

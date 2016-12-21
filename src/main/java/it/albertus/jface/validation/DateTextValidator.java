@@ -1,7 +1,6 @@
 package it.albertus.jface.validation;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,12 +10,14 @@ public class DateTextValidator extends StringTextValidator {
 
 	public static final boolean EMPTY_STRING_ALLOWED = true;
 
-	/**
-	 * Use {@link #parseDate} and {@link #formatDate} synchronized methods
-	 * instead.
-	 */
-	@Deprecated
-	private final DateFormat dateFormat;
+	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+		@Override
+		protected DateFormat initialValue() {
+			final DateFormat dateFormat = new SimpleDateFormat(pattern);
+			dateFormat.setLenient(false);
+			return dateFormat;
+		}
+	};
 
 	private final String pattern;
 	private Date minValidValue;
@@ -29,8 +30,6 @@ public class DateTextValidator extends StringTextValidator {
 	public DateTextValidator(final Text text, final String pattern, final boolean emptyStringAllowed) {
 		super(text, emptyStringAllowed);
 		this.pattern = pattern;
-		this.dateFormat = new SimpleDateFormat(pattern);
-		this.dateFormat.setLenient(false);
 	}
 
 	public DateTextValidator(final Text text, final String pattern, final boolean emptyStringAllowed, final Date minValidValue, final Date maxValidValue) {
@@ -46,21 +45,13 @@ public class DateTextValidator extends StringTextValidator {
 			return true;
 		}
 		try {
-			final Date date = parseDate(value);
+			final Date date = dateFormat.get().parse(value);
 			if (!((getMinValidValue() != null && date.before(getMinValidValue())) || (getMaxValidValue() != null && date.after(getMaxValidValue())))) {
 				return true;
 			}
 		}
 		catch (final Exception e) {/* Ignore */}
 		return false;
-	}
-
-	protected synchronized Date parseDate(final String source) throws ParseException {
-		return dateFormat.parse(source);
-	}
-
-	protected synchronized String formatDate(final Date date) {
-		return dateFormat.format(date);
 	}
 
 	public String getPattern() {

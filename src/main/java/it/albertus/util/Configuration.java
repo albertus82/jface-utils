@@ -17,8 +17,8 @@ public class Configuration extends PropertiesConfiguration {
 
 	public static synchronized String getOsSpecificUserAppDataDir() {
 		if (osSpecificUserAppDataDir == null) {
-			final String os = System.getProperty("os.name").toLowerCase();
-			if (os.contains("win")) {
+			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
+			if (os.contains("win") && System.getenv("APPDATA") != null) {
 				osSpecificUserAppDataDir = System.getenv("APPDATA");
 			}
 			else if (os.contains("mac")) {
@@ -33,9 +33,9 @@ public class Configuration extends PropertiesConfiguration {
 
 	public static synchronized String getOsSpecificDocumentsDir() {
 		if (osSpecificDocumentsDir == null) {
-			final String os = System.getProperty("os.name").toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
 			if (os.contains("win")) {
-				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // Slow
+				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // slow and not thread-safe!
 			}
 			else if (os.contains("mac")) {
 				osSpecificDocumentsDir = System.getProperty("user.home") + File.separator + "Documents";
@@ -61,6 +61,10 @@ public class Configuration extends PropertiesConfiguration {
 
 	public String getString(final String key, final String defaultValue) {
 		return getProperties().getProperty(key, defaultValue);
+	}
+
+	public String getString(final String key, final boolean emptyIfNull) {
+		return emptyIfNull ? getString(key, "") : getString(key);
 	}
 
 	public char[] getCharArray(final String key) {

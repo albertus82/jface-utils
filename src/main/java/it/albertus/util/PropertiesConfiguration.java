@@ -1,13 +1,12 @@
 package it.albertus.util;
 
-import it.albertus.jface.preference.PreferencesCallback;
-
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import it.albertus.jface.preference.PreferencesCallback;
 
 public class PropertiesConfiguration extends PreferencesCallback {
 
@@ -31,12 +30,12 @@ public class PropertiesConfiguration extends PreferencesCallback {
 	protected void load() {
 		InputStream inputStream = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(getFileName()));
+			inputStream = new FileInputStream(getFileName());
 			if (inputStream != null) {
 				synchronized (properties) {
 					try {
 						properties.clear();
-						properties.load(inputStream);
+						properties.load(inputStream); // buffered internally
 					}
 					catch (final IOException ioe) {
 						throw new RuntimeException(ioe);
@@ -47,9 +46,11 @@ public class PropertiesConfiguration extends PreferencesCallback {
 		catch (final FileNotFoundException fnfe) {/* Ignore */}
 		finally {
 			try {
-				inputStream.close();
+				if (inputStream != null) {
+					inputStream.close();
+				}
 			}
-			catch (final Exception e) {/* Ignore */}
+			catch (final IOException ioe) {/* Ignore */}
 		}
 	}
 

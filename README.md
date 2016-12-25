@@ -3,7 +3,7 @@ JFaceUtils
 
 [![Build Status](https://travis-ci.org/Albertus82/JFaceUtils.svg?branch=master)](https://travis-ci.org/Albertus82/JFaceUtils)
 
-**Java SWT/JFace Utilities Library** with a **Preferences Framework**.
+**Java SWT/JFace Utilities Library** including a **Preferences Framework**.
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 

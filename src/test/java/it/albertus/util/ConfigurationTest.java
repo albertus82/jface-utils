@@ -126,6 +126,8 @@ public class ConfigurationTest {
 		bw.newLine();
 		bw.write("boolean.null.2=");
 		bw.newLine();
+		bw.write("string.empty=");
+		bw.newLine();
 		bw.close();
 
 		System.out.println(propertiesFile);
@@ -349,6 +351,16 @@ public class ConfigurationTest {
 		for (int i = 1; i <= 2; i++) {
 			Assert.assertNull(configuration.getBoolean(type + ".null." + i));
 		}
+	}
+
+	@Test
+	public void getString() {
+		Assert.assertEquals("", configuration.getString("string.empty"));
+		Assert.assertEquals("", configuration.getString("string.empty", ""));
+		Assert.assertEquals("", configuration.getString("string.empty", true));
+		Assert.assertEquals("", configuration.getString("string.null", true));
+		Assert.assertNull(configuration.getString("string.null", false));
+		Assert.assertNull(configuration.getString("string.null"));
 	}
 
 }

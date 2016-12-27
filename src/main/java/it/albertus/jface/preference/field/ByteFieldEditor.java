@@ -91,7 +91,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

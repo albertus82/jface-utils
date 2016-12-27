@@ -22,7 +22,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 		try {
 			value = Long.valueOf(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 

@@ -1,8 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Localized;
-
 import java.io.File;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -12,6 +9,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.Localized;
 
 public class LocalizedPathEditor extends PathEditor {
 
@@ -81,10 +81,8 @@ public class LocalizedPathEditor extends PathEditor {
 		if (dirChooserLabelText != null && dirChooserLabelText.getString() != null) {
 			dialog.setMessage(dirChooserLabelText.getString());
 		}
-		if (lastPath != null) {
-			if (new File(lastPath).exists()) {
-				dialog.setFilterPath(lastPath);
-			}
+		if (lastPath != null && new File(lastPath).exists()) {
+			dialog.setFilterPath(lastPath);
 		}
 		String dir = dialog.open();
 		if (dir != null) {

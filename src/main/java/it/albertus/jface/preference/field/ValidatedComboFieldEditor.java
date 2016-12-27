@@ -41,13 +41,13 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	@Override
 	protected void refreshValidState() {
 		setValid(checkState());
-		final String errorMessage = getErrorMessage();
-		if (errorMessage != null && !errorMessage.isEmpty()) {
+		final String errMsg = getErrorMessage();
+		if (errMsg != null && !errMsg.isEmpty()) {
 			if (isValid()) {
 				clearErrorMessage();
 			}
 			else {
-				showErrorMessage(errorMessage);
+				showErrorMessage(errMsg);
 			}
 		}
 	}
@@ -138,12 +138,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 */
 	protected boolean checkState() {
 		if (getValue() == null || getValue().isEmpty()) {
-			if (isEmptyStringAllowed()) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return isEmptyStringAllowed();
 		}
 		else {
 			return doCheckState();

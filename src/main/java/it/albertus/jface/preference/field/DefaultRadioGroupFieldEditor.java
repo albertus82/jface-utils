@@ -1,9 +1,9 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implements FieldEditorDefault {
 
@@ -25,7 +25,8 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implemen
 
 	@Override
 	public Composite getRadioBoxControl(final Composite parent) {
-		return radioBox = super.getRadioBoxControl(parent);
+		radioBox = super.getRadioBoxControl(parent);
+		return radioBox;
 	}
 
 	@Override
@@ -88,6 +89,8 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implemen
 	}
 
 	@Override
-	public void setBoldCustomValues(final boolean boldCustomValues) {}
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		// Radio values cannot be formatted.
+	}
 
 }

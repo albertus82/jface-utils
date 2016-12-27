@@ -23,7 +23,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			value = Short.valueOf(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 

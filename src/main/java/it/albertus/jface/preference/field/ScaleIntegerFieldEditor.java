@@ -24,24 +24,24 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
-	public Text getTextControl() {
-		return text;
-	}
-
 	public ScaleIntegerFieldEditor(final String name, final String labelText, final Composite parent, final int min, final int max, final int increment, final int pageIncrement) {
 		super(name, labelText, parent, min, max, increment, pageIncrement);
 		text = createTextControl(parent);
 	}
 
-	protected Text createTextControl(final Composite parent) {
-		final Text text = new Text(parent, SWT.BORDER | SWT.TRAIL);
-		final int widthHint = formatter.computeWidth(text, Integer.toString(getMaximum()).length(), SWT.BOLD);
-		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).hint(widthHint, SWT.DEFAULT).applyTo(text);
-		text.setTextLimit(Integer.toString(getMaximum()).length());
-		text.addFocusListener(new TextFocusListener());
-		text.addKeyListener(new TextKeyListener());
-		text.addVerifyListener(new IntegerVerifyListener(false));
+	public Text getTextControl() {
 		return text;
+	}
+
+	protected Text createTextControl(final Composite parent) {
+		final Text textControl = new Text(parent, SWT.BORDER | SWT.TRAIL);
+		final int widthHint = formatter.computeWidth(textControl, Integer.toString(getMaximum()).length(), SWT.BOLD);
+		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).hint(widthHint, SWT.DEFAULT).applyTo(textControl);
+		textControl.setTextLimit(Integer.toString(getMaximum()).length());
+		textControl.addFocusListener(new TextFocusListener());
+		textControl.addKeyListener(new TextKeyListener());
+		textControl.addVerifyListener(new IntegerVerifyListener(false));
+		return textControl;
 	}
 
 	@Override

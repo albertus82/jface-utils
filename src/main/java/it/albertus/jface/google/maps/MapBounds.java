@@ -11,7 +11,7 @@ public class MapBounds implements Serializable {
 	private Double northEastLng;
 	private Double southWestLng;
 
-	public MapBounds() {}
+	public MapBounds() {/* Default constructor */}
 
 	public MapBounds(final Double northEastLat, final Double southWestLat, final Double northEastLng, final Double southWestLng) {
 		this.northEastLat = northEastLat;

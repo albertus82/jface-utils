@@ -90,7 +90,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

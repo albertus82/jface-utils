@@ -17,7 +17,7 @@ public class MapOptions implements Serializable {
 	private MapType type = DEFAULT_TYPE;
 	private final Map<MapControl, Boolean> controls = new EnumMap<MapControl, Boolean>(MapControl.class);
 
-	public MapOptions() {}
+	public MapOptions() {/* Default constructor */}
 
 	public MapOptions(final double centerLat, final double centerLng, final int zoom, final MapType type) {
 		this.centerLat = centerLat;

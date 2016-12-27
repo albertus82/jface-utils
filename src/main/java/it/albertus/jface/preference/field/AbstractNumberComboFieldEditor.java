@@ -85,7 +85,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 	}
 
 	protected boolean labelsContainWhitespace() {
-		for (final String entry[] : getEntryNamesAndValues()) {
+		for (final String[] entry : getEntryNamesAndValues()) {
 			if (entry[0].contains(" ")) {
 				return true;
 			}
@@ -102,7 +102,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 	protected LabelsCase getLabelsCase() {
 		int upperCaseCount = 0;
 		int lowerCaseCount = 0;
-		for (final String entry[] : getEntryNamesAndValues()) {
+		for (final String[] entry : getEntryNamesAndValues()) {
 			if (entry[0].equals(entry[0].toLowerCase())) {
 				lowerCaseCount++;
 			}

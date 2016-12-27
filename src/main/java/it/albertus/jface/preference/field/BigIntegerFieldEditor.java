@@ -84,7 +84,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

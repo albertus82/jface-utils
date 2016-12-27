@@ -8,6 +8,15 @@ import java.util.ResourceBundle;
 
 public class JFaceMessages {
 
+	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase();
+
+	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
+
+	/** Instantiation not permitted. */
+	private JFaceMessages() {
+		throw new IllegalAccessError();
+	}
+
 	public enum Language {
 		ENGLISH(Locale.ENGLISH),
 		ITALIAN(Locale.ITALIAN);
@@ -22,10 +31,6 @@ public class JFaceMessages {
 			return locale;
 		}
 	}
-
-	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase();
-
-	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
 
 	/** Aggiorna la lingua in cui vengono mostrati i messaggi. */
 	public static void setLanguage(final Language language) {
@@ -58,8 +63,5 @@ public class JFaceMessages {
 		final String message = MessageFormat.format(resources.getString(key), stringParams.toArray());
 		return message != null ? message.trim() : "";
 	}
-
-	/** Instantiation not permitted. */
-	private JFaceMessages() {}
 
 }

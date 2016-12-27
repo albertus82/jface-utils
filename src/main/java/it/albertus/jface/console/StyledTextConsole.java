@@ -67,21 +67,21 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 	}
 
 	protected MenuItem createClearMenuItem() {
-		final MenuItem clearMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		clearMenuItem.setText(JFaceMessages.get("lbl.menu.item.clear"));
-		clearMenuItem.addSelectionListener(new SelectionAdapter() {
+		final MenuItem clear = new MenuItem(contextMenu, SWT.PUSH);
+		clear.setText(JFaceMessages.get("lbl.menu.item.clear"));
+		clear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
 				clear();
 			}
 		});
-		return clearMenuItem;
+		return clear;
 	}
 
 	protected MenuItem createSelectAllMenuItem(final StyledText styledText) {
-		final MenuItem selectAllMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		selectAllMenuItem.setText(JFaceMessages.get("lbl.menu.item.select.all") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
-		selectAllMenuItem.addSelectionListener(new SelectionAdapter() {
+		final MenuItem selectAll = new MenuItem(contextMenu, SWT.PUSH);
+		selectAll.setText(JFaceMessages.get("lbl.menu.item.select.all") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
+		selectAll.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
 				styledText.invokeAction(ST.SELECT_ALL);
@@ -95,19 +95,19 @@ public class StyledTextConsole extends AbstractTextConsole<StyledText> {
 				}
 			}
 		});
-		return selectAllMenuItem;
+		return selectAll;
 	}
 
 	protected MenuItem createCopyMenuItem(final StyledText styledText) {
-		final MenuItem copyMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		copyMenuItem.setText(JFaceMessages.get("lbl.menu.item.copy") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
-		copyMenuItem.addSelectionListener(new SelectionAdapter() {
+		final MenuItem copy = new MenuItem(contextMenu, SWT.PUSH);
+		copy.setText(JFaceMessages.get("lbl.menu.item.copy") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
+		copy.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
 				styledText.invokeAction(ST.COPY);
 			}
 		});
-		return copyMenuItem;
+		return copy;
 	}
 
 	@Override

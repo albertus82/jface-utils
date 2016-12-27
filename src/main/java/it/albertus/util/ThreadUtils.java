@@ -2,6 +2,10 @@ package it.albertus.util;
 
 public class ThreadUtils {
 
+	private ThreadUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	/**
 	 * Causes the currently executing thread to sleep (temporarily cease
 	 * execution) for the specified number of milliseconds, subject to the
@@ -21,10 +25,6 @@ public class ThreadUtils {
 		catch (final InterruptedException ie) {
 			return ie;
 		}
-	}
-
-	private ThreadUtils() {
-		throw new IllegalAccessError("Utility class");
 	}
 
 }

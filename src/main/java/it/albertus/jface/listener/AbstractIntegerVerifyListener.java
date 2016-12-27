@@ -19,7 +19,7 @@ abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractN
 			return true;
 		}
 		catch (final Exception e) {
-			if (allowNegatives.getValue() && string.equals("-")) {
+			if (allowNegatives.getValue() && "-".equals(string)) {
 				return true;
 			}
 			return false;

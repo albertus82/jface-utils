@@ -89,7 +89,7 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

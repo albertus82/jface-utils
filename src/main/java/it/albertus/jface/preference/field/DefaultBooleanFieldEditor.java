@@ -1,10 +1,10 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements FieldEditorDefault {
 
@@ -23,7 +23,8 @@ public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements Fie
 
 	@Override
 	protected Button getChangeControl(final Composite parent) {
-		return checkBox = super.getChangeControl(parent);
+		checkBox = super.getChangeControl(parent);
+		return checkBox;
 	}
 
 	@Override
@@ -66,6 +67,8 @@ public class DefaultBooleanFieldEditor extends BooleanFieldEditor implements Fie
 	}
 
 	@Override
-	public void setBoldCustomValues(final boolean boldCustomValues) {}
+	public void setBoldCustomValues(final boolean boldCustomValues) {
+		// Checkbox values cannot be formatted.
+	}
 
 }

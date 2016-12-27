@@ -84,7 +84,7 @@ public abstract class Console {
 		print(String.valueOf(value));
 	}
 
-	public abstract void print(char array[]);
+	public abstract void print(char[] array);
 
 	public abstract void println();
 
@@ -104,7 +104,7 @@ public abstract class Console {
 
 	public abstract void println(double value);
 
-	public abstract void println(char array[]);
+	public abstract void println(char[] array);
 
 	public void format(Locale l, String format, Object... args) {
 		print(String.format(l, format, args));
@@ -178,7 +178,7 @@ public abstract class Console {
 		print(value);
 	}
 
-	public void print(char array[], boolean onNewLine) {
+	public void print(char[] array, boolean onNewLine) {
 		if (onNewLine && column != 0) {
 			println();
 		}
@@ -241,7 +241,7 @@ public abstract class Console {
 		println(value);
 	}
 
-	public void println(char array[], boolean onNewLine) {
+	public void println(char[] array, boolean onNewLine) {
 		if (onNewLine && column != 0) {
 			println();
 		}

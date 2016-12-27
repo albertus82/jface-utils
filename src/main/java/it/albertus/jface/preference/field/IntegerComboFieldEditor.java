@@ -22,7 +22,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		try {
 			value = Integer.valueOf(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 

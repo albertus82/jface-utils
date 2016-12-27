@@ -170,7 +170,7 @@ public class FieldEditorFactory {
 			fieldEditor = createPasswordFieldEditor(name, label, parent, details);
 		}
 		else if (PathEditor.class.equals(type)) {
-			fieldEditor = new PathEditor(name, label, details != null && details.getDirectoryDialogMessage() != null ? details.getDirectoryDialogMessage().toString() : null, parent);
+			fieldEditor = new PathEditor(name, label, details.getDirectoryDialogMessage() != null ? details.getDirectoryDialogMessage().toString() : null, parent);
 		}
 		else if (RadioGroupFieldEditor.class.equals(type)) {
 			fieldEditor = createRadioGroupFieldEditor(name, label, parent, details);

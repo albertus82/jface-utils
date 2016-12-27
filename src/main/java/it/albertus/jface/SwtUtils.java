@@ -6,7 +6,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Display;
 
-public abstract class SwtUtils {
+public class SwtUtils {
 
 	public static final char KEY_OPEN = 'o';
 	public static final char KEY_SAVE = 's';
@@ -15,6 +15,10 @@ public abstract class SwtUtils {
 	public static final char KEY_COPY = 'c';
 	public static final char KEY_PASTE = 'v';
 	public static final char KEY_DELETE = SWT.DEL;
+
+	private SwtUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
 
 	public static String getMod1ShortcutLabel(final char key) {
 		if (SWT.MOD1 != SWT.COMMAND) {

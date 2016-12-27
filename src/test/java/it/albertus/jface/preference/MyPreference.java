@@ -50,6 +50,7 @@ public enum MyPreference implements IPreference {
 
 	STRING_1(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string1").label("String 1").defaultValue("Validate on key up.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).build()),
 	STRING_2(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string2").label("String 2").defaultValue("Validate on focus lost.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(false).textValidateStrategy(StringFieldEditor.VALIDATE_ON_FOCUS_LOST).build()),
+	STRING_EMPTY(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("stringEmpty").label("String Empty").defaultValue("Can be empty.").build(), new FieldEditorDetailsBuilder(EnhancedStringFieldEditor.class).emptyStringAllowed(true).build()),
 	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).emptyStringAllowed(false).build()),
 
 	BYTE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("byte").label("Byte").defaultValue(123).build(), new FieldEditorDetailsBuilder(ByteFieldEditor.class).numberMinimum(-100).build()),

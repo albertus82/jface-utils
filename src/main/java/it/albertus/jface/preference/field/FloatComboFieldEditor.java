@@ -21,7 +21,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 		try {
 			value = Float.valueOf(value).toString();
 		}
-		catch (final Exception exception) {}
+		catch (final Exception exception) {/* Ignore */}
 		return value;
 	}
 

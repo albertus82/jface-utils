@@ -5,11 +5,15 @@ import java.io.StringWriter;
 
 public class ExceptionUtils {
 
+	private ExceptionUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	public static String getStackTrace(final Throwable e) {
 		String stackTrace = "";
 		if (e != null) {
 			try {
-				StringWriter sw = new StringWriter();
+				final StringWriter sw = new StringWriter();
 				e.printStackTrace(new PrintWriter(sw));
 				stackTrace = sw.toString();
 			}

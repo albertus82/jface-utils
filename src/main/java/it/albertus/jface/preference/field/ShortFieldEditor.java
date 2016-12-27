@@ -91,7 +91,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

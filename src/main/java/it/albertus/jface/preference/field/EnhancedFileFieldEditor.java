@@ -15,6 +15,9 @@ import it.albertus.jface.JFaceMessages;
 
 public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEditorDefault {
 
+	private static final String MSG_KEY_ERROR_ABSOLUTE_PATH = "err.preferences.file.absolute.path";
+	private static final String MSG_KEY_ERROR_FILE_EXISTING = "err.preferences.file.existing";
+
 	private static final Formatter formatter = new Formatter(EnhancedFileFieldEditor.class);
 
 	public static final int MAX_PATH = 255;
@@ -91,18 +94,18 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		String msg = null;
 		if (path.length() == 0) {
 			if (!isEmptyStringAllowed()) {
-				msg = JFaceMessages.get("err.preferences.file.existing");
+				msg = JFaceMessages.get(MSG_KEY_ERROR_FILE_EXISTING);
 			}
 		}
 		else {
 			final File file = new File(path);
 			if (file.isFile()) {
 				if (enforceAbsolute && !file.isAbsolute()) {
-					msg = JFaceMessages.get("err.preferences.file.absolute.path");
+					msg = JFaceMessages.get(MSG_KEY_ERROR_ABSOLUTE_PATH);
 				}
 			}
 			else {
-				msg = JFaceMessages.get("err.preferences.file.existing");
+				msg = JFaceMessages.get(MSG_KEY_ERROR_FILE_EXISTING);
 			}
 		}
 
@@ -138,7 +141,7 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 	}
 
 	protected void init() {
-		setErrorMessage(JFaceMessages.get("err.preferences.file.existing"));
+		setErrorMessage(JFaceMessages.get(MSG_KEY_ERROR_FILE_EXISTING));
 		setTextLimit(MAX_PATH);
 		addDecoration();
 	}

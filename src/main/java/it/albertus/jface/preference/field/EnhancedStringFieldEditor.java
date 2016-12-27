@@ -16,7 +16,7 @@ import it.albertus.jface.JFaceMessages;
 public class EnhancedStringFieldEditor extends StringFieldEditor implements FieldEditorDefault {
 
 	private static final Formatter formatter = new Formatter(EnhancedStringFieldEditor.class);
-	
+
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
 
@@ -118,12 +118,7 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 			return false;
 		}
 		if (text.getText().isEmpty()) {
-			if (isEmptyStringAllowed()) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return isEmptyStringAllowed();
 		}
 		return doCheckState();
 	}

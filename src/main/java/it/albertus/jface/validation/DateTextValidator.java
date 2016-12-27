@@ -13,9 +13,9 @@ public class DateTextValidator extends StringTextValidator {
 	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
 		protected DateFormat initialValue() {
-			final DateFormat dateFormat = new SimpleDateFormat(pattern);
-			dateFormat.setLenient(false);
-			return dateFormat;
+			final DateFormat df = new SimpleDateFormat(pattern);
+			df.setLenient(false);
+			return df;
 		}
 	};
 

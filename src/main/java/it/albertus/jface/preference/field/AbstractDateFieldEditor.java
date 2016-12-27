@@ -29,10 +29,10 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
 		protected DateFormat initialValue() {
-			final DateFormat dateFormat = new SimpleDateFormat(pattern);
-			dateFormat.setLenient(false);
-			return dateFormat;
-		};
+			final DateFormat df = new SimpleDateFormat(pattern);
+			df.setLenient(false);
+			return df;
+		}
 	};
 
 	private Composite parent;
@@ -112,16 +112,16 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	}
 
 	protected DateTime getDateTimeControl(final Composite parent) {
-		final DateTime dateTime = new DateTime(parent, style);
+		final DateTime dt = new DateTime(parent, style);
 		switch (validateStrategy) {
 		case VALIDATE_ON_KEY_STROKE:
-			dateTime.addKeyListener(new KeyAdapter() {
+			dt.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyReleased(KeyEvent e) {
 					valueChanged();
 				}
 			});
-			dateTime.addFocusListener(new FocusAdapter() {
+			dt.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
 					valueChanged();
@@ -129,13 +129,13 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			});
 			break;
 		case VALIDATE_ON_FOCUS_LOST:
-			dateTime.addKeyListener(new KeyAdapter() {
+			dt.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					clearErrorMessage();
 				}
 			});
-			dateTime.addFocusListener(new FocusAdapter() {
+			dt.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
 					refreshValidState();
@@ -151,7 +151,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		default:
 			Assert.isTrue(false, "Unknown validate strategy");
 		}
-		return dateTime;
+		return dt;
 	}
 
 	@Override

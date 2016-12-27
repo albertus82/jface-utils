@@ -25,15 +25,6 @@ public class Version {
 	private final Properties properties = new Properties();
 	private final String fileName;
 
-	// Lazy initialization...
-	private static class Singleton {
-		private static final Version instance = new Version();
-	}
-
-	public static Version getInstance() {
-		return Singleton.instance;
-	}
-
 	protected Version() {
 		this(VERSION_FILE_NAME);
 	}
@@ -46,6 +37,15 @@ public class Version {
 		catch (final IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// Lazy initialization...
+	private static class Singleton {
+		private static final Version instance = new Version();
+	}
+
+	public static Version getInstance() {
+		return Singleton.instance;
 	}
 
 	private void load() throws IOException {

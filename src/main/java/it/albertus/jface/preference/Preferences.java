@@ -125,7 +125,7 @@ public class Preferences {
 	}
 
 	protected PreferenceManager createPreferenceManager() {
-		final PreferenceManager preferenceManager = new PreferenceManager();
+		final PreferenceManager pm = new PreferenceManager();
 
 		// Pages creation...
 		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
@@ -135,11 +135,11 @@ public class Preferences {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
 			}
 			else {
-				preferenceManager.addToRoot(preferenceNode);
+				pm.addToRoot(preferenceNode);
 			}
 			preferenceNodes.put(page, preferenceNode);
 		}
-		return preferenceManager;
+		return pm;
 	}
 
 	public String getDialogTitle() {

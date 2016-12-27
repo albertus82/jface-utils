@@ -90,7 +90,7 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

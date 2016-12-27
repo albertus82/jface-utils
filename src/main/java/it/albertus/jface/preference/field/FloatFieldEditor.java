@@ -89,7 +89,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {}
+			catch (final Exception e) {/* Ignore */}
 		}
 	}
 

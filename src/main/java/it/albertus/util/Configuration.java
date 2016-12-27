@@ -12,8 +12,18 @@ import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
 
+	private static final String USER_HOME = "user.home";
+
 	private static String osSpecificDocumentsDir; // Cache
 	private static String osSpecificUserAppDataDir; // Cache
+
+	public Configuration(final String fileName) {
+		super(fileName);
+	}
+
+	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) {
+		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + File.separator + fileName : fileName);
+	}
 
 	public static synchronized String getOsSpecificUserAppDataDir() {
 		if (osSpecificUserAppDataDir == null) {
@@ -22,10 +32,10 @@ public class Configuration extends PropertiesConfiguration {
 				osSpecificUserAppDataDir = System.getenv("APPDATA");
 			}
 			else if (os.contains("mac")) {
-				osSpecificUserAppDataDir = System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support";
+				osSpecificUserAppDataDir = System.getProperty(USER_HOME) + File.separator + "Library" + File.separator + "Application Support";
 			}
 			else {
-				osSpecificUserAppDataDir = System.getProperty("user.home");
+				osSpecificUserAppDataDir = System.getProperty(USER_HOME);
 			}
 		}
 		return osSpecificUserAppDataDir;
@@ -38,21 +48,13 @@ public class Configuration extends PropertiesConfiguration {
 				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // slow and not thread-safe!
 			}
 			else if (os.contains("mac")) {
-				osSpecificDocumentsDir = System.getProperty("user.home") + File.separator + "Documents";
+				osSpecificDocumentsDir = System.getProperty(USER_HOME) + File.separator + "Documents";
 			}
 			else {
-				osSpecificDocumentsDir = System.getProperty("user.home");
+				osSpecificDocumentsDir = System.getProperty(USER_HOME);
 			}
 		}
 		return osSpecificDocumentsDir;
-	}
-
-	public Configuration(final String fileName) {
-		super(fileName);
-	}
-
-	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) {
-		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + File.separator + fileName : fileName);
 	}
 
 	public String getString(final String key) {

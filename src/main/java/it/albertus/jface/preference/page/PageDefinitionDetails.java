@@ -1,10 +1,10 @@
 package it.albertus.jface.preference.page;
 
-import it.albertus.util.Localized;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+
+import it.albertus.util.Localized;
 
 public class PageDefinitionDetails {
 
@@ -15,6 +15,14 @@ public class PageDefinitionDetails {
 	private IPageDefinition parent;
 
 	protected PageDefinitionDetails() {}
+
+	private PageDefinitionDetails(final PageDefinitionDetailsBuilder builder) {
+		this.nodeId = builder.nodeId;
+		this.label = builder.label;
+		this.pageClass = builder.pageClass;
+		this.image = builder.image;
+		this.parent = builder.parent;
+	}
 
 	public String getNodeId() {
 		return nodeId;
@@ -147,14 +155,6 @@ public class PageDefinitionDetails {
 		public PageDefinitionDetails build() {
 			return new PageDefinitionDetails(this);
 		}
-	}
-
-	private PageDefinitionDetails(final PageDefinitionDetailsBuilder builder) {
-		this.nodeId = builder.nodeId;
-		this.label = builder.label;
-		this.pageClass = builder.pageClass;
-		this.image = builder.image;
-		this.parent = builder.parent;
 	}
 
 }

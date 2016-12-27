@@ -28,7 +28,14 @@ public class ControlValidatorDecoration {
 		this.message = message;
 		this.style = style;
 		this.type = type;
-		applyTo(validator.getControl());
+
+		final Control control = validator.getControl();
+		final ControlDecoration controlDecorator = new ControlDecoration(control, style);
+		controlDecorator.hide();
+		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(type).getImage();
+		controlDecorator.setImage(image);
+		adjustLayoutData(control, image);
+		control.addListener(SWT.Modify, new DecorationModifyListener(controlDecorator, validator, message));
 	}
 
 	public ControlValidatorDecoration(final ControlValidator<?> validator, final Localized message) {
@@ -44,16 +51,9 @@ public class ControlValidatorDecoration {
 		});
 	}
 
-	private void applyTo(final Control control) {
-		final ControlDecoration controlDecorator = new ControlDecoration(control, style);
-		controlDecorator.hide();
-		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(type).getImage();
-		controlDecorator.setImage(image);
-		adjustLayoutData(control, image);
-		control.addListener(SWT.Modify, new DecorationModifyListener(controlDecorator, validator, message));
+	protected void adjustLayoutData(final Control control, final Image image) {
+		// The default implementation does nothing. This method can be overridden.
 	}
-
-	protected void adjustLayoutData(final Control control, final Image image) {}
 
 	public int getStyle() {
 		return style;

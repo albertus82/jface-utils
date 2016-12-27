@@ -31,26 +31,19 @@ public class PropertiesConfiguration extends PreferencesCallback {
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(getFileName());
-			if (inputStream != null) {
-				synchronized (properties) {
-					try {
-						properties.clear();
-						properties.load(inputStream); // buffered internally
-					}
-					catch (final IOException ioe) {
-						throw new RuntimeException(ioe);
-					}
+			synchronized (properties) {
+				try {
+					properties.clear();
+					properties.load(inputStream); // buffered internally
+				}
+				catch (final IOException ioe) {
+					throw new RuntimeException(ioe);
 				}
 			}
 		}
 		catch (final FileNotFoundException fnfe) {/* Ignore */}
 		finally {
-			try {
-				if (inputStream != null) {
-					inputStream.close();
-				}
-			}
-			catch (final IOException ioe) {/* Ignore */}
+			IOUtils.closeQuietly(inputStream);
 		}
 	}
 

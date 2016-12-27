@@ -7,6 +7,10 @@ import java.util.List;
 
 public class ByteUtils {
 
+	private ByteUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	public static byte[] toByteArray(final List<Byte> byteList) {
 		byte[] byteArray = new byte[byteList.size()];
 		for (int i = 0; i < byteArray.length; i++) {

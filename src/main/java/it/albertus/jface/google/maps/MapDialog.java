@@ -1,6 +1,7 @@
 package it.albertus.jface.google.maps;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
 
 import java.io.BufferedReader;
@@ -182,14 +183,8 @@ public class MapDialog extends Dialog {
 			e.printStackTrace();
 		}
 		finally {
-			try {
-				writer.close();
-			}
-			catch (final Exception e) {/* Ignore */}
-			try {
-				reader.close();
-			}
-			catch (final Exception e) {/* Ignore */}
+			IOUtils.closeQuietly(writer);
+			IOUtils.closeQuietly(reader);
 		}
 
 		if (tempFile != null) {

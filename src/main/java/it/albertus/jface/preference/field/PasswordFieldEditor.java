@@ -95,7 +95,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		}
 
 		char[] newValue = textField.getTextChars();
-		if (!newValue.equals(oldValue)) {
+		if (!Arrays.equals(newValue, oldValue)) {
 			// Avoiding String.valueOf(...)
 			fireValueChanged(VALUE, oldValue, newValue);
 			oldValue = newValue;
@@ -104,19 +104,17 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	@Override
 	protected boolean checkState() {
-		boolean result = false;
+		boolean result;
 		if (isEmptyStringAllowed()) {
 			result = true;
 		}
-
-		if (textField == null) {
+		else if (textField == null) {
 			result = false;
 		}
-
-		char[] txt = textField.getTextChars();
-
-		result = (trimCharArray(txt).length > 0) || isEmptyStringAllowed();
-
+		else {
+			char[] txt = textField.getTextChars();
+			result = (trimCharArray(txt).length > 0) || isEmptyStringAllowed();
+		}
 		// call hook for subclasses
 		result = result && doCheckState();
 
@@ -131,8 +129,8 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	}
 
 	/**
-	 * Use the character-oriented method: {@link #getCharArrayValue()
-	 * getCharArrayValue}.
+	 * @deprecated Use the character-oriented method:
+	 *             {@link #getCharArrayValue() getCharArrayValue}.
 	 */
 	@Override
 	@Deprecated
@@ -144,8 +142,8 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	}
 
 	/**
-	 * Use the character-oriented method: {@link #setCharArrayValue()
-	 * setCharArrayValue}.
+	 * @deprecated Use the character-oriented method:
+	 *             {@link #setCharArrayValue() setCharArrayValue}.
 	 */
 	@Override
 	@Deprecated

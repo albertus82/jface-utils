@@ -82,19 +82,17 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 
 	@Override
 	protected boolean checkState() {
-		boolean result = false;
+		boolean result;
 		if (isEmptyStringAllowed()) {
 			result = true;
 		}
-
-		if (getTextControl() == null) {
+		else if (getTextControl() == null) {
 			result = false;
 		}
-
-		String txt = getTextControl().getText();
-
-		result = (txt.trim().length() > 0) || isEmptyStringAllowed();
-
+		else {
+			String txt = getTextControl().getText();
+			result = (txt.trim().length() > 0) || isEmptyStringAllowed();
+		}
 		// call hook for subclasses
 		result = result && doCheckState();
 

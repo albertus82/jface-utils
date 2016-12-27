@@ -19,12 +19,7 @@ public class StringTextValidator extends ControlValidator<Text> {
 
 	@Override
 	public boolean isValid() {
-		if (!isEmptyStringAllowed() && getControl().getText().isEmpty()) {
-			return false;
-		}
-		else {
-			return true;
-		}
+		return isEmptyStringAllowed() || !getControl().getText().isEmpty();
 	}
 
 	public boolean isEmptyStringAllowed() {

@@ -5,18 +5,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtils {
 
 	public static final String ZIP_FILE_EXTENSION = ".zip";
 
+	private ZipUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	public static void zip(final File destination, final File... sources) throws IOException {
-		if (!destination.exists() || !test(destination)) {
+		if (!destination.exists() || !isValid(destination)) {
 			FileOutputStream fos = null;
 			ZipOutputStream zos = null;
 			try {
@@ -41,7 +46,7 @@ public class ZipUtils {
 			fis = new FileInputStream(file);
 			bis = new BufferedInputStream(fis);
 			zos.putNextEntry(new ZipEntry(file.getName()));
-			IOUtils.copy(bis, zos, new byte[1024]);
+			IOUtils.copy(bis, zos, 1024);
 		}
 		finally {
 			zos.closeEntry();
@@ -50,39 +55,48 @@ public class ZipUtils {
 		}
 	}
 
-	public static boolean test(final File zipFile) {
+	public static boolean isValid(final File zipFile) {
+		try {
+			test(zipFile);
+			return true;
+		}
+		catch (final Exception e) {
+			return false;
+		}
+	}
+
+	public static void test(final File zipFile) throws IOException {
 		ZipFile zf = null;
-		FileInputStream fis = null;
-		ZipInputStream zis = null;
 		try {
 			zf = new ZipFile(zipFile);
-			fis = new FileInputStream(zipFile);
-			zis = new ZipInputStream(fis);
-			ZipEntry ze = zis.getNextEntry();
-			if (ze == null) {
-				return false;
+			final Enumeration<? extends ZipEntry> e = zf.entries();
+			if (!e.hasMoreElements()) {
+				throw new IOException("No zip entries found");
 			}
-			while (ze != null) {
-				zf.getInputStream(ze);
-				ze.getCrc();
-				ze.getCompressedSize();
-				ze.getName();
-				ze = zis.getNextEntry();
+			while (e.hasMoreElements()) {
+				final ZipEntry ze = e.nextElement();
+				final long expectedCrc = ze.getCrc();
+				final String fileName = ze.getName();
+				InputStream is = null;
+				CRC32OutputStream cos = null;
+				try {
+					is = zf.getInputStream(ze);
+					cos = new CRC32OutputStream();
+					IOUtils.copy(is, cos, 1024);
+				}
+				finally {
+					IOUtils.closeQuietly(cos);
+					IOUtils.closeQuietly(is);
+				}
+				final long actualCrc = cos.getValue();
+				if (expectedCrc != actualCrc) {
+					throw new IOException(String.format("Invalid CRC value for file \"%s\", expected 0x%08X, actual 0x%08X.", fileName, expectedCrc, actualCrc));
+				}
 			}
-		}
-		catch (final Exception exception) {
-			return false;
 		}
 		finally {
 			IOUtils.closeQuietly(zf);
-			IOUtils.closeQuietly(zis);
-			IOUtils.closeQuietly(fis);
 		}
-		return true;
-	}
-
-	protected ZipUtils() {
-		// throw new IllegalAccessError("Utility class"); // FIXME uncomment and make private
 	}
 
 }

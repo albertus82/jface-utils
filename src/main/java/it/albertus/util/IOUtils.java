@@ -10,6 +10,10 @@ public class IOUtils {
 
 	public static final int EOF = -1;
 
+	private IOUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	public static void closeQuietly(final Closeable closeable) {
 		try {
 			if (closeable != null) {
@@ -38,8 +42,8 @@ public class IOUtils {
 		return count;
 	}
 
-	private IOUtils() {
-		throw new IllegalAccessError("Utility class");
+	public static long copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException {
+		return copy(input, output, new byte[bufferSize]);
 	}
 
 }

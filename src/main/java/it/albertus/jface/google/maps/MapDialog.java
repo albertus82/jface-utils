@@ -78,9 +78,9 @@ public class MapDialog extends Dialog {
 	public int open() {
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());
-		final Image[] images = getImages();
-		if (images != null && images.length > 0) {
-			shell.setImages(images);
+		final Image[] icons = getImages();
+		if (icons != null && icons.length > 0) {
+			shell.setImages(icons);
 		}
 		createContents(shell);
 		final Point minimumSize = getMinimumSize(shell);

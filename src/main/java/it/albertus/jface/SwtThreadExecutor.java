@@ -26,10 +26,8 @@ public abstract class SwtThreadExecutor {
 	protected abstract void run();
 
 	protected void onError(final Exception exception) {
-		if (!(exception instanceof SWTException)) {
-			if (exception != null) {
-				exception.printStackTrace();
-			}
+		if (exception != null && !(exception instanceof SWTException)) {
+			exception.printStackTrace();
 		}
 	}
 

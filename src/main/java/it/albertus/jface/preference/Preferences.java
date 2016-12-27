@@ -1,10 +1,8 @@
 package it.albertus.jface.preference;
 
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.page.IPageDefinition;
+import it.albertus.util.IOUtils;
 
 public class Preferences {
 
@@ -52,11 +51,11 @@ public class Preferences {
 
 	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
 		// Load configuration file...
-		InputStream configurationInputStream = null;
+		FileInputStream configurationInputStream = null;
 		try {
-			configurationInputStream = new BufferedInputStream(new FileInputStream(preferencesCallback.getFileName()));
+			configurationInputStream = new FileInputStream(preferencesCallback.getFileName());
 			if (configurationInputStream != null) {
-				preferenceStore.load(configurationInputStream);
+				preferenceStore.load(configurationInputStream); // buffered internally
 			}
 		}
 		catch (final FileNotFoundException fnfe) {/* Ignore */}
@@ -64,10 +63,7 @@ public class Preferences {
 			throw new RuntimeException(ioe);
 		}
 		finally {
-			try {
-				configurationInputStream.close();
-			}
-			catch (final Exception e) {/* Ignore */}
+			IOUtils.closeQuietly(configurationInputStream);
 		}
 
 		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
@@ -112,20 +108,20 @@ public class Preferences {
 
 	protected PreferenceStore createPreferenceStore() {
 		final String fileName = preferencesCallback.getFileName();
-		final PreferenceStore preferenceStore = new ConfigurationStore(fileName);
+		final PreferenceStore store = new ConfigurationStore(fileName);
 
 		// Set default values...
 		for (final IPreference preference : preferences) {
 			if (preference.getDefaultValue() != null) {
-				preferenceStore.setDefault(preference.getName(), preference.getDefaultValue());
+				store.setDefault(preference.getName(), preference.getDefaultValue());
 			}
 		}
 
-		return preferenceStore;
+		return store;
 	}
 
 	protected PreferenceManager createPreferenceManager() {
-		final PreferenceManager pm = new PreferenceManager();
+		final PreferenceManager manager = new PreferenceManager();
 
 		// Pages creation...
 		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
@@ -135,11 +131,11 @@ public class Preferences {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
 			}
 			else {
-				pm.addToRoot(preferenceNode);
+				manager.addToRoot(preferenceNode);
 			}
 			preferenceNodes.put(page, preferenceNode);
 		}
-		return pm;
+		return manager;
 	}
 
 	public String getDialogTitle() {

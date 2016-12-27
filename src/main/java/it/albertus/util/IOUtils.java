@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.zip.ZipFile;
 
 public class IOUtils {
 
@@ -13,6 +14,15 @@ public class IOUtils {
 		try {
 			if (closeable != null) {
 				closeable.close();
+			}
+		}
+		catch (final IOException ioe) {/* Ignore */}
+	}
+
+	public static void closeQuietly(final ZipFile zipFile) {
+		try {
+			if (zipFile != null) {
+				zipFile.close();
 			}
 		}
 		catch (final IOException ioe) {/* Ignore */}

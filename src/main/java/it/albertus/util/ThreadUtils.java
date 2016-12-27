@@ -23,4 +23,8 @@ public class ThreadUtils {
 		}
 	}
 
+	private ThreadUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 }

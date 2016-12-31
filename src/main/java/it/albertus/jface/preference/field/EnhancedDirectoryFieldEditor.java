@@ -70,6 +70,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		}
 		File d = getDirectory(f);
 		if (d == null) {
+			valueChanged(); // Force validation on Cancel or Close
 			return null;
 		}
 		return d.getAbsolutePath();

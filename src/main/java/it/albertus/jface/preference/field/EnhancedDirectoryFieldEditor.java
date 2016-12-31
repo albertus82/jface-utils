@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
@@ -110,6 +111,19 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 			else {
 				showErrorMessage();
 			}
+		}
+	}
+
+	@Override
+	public void setStringValue(final String value) {
+		final Text textField = getTextControl();
+		if (textField != null) {
+			final String cleanedValue = value != null ? value : "";
+			oldValue = textField.getText();
+			if (!oldValue.equals(cleanedValue)) {
+				textField.setText(cleanedValue);
+			}
+			valueChanged();
 		}
 	}
 

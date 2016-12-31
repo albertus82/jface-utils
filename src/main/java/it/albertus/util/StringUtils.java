@@ -6,11 +6,11 @@ public class StringUtils {
 		throw new IllegalAccessError("Utility class");
 	}
 
-	public static boolean isEmpty(final String str) {
+	public static boolean isEmpty(final CharSequence str) {
 		return !isNotEmpty(str);
 	}
 
-	public static boolean isNotEmpty(final String str) {
+	public static boolean isNotEmpty(final CharSequence str) {
 		return str != null && str.length() != 0;
 	}
 
@@ -22,7 +22,7 @@ public class StringUtils {
 		return str != null && str.trim().length() != 0;
 	}
 
-	public static boolean isNumeric(final String str) {
+	public static boolean isNumeric(final CharSequence str) {
 		if (str == null || str.length() == 0) {
 			return false;
 		}

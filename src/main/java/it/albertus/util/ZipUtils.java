@@ -33,8 +33,7 @@ public class ZipUtils {
 				}
 			}
 			finally {
-				IOUtils.closeQuietly(zos);
-				IOUtils.closeQuietly(fos);
+				IOUtils.closeQuietly(zos, fos);
 			}
 		}
 	}
@@ -50,8 +49,7 @@ public class ZipUtils {
 		}
 		finally {
 			zos.closeEntry();
-			IOUtils.closeQuietly(bis);
-			IOUtils.closeQuietly(fis);
+			IOUtils.closeQuietly(bis, fis);
 		}
 	}
 
@@ -85,8 +83,7 @@ public class ZipUtils {
 					IOUtils.copy(is, cos, 1024);
 				}
 				finally {
-					IOUtils.closeQuietly(cos);
-					IOUtils.closeQuietly(is);
+					IOUtils.closeQuietly(cos, is);
 				}
 				final long actualCrc = cos.getValue();
 				if (expectedCrc != actualCrc) {

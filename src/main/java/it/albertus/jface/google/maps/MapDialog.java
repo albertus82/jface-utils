@@ -183,8 +183,7 @@ public class MapDialog extends Dialog {
 			e.printStackTrace();
 		}
 		finally {
-			IOUtils.closeQuietly(writer);
-			IOUtils.closeQuietly(reader);
+			IOUtils.closeQuietly(writer, reader);
 		}
 
 		if (tempFile != null) {

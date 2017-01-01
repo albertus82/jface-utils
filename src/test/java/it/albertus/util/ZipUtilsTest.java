@@ -45,8 +45,7 @@ public class ZipUtilsTest {
 			bw.newLine();
 		}
 		finally {
-			IOUtils.closeQuietly(bw);
-			IOUtils.closeQuietly(fw);
+			IOUtils.closeQuietly(bw, fw);
 		}
 	}
 
@@ -129,8 +128,7 @@ public class ZipUtilsTest {
 			}
 		}
 		finally {
-			IOUtils.closeQuietly(fos);
-			IOUtils.closeQuietly(fis);
+			IOUtils.closeQuietly(fos, fis);
 		}
 
 		return temp;

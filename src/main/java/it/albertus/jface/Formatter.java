@@ -114,4 +114,5 @@ public class Formatter {
 			control.getParent().layout(new Control[] { control });
 		}
 	}
+
 }

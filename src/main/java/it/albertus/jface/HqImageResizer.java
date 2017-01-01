@@ -14,6 +14,11 @@ import org.eclipse.swt.widgets.Display;
 
 /* https://stackoverflow.com/questions/4752748/swt-how-to-do-high-quality-image-resize */
 public class HqImageResizer {
+
+	private HqImageResizer() {
+		throw new IllegalAccessError("Utility class");
+	}
+
 	/**
 	 * Resizes an image, using the given scaling factor. Constructs a new image
 	 * resource, please take care of resource disposal if you no longer need the

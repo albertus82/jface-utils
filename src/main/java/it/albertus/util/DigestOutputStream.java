@@ -1,26 +1,27 @@
 package it.albertus.util;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.zip.Checksum;
 
 /**
  * This class implements an output stream that can be used to compute the digest
  * of a data stream. The digest value can be retrieved using
  * <code>getValue()</code> (byte array) and <code>toString()</code>
- * (hexadecimal).
+ * (hexadecimal) only when the stream is closed.
  * <p>
- * Closing a <tt>DigestOutputStream</tt> has no effect. The methods in this
- * class can be called after the stream has been closed without generating an
- * <tt>IOException</tt>.
+ * Closing a <tt>DigestOutputStream</tt> completes the hash computation by
+ * performing final operations such as padding.
  * </p>
  * 
- * @see Checksum
+ * @see MessageDigest
  */
 public class DigestOutputStream extends OutputStream {
 
 	private final MessageDigest digest;
+
+	private byte[] result;
 
 	/**
 	 * Creates a new DigestOutputStream object.
@@ -47,9 +48,12 @@ public class DigestOutputStream extends OutputStream {
 	 * argument b).
 	 *
 	 * @param b the byte with which to update the digest.
+	 * 
+	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final int b) {
+	public void write(final int b) throws IOException {
+		ensureOpen();
 		digest.update((byte) b);
 	}
 
@@ -62,9 +66,12 @@ public class DigestOutputStream extends OutputStream {
 	 * @param off the offset to start from in the array of bytes.
 	 *
 	 * @param len the number of bytes to use, starting at <code>offset</code>.
+	 * 
+	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final byte[] b, final int off, final int len) {
+	public void write(final byte[] b, final int off, final int len) throws IOException {
+		ensureOpen();
 		digest.update(b, off, len);
 	}
 
@@ -72,39 +79,36 @@ public class DigestOutputStream extends OutputStream {
 	 * Updates the digest using the specified array of bytes.
 	 * 
 	 * @param b the array of bytes.
+	 * 
+	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final byte[] b) {
+	public void write(final byte[] b) throws IOException {
+		ensureOpen();
 		digest.update(b);
 	}
 
 	/**
-	 * Closing a <tt>DigestOutputStream</tt> has no effect. The methods in this
-	 * class can be called after the stream has been closed without generating
-	 * an <tt>IOException</tt>.
-	 * <p>
+	 * Completes the hash computation by performing final operations such as
+	 * padding. Call this method before {@link #getValue} or {@link #toString}.
 	 */
 	@Override
-	public void close() {/* Do nothing */}
+	public void close() {
+		if (result == null) {
+			result = digest.digest();
+		}
+	}
 
 	/**
-	 * Completes the hash computation by performing final operations such as
-	 * padding. The digest is reset after this call is made.
-	 * 
+	 * Returns the digest, or null if the stream is not closed.
 	 */
 	public byte[] getValue() {
-		return digest.digest();
+		return result;
 	}
 
 	/**
-	 * Resets the digest for further use.
-	 */
-	public void reset() {
-		digest.reset();
-	}
-
-	/**
-	 * Returns a string representation of the digest.
+	 * Returns a string representation of the digest, or an empty string if the
+	 * stream is not closed.
 	 */
 	@Override
 	public String toString() {
@@ -112,6 +116,9 @@ public class DigestOutputStream extends OutputStream {
 	}
 
 	private static char[] encodeHex(final byte[] data, final char[] toDigits) {
+		if (data == null) {
+			return new char[0];
+		}
 		final int l = data.length;
 		final char[] out = new char[l << 1];
 		for (int i = 0, j = 0; i < l; i++, j += 2) {
@@ -119,6 +126,12 @@ public class DigestOutputStream extends OutputStream {
 			out[j + 1] = toDigits[0x0F & data[i]];
 		}
 		return out;
+	}
+
+	private void ensureOpen() throws IOException {
+		if (result != null) {
+			throw new IOException("Stream closed");
+		}
 	}
 
 }

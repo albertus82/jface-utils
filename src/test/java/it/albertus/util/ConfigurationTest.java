@@ -25,7 +25,7 @@ public class ConfigurationTest {
 
 	@BeforeClass
 	public static void init() throws IOException {
-		propertiesFile = File.createTempFile(ConfigurationTest.class.getSimpleName(), ".cfg");
+		propertiesFile = File.createTempFile("configuration-", ".cfg");
 		BufferedWriter bw = new BufferedWriter(new FileWriter(propertiesFile));
 
 		bw.write("bigdecimal.ok=12345678901234567890.24680135792468013579  ");
@@ -151,13 +151,6 @@ public class ConfigurationTest {
 		configuration = new Configuration(propertiesFile.getPath());
 		System.out.println(configuration.getClass().getName() + ' ' + configuration);
 
-	}
-
-	@AfterClass
-	public static void destroy() {
-		if (propertiesFile != null) {
-			propertiesFile.delete();
-		}
 	}
 
 	@Test
@@ -361,6 +354,19 @@ public class ConfigurationTest {
 		Assert.assertEquals("", configuration.getString("string.null", true));
 		Assert.assertNull(configuration.getString("string.null", false));
 		Assert.assertNull(configuration.getString("string.null"));
+	}
+
+	@AfterClass
+	public static void destroy() {
+		if (propertiesFile != null) {
+			if (propertiesFile.delete()) {
+				System.out.println("Deleted configuration file \"" + propertiesFile + '"');
+			}
+			else {
+				System.err.println("Cannot delete configuration file \"" + propertiesFile + '"');
+				propertiesFile.deleteOnExit();
+			}
+		}
 	}
 
 }

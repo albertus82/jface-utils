@@ -24,7 +24,7 @@ public abstract class ChecksumOutputStream<T extends Checksum> extends OutputStr
 	 * 
 	 * @param checksum the checksum object associated with this stream instance.
 	 */
-	public ChecksumOutputStream(T checksum) {
+	public ChecksumOutputStream(final T checksum) {
 		this.checksum = checksum;
 	}
 

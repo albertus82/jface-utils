@@ -19,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class DigestOutputStream extends OutputStream {
 
+	private static final char[] DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
 	private final MessageDigest digest;
 
 	private byte[] result;
@@ -112,7 +114,7 @@ public class DigestOutputStream extends OutputStream {
 	 */
 	@Override
 	public String toString() {
-		return String.valueOf(encodeHex(getValue(), new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' }));
+		return String.valueOf(encodeHex(getValue(), DIGITS));
 	}
 
 	private static char[] encodeHex(final byte[] data, final char[] toDigits) {

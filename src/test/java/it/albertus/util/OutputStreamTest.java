@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -76,31 +75,31 @@ public class OutputStreamTest {
 			dos = new DigestOutputStream("MD5");
 			IOUtils.copy(bais, dos, Math.max(originalString.length() / 5, MIN_BUFFER_SIZE));
 			Assert.assertEquals("", dos.toString());
-			Assert.assertEquals(null, dos.getValue());
+			Assert.assertNull(dos.getValue());
 		}
 		finally {
 			IOUtils.closeQuietly(dos, bais);
 		}
 		Assert.assertEquals(expectedMd5Hex, dos.toString());
-		Assert.assertTrue(Arrays.equals(expectedMd5Bytes, dos.getValue()));
+		Assert.assertArrayEquals(expectedMd5Bytes, dos.getValue());
 		Assert.assertEquals(expectedMd5Hex, dos.toString());
-		Assert.assertTrue(Arrays.equals(expectedMd5Bytes, dos.getValue()));
+		Assert.assertArrayEquals(expectedMd5Bytes, dos.getValue());
 
 		FileInputStream fis = null;
 		try {
 			dos = new DigestOutputStream("MD5");
 			fis = new FileInputStream(originalFile);
 			IOUtils.copy(fis, dos, (int) Math.max(originalFile.length() / 5, MIN_BUFFER_SIZE));
-			Assert.assertEquals(null, dos.getValue());
+			Assert.assertNull(dos.getValue());
 			Assert.assertEquals("", dos.toString());
 		}
 		finally {
 			IOUtils.closeQuietly(dos, fis);
 		}
 		Assert.assertEquals(expectedMd5Hex, dos.toString());
-		Assert.assertTrue(Arrays.equals(expectedMd5Bytes, dos.getValue()));
+		Assert.assertArrayEquals(expectedMd5Bytes, dos.getValue());
 		Assert.assertEquals(expectedMd5Hex, dos.toString());
-		Assert.assertTrue(Arrays.equals(expectedMd5Bytes, dos.getValue()));
+		Assert.assertArrayEquals(expectedMd5Bytes, dos.getValue());
 	}
 
 	@AfterClass

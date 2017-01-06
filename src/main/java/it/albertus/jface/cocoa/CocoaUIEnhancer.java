@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Listener;
 /* http://www.transparentech.com/opensource/cocoauienhancer */
 public class CocoaUIEnhancer {
 
+	private static final String ITEM_AT_INDEX = "itemAtIndex";
+
 	private static final int kAboutMenuItem = 0;
 	private static final int kPreferencesMenuItem = 2;
 
@@ -90,11 +92,11 @@ public class CocoaUIEnhancer {
 		// Get the Mac OS X Application menu.
 		final Object sharedApplication = invoke(nsapplicationCls, "sharedApplication");
 		final Object mainMenu = invoke(sharedApplication, "mainMenu");
-		final Object mainMenuItem = invoke(nsmenuCls, mainMenu, "itemAtIndex", new Number[] { wrapPointer(0) });
+		final Object mainMenuItem = invoke(nsmenuCls, mainMenu, ITEM_AT_INDEX, new Number[] { wrapPointer(0) });
 		final Object appMenu = invoke(mainMenuItem, "submenu");
 
-		final Object aboutMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Number[] { wrapPointer(kAboutMenuItem) });
-		final Object prefMenuItem = invoke(nsmenuCls, appMenu, "itemAtIndex", new Number[] { wrapPointer(kPreferencesMenuItem) });
+		final Object aboutMenuItem = invoke(nsmenuCls, appMenu, ITEM_AT_INDEX, new Number[] { wrapPointer(kAboutMenuItem) });
+		final Object prefMenuItem = invoke(nsmenuCls, appMenu, ITEM_AT_INDEX, new Number[] { wrapPointer(kPreferencesMenuItem) });
 
 		final Class<?> nsmenuitemCls = Class.forName("org.eclipse.swt.internal.cocoa.NSMenuItem");
 

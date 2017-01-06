@@ -10,16 +10,21 @@ public class ExceptionUtils {
 	}
 
 	public static String getStackTrace(final Throwable e) {
-		String stackTrace = "";
 		if (e != null) {
+			StringWriter sw = null;
+			PrintWriter pw = null;
 			try {
-				final StringWriter sw = new StringWriter();
-				e.printStackTrace(new PrintWriter(sw));
-				stackTrace = sw.toString();
+				sw = new StringWriter();
+				pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				return sw.toString();
 			}
-			catch (final Throwable t) {}
+			catch (final Throwable t) {/* Ignore */}
+			finally {
+				IOUtils.closeQuietly(pw, sw);
+			}
 		}
-		return stackTrace;
+		return "";
 	}
 
 	public static String getUIMessage(final Throwable throwable) {

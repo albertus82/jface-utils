@@ -48,8 +48,12 @@ public class ZipUtils {
 			IOUtils.copy(bis, zos, 1024);
 		}
 		finally {
-			zos.closeEntry();
-			IOUtils.closeQuietly(bis, fis);
+			try {
+				zos.closeEntry();
+			}
+			finally {
+				IOUtils.closeQuietly(bis, fis);
+			}
 		}
 	}
 

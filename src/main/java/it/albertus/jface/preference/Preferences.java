@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -18,8 +20,11 @@ import org.eclipse.swt.widgets.Shell;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.IOUtils;
+import it.albertus.util.logging.LoggerFactory;
 
 public class Preferences {
+
+	private static final Logger logger = LoggerFactory.getLogger(Preferences.class);
 
 	private final IPreferencesCallback preferencesCallback;
 	private final IPageDefinition[] pageDefinitions;
@@ -90,7 +95,7 @@ public class Preferences {
 				preferencesCallback.reload(); // Callback
 			}
 			catch (final IOException ioe) {
-				ioe.printStackTrace();
+				logger.log(Level.WARNING, JFaceMessages.get("err.preferences.reload"), ioe);
 			}
 		}
 

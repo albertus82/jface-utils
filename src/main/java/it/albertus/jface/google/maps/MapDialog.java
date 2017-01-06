@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.IOUtils;
-import it.albertus.util.LoggerFactory;
 import it.albertus.util.NewLine;
+import it.albertus.util.logging.LoggerFactory;
 
 public class MapDialog extends Dialog {
 

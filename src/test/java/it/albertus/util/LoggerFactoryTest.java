@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class LoggerFactoryTest {
 
 	private static Logger logger;

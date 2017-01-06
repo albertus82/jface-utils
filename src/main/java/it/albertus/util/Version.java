@@ -7,8 +7,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.logging.LoggerFactory;
 
 public class Version {
+
+	private static final Logger logger = LoggerFactory.getLogger(Version.class);
 
 	private static final String VERSION_FILE_NAME = "version.properties";
 	private static final String KEY_VERSION_NUMBER = "version.number";
@@ -35,13 +42,17 @@ public class Version {
 			load();
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, JFaceMessages.get("err.load.file", fileName), e);
 		}
 	}
 
 	// Lazy initialization...
 	private static class Singleton {
 		private static final Version instance = new Version();
+
+		private Singleton() {
+			throw new IllegalAccessError();
+		}
 	}
 
 	public static Version getInstance() {

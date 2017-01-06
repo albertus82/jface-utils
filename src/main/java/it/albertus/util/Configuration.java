@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.filechooser.FileSystemView;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.logging.LoggerFactory;
 
 public class Configuration extends PropertiesConfiguration {
 	

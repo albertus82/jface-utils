@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.util.logging;
 
 import java.util.logging.Logger;
 

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -22,8 +24,11 @@ import it.albertus.jface.preference.IPreference;
 import it.albertus.jface.preference.IPreferencesCallback;
 import it.albertus.jface.preference.StaticLabelsAndValues;
 import it.albertus.util.NewLine;
+import it.albertus.util.logging.LoggerFactory;
 
 public class BasePreferencePage extends FieldEditorPreferencePage {
+
+	private static final Logger logger = LoggerFactory.getLogger(BasePreferencePage.class);
 
 	protected static final Map<IPreference, FieldEditorWrapper> universe = new HashMap<IPreference, FieldEditorWrapper>();
 
@@ -95,7 +100,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 			preferencesCallback.reload(); // Callback
 		}
 		catch (final IOException ioe) {
-			ioe.printStackTrace();
+			logger.log(Level.WARNING, JFaceMessages.get("err.preferences.reload"), ioe);
 		}
 	}
 

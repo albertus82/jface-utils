@@ -3,6 +3,8 @@ package it.albertus.jface.preference.field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -11,8 +13,11 @@ import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.logging.LoggerFactory;
 
 public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEditorDefault {
+
+	private static final Logger logger = LoggerFactory.getLogger(DateFieldEditor.class);
 
 	private static final Formatter formatter = new Formatter(DateFieldEditor.class);
 
@@ -83,7 +88,7 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 						formatter.updateFontStyle(getDateTimeControl(), defaultValue, dateFormat.get().format(date));
 					}
 					catch (final ParseException pe) {
-						pe.printStackTrace();
+						logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 					}
 				}
 			}

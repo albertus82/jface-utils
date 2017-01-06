@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Scrollable;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtThreadExecutor;
 import it.albertus.util.Configured;
-import it.albertus.util.LoggerFactory;
 import it.albertus.util.NewLine;
+import it.albertus.util.logging.LoggerFactory;
 
 public abstract class AbstractTextConsole<T extends Scrollable> extends OutputStream {
 

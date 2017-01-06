@@ -1,11 +1,18 @@
 package it.albertus.jface;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
+import it.albertus.util.logging.LoggerFactory;
+
 /** Executes code in the user-interface thread. */
 public abstract class SwtThreadExecutor {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SwtThreadExecutor.class);
 
 	private final Widget widget;
 	private final boolean async;
@@ -27,7 +34,7 @@ public abstract class SwtThreadExecutor {
 
 	protected void onError(final Exception exception) {
 		if (exception != null && !(exception instanceof SWTException)) {
-			exception.printStackTrace();
+			logger.log(Level.SEVERE, "Error in SWT thread", exception);
 		}
 	}
 

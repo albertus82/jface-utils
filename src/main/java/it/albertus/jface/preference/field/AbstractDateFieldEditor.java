@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.LoggerFactory;
+import it.albertus.util.logging.LoggerFactory;
 
 abstract class AbstractDateFieldEditor extends StringFieldEditor {
 

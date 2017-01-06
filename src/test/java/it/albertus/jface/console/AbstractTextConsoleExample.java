@@ -1,5 +1,8 @@
 package it.albertus.jface.console;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -12,6 +15,8 @@ import it.albertus.util.ThreadUtils;
 public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 
 	private static volatile int counter = 0;
+
+	private static final Logger logger = Logger.getLogger(AbstractTextConsoleExample.class.getName());
 
 	private static final String[] loremIpsum = {
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -59,7 +64,9 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 			public void run() {
 				while (true) {
 					for (final String dummy : loremIpsum) {
-						System.out.println(++counter + ". " + dummy);
+						final String text = ++counter + ". " + dummy;
+						System.out.println(text);
+						logger.log(Level.INFO, text);
 						ThreadUtils.sleep(250);
 						if (exit) {
 							return;

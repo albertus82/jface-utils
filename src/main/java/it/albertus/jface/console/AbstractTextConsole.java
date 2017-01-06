@@ -3,6 +3,8 @@ package it.albertus.jface.console;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.events.DisposeEvent;
@@ -10,11 +12,15 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
 
+import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtThreadExecutor;
 import it.albertus.util.Configured;
+import it.albertus.util.LoggerFactory;
 import it.albertus.util.NewLine;
 
 public abstract class AbstractTextConsole<T extends Scrollable> extends OutputStream {
+
+	private static final Logger logger = LoggerFactory.getLogger(AbstractTextConsole.class);
 
 	protected static final PrintStream defaultSysOut = System.out;
 	protected static final PrintStream defaultSysErr = System.err;
@@ -81,17 +87,14 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	}
 
 	@Override
-	public void close() {
-		try {
+	public void close() throws IOException {
+		if (buffer != null) {
 			flush();
+			if (redirectSystemStream) {
+				resetStreams();
+			}
+			buffer = null;
 		}
-		catch (final Exception e) {
-			return; // Already closed
-		}
-		if (redirectSystemStream) {
-			resetStreams();
-		}
-		buffer = null;
 	}
 
 	protected void print(final String value) {
@@ -104,13 +107,13 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 			toPrint = value;
 		}
 
-		final int maxChars = getMaxChars();
+		final int capacity = getMaxChars();
 
 		// Actual print... (async avoids deadlocks)
 		new SwtThreadExecutor(scrollable, true) {
 			@Override
 			protected void run() {
-				doPrint(toPrint, maxChars);
+				doPrint(toPrint, capacity);
 			}
 
 			@Override
@@ -131,7 +134,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 			System.setErr(ps);
 		}
 		catch (final RuntimeException re) {
-			re.printStackTrace();
+			logger.log(Level.SEVERE, JFaceMessages.get("err.console.streams.redirect"), re);
 		}
 	}
 
@@ -141,7 +144,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 			System.setErr(defaultSysErr);
 		}
 		catch (final RuntimeException re) {
-			re.printStackTrace();
+			logger.log(Level.SEVERE, JFaceMessages.get("err.console.streams.reset"), re);
 		}
 	}
 
@@ -156,7 +159,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 			return maxChars != null && maxChars.getValue() != null ? maxChars.getValue() : Defaults.GUI_CONSOLE_MAX_CHARS;
 		}
 		catch (final RuntimeException re) {
-			re.printStackTrace();
+			logger.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", Defaults.GUI_CONSOLE_MAX_CHARS), re);
 			return Defaults.GUI_CONSOLE_MAX_CHARS;
 		}
 	}

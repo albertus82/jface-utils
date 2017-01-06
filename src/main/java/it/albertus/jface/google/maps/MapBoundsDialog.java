@@ -1,6 +1,7 @@
 package it.albertus.jface.google.maps;
 
-import it.albertus.jface.JFaceMessages;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -15,7 +16,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.LoggerFactory;
+
 public class MapBoundsDialog extends MapDialog {
+
+	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialog.class);
 
 	private final MapBounds bounds = new MapBounds();
 
@@ -51,7 +57,7 @@ public class MapBoundsDialog extends MapDialog {
 				}
 				catch (final SWTException swte) {/* Ignore */}
 				catch (final Exception e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
 				}
 				finally {
 					shell.close();

@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -23,8 +25,11 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.LoggerFactory;
 
 abstract class AbstractDateFieldEditor extends StringFieldEditor {
+
+	private static final Logger logger = LoggerFactory.getLogger(AbstractDateFieldEditor.class);
 
 	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -89,7 +94,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				}
 			}
 			catch (final ParseException pe) {
-				pe.printStackTrace();
+				logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 			}
 		}
 	}
@@ -263,7 +268,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				getPreferenceStore().setValue(getPreferenceName(), dateString);
 			}
 			catch (final ParseException pe) {
-				pe.printStackTrace();
+				logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 			}
 		}
 	}

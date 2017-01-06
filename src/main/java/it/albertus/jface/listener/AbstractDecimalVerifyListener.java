@@ -14,16 +14,18 @@ abstract class AbstractDecimalVerifyListener<T extends Number> extends AbstractN
 
 	@Override
 	protected boolean isNumeric(final String string) {
-		try {
-			parseNumber(string);
-			return true;
-		}
-		catch (final Exception e) {
-			if (".".equals(string) || "e".equalsIgnoreCase(string) || (allowNegatives.getValue() && "-".equals(string))) {
+		if (string != null) {
+			try {
+				parseNumber(string);
 				return true;
 			}
-			return false;
+			catch (final NumberFormatException nfe) {
+				if (".".equals(string) || "e".equalsIgnoreCase(string) || (allowNegatives.getValue() && "-".equals(string))) {
+					return true;
+				}
+			}
 		}
+		return false;
 	}
 
 }

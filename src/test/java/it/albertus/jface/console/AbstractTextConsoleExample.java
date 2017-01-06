@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.util.IOUtils;
 import it.albertus.util.ThreadUtils;
 
 public abstract class AbstractTextConsoleExample<T extends Scrollable> {
@@ -83,7 +84,7 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 			}
 		}
 		printerThread.interrupt();
-		textConsole.close();
+		IOUtils.closeQuietly(textConsole);
 
 		System.out.println("Exit.");
 

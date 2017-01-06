@@ -5,12 +5,16 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.filechooser.FileSystemView;
 
 import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
 	private static final String USER_HOME = "user.home";
 
@@ -118,7 +122,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getLong(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -147,7 +151,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getInt(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -176,7 +180,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getShort(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -205,7 +209,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getByte(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -234,7 +238,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getFloat(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -263,7 +267,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getDouble(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -292,7 +296,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getBigDecimal(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -321,7 +325,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getBigInteger(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidNumberErrorMessage(key, defaultValue));
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -346,7 +350,7 @@ public class Configuration extends PropertiesConfiguration {
 			value = getChar(key);
 		}
 		catch (final ConfigurationException ce) {
-			System.err.println(getInvalidCharacterErrorMessage(key, defaultValue));
+			logger.log(Level.WARNING, getInvalidCharacterErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;

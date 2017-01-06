@@ -1,9 +1,5 @@
 package it.albertus.jface.google.maps;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.util.IOUtils;
-import it.albertus.util.NewLine;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +9,8 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -31,7 +29,14 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.IOUtils;
+import it.albertus.util.LoggerFactory;
+import it.albertus.util.NewLine;
+
 public class MapDialog extends Dialog {
+
+	private static final Logger logger = LoggerFactory.getLogger(MapDialog.class);
 
 	public static final String DEFAULT_URL = "http://maps.googleapis.com/maps/api/js";
 	public static final String OPTIONS_PLACEHOLDER = "/* Options */";
@@ -180,7 +185,7 @@ public class MapDialog extends Dialog {
 			pageUrl = tempFile.toURI().toURL();
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, JFaceMessages.get("err.map.open"), e);
 		}
 		finally {
 			IOUtils.closeQuietly(writer, reader);
@@ -192,10 +197,12 @@ public class MapDialog extends Dialog {
 				@Override
 				public void handleEvent(final Event event) {
 					try {
-						fileToDelete.delete();
+						if (!fileToDelete.delete()) {
+							fileToDelete.deleteOnExit();
+						}
 					}
-					catch (final Exception e) {
-						e.printStackTrace();
+					catch (final RuntimeException re) {
+						logger.log(Level.WARNING, JFaceMessages.get("err.delete.temp", fileToDelete), re);
 					}
 				}
 			});

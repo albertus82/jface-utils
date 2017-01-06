@@ -95,6 +95,7 @@
 			sonar.projectName=${name}
 			sonar.projectVersion=${version.number}
 			sonar.sources=${build.sourceDirectory}
+			sonar.tests=${build.testSourceDirectory}
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}

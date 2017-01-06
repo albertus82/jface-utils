@@ -13,8 +13,13 @@ import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 
+import it.albertus.jface.JFaceMessages;
+import it.albertus.util.logging.LoggerFactory;
+
 /* http://www.transparentech.com/opensource/cocoauienhancer */
 public class CocoaUIEnhancer {
+
+	private static final Logger logger = LoggerFactory.getLogger(CocoaUIEnhancer.class);
 
 	private static final String ITEM_AT_INDEX = "itemAtIndex";
 
@@ -44,7 +49,7 @@ public class CocoaUIEnhancer {
 	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 		// Check platform
 		if (!Util.isCocoa()) {
-			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Cocoa platform not detected!");
+			logger.log(Level.WARNING, JFaceMessages.get("err.cocoa.enhancer.platform"));
 		}
 
 		initialize(callbackObject);

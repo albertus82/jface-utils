@@ -101,7 +101,7 @@
 			sonar.java.target=${build.compiler.target}
 			sonar.java.libraries=${dependencies.directory}/**/*.jar
 			sonar.java.binaries=${build.outputDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/test/*.jar
+			sonar.java.test.libraries=${dependencies.directory}/**/*.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
 			sonar.sourceEncoding=UTF-8
 		</echo>

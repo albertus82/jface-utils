@@ -7,7 +7,10 @@ public class ExceptionUtilsTest {
 
 	@Test
 	public void getStackTrace() {
-		Assert.assertNotEquals("", ExceptionUtils.getStackTrace(new RuntimeException()));
+		final String stackTrace = ExceptionUtils.getStackTrace(new RuntimeException("Exception message!"));
+		System.out.println(stackTrace);
+		Assert.assertNotNull(stackTrace);
+		Assert.assertNotEquals("", stackTrace);
 	}
 
 }

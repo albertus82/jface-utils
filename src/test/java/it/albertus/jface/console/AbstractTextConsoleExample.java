@@ -19,6 +19,8 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 
 	private static final Logger logger = Logger.getLogger(AbstractTextConsoleExample.class.getName());
 
+	private static final char[] specialChars = { '\u20AC', '\u00E0', '\u00E1', '\u00E8', '\u00E9', '\u00EC', '\u00ED', '\u00F2', '\u00F3', '\u00F9', '\u00FA' };
+
 	private static final String[] loremIpsum = {
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 		"Donec malesuada eros aliquam, viverra est et, tincidunt nisl.",
@@ -63,6 +65,10 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 
 			@Override
 			public void run() {
+				logger.log(Level.WARNING, String.valueOf(specialChars));
+				System.out.println(String.valueOf(specialChars));
+				System.err.println(specialChars);
+				ThreadUtils.sleep(2000);
 				while (true) {
 					for (final String dummy : loremIpsum) {
 						final String text = ++counter + ". " + dummy;

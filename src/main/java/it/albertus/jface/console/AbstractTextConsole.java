@@ -1,5 +1,6 @@
 package it.albertus.jface.console;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -36,7 +37,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 
 	protected final boolean redirectSystemStream;
 	protected final T scrollable;
-	protected StringBuilder buffer = new StringBuilder();
+	protected ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 	private Configured<Integer> maxChars;
 
@@ -71,18 +72,15 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	@Override
 	public void write(final int b) throws IOException {
 		ensureOpen();
-		buffer.append((char) b);
-		if (b == newLine.charAt(newLine.length() - 1)) {
-			flush();
-		}
+		buffer.write(b); // The wrapping PrintStream will flush automatically when needed.
 	}
 
 	@Override
 	public void flush() throws IOException {
 		ensureOpen();
-		if (buffer.length() != 0) {
-			print(buffer.toString());
-			buffer = new StringBuilder();
+		if (buffer.size() != 0) {
+			print(buffer.toString()); // platform's default character set
+			buffer.reset();
 		}
 	}
 
@@ -128,7 +126,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 	}
 
 	protected void redirectStreams() {
-		final PrintStream ps = new PrintStream(this);
+		final PrintStream ps = new PrintStream(this, true); // platform's default character set
 		try {
 			System.setOut(ps);
 			System.setErr(ps);

@@ -1,7 +1,7 @@
 package it.albertus.util;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -28,22 +28,22 @@ public class PropertiesConfiguration extends PreferencesCallback {
 	}
 
 	protected void load() {
-		InputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(getFileName());
-			synchronized (properties) {
-				try {
+		final File file = new File(getFileName());
+		if (file.exists()) {
+			InputStream inputStream = null;
+			try {
+				inputStream = new FileInputStream(file);
+				synchronized (properties) {
 					properties.clear();
 					properties.load(inputStream); // buffered internally
 				}
-				catch (final IOException ioe) {
-					throw new RuntimeException(ioe);
-				}
 			}
-		}
-		catch (final FileNotFoundException fnfe) {/* Ignore */}
-		finally {
-			IOUtils.closeQuietly(inputStream);
+			catch (final IOException ioe) {
+				throw new RuntimeException(ioe);
+			}
+			finally {
+				IOUtils.closeQuietly(inputStream);
+			}
 		}
 	}
 

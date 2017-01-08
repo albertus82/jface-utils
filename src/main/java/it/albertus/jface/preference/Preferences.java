@@ -1,7 +1,7 @@
 package it.albertus.jface.preference;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,20 +55,10 @@ public class Preferences {
 	}
 
 	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
-		// Load configuration file...
-		FileInputStream configurationInputStream = null;
-		try {
-			configurationInputStream = new FileInputStream(preferencesCallback.getFileName());
-			if (configurationInputStream != null) {
-				preferenceStore.load(configurationInputStream); // buffered internally
-			}
-		}
-		catch (final FileNotFoundException fnfe) {/* Ignore */}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-		finally {
-			IOUtils.closeQuietly(configurationInputStream);
+		// Load configuration file if exists...
+		final File file = new File(preferencesCallback.getFileName());
+		if (file.exists()) {
+			loadConfigurationFile(file);
 		}
 
 		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
@@ -109,6 +99,20 @@ public class Preferences {
 		}
 
 		return returnCode;
+	}
+
+	private void loadConfigurationFile(final File file) {
+		FileInputStream configurationInputStream = null;
+		try {
+			configurationInputStream = new FileInputStream(file);
+			preferenceStore.load(configurationInputStream); // buffered internally
+		}
+		catch (final IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+		finally {
+			IOUtils.closeQuietly(configurationInputStream);
+		}
 	}
 
 	protected PreferenceStore createPreferenceStore() {

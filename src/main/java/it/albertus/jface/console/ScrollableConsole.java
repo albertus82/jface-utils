@@ -19,9 +19,9 @@ import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
-public abstract class AbstractTextConsole<T extends Scrollable> extends OutputStream {
+public abstract class ScrollableConsole<T extends Scrollable> extends OutputStream {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractTextConsole.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScrollableConsole.class);
 
 	protected static final PrintStream defaultSysOut = System.out;
 	protected static final PrintStream defaultSysErr = System.err;
@@ -41,7 +41,7 @@ public abstract class AbstractTextConsole<T extends Scrollable> extends OutputSt
 
 	private Configured<Integer> maxChars;
 
-	protected AbstractTextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
+	protected ScrollableConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
 		this.redirectSystemStream = redirectSystemStream;
 
 		scrollable = createScrollable(parent);

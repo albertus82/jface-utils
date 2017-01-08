@@ -5,7 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class TextConsole extends AbstractTextConsole<Text> {
+public class TextConsole extends ScrollableConsole<Text> {
 
 	public TextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStreams) {
 		super(parent, layoutData, redirectSystemStreams);

@@ -13,11 +13,11 @@ import org.eclipse.swt.widgets.Shell;
 import it.albertus.util.IOUtils;
 import it.albertus.util.ThreadUtils;
 
-public abstract class AbstractTextConsoleExample<T extends Scrollable> {
+public abstract class ScrollableConsoleExample<T extends Scrollable> {
 
 	private static volatile int counter = 0;
 
-	private static final Logger logger = Logger.getLogger(AbstractTextConsoleExample.class.getName());
+	private static final Logger logger = Logger.getLogger(ScrollableConsoleExample.class.getName());
 
 	private static final char[] specialChars = { '\u20AC', '\u00E0', '\u00E1', '\u00E8', '\u00E9', '\u00EC', '\u00ED', '\u00F2', '\u00F3', '\u00F9', '\u00FA' };
 
@@ -47,7 +47,7 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 		shell.setImage(display.getSystemImage(SWT.ICON_INFORMATION));
 		shell.setLayout(new FillLayout());
 
-		final AbstractTextConsole<T> textConsole = createTextConsole(shell);
+		final ScrollableConsole<T> textConsole = createScrollableConsole(shell);
 
 		shell.setText(textConsole.getClass().getSimpleName() + " Example");
 		shell.pack();
@@ -65,16 +65,21 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 
 			@Override
 			public void run() {
-				logger.log(Level.WARNING, String.valueOf(specialChars));
+//				logger.log(Level.WARNING, String.valueOf(specialChars));
 				System.out.println(String.valueOf(specialChars));
-				System.err.println(specialChars);
+//				System.err.println(specialChars);
 				ThreadUtils.sleep(2000);
 				while (true) {
 					for (final String dummy : loremIpsum) {
 						final String text = ++counter + ". " + dummy;
 						System.out.println(text);
-						logger.log(Level.INFO, text);
-						ThreadUtils.sleep(250);
+//						logger.log(Level.INFO, text);
+						if (counter % 5 == 0) {
+							for (int i = 0; i < counter / 5; i++) {
+//								System.out.println();
+							}
+						}
+						ThreadUtils.sleep(1000);
 						if (exit) {
 							return;
 						}
@@ -97,6 +102,6 @@ public abstract class AbstractTextConsoleExample<T extends Scrollable> {
 		display.dispose();
 	}
 
-	protected abstract AbstractTextConsole<T> createTextConsole(Composite parent);
+	protected abstract ScrollableConsole<T> createScrollableConsole(Composite parent);
 
 }

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
 
-public class StyledTextConsole extends AbstractTextConsole<StyledText> {
+public class StyledTextConsole extends ScrollableConsole<StyledText> {
 
 	protected static final int MARGIN = 4;
 

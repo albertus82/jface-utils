@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
-public class TextConsoleExample extends AbstractTextConsoleExample<Text> {
+public class TextConsoleExample extends ScrollableConsoleExample<Text> {
 
 	public static void main(final String... args) {
 		Display.setAppName(TextConsole.class.getSimpleName() + " Example");
@@ -12,7 +12,7 @@ public class TextConsoleExample extends AbstractTextConsoleExample<Text> {
 	}
 
 	@Override
-	protected AbstractTextConsole<Text> createTextConsole(final Composite parent) {
+	protected ScrollableConsole<Text> createScrollableConsole(final Composite parent) {
 		return new TextConsole(parent, null, true);
 	}
 

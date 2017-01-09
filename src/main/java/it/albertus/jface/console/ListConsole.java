@@ -44,10 +44,10 @@ public class ListConsole extends ScrollableConsole<List> {
 	}
 
 	@Override
-	protected void doPrint(final String value, final int maxChars) {
+	protected void doPrint(final String value, final int maxItems) {
 		scrollable.setRedraw(false);
 
-		if (getLastItemIndex() > getLimit()) {
+		if (getLastItemIndex() > maxItems) {
 			clear();
 		}
 

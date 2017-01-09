@@ -53,7 +53,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 
 	protected abstract T createScrollable(Composite parent);
 
-	protected abstract void doPrint(String value, int maxChars);
+	protected abstract void doPrint(String value, int limit);
 
 	public abstract void clear();
 

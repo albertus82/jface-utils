@@ -59,9 +59,9 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 		styledText.addMenuDetectListener(new MenuDetectListener() {
 			@Override
 			public void menuDetected(final MenuDetectEvent mde) {
-				final boolean charCount = styledText.getCharCount() > 0;
-				selectAllMenuItem.setEnabled(charCount);
-				clearMenuItem.setEnabled(charCount);
+				final boolean notEmpty = !isEmpty();
+				selectAllMenuItem.setEnabled(notEmpty);
+				clearMenuItem.setEnabled(notEmpty);
 				copyMenuItem.setEnabled(styledText.getSelectionCount() > 0);
 			}
 		});

@@ -27,19 +27,11 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	protected static final PrintStream defaultSysErr = System.err;
 	protected static final String newLine = NewLine.SYSTEM_LINE_SEPARATOR;
 
-	public static class Defaults {
-		public static final int GUI_CONSOLE_MAX_CHARS = 100000;
-
-		private Defaults() {
-			throw new IllegalAccessError("Constants class");
-		}
-	}
-
 	protected final boolean redirectSystemStream;
 	protected final T scrollable;
-	protected ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	protected ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 
-	private Configured<Integer> maxChars;
+	private Configured<Integer> limit;
 
 	protected ScrollableConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
 		this.redirectSystemStream = redirectSystemStream;
@@ -72,26 +64,26 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	@Override
 	public void write(final int b) throws IOException {
 		ensureOpen();
-		buffer.write(b); // The wrapping PrintStream will flush automatically when needed.
+		byteBuffer.write(b); // The wrapping PrintStream will flush automatically when needed.
 	}
 
 	@Override
 	public void flush() throws IOException {
 		ensureOpen();
-		if (buffer.size() != 0) {
-			print(buffer.toString()); // platform's default character set
-			buffer.reset();
+		if (byteBuffer.size() != 0) {
+			print(byteBuffer.toString()); // platform's default character set
+			byteBuffer.reset();
 		}
 	}
 
 	@Override
 	public void close() throws IOException {
-		if (buffer != null) {
+		if (byteBuffer != null) {
 			flush();
 			if (redirectSystemStream) {
 				resetStreams();
 			}
-			buffer = null;
+			byteBuffer = null;
 		}
 	}
 
@@ -105,7 +97,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 			toPrint = value;
 		}
 
-		final int capacity = getMaxChars();
+		final int capacity = getLimit();
 
 		// Actual print... (async avoids deadlocks)
 		new SwtThreadExecutor(scrollable, true) {
@@ -147,30 +139,32 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	}
 
 	private void ensureOpen() throws IOException {
-		if (buffer == null) {
+		if (byteBuffer == null) {
 			throw new IOException("Stream closed");
 		}
 	}
 
-	public int getMaxChars() {
+	protected abstract int getDefaultLimit();
+
+	public int getLimit() {
 		try {
-			return maxChars != null && maxChars.getValue() != null ? maxChars.getValue() : Defaults.GUI_CONSOLE_MAX_CHARS;
+			return limit != null && limit.getValue() != null ? limit.getValue() : getDefaultLimit();
 		}
 		catch (final RuntimeException re) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", Defaults.GUI_CONSOLE_MAX_CHARS), re);
-			return Defaults.GUI_CONSOLE_MAX_CHARS;
+			logger.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", getDefaultLimit()), re);
+			return getDefaultLimit();
 		}
 	}
 
-	public void setMaxChars(final Configured<Integer> maxChars) {
-		this.maxChars = maxChars;
+	public void setLimit(final Configured<Integer> limit) {
+		this.limit = limit;
 	}
 
-	public void setMaxChars(final int maxChars) {
-		this.maxChars = new Configured<Integer>() {
+	public void setLimit(final int limit) {
+		this.limit = new Configured<Integer>() {
 			@Override
 			public Integer getValue() {
-				return maxChars;
+				return limit;
 			}
 		};
 	}

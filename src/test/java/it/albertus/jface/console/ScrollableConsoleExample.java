@@ -65,21 +65,30 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 
 			@Override
 			public void run() {
-//				logger.log(Level.WARNING, String.valueOf(specialChars));
+				System.out.print("abcdef");
+				ThreadUtils.sleep(750);
+				System.out.print("ghijklm");
+				ThreadUtils.sleep(750);
+				System.out.print("nopqrs");
+				ThreadUtils.sleep(750);
+				System.out.print("tuvwxyz");
+				ThreadUtils.sleep(1250);
+				System.out.println();
+				logger.log(Level.WARNING, String.valueOf(specialChars));
 				System.out.println(String.valueOf(specialChars));
-//				System.err.println(specialChars);
-				ThreadUtils.sleep(2000);
+				System.err.println(specialChars);
+				ThreadUtils.sleep(1500);
 				while (true) {
 					for (final String dummy : loremIpsum) {
 						final String text = ++counter + ". " + dummy;
 						System.out.println(text);
-//						logger.log(Level.INFO, text);
+						logger.log(Level.INFO, text);
 						if (counter % 5 == 0) {
 							for (int i = 0; i < counter / 5; i++) {
-//								System.out.println();
+								System.out.println();
 							}
 						}
-						ThreadUtils.sleep(1000);
+						ThreadUtils.sleep(333);
 						if (exit) {
 							return;
 						}

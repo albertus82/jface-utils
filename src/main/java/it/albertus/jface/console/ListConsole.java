@@ -1,18 +1,14 @@
 package it.albertus.jface.console;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
 public class ListConsole extends ScrollableConsole<List> {
-	
-	private boolean newLine=true;
+
+	public static final int DEFAULT_LIMIT = 10000;
+
+	private final StringBuilder charBuffer = new StringBuilder();
 
 	protected ListConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
 		super(parent, layoutData, redirectSystemStream);
@@ -33,65 +29,57 @@ public class ListConsole extends ScrollableConsole<List> {
 		return scrollable.getSelectionCount() > 0;
 	}
 
+	public int getLastItemIndex() {
+		return scrollable.getItemCount() - 1;
+	}
+
 	@Override
 	protected List createScrollable(final Composite parent) {
 		return new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 	}
 
 	@Override
+	protected int getDefaultLimit() {
+		return DEFAULT_LIMIT;
+	}
+
+	@Override
 	protected void doPrint(final String value, final int maxChars) {
 		scrollable.setRedraw(false);
-		
-//		StringWriter sw = new StringWriter();
-//		BufferedWriter bw = new BufferedWriter(sw);
-//		try {
-//		bw.write(value);bw.close();
-//		}catch(IOException ioe) {}
-		
-//		try {
-//		FileWriter fw = new FileWriter("d:\\text.txt", true);
-//		fw.write(value);
-//		fw.close();
-//		}catch(IOException e){}
-		 
-//		StringReader sr = new StringReader(value);
-//		BufferedReader br = new BufferedReader(sr);
-//		String line;
-//		try{
-//		while ((line = br.readLine()) != null) {
-		final String[] tokens = value.split("(?<=\r\n)", -1);
-for(String line: tokens) {
-			if (newLine) {
-				scrollable.add(line);
-			}
-			else {
-				scrollable.setItem(scrollable.getItemCount()-1, scrollable.getItem(scrollable.getItemCount()-1)+line);
-			}
-			if (line.endsWith("\r\n") || line.endsWith("\n" ) || line.endsWith("\r")) {
-				newLine = true;
-			}
-			else {
-				newLine=false;
-			}
-//			for (char c:line.toCharArray()) {
-//				defaultSysOut.printf("%04x ", (int)c);
-//				if (c == 13 || c == 10) defaultSysOut.print("\n");
-//			}
-//			defaultSysOut.println(value);
+
+		if (getLastItemIndex() > getLimit()) {
+			clear();
 		}
-//		}catch(IOException ioe) {}
-//		final String[] tokens = value.split("[\r\n]", -1);
-//		for (final String token : tokens) {
-//			try {
-//				for (char c:token.toCharArray()) {
-//					defaultSysOut.printf("%04x ", (int)c);
-//					if (c == 13 || c == 10) defaultSysOut.print("\n");
-//				}
-//			}catch(Exception e){}
-//			scrollable.add(token);
-//		}
-		scrollable.setTopIndex(scrollable.getItemCount() - 1);
+
+		charBuffer.setLength(0);
+		if (isEmpty()) {
+			scrollable.add("");
+		}
+		else {
+			charBuffer.append(scrollable.getItem(getLastItemIndex()));
+		}
+		for (int i = 0; i < value.length(); i++) {
+			if (value.charAt(i) == '\r' && value.length() > i + 1 && value.charAt(i + 1) == '\n') {
+				newLine();
+				i++;
+			}
+			else if (value.charAt(i) == '\r' || value.charAt(i) == '\n') {
+				newLine();
+			}
+			else {
+				charBuffer.append(value.charAt(i));
+			}
+		}
+		scrollable.setItem(getLastItemIndex(), charBuffer.toString());
+		scrollable.setTopIndex(getLastItemIndex());
+
 		scrollable.setRedraw(true);
+	}
+
+	private void newLine() {
+		scrollable.setItem(Math.max(getLastItemIndex(), 0), charBuffer.toString());
+		charBuffer.setLength(0);
+		scrollable.add("");
 	}
 
 }

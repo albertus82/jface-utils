@@ -18,6 +18,8 @@ import it.albertus.jface.SwtUtils;
 
 public class StyledTextConsole extends ScrollableConsole<StyledText> {
 
+	public static final int DEFAULT_LIMIT = 100000;
+
 	protected static final int MARGIN = 4;
 
 	private Menu contextMenu;
@@ -123,6 +125,11 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 	@Override
 	public boolean hasSelection() {
 		return scrollable != null && !scrollable.isDisposed() && scrollable.getSelectionCount() > 0;
+	}
+
+	@Override
+	protected int getDefaultLimit() {
+		return DEFAULT_LIMIT;
 	}
 
 	@Override

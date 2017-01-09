@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class TextConsole extends ScrollableConsole<Text> {
 
+	public static final int DEFAULT_LIMIT = 100000;
+
 	public TextConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStreams) {
 		super(parent, layoutData, redirectSystemStreams);
 	}
@@ -33,6 +35,11 @@ public class TextConsole extends ScrollableConsole<Text> {
 	@Override
 	public boolean hasSelection() {
 		return scrollable != null && !scrollable.isDisposed() && scrollable.getSelectionCount() > 0;
+	}
+
+	@Override
+	protected int getDefaultLimit() {
+		return DEFAULT_LIMIT;
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class CocoaUIEnhancer {
 		catch (final Exception e) {
 			throw new CocoaEnhancerException(e);
 		}
-		catch (final LinkageError le) {
+		catch (final LinkageError le) { // reflective methods may also (erroneously) throw LinkageError!
 			throw new CocoaEnhancerException(le);
 		}
 	}
@@ -57,7 +57,7 @@ public class CocoaUIEnhancer {
 		catch (final Exception e) {
 			throw new CocoaEnhancerException(e);
 		}
-		catch (final LinkageError le) {
+		catch (final LinkageError le) { // reflective methods may also (erroneously) throw LinkageError!
 			throw new CocoaEnhancerException(le);
 		}
 	}

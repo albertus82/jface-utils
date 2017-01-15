@@ -38,12 +38,28 @@ public class CocoaUIEnhancer {
 		this.display = display;
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
-		hookApplicationMenu(quitListener, new ListenerCallbackObject(aboutListener, preferencesListener));
+	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws CocoaEnhancerException {
+		try {
+			hookApplicationMenu(quitListener, new ListenerCallbackObject(aboutListener, preferencesListener));
+		}
+		catch (final Exception e) {
+			throw new CocoaEnhancerException(e);
+		}
+		catch (final LinkageError le) {
+			throw new CocoaEnhancerException(le);
+		}
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
-		hookApplicationMenu(quitListener, new ActionCallbackObject(aboutAction, preferencesAction));
+	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws CocoaEnhancerException {
+		try {
+			hookApplicationMenu(quitListener, new ActionCallbackObject(aboutAction, preferencesAction));
+		}
+		catch (final Exception e) {
+			throw new CocoaEnhancerException(e);
+		}
+		catch (final LinkageError le) {
+			throw new CocoaEnhancerException(le);
+		}
 	}
 
 	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {

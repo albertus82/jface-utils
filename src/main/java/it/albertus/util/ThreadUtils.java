@@ -23,6 +23,7 @@ public class ThreadUtils {
 			return null;
 		}
 		catch (final InterruptedException ie) {
+			Thread.currentThread().interrupt();
 			return ie;
 		}
 	}

@@ -1,16 +1,21 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.BigDecimalVerifyListener;
-import it.albertus.util.Configured;
-
 import java.math.BigDecimal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.listener.BigDecimalVerifyListener;
+import it.albertus.util.Configured;
+import it.albertus.util.logging.LoggerFactory;
+
 public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal> {
+
+	private static final Logger logger = LoggerFactory.getLogger(BigDecimalFieldEditor.class);
 
 	public BigDecimalFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -84,7 +89,9 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {/* Ignore */}
+			catch (final Exception e) {
+				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			}
 		}
 	}
 

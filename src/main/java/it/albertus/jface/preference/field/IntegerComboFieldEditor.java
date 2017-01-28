@@ -24,15 +24,14 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 	}
 
 	@Override
-	protected String cleanValue(String value) {
-		value = super.cleanValue(value);
+	protected String cleanValue(final String value) {
+		final String cleanValue = super.cleanValue(value);
 		try {
-			value = Integer.valueOf(value).toString();
+			return Integer.valueOf(cleanValue).toString();
 		}
-		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		catch (final NumberFormatException nfe) {
+			return cleanValue;
 		}
-		return value;
 	}
 
 	@Override

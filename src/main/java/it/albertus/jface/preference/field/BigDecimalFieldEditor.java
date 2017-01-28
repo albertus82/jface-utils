@@ -64,8 +64,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			new BigDecimal(defaultValue);
-			return defaultValue;
+			return new BigDecimal(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

@@ -72,8 +72,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Byte.parseByte(defaultValue);
-			return defaultValue;
+			return Byte.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

@@ -25,15 +25,14 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 	}
 
 	@Override
-	protected String cleanValue(String value) {
-		value = super.cleanValue(value);
+	protected String cleanValue(final String value) {
+		final String cleanValue = super.cleanValue(value);
 		try {
-			value = Byte.valueOf(value).toString();
+			return Byte.valueOf(cleanValue).toString();
 		}
-		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		catch (final NumberFormatException nfe) {
+			return cleanValue;
 		}
-		return value;
 	}
 
 	@Override

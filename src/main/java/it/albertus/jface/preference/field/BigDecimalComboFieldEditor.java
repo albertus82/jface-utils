@@ -17,15 +17,14 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 	}
 
 	@Override
-	protected String cleanValue(String value) {
-		value = super.cleanValue(value);
+	protected String cleanValue(final String value) {
+		final String cleanValue = super.cleanValue(value);
 		try {
-			value = new BigDecimal(value).toString();
+			return new BigDecimal(cleanValue).toString();
 		}
-		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		catch (final NumberFormatException nfe) {
+			return cleanValue;
 		}
-		return value;
 	}
 
 	@Override
@@ -82,16 +81,6 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			}
 		}
 		return value; // Name not present in the array.
-	}
-
-	@Override
-	protected String getDefaultValue() {
-		String defaultValue = getPreferenceStore().getDefaultString(getPreferenceName());
-		try {
-			defaultValue = new BigDecimal(defaultValue).toString();
-		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
-		return defaultValue;
 	}
 
 	@Override

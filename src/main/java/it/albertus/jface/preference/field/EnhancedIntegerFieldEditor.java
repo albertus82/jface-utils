@@ -71,8 +71,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Integer.parseInt(defaultValue);
-			return defaultValue;
+			return Integer.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

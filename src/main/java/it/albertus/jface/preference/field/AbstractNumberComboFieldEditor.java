@@ -1,12 +1,12 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.listener.LowerCaseVerifyListener;
-import it.albertus.jface.listener.TrimVerifyListener;
-import it.albertus.jface.listener.UpperCaseVerifyListener;
-
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.listener.LowerCaseVerifyListener;
+import it.albertus.jface.listener.TrimVerifyListener;
+import it.albertus.jface.listener.UpperCaseVerifyListener;
 
 abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? extends Number>> extends ValidatedComboFieldEditor {
 
@@ -37,6 +37,11 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 		setTextLimit(Math.max(getMaxLabelLength(), getDefaultTextLimit()));
 
 		updateErrorMessage();
+	}
+
+	@Override
+	protected String getDefaultValue() {
+		return cleanValue(super.getDefaultValue());
 	}
 
 	@Override

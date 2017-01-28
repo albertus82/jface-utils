@@ -25,15 +25,14 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 	}
 
 	@Override
-	protected String cleanValue(String value) {
-		value = super.cleanValue(value);
+	protected String cleanValue(final String value) {
+		final String cleanValue = super.cleanValue(value);
 		try {
-			value = Short.valueOf(value).toString();
+			return Short.valueOf(cleanValue).toString();
 		}
-		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		catch (final NumberFormatException nfe) {
+			return cleanValue;
 		}
-		return value;
 	}
 
 	@Override

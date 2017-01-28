@@ -64,8 +64,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			new BigInteger(defaultValue);
-			return defaultValue;
+			return new BigInteger(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

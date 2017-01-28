@@ -70,8 +70,7 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Double.parseDouble(defaultValue);
-			return defaultValue;
+			return Double.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

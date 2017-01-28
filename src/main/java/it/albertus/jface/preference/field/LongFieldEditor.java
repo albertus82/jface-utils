@@ -71,8 +71,7 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Long.parseLong(defaultValue);
-			return defaultValue;
+			return Long.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

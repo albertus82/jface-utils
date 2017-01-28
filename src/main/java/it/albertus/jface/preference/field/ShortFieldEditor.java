@@ -72,8 +72,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Short.parseShort(defaultValue);
-			return defaultValue;
+			return Short.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

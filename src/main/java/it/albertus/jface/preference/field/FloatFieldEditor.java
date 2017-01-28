@@ -70,8 +70,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 	protected String getDefaultValue() {
 		final String defaultValue = super.getDefaultValue();
 		try {
-			Float.parseFloat(defaultValue);
-			return defaultValue;
+			return Float.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException nfe) {
 			return "";

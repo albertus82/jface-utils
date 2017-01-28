@@ -1,12 +1,12 @@
 package it.albertus.jface.preference;
 
-import it.albertus.util.Localized;
-
 import java.util.Arrays;
 import java.util.Date;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.graphics.Image;
+
+import it.albertus.util.Localized;
 
 public class FieldEditorDetails {
 
@@ -62,6 +62,37 @@ public class FieldEditorDetails {
 
 	// Allow extension
 	protected FieldEditorDetails() {}
+
+	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
+		this.fieldEditorClass = builder.fieldEditorClass;
+		this.emptyStringAllowed = builder.emptyStringAllowed;
+		this.horizontalSpan = builder.horizontalSpan;
+		this.icons = builder.icons;
+		this.style = builder.style;
+		this.labelsAndValues = builder.labelsAndValues;
+		this.scaleMinimum = builder.scaleMinimum;
+		this.scaleMaximum = builder.scaleMaximum;
+		this.scaleIncrement = builder.scaleIncrement;
+		this.scalePageIncrement = builder.scalePageIncrement;
+		this.textLimit = builder.textLimit;
+		this.textWidth = builder.textWidth;
+		this.textHeight = builder.textHeight;
+		this.textValidateStrategy = builder.textValidateStrategy;
+		this.numberMinimum = builder.numberMinimum;
+		this.numberMaximum = builder.numberMaximum;
+		this.datePattern = builder.datePattern;
+		this.dateFrom = builder.dateFrom;
+		this.dateTo = builder.dateTo;
+		this.directoryDialogMessage = builder.directoryDialogMessage;
+		this.fileExtensions = builder.fileExtensions;
+		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
+		this.radioNumColumns = builder.radioNumColumns;
+		this.radioUseGroup = builder.radioUseGroup;
+		this.fontPreviewAreaText = builder.fontPreviewAreaText;
+		this.fontChangeButtonText = builder.fontChangeButtonText;
+		this.boldCustomValues = builder.boldCustomValues;
+		this.defaultToolTip = builder.defaultToolTip;
+	}
 
 	public Class<? extends FieldEditor> getFieldEditorClass() {
 		return fieldEditorClass;
@@ -294,37 +325,6 @@ public class FieldEditorDetails {
 				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "")
 				+ (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "")
 				+ (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
-	}
-
-	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
-		this.fieldEditorClass = builder.fieldEditorClass;
-		this.emptyStringAllowed = builder.emptyStringAllowed;
-		this.horizontalSpan = builder.horizontalSpan;
-		this.icons = builder.icons;
-		this.style = builder.style;
-		this.labelsAndValues = builder.labelsAndValues;
-		this.scaleMinimum = builder.scaleMinimum;
-		this.scaleMaximum = builder.scaleMaximum;
-		this.scaleIncrement = builder.scaleIncrement;
-		this.scalePageIncrement = builder.scalePageIncrement;
-		this.textLimit = builder.textLimit;
-		this.textWidth = builder.textWidth;
-		this.textHeight = builder.textHeight;
-		this.textValidateStrategy = builder.textValidateStrategy;
-		this.numberMinimum = builder.numberMinimum;
-		this.numberMaximum = builder.numberMaximum;
-		this.datePattern = builder.datePattern;
-		this.dateFrom = builder.dateFrom;
-		this.dateTo = builder.dateTo;
-		this.directoryDialogMessage = builder.directoryDialogMessage;
-		this.fileExtensions = builder.fileExtensions;
-		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
-		this.radioNumColumns = builder.radioNumColumns;
-		this.radioUseGroup = builder.radioUseGroup;
-		this.fontPreviewAreaText = builder.fontPreviewAreaText;
-		this.fontChangeButtonText = builder.fontChangeButtonText;
-		this.boldCustomValues = builder.boldCustomValues;
-		this.defaultToolTip = builder.defaultToolTip;
 	}
 
 	public static class FieldEditorDetailsBuilder {

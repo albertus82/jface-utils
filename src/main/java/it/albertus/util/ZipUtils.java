@@ -7,12 +7,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class ZipUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(ZipUtils.class);
 
 	public static final String ZIP_FILE_EXTENSION = ".zip";
 
@@ -63,6 +69,7 @@ public class ZipUtils {
 			return true;
 		}
 		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return false;
 		}
 	}

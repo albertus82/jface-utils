@@ -1,5 +1,8 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -7,8 +10,11 @@ import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.IntegerVerifyListener;
 import it.albertus.util.Configured;
+import it.albertus.util.logging.LoggerFactory;
 
 public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integer> {
+
+	private static final Logger logger = LoggerFactory.getLogger(EnhancedIntegerFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
@@ -90,7 +96,9 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {/* Ignore */}
+			catch (final Exception e) {
+				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			}
 		}
 	}
 

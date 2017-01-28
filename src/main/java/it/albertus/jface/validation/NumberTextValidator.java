@@ -1,10 +1,17 @@
 package it.albertus.jface.validation;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.util.logging.LoggerFactory;
 
 public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends StringTextValidator {
 
-	public static final boolean EMPTY_STRING_ALLOWED = false;
+	private static final Logger logger = LoggerFactory.getLogger(NumberTextValidator.class);
+
+	private static final boolean EMPTY_STRING_ALLOWED = false;
 
 	private T minValidValue;
 	private T maxValidValue;
@@ -37,7 +44,9 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 				return true;
 			}
 		}
-		catch (final RuntimeException re) {/* Ignore */}
+		catch (final RuntimeException re) {
+			logger.log(Level.FINE, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
+		}
 		return false;
 	}
 

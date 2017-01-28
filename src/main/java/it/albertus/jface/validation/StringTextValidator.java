@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class StringTextValidator extends ControlValidator<Text> {
 
-	public static final boolean EMPTY_STRING_ALLOWED = true;
+	private static final boolean EMPTY_STRING_ALLOWED = true;
 
 	private boolean emptyStringAllowed = EMPTY_STRING_ALLOWED;
 

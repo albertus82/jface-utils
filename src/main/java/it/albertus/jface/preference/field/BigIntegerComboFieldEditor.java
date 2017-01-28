@@ -1,10 +1,16 @@
 package it.albertus.jface.preference.field;
 
 import java.math.BigInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<BigInteger> {
+
+	private static final Logger logger = LoggerFactory.getLogger(BigIntegerComboFieldEditor.class);
 
 	public BigIntegerComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -16,7 +22,9 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 		try {
 			value = new BigInteger(value).toString();
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return value;
 	}
 
@@ -28,7 +36,9 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 		try {
 			newText = getNameForValue(new BigInteger(newText).toString());
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -39,7 +49,8 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 		try {
 			return new BigInteger(super.getValue()).toString();
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return super.getValue();
 		}
 	}
@@ -49,7 +60,8 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 		try {
 			super.setValue(new BigInteger(value).toString());
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			super.setValue(value);
 		}
 	}
@@ -62,6 +74,7 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 				comboValue = new BigInteger(entry[1]).toString();
 			}
 			catch (final Exception e) {
+				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

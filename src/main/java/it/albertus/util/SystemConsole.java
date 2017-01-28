@@ -4,13 +4,17 @@ public class SystemConsole extends Console {
 
 	private static class Singleton {
 		private static final SystemConsole instance = new SystemConsole();
+
+		private Singleton() {
+			throw new IllegalAccessError();
+		}
 	}
+
+	protected SystemConsole() {}
 
 	public static SystemConsole getInstance() {
 		return Singleton.instance;
 	}
-
-	protected SystemConsole() {}
 
 	@Override
 	public void print(final String value) {
@@ -19,7 +23,7 @@ public class SystemConsole extends Console {
 	}
 
 	@Override
-	public void print(final char array[]) {
+	public void print(final char[] array) {
 		System.out.print(array);
 		updatePosition(array);
 	}
@@ -79,7 +83,7 @@ public class SystemConsole extends Console {
 	}
 
 	@Override
-	public void println(final char array[]) {
+	public void println(final char[] array) {
 		System.out.println(array);
 		newLine();
 	}

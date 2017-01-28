@@ -1,5 +1,8 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -7,15 +10,18 @@ import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.ByteVerifyListener;
 import it.albertus.util.Configured;
+import it.albertus.util.logging.LoggerFactory;
 
 public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
+
+	private static final Logger logger = LoggerFactory.getLogger(ByteFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
 	public ByteFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setMinValidValue((byte) 0); // Positive by default
-		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly
+		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly (127)
 		getTextControl().addVerifyListener(new ByteVerifyListener(new Configured<Boolean>() {
 			@Override
 			public Boolean getValue() {
@@ -91,7 +97,9 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 				}
 				valueChanged();
 			}
-			catch (final Exception e) {/* Ignore */}
+			catch (final Exception e) {
+				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			}
 		}
 	}
 

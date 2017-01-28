@@ -4,9 +4,15 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class IOUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
 
 	public static final int EOF = -1;
 
@@ -21,7 +27,9 @@ public class IOUtils {
 					closeable.close();
 				}
 			}
-			catch (final IOException ioe) {/* Ignore */}
+			catch (final IOException ioe) {
+				logger.log(Level.FINE, ioe.getLocalizedMessage() != null ? ioe.getLocalizedMessage() : ioe.getMessage(), ioe);
+			}
 		}
 	}
 
@@ -31,7 +39,9 @@ public class IOUtils {
 				zipFile.close();
 			}
 		}
-		catch (final IOException ioe) {/* Ignore */}
+		catch (final IOException ioe) {
+			logger.log(Level.FINE, ioe.getLocalizedMessage() != null ? ioe.getLocalizedMessage() : ioe.getMessage(), ioe);
+		}
 	}
 
 	public static long copy(final InputStream input, final OutputStream output, final byte[] buffer) throws IOException {

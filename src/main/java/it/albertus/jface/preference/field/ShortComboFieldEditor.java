@@ -1,15 +1,22 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short> {
+
+	private static final Logger logger = LoggerFactory.getLogger(ShortComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MAX_VALUE).length();
 
 	public ShortComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setMinValidValue((short) 0); // Positive by default
-		setMaxValidValue(Short.MAX_VALUE); // Not so ugly
+		setMaxValidValue(Short.MAX_VALUE); // Not so ugly (32767)
 	}
 
 	@Override
@@ -23,7 +30,9 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			value = Short.valueOf(value).toString();
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return value;
 	}
 
@@ -35,7 +44,9 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			newText = getNameForValue(Short.valueOf(newText).toString());
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -46,7 +57,8 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			return Short.valueOf(super.getValue()).toString();
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return super.getValue();
 		}
 	}
@@ -56,7 +68,8 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			super.setValue(Short.valueOf(value).toString());
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			super.setValue(value);
 		}
 	}

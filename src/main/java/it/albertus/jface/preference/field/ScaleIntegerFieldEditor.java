@@ -1,5 +1,8 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
@@ -14,8 +17,11 @@ import org.eclipse.swt.widgets.Text;
 import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.listener.IntegerVerifyListener;
+import it.albertus.util.logging.LoggerFactory;
 
 public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
+
+	private static final Logger logger = LoggerFactory.getLogger(ScaleIntegerFieldEditor.class);
 
 	private static final Formatter formatter = new Formatter(ScaleIntegerFieldEditor.class);
 
@@ -131,6 +137,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 				scale.setSelection(textValue);
 			}
 			catch (final RuntimeException re) {
+				logger.log(Level.FINE, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
 				setText(scale.getSelection());
 			}
 		}

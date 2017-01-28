@@ -1,8 +1,15 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Integer> {
+
+	private static final Logger logger = LoggerFactory.getLogger(IntegerComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
@@ -22,7 +29,9 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		try {
 			value = Integer.valueOf(value).toString();
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return value;
 	}
 
@@ -34,7 +43,9 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		try {
 			newText = getNameForValue(Integer.valueOf(newText).toString());
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -45,7 +56,8 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		try {
 			return Integer.valueOf(super.getValue()).toString();
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return super.getValue();
 		}
 	}
@@ -55,7 +67,8 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 		try {
 			super.setValue(Integer.valueOf(value).toString());
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			super.setValue(value);
 		}
 	}

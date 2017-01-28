@@ -44,7 +44,7 @@ public class MapBoundsDialog extends MapDialog {
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(BUTTON_WIDTH, SWT.DEFAULT).applyTo(confirmButton);
 		confirmButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(final SelectionEvent se) {
+			public void widgetSelected(final SelectionEvent event) {
 				try {
 					getOptions().setZoom(((Number) browser.evaluate("return map.getZoom();")).intValue());
 					getOptions().setCenterLat((Double) browser.evaluate("return map.getCenter().lat();"));
@@ -55,7 +55,9 @@ public class MapBoundsDialog extends MapDialog {
 					bounds.setSouthWestLng((Double) browser.evaluate("return map.getBounds().getSouthWest().lng();"));
 					setReturnCode(SWT.OK);
 				}
-				catch (final SWTException swte) {/* Ignore */}
+				catch (final SWTException se) {
+					logger.log(Level.FINE, se.getLocalizedMessage() != null ? se.getLocalizedMessage() : se.getMessage(), se);
+				}
 				catch (final Exception e) {
 					logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
 				}

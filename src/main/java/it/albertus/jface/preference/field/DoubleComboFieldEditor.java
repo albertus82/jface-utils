@@ -1,8 +1,15 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Double> {
+
+	private static final Logger logger = LoggerFactory.getLogger(DoubleComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = 32;
 
@@ -21,7 +28,9 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 		try {
 			value = Double.valueOf(value).toString();
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return value;
 	}
 
@@ -33,7 +42,9 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 		try {
 			newText = getNameForValue(Double.valueOf(newText).toString());
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -44,7 +55,8 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 		try {
 			return Double.valueOf(super.getValue()).toString();
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return super.getValue();
 		}
 	}
@@ -54,7 +66,8 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 		try {
 			super.setValue(Double.valueOf(value).toString());
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			super.setValue(value);
 		}
 	}
@@ -67,6 +80,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 				comboValue = Double.valueOf(entry[1]).toString();
 			}
 			catch (final Exception e) {
+				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

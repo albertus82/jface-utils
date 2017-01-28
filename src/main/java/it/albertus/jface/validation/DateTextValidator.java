@@ -3,12 +3,18 @@ package it.albertus.jface.validation;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class DateTextValidator extends StringTextValidator {
 
-	public static final boolean EMPTY_STRING_ALLOWED = true;
+	private static final Logger logger = LoggerFactory.getLogger(DateTextValidator.class);
+
+	private static final boolean EMPTY_STRING_ALLOWED = true;
 
 	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -50,7 +56,9 @@ public class DateTextValidator extends StringTextValidator {
 				return true;
 			}
 		}
-		catch (final Exception e) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return false;
 	}
 

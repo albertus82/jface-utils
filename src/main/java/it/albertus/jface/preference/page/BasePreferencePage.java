@@ -200,6 +200,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 				parentEnabled = ((BooleanFieldEditor) fieldEditorWrapper.getFieldEditor()).getBooleanValue();
 			}
 			catch (final NullPointerException npe) { // Uninitialized field.
+				logger.log(Level.FINE, npe.getLocalizedMessage() != null ? npe.getLocalizedMessage() : npe.getMessage(), npe);
 				parentEnabled = getPreferenceStore().getBoolean(preference.getName());
 			}
 		}
@@ -239,6 +240,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 							parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
 						}
 						catch (final NullPointerException npe) {
+							logger.log(Level.FINE, npe.getLocalizedMessage() != null ? npe.getLocalizedMessage() : npe.getMessage(), npe);
 							parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getName());
 						}
 						updateChildrenStatus(preference, parentEnabled);

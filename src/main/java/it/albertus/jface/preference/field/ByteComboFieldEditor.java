@@ -1,8 +1,15 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> {
+
+	private static final Logger logger = LoggerFactory.getLogger(ByteComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
@@ -23,7 +30,9 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 		try {
 			value = Byte.valueOf(value).toString();
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		return value;
 	}
 
@@ -35,7 +44,9 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 		try {
 			newText = getNameForValue(Byte.valueOf(newText).toString());
 		}
-		catch (final Exception exception) {/* Ignore */}
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
 		}
@@ -46,7 +57,8 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 		try {
 			return Byte.valueOf(super.getValue()).toString();
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			return super.getValue();
 		}
 	}
@@ -56,7 +68,8 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 		try {
 			super.setValue(Byte.valueOf(value).toString());
 		}
-		catch (final Exception exception) {
+		catch (final Exception e) {
+			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
 			super.setValue(value);
 		}
 	}

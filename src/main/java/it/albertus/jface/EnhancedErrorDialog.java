@@ -27,6 +27,7 @@ public class EnhancedErrorDialog extends ErrorDialog {
 
 	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final IStatus status, final Image[] images, final int displayMask) {
 		super(parent, title, message, status, displayMask);
+		this.message = message == null ? status.getMessage() : JFaceMessages.get("lbl.error.dialog.reason", message, status.getMessage());
 		this.images = images;
 	}
 

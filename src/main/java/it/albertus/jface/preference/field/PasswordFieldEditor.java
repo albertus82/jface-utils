@@ -158,14 +158,18 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		return getPreferenceStore().getString(getPreferenceName()).toCharArray();
 	}
 
-	public void setCharArrayValue(char[] value) {
+	public void setCharArrayValue(final char[] value) {
 		if (textField != null) {
-			if (value == null) {
-				value = new char[0];
+			final char[] cleanValue;
+			if (value != null) {
+				cleanValue = value;
 			}
-			oldValue = textField.getTextChars();
-			if (!Arrays.equals(oldValue, value)) {
-				textField.setTextChars(value);
+			else {
+				cleanValue = new char[0];
+			}
+
+			if (!Arrays.equals(textField.getTextChars(), cleanValue)) {
+				textField.setTextChars(cleanValue);
 				valueChanged();
 			}
 		}

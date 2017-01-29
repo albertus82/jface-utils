@@ -2,8 +2,14 @@ package it.albertus.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import it.albertus.util.logging.LoggerFactory;
 
 public class ExceptionUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(ExceptionUtils.class);
 
 	private ExceptionUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -19,7 +25,9 @@ public class ExceptionUtils {
 				e.printStackTrace(pw);
 				return sw.toString();
 			}
-			catch (final Throwable t) {/* Ignore */}
+			catch (final RuntimeException re) {
+				logger.log(Level.WARNING, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
+			}
 			finally {
 				IOUtils.closeQuietly(pw, sw);
 			}

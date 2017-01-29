@@ -1,6 +1,6 @@
 package it.albertus.jface.preference;
 
-import it.albertus.util.PropertiesConfiguration;
+import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -11,17 +11,19 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.util.PropertiesConfiguration;
+
 public class PreferencesExample {
 
-	public static void main(final String... args) {
+	public static void main(final String... args) throws IOException {
 		Display.setAppName("Preferences Example");
 		new PreferencesExample().run();
 	}
 
-	private final PropertiesConfiguration configuration = new PropertiesConfiguration("configuration.properties");
-
-	private void run() {
+	private void run() throws IOException {
 		final Display display = Display.getDefault();
+
+		final PropertiesConfiguration configuration = new PropertiesConfiguration("configuration.properties");
 
 		final Preferences preferences = new Preferences(MyPageDefinition.values(), MyPreference.values(), configuration, new Image[] { display.getSystemImage(SWT.ICON_QUESTION) });
 		preferences.setDialogTitle("Preferences");
@@ -36,7 +38,12 @@ public class PreferencesExample {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
 				System.out.println("Before: " + configuration.getProperties());
-				preferences.openDialog(shell);
+				try {
+					preferences.openDialog(shell);
+				}
+				catch (final IOException ioe) {
+					throw new RuntimeException(ioe);
+				}
 				System.out.println("After:  " + configuration.getProperties());
 			}
 		});

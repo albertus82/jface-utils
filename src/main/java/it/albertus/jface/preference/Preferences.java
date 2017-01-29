@@ -50,11 +50,11 @@ public class Preferences {
 		this.preferenceStore = createPreferenceStore();
 	}
 
-	public int openDialog(final Shell parentShell) {
+	public int openDialog(final Shell parentShell) throws IOException {
 		return openDialog(parentShell, null);
 	}
 
-	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) {
+	public int openDialog(final Shell parentShell, final IPageDefinition selectedPage) throws IOException {
 		// Load configuration file if exists...
 		final File file = new File(preferencesCallback.getFileName());
 		if (file.exists()) {
@@ -101,14 +101,11 @@ public class Preferences {
 		return returnCode;
 	}
 
-	private void loadConfigurationFile(final File file) {
+	private void loadConfigurationFile(final File file) throws IOException {
 		FileInputStream configurationInputStream = null;
 		try {
 			configurationInputStream = new FileInputStream(file);
 			preferenceStore.load(configurationInputStream); // buffered internally
-		}
-		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
 		}
 		finally {
 			IOUtils.closeQuietly(configurationInputStream);

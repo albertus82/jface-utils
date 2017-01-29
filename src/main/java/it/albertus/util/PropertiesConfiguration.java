@@ -12,14 +12,14 @@ public class PropertiesConfiguration extends PreferencesCallback {
 
 	private final Properties properties;
 
-	public PropertiesConfiguration(final String propertiesFileName) {
+	public PropertiesConfiguration(final String propertiesFileName) throws IOException {
 		super(propertiesFileName);
 		this.properties = new Properties();
 		load();
 	}
 
 	@Override
-	public void reload() {
+	public void reload() throws IOException {
 		load();
 	}
 
@@ -27,7 +27,7 @@ public class PropertiesConfiguration extends PreferencesCallback {
 		return properties;
 	}
 
-	protected void load() {
+	protected void load() throws IOException {
 		final File file = new File(getFileName());
 		if (file.exists()) {
 			InputStream inputStream = null;
@@ -37,9 +37,6 @@ public class PropertiesConfiguration extends PreferencesCallback {
 					properties.clear();
 					properties.load(inputStream); // buffered internally
 				}
-			}
-			catch (final IOException ioe) {
-				throw new RuntimeException(ioe);
 			}
 			finally {
 				IOUtils.closeQuietly(inputStream);

@@ -1,6 +1,7 @@
 package it.albertus.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -22,11 +23,11 @@ public class Configuration extends PropertiesConfiguration {
 	private static String osSpecificDocumentsDir; // Cache
 	private static String osSpecificUserAppDataDir; // Cache
 
-	public Configuration(final String fileName) {
+	public Configuration(final String fileName) throws IOException {
 		super(fileName);
 	}
 
-	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) {
+	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) throws IOException {
 		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + File.separator + fileName : fileName);
 	}
 

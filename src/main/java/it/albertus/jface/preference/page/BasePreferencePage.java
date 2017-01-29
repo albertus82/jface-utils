@@ -7,18 +7,22 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import it.albertus.jface.EnhancedErrorDialog;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.IPreference;
 import it.albertus.jface.preference.IPreferencesCallback;
@@ -89,10 +93,12 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 		// Save configuration file...
 		try {
-			((PreferenceStore) getPreferenceStore()).save();
+			((IPersistentPreferenceStore) getPreferenceStore()).save();
 		}
 		catch (final IOException ioe) {
-			throw new RuntimeException(ioe);
+			final String message = JFaceMessages.get("err.preferences.save");
+			logger.log(Level.SEVERE, message, ioe);
+			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.ERROR, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_ERROR) });
 		}
 
 		// Reload RouterLogger configuration...
@@ -100,7 +106,9 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 			preferencesCallback.reload(); // Callback
 		}
 		catch (final IOException ioe) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.preferences.reload"), ioe);
+			final String message = JFaceMessages.get("err.preferences.reload");
+			logger.log(Level.WARNING, message, ioe);
+			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.WARNING, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_WARNING) });
 		}
 	}
 

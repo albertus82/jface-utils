@@ -9,14 +9,18 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.jface.EnhancedErrorDialog;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.IOUtils;
@@ -61,7 +65,7 @@ public class Preferences {
 			loadConfigurationFile(file);
 		}
 
-		final PreferenceDialog preferenceDialog = new ConfigurationDialog(parentShell, preferenceManager, dialogTitle, images);
+		final PreferenceDialog preferenceDialog = new EnhancedPreferenceDialog(parentShell, preferenceManager, dialogTitle, images);
 
 		preferenceDialog.setPreferenceStore(preferenceStore);
 
@@ -85,7 +89,9 @@ public class Preferences {
 				preferencesCallback.reload(); // Callback
 			}
 			catch (final IOException ioe) {
-				logger.log(Level.WARNING, JFaceMessages.get("err.preferences.reload"), ioe);
+				final String message = JFaceMessages.get("err.preferences.reload");
+				logger.log(Level.WARNING, message, ioe);
+				EnhancedErrorDialog.openError(parentShell, dialogTitle, message, IStatus.WARNING, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_WARNING) });
 			}
 		}
 

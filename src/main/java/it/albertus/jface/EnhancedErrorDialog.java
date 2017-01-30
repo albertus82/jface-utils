@@ -23,6 +23,8 @@ public class EnhancedErrorDialog extends ErrorDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(EnhancedErrorDialog.class);
 
+	private static final String NESTING_INDENT = "  ";
+
 	private final Image[] images;
 
 	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final IStatus status, final Image[] images, final int displayMask) {
@@ -63,7 +65,7 @@ public class EnhancedErrorDialog extends ErrorDialog {
 			br = new BufferedReader(sr);
 			String line;
 			while ((line = br.readLine()) != null) {
-				final IStatus status = new Status(severity, throwable.getClass().getName(), line);
+				final IStatus status = new Status(severity, throwable.getClass().getName(), line.replace("\t", NESTING_INDENT));
 				childStatuses.add(status);
 			}
 		}

@@ -73,7 +73,10 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 				ThreadUtils.sleep(750);
 				System.out.print("tuvwxyz");
 				ThreadUtils.sleep(1250);
-				System.out.println();
+				for (char c = 'a'; c <= 'z'; c++) {
+					System.out.println(c);
+				}
+				ThreadUtils.sleep(1250);
 				logger.log(Level.WARNING, String.valueOf(specialChars));
 				System.out.println(String.valueOf(specialChars));
 				System.err.println(specialChars);

@@ -13,11 +13,17 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.util.ExceptionUtils;
@@ -58,6 +64,30 @@ public class EnhancedErrorDialog extends ErrorDialog {
 		if (images != null && images.length > 0) {
 			shell.setImages(images);
 		}
+	}
+
+	@Override
+	protected List createDropDownList(final Composite parent) {
+		final List list = super.createDropDownList(parent);
+		if (list.getMenu() != null) {
+			for (final MenuItem item : list.getMenu().getItems()) {
+				if (item.getText().equals(JFaceResources.getString("copy"))) {
+					item.setText(JFaceMessages.get("lbl.menu.item.copy") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
+					item.setAccelerator(SWT.MOD1 | SwtUtils.KEY_COPY);
+					list.addKeyListener(new KeyAdapter() {
+						@Override
+						public void keyPressed(final KeyEvent e) {
+							if (SWT.MOD1 == e.stateMask && SwtUtils.KEY_COPY == e.keyCode) {
+								e.doit = false; // avoids unwanted scrolling
+								item.notifyListeners(SWT.Selection, null);
+							}
+						}
+					});
+					break;
+				}
+			}
+		}
+		return list;
 	}
 
 	@Override

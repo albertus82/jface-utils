@@ -114,8 +114,9 @@ public class ListConsole extends ScrollableConsole<List> {
 		});
 		list.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 				if (e.stateMask == SWT.MOD1 && e.keyCode == SwtUtils.KEY_COPY) {
+					e.doit = false; // avoids unwanted scrolling
 					copy(list);
 				}
 			}

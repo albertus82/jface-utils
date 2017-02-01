@@ -55,14 +55,6 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 		shell.open();
 
 		final Thread printerThread = new Thread() {
-			private boolean exit = false;
-
-			@Override
-			public void interrupt() {
-				exit = true;
-				super.interrupt();
-			};
-
 			@Override
 			public void run() {
 				System.out.print("abcdef");
@@ -92,7 +84,7 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 							}
 						}
 						ThreadUtils.sleep(333);
-						if (exit) {
+						if (Thread.interrupted()) {
 							return;
 						}
 					}

@@ -1,5 +1,6 @@
 package it.albertus.jface.console;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,7 +12,6 @@ import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.util.IOUtils;
-import it.albertus.util.ThreadUtils;
 
 public abstract class ScrollableConsoleExample<T extends Scrollable> {
 
@@ -57,37 +57,39 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 		final Thread printerThread = new Thread() {
 			@Override
 			public void run() {
-				System.out.print("abcdef");
-				ThreadUtils.sleep(750);
-				System.out.print("ghijklm");
-				ThreadUtils.sleep(750);
-				System.out.print("nopqrs");
-				ThreadUtils.sleep(750);
-				System.out.print("tuvwxyz");
-				ThreadUtils.sleep(1250);
-				for (char c = 'a'; c <= 'z'; c++) {
-					System.out.println(c);
-				}
-				ThreadUtils.sleep(1250);
-				logger.log(Level.WARNING, String.valueOf(specialChars));
-				System.out.println(String.valueOf(specialChars));
-				System.err.println(specialChars);
-				ThreadUtils.sleep(1500);
-				while (true) {
-					for (final String dummy : loremIpsum) {
-						final String text = ++counter + ". " + dummy;
-						System.out.println(text);
-						logger.log(Level.INFO, text);
-						if (counter % 5 == 0) {
-							for (int i = 0; i < counter / 5; i++) {
-								System.out.println();
+				try {
+					System.out.print("abcdef");
+					TimeUnit.MILLISECONDS.sleep(750);
+					System.out.print("ghijklm");
+					TimeUnit.MILLISECONDS.sleep(750);
+					System.out.print("nopqrs");
+					TimeUnit.MILLISECONDS.sleep(750);
+					System.out.print("tuvwxyz");
+					TimeUnit.MILLISECONDS.sleep(1250);
+					for (char c = 'a'; c <= 'z'; c++) {
+						System.out.println(c);
+					}
+					TimeUnit.MILLISECONDS.sleep(1250);
+					logger.log(Level.WARNING, String.valueOf(specialChars));
+					System.out.println(String.valueOf(specialChars));
+					System.err.println(specialChars);
+					TimeUnit.MILLISECONDS.sleep(1500);
+					while (!Thread.interrupted()) {
+						for (final String dummy : loremIpsum) {
+							final String text = ++counter + ". " + dummy;
+							System.out.println(text);
+							logger.log(Level.INFO, text);
+							if (counter % 5 == 0) {
+								for (int i = 0; i < counter / 5; i++) {
+									System.out.println();
+								}
 							}
-						}
-						ThreadUtils.sleep(333);
-						if (Thread.interrupted()) {
-							return;
+							TimeUnit.MILLISECONDS.sleep(333);
 						}
 					}
+				}
+				catch (final InterruptedException ie) {
+					interrupt();
 				}
 			}
 		};

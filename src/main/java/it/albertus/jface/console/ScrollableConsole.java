@@ -4,6 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +21,7 @@ import it.albertus.jface.SwtThreadExecutor;
 import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
+import it.albertus.util.logging.LoggingSupport;
 
 public abstract class ScrollableConsole<T extends Scrollable> extends OutputStream {
 
@@ -122,9 +126,32 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 		try {
 			System.setOut(ps);
 			System.setErr(ps);
+			redirectLogging(); // Redirect java.util.logging
 		}
 		catch (final RuntimeException re) {
 			logger.log(Level.SEVERE, JFaceMessages.get("err.console.streams.redirect"), re);
+		}
+	}
+
+	protected void redirectLogging() {
+		final Logger rootLogger = LoggingSupport.getRootLogger();
+		for (int i = 0; i < rootLogger.getHandlers().length; i++) {
+			final Handler oldConsoleHandler = rootLogger.getHandlers()[i];
+			if (oldConsoleHandler instanceof ConsoleHandler) {
+				final ConsoleHandler newConsoleHandler = new ConsoleHandler();
+				newConsoleHandler.setLevel(oldConsoleHandler.getLevel());
+				newConsoleHandler.setFilter(oldConsoleHandler.getFilter());
+				newConsoleHandler.setFormatter(oldConsoleHandler.getFormatter());
+				newConsoleHandler.setErrorManager(oldConsoleHandler.getErrorManager());
+				try {
+					newConsoleHandler.setEncoding(oldConsoleHandler.getEncoding());
+				}
+				catch (final UnsupportedEncodingException uee) {
+					throw new IllegalStateException(uee);
+				}
+				rootLogger.removeHandler(oldConsoleHandler);
+				rootLogger.addHandler(newConsoleHandler);
+			}
 		}
 	}
 

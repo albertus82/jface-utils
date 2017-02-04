@@ -9,7 +9,7 @@ public class LoggerFactory {
 	}
 
 	public static Logger getLogger(final Class<?> clazz) {
-		return Logger.getLogger(clazz.getPackage().getName()); // package-based
+		return Logger.getLogger(LoggingSupport.getLoggerName(clazz));
 	}
 
 }

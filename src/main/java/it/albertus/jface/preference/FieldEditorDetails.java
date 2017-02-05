@@ -51,6 +51,7 @@ public class FieldEditorDetails {
 
 	// DirectoryFieldEditor & PathEditor
 	private Localized directoryDialogMessage;
+	private Boolean directoryMustExist;
 
 	// FileFieldEditor
 	private String[] fileExtensions;
@@ -84,6 +85,7 @@ public class FieldEditorDetails {
 		this.dateFrom = builder.dateFrom;
 		this.dateTo = builder.dateTo;
 		this.directoryDialogMessage = builder.directoryDialogMessage;
+		this.directoryMustExist = builder.directoryMustExist;
 		this.fileExtensions = builder.fileExtensions;
 		this.fileEnforceAbsolute = builder.fileEnforceAbsolute;
 		this.radioNumColumns = builder.radioNumColumns;
@@ -238,6 +240,14 @@ public class FieldEditorDetails {
 		this.directoryDialogMessage = directoryDialogMessage;
 	}
 
+	public Boolean getDirectoryMustExist() {
+		return directoryMustExist;
+	}
+
+	public void setDirectoryMustExist(final Boolean directoryMustExist) {
+		this.directoryMustExist = directoryMustExist;
+	}
+
 	public String[] getFileExtensions() {
 		return fileExtensions;
 	}
@@ -324,7 +334,7 @@ public class FieldEditorDetails {
 				+ (style != null ? "style=" + style + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "")
 				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "")
 				+ (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "")
-				+ (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+				+ (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	public static class FieldEditorDetailsBuilder {
@@ -352,6 +362,7 @@ public class FieldEditorDetails {
 		private Date dateFrom;
 		private Date dateTo;
 		private Localized directoryDialogMessage;
+		private Boolean directoryMustExist;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
 		private Localized fontPreviewAreaText;
@@ -470,6 +481,11 @@ public class FieldEditorDetails {
 					return dialogMessage;
 				}
 			};
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder directoryMustExist(final boolean directoryMustExist) {
+			this.directoryMustExist = directoryMustExist;
 			return this;
 		}
 

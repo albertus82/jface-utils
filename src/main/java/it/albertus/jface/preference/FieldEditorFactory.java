@@ -389,6 +389,9 @@ public class FieldEditorFactory {
 			if (details.getDirectoryDialogMessage() != null) {
 				fieldEditor.setDialogMessage(details.getDirectoryDialogMessage());
 			}
+			if (details.getDirectoryMustExist() != null) {
+				fieldEditor.setCheckExistence(details.getDirectoryMustExist());
+			}
 		}
 		return fieldEditor;
 	}

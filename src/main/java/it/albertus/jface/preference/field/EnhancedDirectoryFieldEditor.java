@@ -29,6 +29,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
+	private boolean checkExistence = true;
 
 	private ControlDecoration controlDecorator;
 
@@ -99,6 +100,21 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		result = result && doCheckState();
 
 		return result;
+	}
+
+	@Override
+	protected boolean doCheckState() {
+		String fileName = getTextControl().getText();
+		fileName = fileName.trim();
+		if (fileName.isEmpty() && isEmptyStringAllowed()) {
+			return true;
+		}
+		else if (checkExistence) {
+			return new File(fileName).isDirectory();
+		}
+		else {
+			return !fileName.isEmpty();
+		}
 	}
 
 	@Override
@@ -205,6 +221,10 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 
 	public void setDialogMessage(final Localized dialogMessage) {
 		this.dialogMessage = dialogMessage;
+	}
+
+	public void setCheckExistence(final boolean checkExistence) {
+		this.checkExistence = checkExistence;
 	}
 
 	@Override

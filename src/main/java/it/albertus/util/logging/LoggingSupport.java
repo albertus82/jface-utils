@@ -10,25 +10,26 @@ public class LoggingSupport {
 
 	public static final String ROOT_LOGGER_NAME = "";
 
-	private static final Map<Integer, Level> levels = new TreeMap<Integer, Level>();
+	private static final String SYSTEM_PROPERTY_FORMAT = "java.util.logging.SimpleFormatter.format";
 
-	static {
-		levels.put(Level.ALL.intValue(), Level.ALL);
-		levels.put(Level.CONFIG.intValue(), Level.CONFIG);
-		levels.put(Level.FINE.intValue(), Level.FINE);
-		levels.put(Level.FINER.intValue(), Level.FINER);
-		levels.put(Level.FINEST.intValue(), Level.FINEST);
-		levels.put(Level.INFO.intValue(), Level.INFO);
-		levels.put(Level.OFF.intValue(), Level.OFF);
-		levels.put(Level.SEVERE.intValue(), Level.SEVERE);
-		levels.put(Level.WARNING.intValue(), Level.WARNING);
-	}
+	private static final Map<Integer, Level> levels = new TreeMap<Integer, Level>(); // Cache
 
 	private LoggingSupport() {
 		throw new IllegalAccessError("Utility class");
 	}
 
 	public static Map<Integer, Level> getLevels() {
+		if (levels.isEmpty()) { // Lazy init
+			levels.put(Level.ALL.intValue(), Level.ALL);
+			levels.put(Level.CONFIG.intValue(), Level.CONFIG);
+			levels.put(Level.FINE.intValue(), Level.FINE);
+			levels.put(Level.FINER.intValue(), Level.FINER);
+			levels.put(Level.FINEST.intValue(), Level.FINEST);
+			levels.put(Level.INFO.intValue(), Level.INFO);
+			levels.put(Level.OFF.intValue(), Level.OFF);
+			levels.put(Level.SEVERE.intValue(), Level.SEVERE);
+			levels.put(Level.WARNING.intValue(), Level.WARNING);
+		}
 		return levels;
 	}
 
@@ -68,6 +69,14 @@ public class LoggingSupport {
 
 	public static Logger getRootLogger() {
 		return Logger.getLogger(ROOT_LOGGER_NAME);
+	}
+
+	public static String getFormat() {
+		return System.getProperty(SYSTEM_PROPERTY_FORMAT);
+	}
+
+	public static void setFormat(final String formatString) {
+		System.setProperty(SYSTEM_PROPERTY_FORMAT, formatString);
 	}
 
 }

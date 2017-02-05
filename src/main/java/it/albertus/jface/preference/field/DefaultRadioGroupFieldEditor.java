@@ -1,7 +1,10 @@
 package it.albertus.jface.preference.field;
 
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import it.albertus.jface.JFaceMessages;
 
@@ -33,6 +36,26 @@ public class DefaultRadioGroupFieldEditor extends RadioGroupFieldEditor implemen
 	protected void doLoadDefault() {
 		if (getDefaultValue() != null && !getDefaultValue().isEmpty()) {
 			super.doLoadDefault();
+		}
+		else {
+			selectFirstButton(); // assures that one button is selected
+		}
+	}
+
+	protected void selectFirstButton() {
+		final Control[] children = radioBox.getChildren();
+		for (int i = 0; i < children.length; i++) {
+			final Control control = children[i];
+			if (control instanceof Button) {
+				final Button button = (Button) control;
+				if (i == 0) {
+					button.setSelection(true);
+					button.notifyListeners(SWT.Selection, null);
+				}
+				else {
+					button.setSelection(false);
+				}
+			}
 		}
 	}
 

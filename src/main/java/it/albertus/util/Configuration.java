@@ -21,30 +21,47 @@ public class Configuration extends PropertiesConfiguration {
 	private static final String USER_HOME = "user.home";
 
 	private static String osSpecificDocumentsDir; // Cache
-	private static String osSpecificUserAppDataDir; // Cache
+	private static String osSpecificConfigurationDir; // Cache
+	private static String osSpecificLocalAppDataDir; // Cache
 
 	public Configuration(final String fileName) throws IOException {
 		super(fileName);
 	}
 
-	public Configuration(final String fileName, final boolean prependOsSpecificUserAppDataDir) throws IOException {
-		super(prependOsSpecificUserAppDataDir ? getOsSpecificUserAppDataDir() + File.separator + fileName : fileName);
+	public Configuration(final String fileName, final boolean prependOsSpecificConfigurationDir) throws IOException {
+		super(prependOsSpecificConfigurationDir ? getOsSpecificConfigurationDir() + File.separator + fileName : fileName);
 	}
 
-	public static synchronized String getOsSpecificUserAppDataDir() {
-		if (osSpecificUserAppDataDir == null) {
+	public static synchronized String getOsSpecificConfigurationDir() {
+		if (osSpecificConfigurationDir == null) {
 			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
 			if (os.contains("win") && System.getenv("APPDATA") != null) {
-				osSpecificUserAppDataDir = System.getenv("APPDATA");
+				osSpecificConfigurationDir = System.getenv("APPDATA");
 			}
 			else if (os.contains("mac")) {
-				osSpecificUserAppDataDir = System.getProperty(USER_HOME) + File.separator + "Library" + File.separator + "Application Support";
+				osSpecificConfigurationDir = System.getProperty(USER_HOME) + File.separator + "Library" + File.separator + "Preferences";
 			}
 			else {
-				osSpecificUserAppDataDir = System.getProperty(USER_HOME);
+				osSpecificConfigurationDir = System.getProperty(USER_HOME);
 			}
 		}
-		return osSpecificUserAppDataDir;
+		return osSpecificConfigurationDir;
+	}
+
+	public static synchronized String getOsSpecificLocalAppDataDir() {
+		if (osSpecificLocalAppDataDir == null) {
+			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
+			if (os.contains("win") && System.getenv("LOCALAPPDATA") != null) {
+				osSpecificLocalAppDataDir = System.getenv("LOCALAPPDATA");
+			}
+			else if (os.contains("mac")) {
+				osSpecificLocalAppDataDir = System.getProperty(USER_HOME) + File.separator + "Library";
+			}
+			else {
+				osSpecificLocalAppDataDir = System.getProperty(USER_HOME);
+			}
+		}
+		return osSpecificLocalAppDataDir;
 	}
 
 	public static synchronized String getOsSpecificDocumentsDir() {

@@ -19,6 +19,7 @@ public class Configuration extends PropertiesConfiguration {
 	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
 	private static final String USER_HOME = "user.home";
+	private static final String OS_NAME = "os.name";
 
 	private static String osSpecificDocumentsDir; // Cache
 	private static String osSpecificConfigurationDir; // Cache
@@ -34,7 +35,7 @@ public class Configuration extends PropertiesConfiguration {
 
 	public static synchronized String getOsSpecificConfigurationDir() {
 		if (osSpecificConfigurationDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
 			if (os.contains("win") && System.getenv("APPDATA") != null) {
 				osSpecificConfigurationDir = System.getenv("APPDATA");
 			}
@@ -50,7 +51,7 @@ public class Configuration extends PropertiesConfiguration {
 
 	public static synchronized String getOsSpecificLocalAppDataDir() {
 		if (osSpecificLocalAppDataDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
 			if (os.contains("win") && System.getenv("LOCALAPPDATA") != null) {
 				osSpecificLocalAppDataDir = System.getenv("LOCALAPPDATA");
 			}
@@ -66,7 +67,7 @@ public class Configuration extends PropertiesConfiguration {
 
 	public static synchronized String getOsSpecificDocumentsDir() {
 		if (osSpecificDocumentsDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty("os.name")).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
 			if (os.contains("win")) {
 				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // slow and not thread-safe!
 			}

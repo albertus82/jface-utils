@@ -44,7 +44,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			newText = getNameForValue(Byte.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -57,7 +57,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			return Byte.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			return super.getValue();
 		}
 	}
@@ -68,7 +68,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			super.setValue(Byte.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			super.setValue(value);
 		}
 	}

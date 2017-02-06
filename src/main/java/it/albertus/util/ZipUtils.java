@@ -69,7 +69,7 @@ public class ZipUtils {
 			return true;
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			return false;
 		}
 	}

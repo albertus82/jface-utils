@@ -42,7 +42,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			newText = getNameForValue(Float.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -55,7 +55,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			return Float.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			return super.getValue();
 		}
 	}
@@ -66,7 +66,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			super.setValue(Float.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			super.setValue(value);
 		}
 	}
@@ -79,7 +79,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 				comboValue = Float.valueOf(entry[1]).toString();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+				logger.log(Level.FINE, e.toString(), e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

@@ -23,8 +23,8 @@ public class SqlUtils {
 				connection.close();
 			}
 		}
-		catch (final SQLException se) {
-			logger.log(Level.FINE, se.getLocalizedMessage() != null ? se.getLocalizedMessage() : se.getMessage(), se);
+		catch (final SQLException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 	}
 
@@ -34,8 +34,8 @@ public class SqlUtils {
 				statement.close();
 			}
 		}
-		catch (final SQLException se) {
-			logger.log(Level.FINE, se.getLocalizedMessage() != null ? se.getLocalizedMessage() : se.getMessage(), se);
+		catch (final SQLException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 	}
 
@@ -45,8 +45,8 @@ public class SqlUtils {
 				resultSet.close();
 			}
 		}
-		catch (final SQLException se) {
-			logger.log(Level.FINE, se.getLocalizedMessage() != null ? se.getLocalizedMessage() : se.getMessage(), se);
+		catch (final SQLException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 	}
 

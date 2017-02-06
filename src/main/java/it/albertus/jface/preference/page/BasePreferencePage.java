@@ -207,8 +207,8 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 			try {
 				parentEnabled = ((BooleanFieldEditor) fieldEditorWrapper.getFieldEditor()).getBooleanValue();
 			}
-			catch (final NullPointerException npe) { // Uninitialized field.
-				logger.log(Level.FINE, npe.getLocalizedMessage() != null ? npe.getLocalizedMessage() : npe.getMessage(), npe);
+			catch (final NullPointerException e) { // Uninitialized field.
+				logger.log(Level.FINE, e.toString(), e);
 				parentEnabled = getPreferenceStore().getBoolean(preference.getName());
 			}
 		}
@@ -247,8 +247,8 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 						try {
 							parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
 						}
-						catch (final NullPointerException npe) {
-							logger.log(Level.FINE, npe.getLocalizedMessage() != null ? npe.getLocalizedMessage() : npe.getMessage(), npe);
+						catch (final NullPointerException e) {
+							logger.log(Level.FINE, e.toString(), e);
 							parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getName());
 						}
 						updateChildrenStatus(preference, parentEnabled);

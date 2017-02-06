@@ -142,8 +142,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getLong(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
@@ -172,8 +172,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getInt(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
@@ -202,9 +202,9 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getShort(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue), e);
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -232,8 +232,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getByte(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
@@ -262,8 +262,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getFloat(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
@@ -292,8 +292,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getDouble(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
@@ -322,8 +322,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getBigDecimal(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
@@ -352,8 +352,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getBigInteger(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
@@ -378,8 +378,8 @@ public class Configuration extends PropertiesConfiguration {
 		try {
 			value = getChar(key);
 		}
-		catch (final ConfigurationException ce) {
-			logger.log(Level.FINE, ce.getLocalizedMessage() != null ? ce.getLocalizedMessage() : ce.getMessage(), ce);
+		catch (final ConfigurationException e) {
+			logger.log(Level.FINE, e.toString(), e);
 			logger.log(Level.WARNING, getInvalidCharacterErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}

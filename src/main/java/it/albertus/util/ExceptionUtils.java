@@ -26,7 +26,7 @@ public class ExceptionUtils {
 				return sw.toString();
 			}
 			catch (final RuntimeException re) {
-				logger.log(Level.WARNING, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
+				logger.log(Level.WARNING, re.toString(), re);
 			}
 			finally {
 				IOUtils.closeQuietly(pw, sw);

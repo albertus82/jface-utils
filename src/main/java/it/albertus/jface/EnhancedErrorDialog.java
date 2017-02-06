@@ -153,8 +153,8 @@ public class EnhancedErrorDialog extends ErrorDialog {
 				childStatuses.add(status);
 			}
 		}
-		catch (final IOException ioe) {
-			logger.log(Level.WARNING, ioe.getLocalizedMessage() != null ? ioe.getLocalizedMessage() : ioe.getMessage(), ioe);
+		catch (final IOException e) {
+			logger.log(Level.WARNING, e.toString(), e);
 		}
 		finally {
 			IOUtils.closeQuietly(br, sr);

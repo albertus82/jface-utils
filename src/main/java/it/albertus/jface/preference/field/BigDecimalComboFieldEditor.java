@@ -36,7 +36,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			newText = getNameForValue(new BigDecimal(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -49,7 +49,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			return new BigDecimal(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			return super.getValue();
 		}
 	}
@@ -60,7 +60,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			super.setValue(new BigDecimal(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			super.setValue(value);
 		}
 	}
@@ -73,7 +73,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 				comboValue = new BigDecimal(entry[1]).toString();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+				logger.log(Level.FINE, e.toString(), e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

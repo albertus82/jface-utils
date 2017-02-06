@@ -89,7 +89,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+				logger.log(Level.FINE, e.toString(), e);
 			}
 		}
 	}

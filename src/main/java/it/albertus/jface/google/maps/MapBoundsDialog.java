@@ -56,7 +56,7 @@ public class MapBoundsDialog extends MapDialog {
 					setReturnCode(SWT.OK);
 				}
 				catch (final SWTException se) {
-					logger.log(Level.FINE, se.getLocalizedMessage() != null ? se.getLocalizedMessage() : se.getMessage(), se);
+					logger.log(Level.FINE, se.toString(), se);
 				}
 				catch (final Exception e) {
 					logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);

@@ -43,7 +43,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 			newText = getNameForValue(Integer.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -56,7 +56,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 			return Integer.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			return super.getValue();
 		}
 	}
@@ -67,7 +67,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 			super.setValue(Integer.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage(), e);
+			logger.log(Level.FINE, e.toString(), e);
 			super.setValue(value);
 		}
 	}

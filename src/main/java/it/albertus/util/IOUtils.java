@@ -27,8 +27,8 @@ public class IOUtils {
 					closeable.close();
 				}
 			}
-			catch (final IOException ioe) {
-				logger.log(Level.FINE, ioe.getLocalizedMessage() != null ? ioe.getLocalizedMessage() : ioe.getMessage(), ioe);
+			catch (final IOException e) {
+				logger.log(Level.FINE, e.toString(), e);
 			}
 		}
 	}
@@ -39,8 +39,8 @@ public class IOUtils {
 				zipFile.close();
 			}
 		}
-		catch (final IOException ioe) {
-			logger.log(Level.FINE, ioe.getLocalizedMessage() != null ? ioe.getLocalizedMessage() : ioe.getMessage(), ioe);
+		catch (final IOException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 	}
 

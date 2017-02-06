@@ -44,8 +44,8 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 				return true;
 			}
 		}
-		catch (final RuntimeException re) {
-			logger.log(Level.FINE, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
+		catch (final RuntimeException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 		return false;
 	}

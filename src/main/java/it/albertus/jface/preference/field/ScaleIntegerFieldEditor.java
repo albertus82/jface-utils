@@ -135,8 +135,8 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 				setText(textValue);
 				scale.setSelection(textValue);
 			}
-			catch (final RuntimeException re) {
-				logger.log(Level.FINE, re.getLocalizedMessage() != null ? re.getLocalizedMessage() : re.getMessage(), re);
+			catch (final RuntimeException e) {
+				logger.log(Level.FINE, e.toString(), e);
 				setText(scale.getSelection());
 			}
 		}

@@ -1,5 +1,8 @@
 package it.albertus.jface.preference;
 
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.swt.graphics.FontData;
+
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.util.Localized;
 
@@ -164,6 +167,11 @@ public class PreferenceDetails {
 
 		public PreferenceDetailsBuilder defaultValue(final double defaultValue) {
 			this.defaultValue = Double.toString(defaultValue);
+			return this;
+		}
+
+		public PreferenceDetailsBuilder defaultValue(final FontData[] defaultValue) {
+			this.defaultValue = PreferenceConverter.getStoredRepresentation(defaultValue);
 			return this;
 		}
 

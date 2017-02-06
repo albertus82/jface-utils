@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -13,6 +14,8 @@ import java.util.logging.Logger;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
 
@@ -194,6 +197,27 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 				return limit;
 			}
 		};
+	}
+
+	public Font getFont() {
+		return scrollable.getFont();
+	}
+
+	public void setFont(final Font font) {
+		scrollable.setFont(font);
+	}
+
+	public void setFont(final FontData[] fds) {
+		if (!Arrays.equals(fds, getFont().getFontData())) {
+			final Font font = new Font(scrollable.getDisplay(), fds);
+			scrollable.addDisposeListener(new DisposeListener() {
+				@Override
+				public void widgetDisposed(final DisposeEvent e) {
+					font.dispose();
+				}
+			});
+			setFont(font);
+		}
 	}
 
 	public T getScrollable() {

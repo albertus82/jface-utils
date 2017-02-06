@@ -724,11 +724,11 @@ public class FieldEditorFactory {
 	protected ScaleFieldEditor createScaleFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final ScaleFieldEditor fieldEditor = new ScaleFieldEditor(name, label, parent);
 		if (details != null) {
-			if (details.getScaleMinimum() != null) {
-				fieldEditor.setMinimum(details.getScaleMinimum());
-			}
 			if (details.getScaleMaximum() != null) {
 				fieldEditor.setMaximum(details.getScaleMaximum());
+			}
+			if (details.getScaleMinimum() != null) {
+				fieldEditor.setMinimum(details.getScaleMinimum());
 			}
 			if (details.getScaleIncrement() != null) {
 				fieldEditor.setIncrement(details.getScaleIncrement());
@@ -760,7 +760,9 @@ public class FieldEditorFactory {
 				pageIncrement = details.getScalePageIncrement();
 			}
 		}
-		return new ScaleIntegerFieldEditor(name, label, parent, min, max, increment, pageIncrement);
+		final ScaleIntegerFieldEditor fieldEditor = new ScaleIntegerFieldEditor(name, label, parent, 0, max, increment, pageIncrement);
+		fieldEditor.setMinimum(min); // address bug that prevents to set minimum values greater than 99 in the costructor.
+		return fieldEditor;
 	}
 
 	protected ShortComboFieldEditor createShortComboFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {

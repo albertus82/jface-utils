@@ -59,7 +59,9 @@
 		</jar>
 	</target>
 
-	<target name="test" depends="dist">
+	<available file="${build.testSourceDirectory}" type="dir" property="build.test" />
+
+	<target name="test" depends="dist" if="build.test">
 		<mkdir dir="${build.outputTestDirectory}" />
 		<javac srcdir="${build.testSourceDirectory}" destdir="${build.outputTestDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">
 			<classpath path="${build.outputDirectory}">

@@ -16,7 +16,7 @@ public class FileHandlerBuilder {
 	private String encoding = Charset.defaultCharset().name(); // encoding the name of the character set encoding to use (defaults to the default platform encoding).
 	private int limit = 0; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
 	private int count = 1; // count specifies how many output files to cycle through (defaults to 1).
-	private String pattern = "%h/java%u.log"; // pattern specifies a pattern for generating the output file name. See below for details. (Defaults to "%h/java%u.log").
+	private String pattern = "%h/java%u.log"; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
 	private boolean append = false; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
 
 	public FileHandlerBuilder level(final Level level) {

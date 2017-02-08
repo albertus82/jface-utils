@@ -139,20 +139,20 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	protected void redirectLogging() {
 		final Logger rootLogger = LoggingSupport.getRootLogger();
 		for (int i = 0; i < rootLogger.getHandlers().length; i++) {
-			final Handler oldConsoleHandler = rootLogger.getHandlers()[i];
-			if (oldConsoleHandler instanceof ConsoleHandler) {
+			final Handler oldHandler = rootLogger.getHandlers()[i];
+			if (oldHandler instanceof ConsoleHandler) {
 				final ConsoleHandler newConsoleHandler = new ConsoleHandler();
-				newConsoleHandler.setLevel(oldConsoleHandler.getLevel());
-				newConsoleHandler.setFilter(oldConsoleHandler.getFilter());
-				newConsoleHandler.setFormatter(oldConsoleHandler.getFormatter());
-				newConsoleHandler.setErrorManager(oldConsoleHandler.getErrorManager());
+				newConsoleHandler.setLevel(oldHandler.getLevel());
+				newConsoleHandler.setFilter(oldHandler.getFilter());
+				newConsoleHandler.setFormatter(oldHandler.getFormatter());
+				newConsoleHandler.setErrorManager(oldHandler.getErrorManager());
 				try {
-					newConsoleHandler.setEncoding(oldConsoleHandler.getEncoding());
+					newConsoleHandler.setEncoding(oldHandler.getEncoding());
 				}
 				catch (final UnsupportedEncodingException uee) {
 					throw new IllegalStateException(uee);
 				}
-				rootLogger.removeHandler(oldConsoleHandler);
+				rootLogger.removeHandler(oldHandler);
 				rootLogger.addHandler(newConsoleHandler);
 			}
 		}

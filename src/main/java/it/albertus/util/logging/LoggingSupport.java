@@ -1,6 +1,7 @@
 package it.albertus.util.logging;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -11,6 +12,8 @@ public class LoggingSupport {
 	public static final String ROOT_LOGGER_NAME = "";
 
 	private static final String SYSTEM_PROPERTY_FORMAT = "java.util.logging.SimpleFormatter.format";
+	private static final String SYSTEM_PROPERTY_CONFIG_CLASS = "java.util.logging.config.class";
+	private static final String SYSTEM_PROPERTY_CONFIG_FILE = "java.util.logging.config.file";
 
 	private static final Map<Integer, Level> levels = new TreeMap<Integer, Level>(); // Cache
 
@@ -77,6 +80,43 @@ public class LoggingSupport {
 
 	public static void setFormat(final String formatString) {
 		System.setProperty(SYSTEM_PROPERTY_FORMAT, formatString);
+	}
+
+	public static Entry<String, String> getInitialConfigurationProperty() {
+		if (System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS) != null) {
+			return new Property(SYSTEM_PROPERTY_CONFIG_CLASS, System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS));
+		}
+		else if (System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE) != null) {
+			return new Property(SYSTEM_PROPERTY_CONFIG_FILE, System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE));
+		}
+		else {
+			return null;
+		}
+	}
+
+	private static class Property implements Entry<String, String> {
+		private final String key;
+		private final String value;
+
+		private Property(final String key, final String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		@Override
+		public String getKey() {
+			return key;
+		}
+
+		@Override
+		public String getValue() {
+			return value;
+		}
+
+		@Override
+		public String setValue(final String value) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }

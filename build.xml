@@ -91,23 +91,30 @@
 		</junit>
 	</target>
 
-	<target name="sonar">
+	<target name="sonar-main">
 		<echo file="sonar-project.properties">
 			sonar.projectKey=it.albertus:${artifactId}
 			sonar.projectName=${name}
 			sonar.projectVersion=${version.number}
 			sonar.sources=${build.sourceDirectory}
-			sonar.tests=${build.testSourceDirectory}
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}
 			sonar.java.libraries=${dependencies.directory}/**/*.jar
 			sonar.java.binaries=${build.outputDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/test/*.jar
-			sonar.java.test.binaries=${build.outputTestDirectory}
 			sonar.sourceEncoding=UTF-8
 		</echo>
 	</target>
+
+	<target name="sonar-test" depends="sonar-main" if="build.test">
+		<echo file="sonar-project.properties" append="true">
+			sonar.tests=${build.testSourceDirectory}
+			sonar.java.test.libraries=${dependencies.directory}/test/*.jar
+			sonar.java.test.binaries=${build.outputTestDirectory}
+		</echo>
+	</target>
+
+	<target name="sonar" depends="sonar-main, sonar-test" />
 
 	<target name="all" depends="clean, dist, test, sonar" />
 

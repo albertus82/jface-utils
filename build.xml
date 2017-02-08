@@ -114,7 +114,9 @@
 		</echo>
 	</target>
 
-	<target name="sonar" depends="sonar-main, sonar-test" />
+	<target name="sonar" depends="sonar-main, sonar-test">
+		<echoproperties srcfile="sonar-project.properties" />
+	</target>
 
 	<target name="all" depends="clean, dist, test, sonar" />
 

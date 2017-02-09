@@ -9,10 +9,12 @@ import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -269,6 +271,20 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 	/** Viene aggiunto automaticamente un separatore tra il testo e i campi. */
 	protected Control createHeader() {
 		return null;
+	}
+
+	protected Composite createInfoComposite(final Composite parent, final String message) {
+		final Composite messageComposite = new Composite(parent, SWT.BORDER);
+		messageComposite.setBackground(messageComposite.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		GridDataFactory.swtDefaults().applyTo(messageComposite);
+		GridLayoutFactory.swtDefaults().margins(2, 2).applyTo(messageComposite);
+
+		final Label messageLabel = new Label(messageComposite, SWT.BOLD | SWT.WRAP);
+		messageLabel.setText(message);
+		messageLabel.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
+		messageLabel.setBackground(messageLabel.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		GridDataFactory.swtDefaults().applyTo(messageLabel);
+		return messageComposite;
 	}
 
 	protected void addSeparator() {

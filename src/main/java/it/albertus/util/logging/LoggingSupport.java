@@ -58,11 +58,11 @@ public class LoggingSupport {
 	}
 
 	public static String getLoggerName(final Class<?> clazz) {
-		if (clazz == null || clazz.getPackage() == null) {
+		if (clazz == null) {
 			return ROOT_LOGGER_NAME;
 		}
 		else {
-			return clazz.getPackage().getName(); // package-based
+			return clazz.getName();
 		}
 	}
 

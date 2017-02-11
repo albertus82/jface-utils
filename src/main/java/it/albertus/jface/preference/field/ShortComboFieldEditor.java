@@ -44,7 +44,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			newText = getNameForValue(Short.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINER, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);

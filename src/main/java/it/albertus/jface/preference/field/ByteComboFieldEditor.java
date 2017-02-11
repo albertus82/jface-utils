@@ -44,7 +44,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			newText = getNameForValue(Byte.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINER, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);

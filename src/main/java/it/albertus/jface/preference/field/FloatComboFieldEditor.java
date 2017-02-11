@@ -42,7 +42,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			newText = getNameForValue(Float.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINER, e.toString(), e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);

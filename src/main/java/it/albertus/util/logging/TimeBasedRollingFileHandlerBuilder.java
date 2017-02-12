@@ -82,6 +82,7 @@ public class TimeBasedRollingFileHandlerBuilder {
 		result = prime * result + ((datePattern == null) ? 0 : datePattern.hashCode());
 		result = prime * result + ((encoding == null) ? 0 : encoding.hashCode());
 		result = prime * result + ((fileNamePattern == null) ? 0 : fileNamePattern.hashCode());
+		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
 		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		result = prime * result + limit;
 		return result;
@@ -127,6 +128,14 @@ public class TimeBasedRollingFileHandlerBuilder {
 			}
 		}
 		else if (!fileNamePattern.equals(other.fileNamePattern)) {
+			return false;
+		}
+		if (filter == null) {
+			if (other.filter != null) {
+				return false;
+			}
+		}
+		else if (!filter.equals(other.filter)) {
 			return false;
 		}
 		if (level == null) {

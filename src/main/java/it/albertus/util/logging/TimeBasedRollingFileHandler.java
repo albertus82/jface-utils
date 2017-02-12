@@ -189,4 +189,24 @@ public class TimeBasedRollingFileHandler extends Handler {
 		return underlyingFileHandler.getLevel();
 	}
 
+	public String getDatePattern() {
+		return datePattern;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public String getFileNamePattern() {
+		return fileNamePattern;
+	}
+
+	public boolean isAppend() {
+		return append;
+	}
+
 }

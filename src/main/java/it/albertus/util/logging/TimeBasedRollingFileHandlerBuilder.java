@@ -7,65 +7,65 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.XMLFormatter;
 
-public class DailyRollingFileHandlerBuilder {
+public class TimeBasedRollingFileHandlerBuilder {
 
-	private String datePattern = DailyRollingFileHandler.Defaults.DATE_PATTERN;
+	private String datePattern = TimeBasedRollingFileHandler.Defaults.DATE_PATTERN;
 	private Level level = Level.ALL; // level specifies the default level for the Handler (defaults to Level.ALL).
 	private Filter filter = null; // filter specifies the name of a Filter class to use (defaults to no Filter).
 	private Formatter formatter = new XMLFormatter(); // formatter specifies the name of a Formatter class to use (defaults to java.util.logging.XMLFormatter)
 	private String encoding = Charset.defaultCharset().name(); // encoding the name of the character set encoding to use (defaults to the default platform encoding).
-	private int limit = DailyRollingFileHandler.Defaults.LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
-	private int count = DailyRollingFileHandler.Defaults.COUNT; // count specifies how many output files to cycle through (defaults to 1).
-	private String fileNamePattern = DailyRollingFileHandler.Defaults.FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
-	private boolean append = DailyRollingFileHandler.Defaults.APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
+	private int limit = TimeBasedRollingFileHandler.Defaults.LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
+	private int count = TimeBasedRollingFileHandler.Defaults.COUNT; // count specifies how many output files to cycle through (defaults to 1).
+	private String fileNamePattern = TimeBasedRollingFileHandler.Defaults.FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
+	private boolean append = TimeBasedRollingFileHandler.Defaults.APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
 
-	public DailyRollingFileHandlerBuilder datePattern(final String datePattern) {
+	public TimeBasedRollingFileHandlerBuilder datePattern(final String datePattern) {
 		this.datePattern = datePattern;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder level(final Level level) {
+	public TimeBasedRollingFileHandlerBuilder level(final Level level) {
 		this.level = level;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder filter(final Filter filter) {
+	public TimeBasedRollingFileHandlerBuilder filter(final Filter filter) {
 		this.filter = filter;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder formatter(final Formatter formatter) {
+	public TimeBasedRollingFileHandlerBuilder formatter(final Formatter formatter) {
 		this.formatter = formatter;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder encoding(final String encoding) {
+	public TimeBasedRollingFileHandlerBuilder encoding(final String encoding) {
 		this.encoding = encoding;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder limit(final int limit) {
+	public TimeBasedRollingFileHandlerBuilder limit(final int limit) {
 		this.limit = limit;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder count(final int count) {
+	public TimeBasedRollingFileHandlerBuilder count(final int count) {
 		this.count = count;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder fileNamePattern(final String fileNamePattern) {
+	public TimeBasedRollingFileHandlerBuilder fileNamePattern(final String fileNamePattern) {
 		this.fileNamePattern = fileNamePattern;
 		return this;
 	}
 
-	public DailyRollingFileHandlerBuilder append(final boolean append) {
+	public TimeBasedRollingFileHandlerBuilder append(final boolean append) {
 		this.append = append;
 		return this;
 	}
 
-	public DailyRollingFileHandler build() throws IOException {
-		final DailyRollingFileHandler fileHandler = new DailyRollingFileHandler(datePattern, fileNamePattern, limit, count, append);
+	public TimeBasedRollingFileHandler build() throws IOException {
+		final TimeBasedRollingFileHandler fileHandler = new TimeBasedRollingFileHandler(datePattern, fileNamePattern, limit, count, append);
 		fileHandler.setLevel(level);
 		fileHandler.setFilter(filter);
 		fileHandler.setFormatter(formatter);
@@ -95,10 +95,10 @@ public class DailyRollingFileHandlerBuilder {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof DailyRollingFileHandlerBuilder)) {
+		if (!(obj instanceof TimeBasedRollingFileHandlerBuilder)) {
 			return false;
 		}
-		DailyRollingFileHandlerBuilder other = (DailyRollingFileHandlerBuilder) obj;
+		TimeBasedRollingFileHandlerBuilder other = (TimeBasedRollingFileHandlerBuilder) obj;
 		if (append != other.append) {
 			return false;
 		}

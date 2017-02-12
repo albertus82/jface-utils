@@ -13,7 +13,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-public class DailyRollingFileHandler extends Handler {
+public class TimeBasedRollingFileHandler extends Handler {
 
 	public static class Defaults {
 		public static final String DATE_PATTERN = "yyyyMMdd";
@@ -43,20 +43,20 @@ public class DailyRollingFileHandler extends Handler {
 	private FileHandler underlyingFileHandler;
 	private String underlyingFileHandlerPattern;
 
-	public DailyRollingFileHandler() throws IOException {
+	public TimeBasedRollingFileHandler() throws IOException {
 		final String fileHandlerPattern = getFileHandlerPattern();
 		this.underlyingFileHandler = new FileHandler(fileHandlerPattern);
 		this.underlyingFileHandlerPattern = fileHandlerPattern;
 	}
 
-	public DailyRollingFileHandler(final String datePattern) throws IOException {
+	public TimeBasedRollingFileHandler(final String datePattern) throws IOException {
 		this.datePattern = datePattern;
 		final String fileHandlerPattern = getFileHandlerPattern();
 		this.underlyingFileHandler = new FileHandler(fileHandlerPattern);
 		this.underlyingFileHandlerPattern = fileHandlerPattern;
 	}
 
-	public DailyRollingFileHandler(final String datePattern, final String fileNamePattern) throws IOException {
+	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern) throws IOException {
 		this.datePattern = datePattern;
 		this.fileNamePattern = fileNamePattern;
 		final String fileHandlerPattern = getFileHandlerPattern();
@@ -64,7 +64,7 @@ public class DailyRollingFileHandler extends Handler {
 		this.underlyingFileHandlerPattern = fileHandlerPattern;
 	}
 
-	public DailyRollingFileHandler(final String datePattern, final String fileNamePattern, final boolean append) throws IOException {
+	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final boolean append) throws IOException {
 		this.datePattern = datePattern;
 		this.fileNamePattern = fileNamePattern;
 		this.append = append;
@@ -73,7 +73,7 @@ public class DailyRollingFileHandler extends Handler {
 		this.underlyingFileHandlerPattern = fileHandlerPattern;
 	}
 
-	public DailyRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count) throws IOException {
+	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count) throws IOException {
 		this.datePattern = datePattern;
 		this.fileNamePattern = fileNamePattern;
 		this.limit = limit;
@@ -83,7 +83,7 @@ public class DailyRollingFileHandler extends Handler {
 		this.underlyingFileHandlerPattern = fileHandlerPattern;
 	}
 
-	public DailyRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count, final boolean append) throws IOException {
+	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count, final boolean append) throws IOException {
 		this.datePattern = datePattern;
 		this.fileNamePattern = fileNamePattern;
 		this.limit = limit;

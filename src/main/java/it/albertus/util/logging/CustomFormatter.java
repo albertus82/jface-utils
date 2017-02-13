@@ -33,7 +33,7 @@ import java.util.logging.LogRecord;
 
 public class CustomFormatter extends Formatter {
 
-	private final String format;
+	private String format;
 	private final Date timestamp = new Date();
 
 	public CustomFormatter(final String format) {
@@ -64,6 +64,14 @@ public class CustomFormatter extends Formatter {
 			throwable = sw.toString();
 		}
 		return String.format(format, timestamp, source, record.getLoggerName(), record.getLevel().getName(), message, throwable);
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(final String format) {
+		this.format = format;
 	}
 
 }

@@ -144,8 +144,12 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 				final ConsoleHandler newConsoleHandler = new ConsoleHandler();
 				newConsoleHandler.setLevel(oldHandler.getLevel());
 				newConsoleHandler.setFilter(oldHandler.getFilter());
-				newConsoleHandler.setFormatter(oldHandler.getFormatter());
-				newConsoleHandler.setErrorManager(oldHandler.getErrorManager());
+				if (oldHandler.getFormatter() != null) {
+					newConsoleHandler.setFormatter(oldHandler.getFormatter());
+				}
+				if (oldHandler.getErrorManager() != null) {
+					newConsoleHandler.setErrorManager(oldHandler.getErrorManager());
+				}
 				try {
 					newConsoleHandler.setEncoding(oldHandler.getEncoding());
 				}

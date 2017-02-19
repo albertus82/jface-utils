@@ -17,10 +17,11 @@ public class Version {
 
 	private static final Logger logger = LoggerFactory.getLogger(Version.class);
 
+	public static final String ISO_8601_PATTERN = "yyyy-MM-dd";
+
 	private static final String VERSION_FILE_NAME = "version.properties";
 	private static final String KEY_VERSION_NUMBER = "version.number";
 	private static final String KEY_VERSION_DATE = "version.date";
-	private static final String ISO_8601_PATTERN = "yyyy-MM-dd";
 
 	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -71,13 +72,9 @@ public class Version {
 		return properties.getProperty(KEY_VERSION_NUMBER);
 	}
 
-	public String getDate() {
-		return properties.getProperty(KEY_VERSION_DATE);
-	}
-
-	public Date parseDate() throws IllegalArgumentException {
+	public Date getDate() throws IllegalArgumentException {
 		try {
-			return dateFormat.get().parse(getDate());
+			return dateFormat.get().parse(properties.getProperty(KEY_VERSION_DATE));
 		}
 		catch (final ParseException pe) {
 			throw new IllegalArgumentException(pe);

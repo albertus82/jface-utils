@@ -7,17 +7,17 @@ import java.util.Set;
 
 public abstract class AbstractLogFileManager implements ILogFileManager {
 
-	protected static final String LOG_FILE_EXTENSION = ".log";
-	protected static final String LOCK_FILE_EXTENSION = ".lck";
+	public static final String LOG_FILE_EXTENSION = ".log";
+	public static final String LOCK_FILE_EXTENSION = ".lck";
 
-	protected final FilenameFilter logFilenameFilter = new FilenameFilter() {
+	private final FilenameFilter logFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
 			return name != null && name.toLowerCase().contains(getLogFileExtension()) && !name.endsWith(getLockFileExtension());
 		}
 	};
 
-	protected final FilenameFilter lockFilenameFilter = new FilenameFilter() {
+	private final FilenameFilter lockFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
 			return name != null && name.endsWith(getLockFileExtension());
@@ -25,16 +25,16 @@ public abstract class AbstractLogFileManager implements ILogFileManager {
 	};
 
 	/**
-	 * This method must return the directory that is configured as the log files
-	 * path.
+	 * This method must return the directory that is configured as the
+	 * destination path for the application's log files.
 	 * 
-	 * @return the directory that contains the logs.
+	 * @return the directory that contains the application's logs.
 	 */
 	public abstract String getPath();
 
 	@Override
 	public File[] listFiles() {
-		return new File(getPath()).listFiles(logFilenameFilter);
+		return new File(getPath()).listFiles(getLogFilenameFilter());
 	}
 
 	@Override
@@ -49,10 +49,10 @@ public abstract class AbstractLogFileManager implements ILogFileManager {
 
 	public Set<File> getLockedFiles() {
 		final Set<File> lockedFiles = new HashSet<File>();
-		final File[] lockFiles = new File(getPath()).listFiles(lockFilenameFilter);
+		final File[] lockFiles = new File(getPath()).listFiles(getLockFilenameFilter());
 		if (lockFiles != null) {
 			for (final File lockFile : lockFiles) {
-				final File lockedFile = new File(lockFile.getPath().replace(LOCK_FILE_EXTENSION, ""));
+				final File lockedFile = new File(lockFile.getPath().replace(getLockFileExtension(), ""));
 				if (lockedFile.exists()) {
 					lockedFiles.add(lockedFile);
 				}
@@ -72,6 +72,14 @@ public abstract class AbstractLogFileManager implements ILogFileManager {
 			}
 		}
 		return count;
+	}
+
+	public FilenameFilter getLogFilenameFilter() {
+		return logFilenameFilter;
+	}
+
+	public FilenameFilter getLockFilenameFilter() {
+		return lockFilenameFilter;
 	}
 
 	public String getLogFileExtension() {

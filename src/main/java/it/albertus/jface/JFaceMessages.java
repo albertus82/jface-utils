@@ -12,7 +12,7 @@ public class JFaceMessages {
 
 	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
 
-	/** Instantiation not permitted. */
+	// Instantiation not permitted.
 	private JFaceMessages() {
 		throw new IllegalAccessError();
 	}

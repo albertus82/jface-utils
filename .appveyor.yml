@@ -11,11 +11,11 @@ environment:
 
 install:
   - cmd: SET ANT_VERSION=1.10.1
-  - ps: if (!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\')) { cinst ant -i -Version %ANT_VERSION% }
-  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
+  - ps: if (!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-$env:ANT_VERSION\')) { cinst ant -i -Version $env:ANT_VERSION }
+  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-$env:ANT_VERSION\bin;%JAVA_HOME%\bin;%PATH%
 
 cache:
-  - C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%
+  - C:\ProgramData\chocolatey\lib\ant\apache-ant-$env:ANT_VERSION
 
 platform:
   - x86

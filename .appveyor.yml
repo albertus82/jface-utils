@@ -15,7 +15,7 @@ install:
   - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-$env:ANT_VERSION\bin;%JAVA_HOME%\bin;%PATH%
 
 cache:
-  - C:\ProgramData\chocolatey\lib\ant\apache-ant-$env:ANT_VERSION
+  - C:\ProgramData\chocolatey\lib\ant
 
 platform:
   - x86

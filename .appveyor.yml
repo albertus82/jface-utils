@@ -1,13 +1,10 @@
 environment:
+  JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
+
   matrix:
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-      JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
-
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
-      JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
-
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
-      JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
 
 install:
   - ps: $env:ANT_VERSION = '1.9.8'

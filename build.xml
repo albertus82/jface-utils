@@ -111,6 +111,7 @@
 			sonar.tests=${build.testSourceDirectory}
 			sonar.java.test.libraries=${dependencies.directory}/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
+			sonar.junit.reportsPath=${build.directory}/surefire-reports
 		</echo>
 	</target>
 

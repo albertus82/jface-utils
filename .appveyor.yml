@@ -1,24 +1,25 @@
 environment:
   matrix:
+    - JAVA_HOME: C:\Program Files\Java\jdk1.6.0
     - JAVA_HOME: C:\Program Files\Java\jdk1.7.0
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 
 install:
-  - ps: if(!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.6\' )){ cinst ant -i -Version 1.9.6 }
-  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.6\bin;C:\bin\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH%
+  - ps: if(!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8\' )){ cinst ant -i -Version 1.9.8 }
+  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8\bin;%JAVA_HOME%\bin;%PATH%
 
 cache:
-  - C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.6
+  - C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8
 
 platform:
   - x86
   - x64
 
-configuration:
-  - Release
+#configuration:
+#  - Release
 
 build_script:
   - ant all
 
-test_script:
-- echo "Nothing."
+#test_script:
+#- echo "Nothing."

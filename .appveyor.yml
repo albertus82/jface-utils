@@ -26,3 +26,10 @@ platform:
 
 build_script:
   - ant all
+
+after_build:
+  - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true') { $env:ARTIFACTS_PATH="target\dist\*.jar" }
+
+artifacts:
+  - path: $(ARTIFACTS_PATH)
+    type: file

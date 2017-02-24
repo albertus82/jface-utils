@@ -1,13 +1,13 @@
 environment:
   matrix:
-    - JAVA_HOME: $env:ProgramFiles\Java\jdk1.6.0
-      JRE6_HOME: $env:ProgramFiles\Java\jdk1.6.0\jre
+    - JAVA_HOME: C:\Program Files\Java\jdk1.6.0
+      JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
 
-    - JAVA_HOME: $env:ProgramFiles\Java\jdk1.7.0
-      JRE6_HOME: $env:ProgramFiles\Java\jdk1.6.0\jre
+    - JAVA_HOME: C:\Program Files\Java\jdk1.7.0
+      JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
 
-    - JAVA_HOME: $env:ProgramFiles\Java\jdk1.8.0
-      JRE6_HOME: $env:ProgramFiles\Java\jdk1.6.0\jre
+    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+      JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
 
 install:
   - ps: $env:ANT_VERSION="1.9.8"

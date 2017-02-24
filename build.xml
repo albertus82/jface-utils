@@ -100,7 +100,7 @@
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}
-			sonar.java.libraries=${dependencies.directory}/**/*.jar
+			sonar.java.libraries=${dependencies.directory}/*.jar
 			sonar.java.binaries=${build.outputDirectory}
 			sonar.sourceEncoding=UTF-8
 		</echo>
@@ -109,7 +109,7 @@
 	<target name="sonar-test" depends="sonar-main" if="build.test">
 		<echo file="sonar-project.properties" append="true">
 			sonar.tests=${build.testSourceDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/test/*.jar
+			sonar.java.test.libraries=${dependencies.directory}/*.jar,${dependencies.directory}/test/*.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
 		</echo>
 	</target>

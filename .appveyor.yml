@@ -2,9 +2,11 @@ environment:
   JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
 
   matrix:
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.6.0
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.6.0
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.7.0
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.8.0
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
 
 install:
@@ -17,10 +19,6 @@ install:
 
 cache:
   - $(ChocolateyInstall)\lib\ant
-
-platform:
-  - x86
-  - x64
 
 build_script:
   - ant all

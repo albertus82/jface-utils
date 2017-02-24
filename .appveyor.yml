@@ -3,6 +3,7 @@ environment:
 
   matrix:
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
+    - JAVA_HOME: $(ProgramFiles(x86))\Java\jdk1.6.0
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
     - JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
 

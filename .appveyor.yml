@@ -1,4 +1,6 @@
 environment:
+  ANT_VERSION: 1.10.1
+
   matrix:
     - JAVA_HOME: C:\Program Files\Java\jdk1.6.0
       JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
@@ -10,11 +12,11 @@ environment:
       JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
 
 install:
-  - ps: if(!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8\' )){ cinst ant -i -Version 1.9.8 }
-  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8\bin;%JAVA_HOME%\bin;%PATH%
+  - ps: if (!(Test-Path -Path 'C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\')) { cinst ant -i -Version %ANT_VERSION% }
+  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
 
 cache:
-  - C:\ProgramData\chocolatey\lib\ant\apache-ant-1.9.8
+  - C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%
 
 platform:
   - x86

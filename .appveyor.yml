@@ -10,13 +10,12 @@ environment:
       JRE6_HOME: C:\Program Files\Java\jdk1.6.0\jre
 
 install:
-  - ps:
-      $env:ANT_VERSION="1.9.8"
-      if (!(Test-Path -Path ('C:\ProgramData\chocolatey\lib\ant\apache-ant-' + $env:ANT_VERSION))) { cinst ant -i --version $env:ANT_VERSION }
-  - cmd:
-      SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
-      java -Xmx32m -version
-      javac -J-Xmx32m -version
+  - ps: $env:ANT_VERSION="1.9.8"
+  - ps: if (!(Test-Path -Path ('C:\ProgramData\chocolatey\lib\ant\apache-ant-' + $env:ANT_VERSION))) { cinst ant -i --version $env:ANT_VERSION }
+  - cmd: SET PATH=C:\ProgramData\chocolatey\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
+  - cmd: java -Xmx32m -version
+  - cmd: javac -J-Xmx32m -version
+  - cmd: ant -version
 
 cache:
   - C:\ProgramData\chocolatey\lib\ant

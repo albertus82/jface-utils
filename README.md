@@ -5,6 +5,8 @@ JFaceUtils
 
 **Java SWT/JFace Utilities Library** including a **Preferences Framework**.
 
+This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some of the basic Java features such as configuration, logging and I/O.
+
 ![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 
 ## The Preferences Framework

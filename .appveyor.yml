@@ -17,8 +17,8 @@ install:
   - cmd: javac -J-Xmx32m -version
   - cmd: ant -version
 
-#cache:
-#  - C:\ProgramData\chocolatey\lib\ant
+cache:
+  - C:\ProgramData\chocolatey\lib\ant
 
 platform:
   - x86

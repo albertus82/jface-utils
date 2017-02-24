@@ -1,19 +1,19 @@
 JFaceUtils
 ==========
 
+### **Java SWT/JFace Utilities Library** including a **Preferences Framework**.
+
 [![Build Status](https://travis-ci.org/Albertus82/JFaceUtils.svg?branch=master)](https://travis-ci.org/Albertus82/JFaceUtils)
 
-**Java SWT/JFace Utilities Library** including a **Preferences Framework**.
-
 This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some of the basic Java features such as configuration, logging and I/O.
-
-![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 
 ## The Preferences Framework
 
 The creation of a **preferences dialog** to manage the configuration of a SWT/JFace application can be a very annoying and time consuming task: you have to create every single field editor, they can be a lot and you may have to split them across multiple pages. Moreover, the basic JFace's `FieldEditor` classes aren't very flexible.
 
 This framework will allow you to create a complete preferences dialog by writing only two enums, and includes several customizable `FieldEditor` classes with localization support and other useful features.
+
+![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 
 ### Getting started
 

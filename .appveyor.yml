@@ -2,18 +2,12 @@ environment:
   JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
 
   matrix:
-    - platform: x86
-      JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.6.0
-    - platform: x86
-      JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.7.0
-    - platform: x86
-      JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.8.0
-    - platform: x64
-      JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-    - platform: x64
-      JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
-    - platform: x64
-      JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.6.0
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.7.0
+    - JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.8.0
+    - JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
+    - JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
+    - JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
 
 install:
   - ps: $env:ANT_VERSION = '1.9.8'

@@ -24,7 +24,7 @@ install:
   - cmd: ant -version
 
 cache:
-#  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
+  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
 
 build_script:
   - ant all

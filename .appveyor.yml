@@ -23,8 +23,8 @@ install:
   - cmd: javac -J-Xmx32m -version
   - cmd: ant -version
 
-#cache:
-#  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
+cache:
+  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
 
 build_script:
   - ant all

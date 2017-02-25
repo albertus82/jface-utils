@@ -4,7 +4,7 @@ JFaceUtils
 [![Build Status](https://travis-ci.org/Albertus82/JFaceUtils.svg?branch=master)](https://travis-ci.org/Albertus82/JFaceUtils)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/Albertus82/JFaceUtils?branch=master&svg=true)](https://ci.appveyor.com/project/Albertus82/JFaceUtils)
 
-### **Java SWT/JFace Utilities Library** including a **Preferences Framework**.
+### Java SWT/JFace Utilities Library including a Preferences Framework
 
 This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some of the basic Java features such as logging, configuration and I/O.
 

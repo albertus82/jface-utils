@@ -23,14 +23,14 @@ install:
   - cmd: javac -J-Xmx32m -version
   - cmd: ant -version
 
-cache:
-  - $(ChocolateyInstall)\lib\ant
+#cache:
+#  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
 
 build_script:
   - ant all
 
 after_build:
-  - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true') { $env:ARTIFACTS_PATH = 'target\dist\*.jar' }
+  - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\dist\*.jar' }
 
 artifacts:
   - path: $(ARTIFACTS_PATH)

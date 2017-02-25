@@ -10,7 +10,7 @@ This library is meant to support the development of small footprint Java client 
 
 ## The Preferences Framework
 
-The creation of a **preferences dialog** to manage the configuration of a SWT/JFace application can be a very annoying and time consuming task: you have to create every single field editor, they can be a lot and you may have to split them across multiple pages. Moreover, the basic JFace's `FieldEditor` classes aren't very flexible.
+The creation of a **preferences dialog** to manage the configuration of a SWT/JFace application can be an annoying and time consuming task: you have to create every single field; they could be a lot, so you might want to split them across multiple pages. Moreover, the basic JFace's `FieldEditor` classes aren't very flexible.
 
 This framework will allow you to create a complete preferences dialog by writing only two enums, and includes several customizable `FieldEditor` classes with localization support and other useful features.
 

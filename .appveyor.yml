@@ -4,19 +4,24 @@ environment:
   matrix:
     - platform: x86
       JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.6.0
+      ANT_VERSION: 1.9.8
     - platform: x86
       JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.7.0
+      ANT_VERSION: 1.9.8
     - platform: x86
       JAVA_HOME: $(ProgramFiles) (x86)\Java\jdk1.8.0
+      ANT_VERSION: 1.10.0
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
+      ANT_VERSION: 1.9.8
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
+      ANT_VERSION: 1.9.8
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
+      ANT_VERSION: 1.10.0
 
 install:
-  - ps: $env:ANT_VERSION = '1.9.8'
   - ps: if (!(Test-Path -Path ($env:ChocolateyInstall + '\lib\ant\apache-ant-' + $env:ANT_VERSION))) { cinst ant -i --version $env:ANT_VERSION }
   - cmd: PATH %ChocolateyInstall%\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
   - cmd: java -Xmx32m -version

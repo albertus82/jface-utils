@@ -1,3 +1,5 @@
+clone_depth: 50
+
 environment:
   JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
 

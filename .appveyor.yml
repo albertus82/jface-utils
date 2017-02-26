@@ -52,5 +52,4 @@ deploy:
     secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
   draft: true
   on:
-    branch: master
     appveyor_repo_tag: true

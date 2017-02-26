@@ -49,7 +49,7 @@ deploy:
   description: $(appveyor_build_version)
   provider: GitHub
   auth_token:
-    secure: e68628b4aa96757bc96a6f2be7c3a59b4a2942f5
+    secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
   draft: true
   on:
     branch: master

@@ -44,3 +44,13 @@ after_build:
 artifacts:
   - path: $(ARTIFACTS_PATH)
     type: file
+
+deploy:
+  description: $(appveyor_build_version)
+  provider: GitHub
+  auth_token:
+    secure: e68628b4aa96757bc96a6f2be7c3a59b4a2942f5
+  draft: true
+  on:
+    branch: master
+    appveyor_repo_tag: true

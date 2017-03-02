@@ -17,6 +17,16 @@ public class JFaceMessages {
 		throw new IllegalAccessError();
 	}
 
+	public static String getLanguage() {
+		final String language = resources.getLocale().getLanguage();
+		if (!language.isEmpty()) {
+			return language;
+		}
+		else {
+			return Locale.ENGLISH.getLanguage(); // Default.
+		}
+	}
+
 	/**
 	 * Switch the language for JFaceUtils messages.
 	 *
@@ -39,10 +49,6 @@ public class JFaceMessages {
 		}
 		final String message = MessageFormat.format(resources.getString(key), stringParams.toArray());
 		return message != null ? message.trim() : "";
-	}
-
-	public static ResourceBundle getResources() {
-		return resources;
 	}
 
 }

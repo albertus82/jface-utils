@@ -141,8 +141,8 @@ public class MapDialog extends Dialog {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				// Language
-				if (line.contains(DEFAULT_URL) && !JFaceMessages.getResources().getLocale().getLanguage().isEmpty()) {
-					line = line.replace(DEFAULT_URL, url + "?language=" + JFaceMessages.getResources().getLocale().getLanguage());
+				if (line.contains(DEFAULT_URL) && !JFaceMessages.getLanguage().isEmpty()) {
+					line = line.replace(DEFAULT_URL, url + "?language=" + JFaceMessages.getLanguage());
 				}
 				// Options
 				else if (line.contains(OPTIONS_PLACEHOLDER)) {

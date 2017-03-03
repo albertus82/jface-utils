@@ -17,10 +17,9 @@
 		<javac srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">
 			<classpath>
 				<fileset dir="${dependencies.directory}">
-					<include name="**/*.jar" />
+					<include name="provided/*.jar" />
 				</fileset>
 			</classpath>
-			<!-- Compilazione per JRE specifico -->
 			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
 		</javac>
 	</target>
@@ -66,20 +65,20 @@
 		<javac srcdir="${build.testSourceDirectory}" destdir="${build.outputTestDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">
 			<classpath path="${build.outputDirectory}">
 				<fileset dir="${dependencies.directory}">
-					<include name="**/*.jar" />
+					<include name="provided/*.jar" />
+					<include name="test/*.jar" />
 				</fileset>
 			</classpath>
-			<!-- Compilazione per JRE specifico -->
 			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
 		</javac>
 
 		<junit printsummary="yes" haltonfailure="yes">
 			<classpath path="${build.outputTestDirectory}">
-				<fileset dir="${dependencies.directory}">
-					<include name="**/*.jar" />
-				</fileset>
 				<fileset dir="${build.distDirectory}">
-					<include name="*.jar" />
+					<include name="${artifactId}-${version.number}.jar" />
+				</fileset>
+				<fileset dir="${dependencies.directory}">
+					<include name="test/*.jar" />
 				</fileset>
 			</classpath>
 			<batchtest>
@@ -100,7 +99,7 @@
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}
-			sonar.java.libraries=${dependencies.directory}/*.jar
+			sonar.java.libraries=${dependencies.directory}/provided/*.jar
 			sonar.java.binaries=${build.outputDirectory}
 			sonar.sourceEncoding=UTF-8
 		</echo>
@@ -109,7 +108,7 @@
 	<target name="sonar-test" depends="sonar-main" if="build.test">
 		<echo file="sonar-project.properties" append="true">
 			sonar.tests=${build.testSourceDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
+			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
 		</echo>
 	</target>

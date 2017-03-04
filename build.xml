@@ -12,6 +12,10 @@
 		<delete dir="${build.directory}" />
 	</target>
 
+	<target name="distclean">
+		<delete dir="${build.distDirectory}" includes="*.*" ></delete>
+	</target>
+
 	<target name="compile">
 		<mkdir dir="${build.outputDirectory}" />
 		<javac srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory}" source="${build.compiler.source}" target="${build.compiler.target}" debug="true" includeantruntime="false">

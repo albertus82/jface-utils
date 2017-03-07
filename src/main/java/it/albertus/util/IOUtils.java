@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipFile;
@@ -56,6 +58,20 @@ public class IOUtils {
 
 	public static long copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException {
 		return copy(input, output, new byte[bufferSize]);
+	}
+
+	public static long copy(final Reader input, final Writer output, final char[] buffer) throws IOException {
+		long count = 0;
+		int n;
+		while (EOF != (n = input.read(buffer))) {
+			output.write(buffer, 0, n);
+			count += n;
+		}
+		return count;
+	}
+
+	public static long copy(final Reader input, final Writer output, final int bufferSize) throws IOException {
+		return copy(input, output, new char[bufferSize]);
 	}
 
 }

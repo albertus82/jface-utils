@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Observable;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.FileSorter;
 
-public class HousekeepingFilter implements Filter {
+public class HousekeepingFilter extends Observable implements Filter {
 
 	private static final Logger logger = LoggerFactory.getLogger(HousekeepingFilter.class);
 
@@ -76,7 +77,8 @@ public class HousekeepingFilter implements Filter {
 			for (int i = 0; i < files.length - keep; i++) {
 				final boolean deleted = logFileManager.deleteFile(files[i]);
 				if (deleted) {
-					logger.log(Level.INFO, JFaceMessages.get("msg.logging.housekeeping.deleted"), files[i]);
+					setChanged();
+					notifyObservers(files[i]);
 				}
 			}
 		}

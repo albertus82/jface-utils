@@ -13,7 +13,7 @@
 	</target>
 
 	<target name="distclean">
-		<delete dir="${build.distDirectory}" includes="*.*" ></delete>
+		<delete dir="${build.distDirectory}" includes="*.*" />
 	</target>
 
 	<target name="compile">

@@ -19,8 +19,8 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Scrollable;
 
+import it.albertus.jface.DisplayThreadExecutor;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.SwtThreadExecutor;
 import it.albertus.util.Configured;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
@@ -107,17 +107,17 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 		final int capacity = getLimit();
 
 		// Actual print... (async avoids deadlocks)
-		new SwtThreadExecutor(scrollable, true) {
-			@Override
-			protected void run() {
-				doPrint(toPrint, capacity);
-			}
-
+		new DisplayThreadExecutor(scrollable, true) {
 			@Override
 			protected void onError(final Exception exception) {
 				failSafePrint(toPrint);
 			}
-		}.start();
+		}.execute(new Runnable() {
+			@Override
+			public void run() {
+				doPrint(toPrint, capacity);
+			}
+		});
 	}
 
 	protected void failSafePrint(final String value) {

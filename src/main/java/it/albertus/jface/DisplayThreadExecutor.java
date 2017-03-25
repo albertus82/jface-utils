@@ -1,5 +1,6 @@
 package it.albertus.jface;
 
+import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,18 +11,18 @@ import org.eclipse.swt.widgets.Widget;
 import it.albertus.util.logging.LoggerFactory;
 
 /** Executes code in the user-interface thread. */
-public abstract class SwtThreadExecutor {
-	
-	private static final Logger logger = LoggerFactory.getLogger(SwtThreadExecutor.class);
+public class DisplayThreadExecutor implements Executor {
+
+	private static final Logger logger = LoggerFactory.getLogger(DisplayThreadExecutor.class);
 
 	private final Widget widget;
 	private final boolean async;
 
-	public SwtThreadExecutor(final Widget widget) {
+	public DisplayThreadExecutor(final Widget widget) {
 		this(widget, false);
 	}
 
-	public SwtThreadExecutor(final Widget widget, final boolean async) {
+	public DisplayThreadExecutor(final Widget widget, final boolean async) {
 		this.widget = widget;
 		this.async = async;
 	}
@@ -30,29 +31,28 @@ public abstract class SwtThreadExecutor {
 		return widget;
 	}
 
-	protected abstract void run();
-
-	protected void onError(final Exception exception) {
-		if (exception != null && !(exception instanceof SWTException)) {
-			logger.log(Level.SEVERE, "Error in SWT thread", exception);
+	protected void onError(final Exception e) {
+		if (e != null && !(e instanceof SWTException)) {
+			logger.log(Level.SEVERE, "Error in SWT thread", e);
 		}
 	}
 
-	public void start() {
+	@Override
+	public void execute(final Runnable command) {
 		if (widget != null) {
 			try {
 				if (widget.getDisplay().equals(Display.getCurrent())) {
-					run();
+					command.run();
 				}
 				else {
 					final Runnable runnable = new Runnable() {
 						@Override
 						public void run() {
 							try {
-								SwtThreadExecutor.this.run();
+								command.run();
 							}
-							catch (final Exception exception) {
-								onError(exception);
+							catch (final RuntimeException e) {
+								onError(e);
 							}
 						}
 					};
@@ -64,10 +64,11 @@ public abstract class SwtThreadExecutor {
 					}
 				}
 			}
-			catch (final Exception exception) {
-				onError(exception);
+			catch (final RuntimeException e) {
+				onError(e);
 			}
 		}
+
 	}
 
 }

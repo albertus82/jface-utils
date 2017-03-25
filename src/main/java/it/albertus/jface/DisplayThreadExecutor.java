@@ -31,6 +31,10 @@ public class DisplayThreadExecutor implements Executor {
 		return widget;
 	}
 
+	public boolean isAsync() {
+		return async;
+	}
+
 	protected void onError(final Exception e) {
 		if (e != null && !(e instanceof SWTException)) {
 			logger.log(Level.SEVERE, "Error in SWT thread", e);

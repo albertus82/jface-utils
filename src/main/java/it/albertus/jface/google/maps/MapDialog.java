@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.SwtUtils;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
@@ -43,7 +45,6 @@ public class MapDialog extends Dialog {
 	public static final String MARKERS_PLACEHOLDER = "/* Markers */";
 
 	protected static final String HTML_FILE_NAME = "map.html";
-	protected static final int BUTTON_WIDTH = 90;
 
 	private String url = DEFAULT_URL;
 	private final MapOptions options = new MapOptions();
@@ -68,7 +69,7 @@ public class MapDialog extends Dialog {
 
 		final Button closeButton = new Button(buttonComposite, SWT.PUSH);
 		closeButton.setText(JFaceMessages.get("lbl.button.close"));
-		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(BUTTON_WIDTH, SWT.DEFAULT).applyTo(closeButton);
+		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(SwtUtils.convertHorizontalDLUsToPixels(closeButton, IDialogConstants.BUTTON_WIDTH), SWT.DEFAULT).applyTo(closeButton);
 		closeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {

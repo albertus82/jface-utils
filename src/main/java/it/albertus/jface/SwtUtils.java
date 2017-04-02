@@ -1,9 +1,12 @@
 package it.albertus.jface;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 public class SwtUtils {
@@ -60,6 +63,14 @@ public class SwtUtils {
 			}
 		}
 		return false;
+	}
+
+	public static int convertHorizontalDLUsToPixels(final Control control, final int dlus) {
+		final GC gc = new GC(control);
+		gc.setFont(control.getFont());
+		final int widthInPixel = Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
+		gc.dispose();
+		return widthInPixel;
 	}
 
 }

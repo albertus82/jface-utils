@@ -3,6 +3,7 @@ package it.albertus.jface.google.maps;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -17,6 +18,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.SwtUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 public class MapBoundsDialog extends MapDialog {
@@ -41,7 +43,7 @@ public class MapBoundsDialog extends MapDialog {
 
 		final Button confirmButton = new Button(buttonComposite, SWT.PUSH);
 		confirmButton.setText(JFaceMessages.get("lbl.button.confirm"));
-		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(BUTTON_WIDTH, SWT.DEFAULT).applyTo(confirmButton);
+		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(SwtUtils.convertHorizontalDLUsToPixels(confirmButton, IDialogConstants.BUTTON_WIDTH), SWT.DEFAULT).applyTo(confirmButton);
 		confirmButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent event) {
@@ -69,7 +71,7 @@ public class MapBoundsDialog extends MapDialog {
 
 		final Button cancelButton = new Button(buttonComposite, SWT.PUSH);
 		cancelButton.setText(JFaceMessages.get("lbl.button.cancel"));
-		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(BUTTON_WIDTH, SWT.DEFAULT).applyTo(cancelButton);
+		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(SwtUtils.convertHorizontalDLUsToPixels(cancelButton, IDialogConstants.BUTTON_WIDTH), SWT.DEFAULT).applyTo(cancelButton);
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {

@@ -20,6 +20,7 @@ public class FieldEditorDetails {
 	private Boolean defaultToolTip;
 	private Boolean boldCustomValues;
 	private Integer style;
+	private Integer height;
 
 	// ComboFieldEditor & RadioGroupFieldEditor
 	private LabelsAndValues labelsAndValues;
@@ -37,7 +38,6 @@ public class FieldEditorDetails {
 	// StringFieldEditor
 	private Integer textLimit;
 	private Integer textWidth;
-	private Integer textHeight;
 	private Integer textValidateStrategy;
 
 	// Numeric FieldEditors
@@ -77,7 +77,7 @@ public class FieldEditorDetails {
 		this.scalePageIncrement = builder.scalePageIncrement;
 		this.textLimit = builder.textLimit;
 		this.textWidth = builder.textWidth;
-		this.textHeight = builder.textHeight;
+		this.height = builder.height;
 		this.textValidateStrategy = builder.textValidateStrategy;
 		this.numberMinimum = builder.numberMinimum;
 		this.numberMaximum = builder.numberMaximum;
@@ -200,12 +200,12 @@ public class FieldEditorDetails {
 		this.textWidth = textWidth;
 	}
 
-	public Integer getTextHeight() {
-		return textHeight;
+	public Integer getHeight() {
+		return height;
 	}
 
-	public void setTextHeight(final Integer textHeight) {
-		this.textHeight = textHeight;
+	public void setHeight(final Integer height) {
+		this.height = height;
 	}
 
 	public Integer getTextValidateStrategy() {
@@ -331,10 +331,10 @@ public class FieldEditorDetails {
 	@Override
 	public String toString() {
 		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (defaultToolTip != null ? "defaultToolTip=" + defaultToolTip + ", " : "") + (boldCustomValues != null ? "boldCustomValues=" + boldCustomValues + ", " : "")
-				+ (style != null ? "style=" + style + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "")
-				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textHeight != null ? "textHeight=" + textHeight + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "")
-				+ (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "")
-				+ (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+				+ (style != null ? "style=" + style + ", " : "") + (height != null ? "height=" + height + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "")
+				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "")
+				+ (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "")
+				+ (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	public static class FieldEditorDetailsBuilder {
@@ -343,6 +343,7 @@ public class FieldEditorDetails {
 		private Integer horizontalSpan;
 		private Image[] icons;
 		private Integer style;
+		private Integer height;
 		private Boolean defaultToolTip;
 		private Boolean boldCustomValues;
 		private LabelsAndValues labelsAndValues;
@@ -354,7 +355,6 @@ public class FieldEditorDetails {
 		private Integer scalePageIncrement;
 		private Integer textLimit;
 		private Integer textWidth;
-		private Integer textHeight;
 		private Integer textValidateStrategy;
 		private Number numberMinimum;
 		private Number numberMaximum;
@@ -422,8 +422,8 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder textHeight(final int height) {
-			this.textHeight = height;
+		public FieldEditorDetailsBuilder height(final int height) {
+			this.height = height;
 			return this;
 		}
 

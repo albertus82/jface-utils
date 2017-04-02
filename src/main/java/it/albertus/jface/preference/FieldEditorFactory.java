@@ -42,6 +42,7 @@ import it.albertus.jface.preference.field.FieldEditorDefault;
 import it.albertus.jface.preference.field.FloatComboFieldEditor;
 import it.albertus.jface.preference.field.FloatFieldEditor;
 import it.albertus.jface.preference.field.IntegerComboFieldEditor;
+import it.albertus.jface.preference.field.ListFieldEditor;
 import it.albertus.jface.preference.field.LocalizedPathEditor;
 import it.albertus.jface.preference.field.LongComboFieldEditor;
 import it.albertus.jface.preference.field.LongFieldEditor;
@@ -114,6 +115,9 @@ public class FieldEditorFactory {
 		}
 		else if (EnhancedIntegerFieldEditor.class.equals(type)) {
 			fieldEditor = createEnhancedIntegerFieldEditor(name, label, parent, details);
+		}
+		else if (ListFieldEditor.class.equals(type)) {
+			fieldEditor = createListFieldEditor(name, label, parent, details);
 		}
 		else if (LongFieldEditor.class.equals(type)) {
 			fieldEditor = createLongFieldEditor(name, label, parent, details);
@@ -473,6 +477,15 @@ public class FieldEditorFactory {
 			}
 		}
 		return fieldEditor;
+	}
+
+	protected FieldEditor createListFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
+		if (details.getHeight() != null) {
+			return new ListFieldEditor(name, label, details.getLabelsAndValues().toArray(), details.getHeight(), parent);
+		}
+		else {
+			return new ListFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+		}
 	}
 
 	protected LongFieldEditor createLongFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
@@ -845,8 +858,8 @@ public class FieldEditorFactory {
 
 	protected WrapStringFieldEditor createWrapStringFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final WrapStringFieldEditor fieldEditor;
-		if (details != null && details.getTextHeight() != null) {
-			fieldEditor = new WrapStringFieldEditor(name, label, parent, details.getTextHeight());
+		if (details != null && details.getHeight() != null) {
+			fieldEditor = new WrapStringFieldEditor(name, label, parent, details.getHeight());
 		}
 		else {
 			fieldEditor = new WrapStringFieldEditor(name, label, parent);

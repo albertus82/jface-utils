@@ -6,7 +6,6 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
@@ -15,7 +14,7 @@ import it.albertus.jface.JFaceMessages;
 
 public class ListFieldEditor extends FieldEditor implements FieldEditorDefault {
 
-	private static final int DEFAULT_HEIGHT = 5;
+	private static final int DEFAULT_HEIGHT = 4;
 
 	private final String[][] entryNamesAndValues;
 	private final int height;
@@ -66,11 +65,7 @@ public class ListFieldEditor extends FieldEditor implements FieldEditorDefault {
 		getLabelControl(parent);
 
 		list = getListControl(parent);
-		final GC gc = new GC(list);
-		gc.setFont(list.getFont());
-		final int fontHeight =  gc.getFontMetrics().getHeight();
-		gc.dispose();
-		GridDataFactory.swtDefaults().span(numColumns - 1, 1).align(SWT.FILL, SWT.CENTER).grab(true, false).hint(SWT.DEFAULT, fontHeight * height).applyTo(list);
+		GridDataFactory.swtDefaults().span(numColumns - 1, 1).align(SWT.FILL, SWT.CENTER).grab(true, false).hint(SWT.DEFAULT, list.getItemHeight() * height).applyTo(list);
 
 		list.addSelectionListener(new SelectionAdapter() {
 			@Override

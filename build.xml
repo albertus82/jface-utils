@@ -23,6 +23,7 @@
 				<fileset dir="${dependencies.directory}">
 					<include name="compile/*.jar" />
 					<include name="provided/*.jar" />
+					<include name="provided/platform/**/*.jar" />
 				</fileset>
 			</classpath>
 			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
@@ -72,6 +73,7 @@
 				<fileset dir="${dependencies.directory}">
 					<include name="compile/*.jar" />
 					<include name="provided/*.jar" />
+					<include name="provided/platform/**/*.jar" />
 					<include name="test/*.jar" />
 				</fileset>
 			</classpath>
@@ -105,7 +107,7 @@
 			sonar.language=java
 			sonar.java.source=${build.compiler.source}
 			sonar.java.target=${build.compiler.target}
-			sonar.java.libraries=${dependencies.directory}/provided/*.jar
+			sonar.java.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar
 			sonar.java.binaries=${build.outputDirectory}
 			sonar.sourceEncoding=UTF-8
 		</echo>
@@ -114,7 +116,7 @@
 	<target name="sonar-test" depends="sonar-main" if="build.test">
 		<echo file="sonar-project.properties" append="true">
 			sonar.tests=${build.testSourceDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
+			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
 		</echo>
 	</target>

@@ -2,6 +2,9 @@ package it.albertus.jface.preference;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
@@ -53,8 +56,11 @@ import it.albertus.jface.preference.field.ShortFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
+import it.albertus.util.logging.LoggerFactory;
 
 public class FieldEditorFactory {
+
+	private static final Logger logger = LoggerFactory.getLogger(FieldEditorFactory.class);
 
 	private boolean boldCustomValues = true;
 
@@ -708,13 +714,22 @@ public class FieldEditorFactory {
 
 	protected PasswordFieldEditor createPasswordFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final PasswordFieldEditor fieldEditor;
-		if (details != null && details.getTextWidth() != null) {
-			fieldEditor = new PasswordFieldEditor(name, label, details.getTextWidth(), parent);
-		}
-		else {
+		if (details == null) {
 			fieldEditor = new PasswordFieldEditor(name, label, parent);
 		}
-		if (details != null) {
+		else {
+			try {
+				if (details.getTextWidth() != null) {
+					fieldEditor = new PasswordFieldEditor(name, label, details.getHashAlgorithm(), details.getTextWidth(), parent);
+				}
+				else {
+					fieldEditor = new PasswordFieldEditor(name, label, details.getHashAlgorithm(), parent);
+				}
+			}
+			catch (final NoSuchAlgorithmException e) {
+				logger.log(Level.WARNING, e.getLocalizedMessage(), e);
+				throw new RuntimeException(e);
+			}
 			if (details.getEmptyStringAllowed() != null) {
 				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
 			}

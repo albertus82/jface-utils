@@ -1,5 +1,8 @@
 package it.albertus.jface.preference.field;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
@@ -7,20 +10,27 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.DigestUtils;
 
 public class PasswordFieldEditor extends StringFieldEditor {
+
+	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
 	private Text textField; // Do not set any value here!
 
 	protected char[] oldValue;
+	protected char[] value;
+
+	private /* final */ MessageDigest messageDigest;
+	private Charset charset;
 
 	public PasswordFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -29,6 +39,24 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	public PasswordFieldEditor(final String name, final String labelText, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
+		init();
+	}
+
+	public PasswordFieldEditor(final String name, final String labelText, final String hashAlgorithm, final Composite parent) throws NoSuchAlgorithmException {
+		super(name, labelText, parent);
+		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
+			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
+			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
+		}
+		init();
+	}
+
+	public PasswordFieldEditor(final String name, final String labelText, final String hashAlgorithm, final int width, final Composite parent) throws NoSuchAlgorithmException {
+		super(name, labelText, width, parent);
+		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
+			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
+			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
+		}
 		init();
 	}
 
@@ -43,7 +71,14 @@ public class PasswordFieldEditor extends StringFieldEditor {
 					valueChanged();
 				}
 			});
-			textField.addFocusListener(new FocusAdapter() {
+			textField.addFocusListener(new FocusListener() {
+				@Override
+				public void focusGained(final FocusEvent fe) {
+					if (messageDigest != null) {
+						textField.setText("");
+					}
+				}
+
 				@Override
 				public void focusLost(final FocusEvent fe) {
 					valueChanged();
@@ -65,14 +100,19 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	@Override
 	protected void doLoad() {
 		if (textField != null) {
-			final char[] value = getPreferenceStore().getString(getPreferenceName()).toCharArray();
-			textField.setTextChars(value);
+			value = getPreferenceStore().getString(getPreferenceName()).toCharArray();
 			oldValue = value;
+			if (messageDigest == null) {
+				textField.setTextChars(value);
+			}
+			else {
+				textField.setText("********");
+			}
 		}
 	}
 
 	@Override
-	protected void doLoadDefault() {
+	protected void doLoadDefault() { // Default password is never stored as hash
 		if (textField != null) {
 			textField.setTextChars(getPreferenceStore().getDefaultString(getPreferenceName()).toCharArray());
 		}
@@ -81,11 +121,18 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	@Override
 	protected void doStore() {
-		getPreferenceStore().setValue(getPreferenceName(), String.valueOf(textField.getTextChars()));
+		getPreferenceStore().setValue(getPreferenceName(), String.valueOf(value));
 	}
 
 	@Override
 	protected void valueChanged() {
+		if (messageDigest == null) {
+			value = textField.getTextChars();
+		}
+		else {
+			messageDigest.reset();
+			value = DigestUtils.encodeHex(messageDigest.digest(textField.getText().getBytes(charset)));
+		}
 		setPresentsDefaultValue(false);
 		boolean oldState = isValid();
 		refreshValidState();
@@ -94,11 +141,10 @@ public class PasswordFieldEditor extends StringFieldEditor {
 			fireStateChanged(IS_VALID, oldState, isValid());
 		}
 
-		char[] newValue = textField.getTextChars();
-		if (!Arrays.equals(newValue, oldValue)) {
+		if (!Arrays.equals(value, oldValue)) {
 			// Avoiding String.valueOf(...)
-			fireValueChanged(VALUE, oldValue, newValue);
-			oldValue = newValue;
+			fireValueChanged(VALUE, oldValue, value);
+			oldValue = value;
 		}
 	}
 
@@ -136,7 +182,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	@Deprecated
 	public String getStringValue() {
 		if (textField != null) {
-			return String.valueOf(textField.getTextChars());
+			return String.valueOf(value);
 		}
 		return getPreferenceStore().getString(getPreferenceName());
 	}
@@ -153,7 +199,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	public char[] getCharArrayValue() {
 		if (textField != null) {
-			return textField.getTextChars();
+			return value;
 		}
 		return getPreferenceStore().getString(getPreferenceName()).toCharArray();
 	}
@@ -194,6 +240,14 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	protected Text getTextField() {
 		return textField;
+	}
+
+	public Charset getCharset() {
+		return charset;
+	}
+
+	public void setCharset(final Charset charset) {
+		this.charset = charset;
 	}
 
 }

@@ -40,6 +40,9 @@ public class FieldEditorDetails {
 	private Integer textWidth;
 	private Integer textValidateStrategy;
 
+	// PasswordFieldEditor
+	private String hashAlgorithm;
+
 	// Numeric FieldEditors
 	private Number numberMinimum;
 	private Number numberMaximum;
@@ -77,8 +80,9 @@ public class FieldEditorDetails {
 		this.scalePageIncrement = builder.scalePageIncrement;
 		this.textLimit = builder.textLimit;
 		this.textWidth = builder.textWidth;
-		this.height = builder.height;
 		this.textValidateStrategy = builder.textValidateStrategy;
+		this.hashAlgorithm = builder.hashAlgorithm;
+		this.height = builder.height;
 		this.numberMinimum = builder.numberMinimum;
 		this.numberMaximum = builder.numberMaximum;
 		this.datePattern = builder.datePattern;
@@ -216,6 +220,14 @@ public class FieldEditorDetails {
 		this.textValidateStrategy = textValidateStrategy;
 	}
 
+	public String getHashAlgorithm() {
+		return hashAlgorithm;
+	}
+
+	public void setHashAlgorithm(final String hashAlgorithm) {
+		this.hashAlgorithm = hashAlgorithm;
+	}
+
 	public Number getNumberMinimum() {
 		return numberMinimum;
 	}
@@ -332,9 +344,9 @@ public class FieldEditorDetails {
 	public String toString() {
 		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (defaultToolTip != null ? "defaultToolTip=" + defaultToolTip + ", " : "") + (boldCustomValues != null ? "boldCustomValues=" + boldCustomValues + ", " : "")
 				+ (style != null ? "style=" + style + ", " : "") + (height != null ? "height=" + height + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "")
-				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "")
-				+ (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "") + (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "")
-				+ (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (hashAlgorithm != null ? "hashAlgorithm=" + hashAlgorithm + ", " : "")
+				+ (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "")
+				+ (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
 	}
 
 	public static class FieldEditorDetailsBuilder {
@@ -356,6 +368,7 @@ public class FieldEditorDetails {
 		private Integer textLimit;
 		private Integer textWidth;
 		private Integer textValidateStrategy;
+		private String hashAlgorithm;
 		private Number numberMinimum;
 		private Number numberMaximum;
 		private String datePattern;
@@ -429,6 +442,11 @@ public class FieldEditorDetails {
 
 		public FieldEditorDetailsBuilder textValidateStrategy(final int validateStrategy) {
 			this.textValidateStrategy = validateStrategy;
+			return this;
+		}
+
+		public FieldEditorDetailsBuilder hashAlgorithm(final String hashAlgorithm) {
+			this.hashAlgorithm = hashAlgorithm;
 			return this;
 		}
 

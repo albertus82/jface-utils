@@ -92,6 +92,7 @@
 			<batchtest>
 				<fileset dir="${build.outputTestDirectory}">
 					<include name="**/*Test*" />
+					<exclude name="**/*$*" />
 				</fileset>
 			</batchtest>
 			<formatter type="plain" usefile="false" />

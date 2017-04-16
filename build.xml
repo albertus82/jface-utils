@@ -83,7 +83,7 @@
 		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
 			<classpath path="${dependencies.directory}/ant/jacoco/jacocoant.jar" />
 		</taskdef>
-		<jacoco:coverage>
+		<jacoco:coverage destfile="${build.distDirectory}/jacoco.exec">
 			<junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="once">
 				<classpath path="${build.outputTestDirectory}">
 					<fileset dir="${build.distDirectory}">
@@ -102,20 +102,6 @@
 				<formatter type="plain" usefile="false" />
 			</junit>
 		</jacoco:coverage>
-		<!--<jacoco:report>
-			<executiondata>
-				<file file="jacoco.exec" />
-			</executiondata>
-			<structure name="${ant.project.name}">
-				<classfiles>
-					<fileset dir="${build.outputDirectory}" />
-				</classfiles>
-				<sourcefiles encoding="UTF-8">
-					<fileset dir="${build.sourceDirectory}" />
-				</sourcefiles>
-			</structure>
-			<xml destfile="jacoco.xml" />
-		</jacoco:report>-->
 	</target>
 
 	<target name="sonar-main">
@@ -135,10 +121,9 @@
 
 	<target name="sonar-test" depends="sonar-main" if="build.test">
 		<echo file="sonar-project.properties" append="true">
-			sonar.tests=${build.outputTestDirectory}
+			sonar.tests=${build.testSourceDirectory}
 			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
-			sonar.jacoco.reportPath=jacoco.exec
 		</echo>
 	</target>
 

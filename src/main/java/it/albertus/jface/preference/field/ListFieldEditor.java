@@ -134,14 +134,14 @@ public class ListFieldEditor extends FieldEditor implements FieldEditorDefault {
 	}
 
 	protected String getNameForValue(final String value) {
-		final String[][] entryNamesAndValues = getEntryNamesAndValues();
-		for (int i = 0; i < entryNamesAndValues.length; i++) {
-			final String[] entry = entryNamesAndValues[i];
+		final String[][] namesAndValues = getEntryNamesAndValues();
+		for (int i = 0; i < namesAndValues.length; i++) {
+			final String[] entry = namesAndValues[i];
 			if (value.equals(entry[1])) {
 				return entry[0];
 			}
 		}
-		return entryNamesAndValues[0][0];
+		return namesAndValues[0][0];
 	}
 
 	protected void setToolTipText() {

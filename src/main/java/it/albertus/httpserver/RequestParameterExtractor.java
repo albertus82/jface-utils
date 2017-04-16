@@ -88,7 +88,7 @@ public class RequestParameterExtractor {
 	}
 
 	private Map<String, List<String>> parseQuery(final String query, final Charset charset) throws UnsupportedEncodingException {
-		final Map<String, List<String>> parameterMap = new HashMap<String, List<String>>();
+		final Map<String, List<String>> map = new HashMap<String, List<String>>();
 		if (query != null) {
 			final String[] pairs = query.split("[&]");
 
@@ -105,13 +105,13 @@ public class RequestParameterExtractor {
 					value = URLDecoder.decode(param[1], charset.name());
 				}
 
-				if (!parameterMap.containsKey(key)) {
-					parameterMap.put(key, new ArrayList<String>(1));
+				if (!map.containsKey(key)) {
+					map.put(key, new ArrayList<String>(1));
 				}
-				parameterMap.get(key).add(value);
+				map.get(key).add(value);
 			}
 		}
-		return parameterMap;
+		return map;
 	}
 
 }

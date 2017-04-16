@@ -102,7 +102,7 @@
 				<formatter type="plain" usefile="false" />
 			</junit>
 		</jacoco:coverage>
-		<jacoco:report>
+		<!--<jacoco:report>
 			<executiondata>
 				<file file="jacoco.exec" />
 			</executiondata>
@@ -115,7 +115,7 @@
 				</sourcefiles>
 			</structure>
 			<xml destfile="jacoco.xml" />
-		</jacoco:report>
+		</jacoco:report>-->
 	</target>
 
 	<target name="sonar-main">
@@ -135,10 +135,9 @@
 
 	<target name="sonar-test" depends="sonar-main" if="build.test">
 		<echo file="sonar-project.properties" append="true">
-			sonar.tests=${build.testSourceDirectory}
+			sonar.tests=${build.outputTestDirectory}
 			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
 			sonar.java.test.binaries=${build.outputTestDirectory}
-			sonar.junit.reportsPath=/
 			sonar.jacoco.reportPath=jacoco.exec
 		</echo>
 	</target>

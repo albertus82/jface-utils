@@ -10,6 +10,7 @@
 
 	<target name="clean">
 		<delete dir="${build.directory}" />
+		<delete file="sonar-project.properties" />
 	</target>
 
 	<target name="distclean">
@@ -105,26 +106,26 @@
 	</target>
 
 	<target name="sonar-main">
-		<echo file="sonar-project.properties">
-			sonar.projectKey=it.albertus:${artifactId}
-			sonar.projectName=${name}
-			sonar.projectVersion=${version.number}
-			sonar.sources=${build.sourceDirectory}
-			sonar.language=java
-			sonar.java.source=${build.compiler.source}
-			sonar.java.target=${build.compiler.target}
-			sonar.java.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar
-			sonar.java.binaries=${build.outputDirectory}
-			sonar.sourceEncoding=UTF-8
-		</echo>
+		<propertyfile file="sonar-project.properties">
+			<entry key="sonar.projectKey" value="it.albertus:${artifactId}" />
+			<entry key="sonar.projectName" value="${name}" />
+			<entry key="sonar.projectVersion" value="${version.number}" />
+			<entry key="sonar.sources" value="${build.sourceDirectory}" />
+			<entry key="sonar.language" value="java" />
+			<entry key="sonar.java.source" value="${build.compiler.source}" />
+			<entry key="sonar.java.target" value="${build.compiler.target}" />
+			<entry key="sonar.java.libraries" value="${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar" />
+			<entry key="sonar.java.binaries" value="${build.outputDirectory}" />
+			<entry key="sonar.sourceEncoding" value="UTF-8" />
+		</propertyfile>
 	</target>
 
 	<target name="sonar-test" depends="sonar-main" if="build.test">
-		<echo file="sonar-project.properties" append="true">
-			sonar.tests=${build.testSourceDirectory}
-			sonar.java.test.libraries=${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar
-			sonar.java.test.binaries=${build.outputTestDirectory}
-		</echo>
+		<propertyfile file="sonar-project.properties">
+			<entry key="sonar.tests" value="${build.testSourceDirectory}" />
+			<entry key="sonar.java.test.libraries" value="${dependencies.directory}/provided/*.jar,${dependencies.directory}/provided/platform/**/*.jar,${dependencies.directory}/test/*.jar,${build.distDirectory}/${artifactId}-${version.number}.jar" />
+			<entry key="sonar.java.test.binaries" value="${build.outputTestDirectory}" />
+		</propertyfile>
 	</target>
 
 	<target name="sonar" depends="sonar-main, sonar-test">

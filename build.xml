@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="JFaceUtils" default="all">
+<project name="JFaceUtils" default="all" xmlns:jacoco="antlib:org.jacoco.ant">
 
 	<property environment="env" />
 	<property name="env.JRE6_HOME" value="${env.JAVA_HOME}/../jdk1.6.0_45/jre" />
@@ -80,23 +80,28 @@
 			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
 		</javac>
 
-		<junit printsummary="yes" haltonfailure="yes">
-			<classpath path="${build.outputTestDirectory}">
-				<fileset dir="${build.distDirectory}">
-					<include name="${artifactId}-${version.number}.jar" />
-				</fileset>
-				<fileset dir="${dependencies.directory}">
-					<include name="test/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest>
-				<fileset dir="${build.outputTestDirectory}">
-					<include name="**/*Test*" />
-					<exclude name="**/*$*" />
-				</fileset>
-			</batchtest>
-			<formatter type="plain" usefile="false" />
-		</junit>
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+			<classpath path="lib/ant/jacoco/jacocoant.jar" />
+		</taskdef>
+		<jacoco:coverage>
+			<junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="once">
+				<classpath path="${build.outputTestDirectory}">
+					<fileset dir="${build.distDirectory}">
+						<include name="${artifactId}-${version.number}.jar" />
+					</fileset>
+					<fileset dir="${dependencies.directory}">
+						<include name="test/*.jar" />
+					</fileset>
+				</classpath>
+				<batchtest>
+					<fileset dir="${build.outputTestDirectory}">
+						<include name="**/*Test*" />
+						<exclude name="**/*$*" />
+					</fileset>
+				</batchtest>
+				<formatter type="plain" usefile="false" />
+			</junit>
+		</jacoco:coverage>
 	</target>
 
 	<target name="sonar-main">

@@ -6,7 +6,7 @@ JFaceUtils
 
 ### Java SWT/JFace Utility Library including a Preferences Framework
 
-This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some basic Java features such as logging, configuration and I/O.
+This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some basic Java features such as logging, configuration, I/O and the lightweight HTTP server.
 
 ## The Preferences Framework
 
@@ -228,9 +228,9 @@ public class MyFieldEditorFactory extends FieldEditorFactory {
 
 After that, you can use your new factory instead of the standard one made available by [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java).
 
-## OS X integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java)
+## macOS integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java)
 
-The [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) class provides a hook to connecting the **Preferences**, **About** and **Quit** menu items of the **Mac OS X** application menu.
+The [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) class provides a hook to connecting the **Preferences**, **About** and **Quit** menu items of the **macOS** application menu.
 This is a modified version of the [`CocoaUIEnhancer`](http://www.transparentech.com/files/CocoaUIEnhancer.java) class available at [TransparenTech](http://www.transparentech.com/opensource/cocoauienhancer), and it is released under the Eclipse Public License ([EPL](https://www.eclipse.org/legal/epl-v10.html)).
 
 In order to better integrate your JFace application with OS X, you should first call the following static methods of `Display` before its creation:

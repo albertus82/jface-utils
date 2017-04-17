@@ -13,8 +13,6 @@ import org.junit.Test;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import it.albertus.httpserver.AbstractHttpHandler;
-import it.albertus.httpserver.DefaultHttpServerConfiguration;
 import it.albertus.util.IOUtils;
 
 public class AbstractHttpHandlerTest {
@@ -62,9 +60,6 @@ public class AbstractHttpHandlerTest {
 				}
 			});
 		}
-
-		@Override
-		public void handle(final HttpExchange exchange) {}
 
 		@Override
 		protected void addContentTypeHeader(final HttpExchange exchange) {}

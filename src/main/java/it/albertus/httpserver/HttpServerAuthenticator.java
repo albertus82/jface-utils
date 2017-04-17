@@ -58,13 +58,13 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 			final String expectedUsername = username.getValue();
 			if (expectedUsername == null || expectedUsername.isEmpty()) {
-				logger.warning(JFaceMessages.get("err.httpserver.cfg.error.username"));
+				logger.warning(JFaceMessages.get("err.httpserver.configuration.username"));
 				return fail();
 			}
 
 			final char[] expectedPassword = password.getValue();
 			if (expectedPassword == null || expectedPassword.length == 0) {
-				logger.warning(JFaceMessages.get("err.httpserver.cfg.error.password"));
+				logger.warning(JFaceMessages.get("err.httpserver.configuration.password"));
 				return fail();
 			}
 

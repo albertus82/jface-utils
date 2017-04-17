@@ -24,7 +24,7 @@ public class HttpServerAuthenticatorTest {
 	}
 
 	@Test
-	public void testCheckCredentialsNoHash() throws NoSuchAlgorithmException {
+	public void testCheckCredentialsNoHash() {
 		final Configured<char[]> password = new Configured<char[]>() {
 			@Override
 			public char[] getValue() {

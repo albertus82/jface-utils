@@ -2,5 +2,4 @@
 /target/
 /.settings/
 /sonar-project.properties
-/jacoco.exec
 /configuration.properties

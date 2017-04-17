@@ -1,5 +1,7 @@
 package it.albertus.jface.console;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
@@ -134,12 +136,43 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 
 	@Override
 	protected void doPrint(final String value, final int maxChars) {
-		if (scrollable.getCharCount() < maxChars) {
-			scrollable.append(value);
+		final StringBuilder text = new StringBuilder(scrollable.getText());
+		//		text.append(value);
+
+		int removedCount = 0;
+		while (text.length() + value.length() > maxChars) {
+			if (text.indexOf(newLine) != -1) {
+				removedCount += text.indexOf(newLine) + newLine.length();
+				text.replace(0, text.indexOf(newLine) + newLine.length(), "");
+			}
+			/*else if (text.indexOf(NewLine.LF.toString()) != -1) {
+				removedCount += text.indexOf(NewLine.LF.toString()) + NewLine.LF.toString().length();
+				text.replace(0, removedCount, "");
+			}
+			else if (text.indexOf(NewLine.CR.toString()) != -1) {
+				removedCount += text.indexOf(NewLine.CR.toString()) + NewLine.CR.toString().length();
+				text.replace(0, removedCount, "");
+			}*/
+			else {
+				scrollable.setText(value);
+				scrollable.setTopPixel((scrollable.getLineCount() - 1) * scrollable.getLineHeight());
+				return;
+			}
 		}
-		else {
-			scrollable.setText(value.startsWith(newLine) ? value.substring(newLine.length()) : value);
+
+		if (removedCount > 0) {
+			final String text2 = scrollable.getText(0, removedCount - 1);
+			if (!text2.endsWith(newLine)) {
+				defaultSysOut.println(">>>>>>>>>>"+Arrays.toString(text2.getBytes()));
+				defaultSysOut.println(">>>>>>>>>>"+removedCount+"<<<<<<<<<<");
+				defaultSysOut.println(">>>>>>>>>>"+scrollable.getText()+"<<<<<<<<<<");
+			}
+			else {
+				defaultSysOut.println(Arrays.toString(text2.getBytes()));
+			}
+			scrollable.replaceTextRange(0, removedCount, "");
 		}
+		scrollable.append(value);
 		scrollable.setTopPixel((scrollable.getLineCount() - 1) * scrollable.getLineHeight());
 	}
 

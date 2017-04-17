@@ -152,8 +152,13 @@ public class ListConsole extends ScrollableConsole<List> {
 	protected void doPrint(final String value, final int maxItems) {
 		scrollable.setRedraw(false);
 
-		if (getLastItemIndex() > maxItems) {
-			clear();
+		final int overflow = getLastItemIndex() - maxItems;
+		if (overflow > 0) {
+			final int[] indexes = new int[overflow];
+			for (int i = 0; i < overflow; i++) {
+				indexes[i] = i;
+			}
+			scrollable.remove(indexes);
 		}
 
 		charBuffer.setLength(0);

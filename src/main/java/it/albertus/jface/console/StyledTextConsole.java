@@ -1,7 +1,5 @@
 package it.albertus.jface.console;
 
-import java.util.Arrays;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
@@ -137,42 +135,30 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 	@Override
 	protected void doPrint(final String value, final int maxChars) {
 		final StringBuilder text = new StringBuilder(scrollable.getText());
-		//		text.append(value);
 
-		int removedCount = 0;
+		int replaceLength = 0;
 		while (text.length() + value.length() > maxChars) {
-			if (text.indexOf(newLine) != -1) {
-				removedCount += text.indexOf(newLine) + newLine.length();
-				text.replace(0, text.indexOf(newLine) + newLine.length(), "");
+			final int indexOfNewLine = text.indexOf(newLine);
+			if (indexOfNewLine != -1) {
+				final int replaceEnd = indexOfNewLine + newLine.length();
+				replaceLength += replaceEnd;
+				text.replace(0, replaceEnd, "");
 			}
-			/*else if (text.indexOf(NewLine.LF.toString()) != -1) {
-				removedCount += text.indexOf(NewLine.LF.toString()) + NewLine.LF.toString().length();
-				text.replace(0, removedCount, "");
-			}
-			else if (text.indexOf(NewLine.CR.toString()) != -1) {
-				removedCount += text.indexOf(NewLine.CR.toString()) + NewLine.CR.toString().length();
-				text.replace(0, removedCount, "");
-			}*/
 			else {
-				scrollable.setText(value);
-				scrollable.setTopPixel((scrollable.getLineCount() - 1) * scrollable.getLineHeight());
-				return;
+				replaceLength = -1;
+				break;
 			}
 		}
 
-		if (removedCount > 0) {
-			final String text2 = scrollable.getText(0, removedCount - 1);
-			if (!text2.endsWith(newLine)) {
-				defaultSysOut.println(">>>>>>>>>>"+Arrays.toString(text2.getBytes()));
-				defaultSysOut.println(">>>>>>>>>>"+removedCount+"<<<<<<<<<<");
-				defaultSysOut.println(">>>>>>>>>>"+scrollable.getText()+"<<<<<<<<<<");
+		if (replaceLength >= 0) {
+			if (replaceLength != 0) {
+				scrollable.replaceTextRange(0, replaceLength, "");
 			}
-			else {
-				defaultSysOut.println(Arrays.toString(text2.getBytes()));
-			}
-			scrollable.replaceTextRange(0, removedCount, "");
+			scrollable.append(value);
 		}
-		scrollable.append(value);
+		else {
+			scrollable.setText(value);
+		}
 		scrollable.setTopPixel((scrollable.getLineCount() - 1) * scrollable.getLineHeight());
 	}
 

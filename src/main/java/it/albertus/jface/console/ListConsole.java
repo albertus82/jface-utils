@@ -154,11 +154,11 @@ public class ListConsole extends ScrollableConsole<List> {
 
 		final int overflow = getLastItemIndex() - maxItems;
 		if (overflow > 0) {
-			final int[] indexes = new int[overflow];
+			final int[] indices = new int[overflow];
 			for (int i = 0; i < overflow; i++) {
-				indexes[i] = i;
+				indices[i] = i;
 			}
-			scrollable.remove(indexes);
+			scrollable.remove(indices);
 		}
 
 		charBuffer.setLength(0);
@@ -205,6 +205,38 @@ public class ListConsole extends ScrollableConsole<List> {
 			clipboard.setContents(new String[] { text.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
 			clipboard.dispose();
 		}
+	}
+
+	protected Menu getContextMenu() {
+		return contextMenu;
+	}
+
+	protected void setContextMenu(final Menu contextMenu) {
+		this.contextMenu = contextMenu;
+	}
+
+	protected MenuItem getCopyMenuItem() {
+		return copyMenuItem;
+	}
+
+	protected void setCopyMenuItem(final MenuItem copyMenuItem) {
+		this.copyMenuItem = copyMenuItem;
+	}
+
+	protected MenuItem getSelectAllMenuItem() {
+		return selectAllMenuItem;
+	}
+
+	protected void setSelectAllMenuItem(final MenuItem selectAllMenuItem) {
+		this.selectAllMenuItem = selectAllMenuItem;
+	}
+
+	protected MenuItem getClearMenuItem() {
+		return clearMenuItem;
+	}
+
+	protected void setClearMenuItem(final MenuItem clearMenuItem) {
+		this.clearMenuItem = clearMenuItem;
 	}
 
 }

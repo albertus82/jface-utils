@@ -22,6 +22,8 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 
 	protected static final int MARGIN = 4;
 
+	private final StringBuilder charBuffer = new StringBuilder();
+
 	private Menu contextMenu;
 	private MenuItem copyMenuItem;
 	private MenuItem selectAllMenuItem;
@@ -134,15 +136,16 @@ public class StyledTextConsole extends ScrollableConsole<StyledText> {
 
 	@Override
 	protected void doPrint(final String value, final int maxChars) {
-		final StringBuilder text = new StringBuilder(scrollable.getText());
+		charBuffer.setLength(0);
+		charBuffer.append(scrollable.getText());
 
 		int replaceLength = 0;
-		while (text.length() + value.length() > maxChars) {
-			final int indexOfNewLine = text.indexOf(newLine);
+		while (charBuffer.length() + value.length() > maxChars) {
+			final int indexOfNewLine = charBuffer.indexOf(newLine);
 			if (indexOfNewLine != -1) {
 				final int replaceEnd = indexOfNewLine + newLine.length();
 				replaceLength += replaceEnd;
-				text.replace(0, replaceEnd, "");
+				charBuffer.replace(0, replaceEnd, "");
 			}
 			else {
 				replaceLength = -1;

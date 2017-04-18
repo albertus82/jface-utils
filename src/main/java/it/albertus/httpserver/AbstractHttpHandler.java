@@ -126,7 +126,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
-		service(exchange);
+		try {
+			service(exchange);
+		}
+		catch (final IOException e) {
+			logger.log(Level.FINE, e.toString(), e); // often caused by the client that interrupts the stream.
+		}
+		finally {
+			exchange.close();
+		}
 	}
 
 	protected void service(final HttpExchange exchange) throws IOException, HttpException {

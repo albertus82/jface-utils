@@ -1,8 +1,6 @@
 package it.albertus.httpserver;
 
-import java.io.IOException;
-
-public class HttpException extends IOException {
+public class HttpException extends RuntimeException {
 
 	private static final long serialVersionUID = -3054911937326730091L;
 

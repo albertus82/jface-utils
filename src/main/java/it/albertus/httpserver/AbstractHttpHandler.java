@@ -484,6 +484,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return Collections.unmodifiableMap(httpStatusCodes);
 	}
 
+	public String getPath() {
+		return getPath(this.getClass());
+	}
+
 	public static String getPath(final Class<? extends HttpHandler> clazz) {
 		final Path annotation = clazz.getAnnotation(Path.class);
 		return annotation != null ? annotation.value() : null;

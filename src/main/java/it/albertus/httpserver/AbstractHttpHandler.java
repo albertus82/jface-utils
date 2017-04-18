@@ -121,11 +121,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static Object[] lastRequestInfo;
 
-	protected final IHttpServerConfiguration httpServerConfiguration;
-
-	public AbstractHttpHandler(final IHttpServerConfiguration httpServerConfiguration) {
-		this.httpServerConfiguration = httpServerConfiguration;
-	}
+	private IHttpServerConfiguration httpServerConfiguration;
 
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
@@ -499,6 +495,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected static void setLastRequestInfo(final Object[] requestInfo) {
 		lastRequestInfo = requestInfo;
+	}
+
+	protected IHttpServerConfiguration getHttpServerConfiguration() {
+		return httpServerConfiguration;
+	}
+
+	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
+		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
 }

@@ -26,44 +26,8 @@ public class AbstractHttpHandlerTest {
 	private static final String expectedContentMd5 = "24m7XOq4f5wPzCqzbBicLA=="; // DatatypeConverter.printBase64Binary(new byte[] { (byte) 0xDB, (byte) 0x89, (byte) 0xBB, 0x5C, (byte) 0xEA, (byte) 0xB8, 0x7F, (byte) 0x9C, 0x0F, (byte) 0xCC, 0x2A, (byte) 0xB3, 0x6C, 0x18, (byte) 0x9C, 0x2C }); // "db89bb5ceab87f9c0fcc2ab36c189c2c";
 
 	public static class DummyHttpHandler extends AbstractHttpHandler {
-
-		public DummyHttpHandler() {
-			super(new DefaultHttpServerConfiguration() {
-				@Override
-				public String getUsername() {
-					return null;
-				}
-
-				@Override
-				public char[] getStorePass() {
-					return null;
-				}
-
-				@Override
-				public char[] getPassword() {
-					return null;
-				}
-
-				@Override
-				public String getKeyStoreFileName() {
-					return null;
-				}
-
-				@Override
-				public char[] getKeyPass() {
-					return null;
-				}
-
-				@Override
-				public String getRealm() {
-					return null;
-				}
-			});
-		}
-
 		@Override
 		protected void addContentTypeHeader(final HttpExchange exchange) {}
-
 	}
 
 	private static AbstractHttpHandler handler;

@@ -38,7 +38,7 @@ public abstract class AbstractHttpServer {
 
 	protected static final int STOP_DELAY = 0;
 
-	protected final IHttpServerConfiguration configuration;
+	protected final IHttpServerConfiguration httpServerConfiguration;
 
 	protected volatile HttpServer httpServer;
 	protected volatile boolean running = false;
@@ -46,12 +46,12 @@ public abstract class AbstractHttpServer {
 
 	private final Object lock = new Object();
 
-	public AbstractHttpServer(final IHttpServerConfiguration configuration) {
-		this.configuration = configuration;
+	public AbstractHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
+		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
 	public void start() {
-		if (!running && configuration.isEnabled()) {
+		if (!running && httpServerConfiguration.isEnabled()) {
 			new HttpServerStartThread().start();
 		}
 	}
@@ -84,21 +84,21 @@ public abstract class AbstractHttpServer {
 
 	protected void createContexts() {
 		final Authenticator authenticator;
-		if (configuration.isAuthenticationRequired()) {
+		if (httpServerConfiguration.isAuthenticationRequired()) {
 			try {
 				final Configured<String> username = new Configured<String>() {
 					@Override
 					public String getValue() {
-						return configuration.getUsername();
+						return httpServerConfiguration.getUsername();
 					}
 				};
 				final Configured<char[]> password = new Configured<char[]>() {
 					@Override
 					public char[] getValue() {
-						return configuration.getPassword();
+						return httpServerConfiguration.getPassword();
 					}
 				};
-				authenticator = new HttpServerAuthenticator(configuration.getRealm(), username, password, configuration.getPasswordHashAlgorithm());
+				authenticator = new HttpServerAuthenticator(httpServerConfiguration.getRealm(), username, password, httpServerConfiguration.getPasswordHashAlgorithm());
 			}
 			catch (final NoSuchAlgorithmException e) {
 				throw new RuntimeException(e);
@@ -109,6 +109,7 @@ public abstract class AbstractHttpServer {
 		}
 
 		for (final AbstractHttpHandler handler : createHandlers()) {
+			handler.setHttpServerConfiguration(httpServerConfiguration); // Injection
 			final HttpContext httpContext = httpServer.createContext(handler.getPath(), handler);
 			if (authenticator != null) {
 				httpContext.setAuthenticator(authenticator);
@@ -132,22 +133,22 @@ public abstract class AbstractHttpServer {
 
 		@Override
 		public void run() {
-			final int port = configuration.getPort();
+			final int port = httpServerConfiguration.getPort();
 			final InetSocketAddress address = new InetSocketAddress(port);
 			try {
 				synchronized (lock) {
 					// Avoid server starvation
-					System.setProperty("sun.net.httpserver.maxReqTime", Short.toString(configuration.getMaxReqTime()));
-					System.setProperty("sun.net.httpserver.maxRspTime", Short.toString(configuration.getMaxRspTime()));
+					System.setProperty("sun.net.httpserver.maxReqTime", Short.toString(httpServerConfiguration.getMaxReqTime()));
+					System.setProperty("sun.net.httpserver.maxRspTime", Short.toString(httpServerConfiguration.getMaxRspTime()));
 
-					if (configuration.isSslEnabled()) {
-						final char[] storepass = configuration.getStorePass();
-						final KeyStore keyStore = KeyStore.getInstance(configuration.getKeyStoreType());
+					if (httpServerConfiguration.isSslEnabled()) {
+						final char[] storepass = httpServerConfiguration.getStorePass();
+						final KeyStore keyStore = KeyStore.getInstance(httpServerConfiguration.getKeyStoreType());
 						// keytool -genkey -alias "myalias" -keyalg "RSA" -keypass "mykeypass" -keystore "mykeystore.jks" -storepass "mystorepass" -validity 360
 						FileInputStream fis = null;
 						BufferedInputStream bis = null;
 						try {
-							fis = new FileInputStream(configuration.getKeyStoreFileName());
+							fis = new FileInputStream(httpServerConfiguration.getKeyStoreFileName());
 							bis = new BufferedInputStream(fis);
 							keyStore.load(bis, storepass);
 						}
@@ -155,14 +156,14 @@ public abstract class AbstractHttpServer {
 							IOUtils.closeQuietly(bis, fis);
 						}
 
-						final char[] keypass = configuration.getKeyPass();
-						final KeyManagerFactory kmf = KeyManagerFactory.getInstance(configuration.getKeyManagerFactoryAlgorithm());
+						final char[] keypass = httpServerConfiguration.getKeyPass();
+						final KeyManagerFactory kmf = KeyManagerFactory.getInstance(httpServerConfiguration.getKeyManagerFactoryAlgorithm());
 						kmf.init(keyStore, keypass);
 
-						final TrustManagerFactory tmf = TrustManagerFactory.getInstance(configuration.getTrustManagerFactoryAlgorithm());
+						final TrustManagerFactory tmf = TrustManagerFactory.getInstance(httpServerConfiguration.getTrustManagerFactoryAlgorithm());
 						tmf.init(keyStore);
 
-						final SSLContext sslContext = SSLContext.getInstance(configuration.getSslProtocol());
+						final SSLContext sslContext = SSLContext.getInstance(httpServerConfiguration.getSslProtocol());
 						sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 						final HttpsConfigurator httpsConfigurator = new HttpsConfigurator(sslContext) {
 							@Override
@@ -191,7 +192,7 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final byte threads = configuration.getThreadCount();
+					final byte threads = httpServerConfiguration.getThreadCount();
 					if (threads > 1) {
 						threadPool = Executors.newFixedThreadPool(threads, new DaemonThreadFactory());
 						httpServer.setExecutor(threadPool);

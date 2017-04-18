@@ -5,7 +5,7 @@ public interface IHttpServerConfiguration {
 	boolean isEnabled();
 
 	boolean isAuthenticationRequired();
-	
+
 	String getRealm();
 
 	String getUsername();

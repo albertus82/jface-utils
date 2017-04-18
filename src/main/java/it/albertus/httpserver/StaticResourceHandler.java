@@ -92,6 +92,9 @@ public class StaticResourceHandler extends AbstractHttpHandler {
 		else if ("xml".equalsIgnoreCase(extension)) {
 			contentType = "application/xml";
 		}
+		else if ("ico".equalsIgnoreCase(extension)) {
+			contentType = "image/x-icon";
+		}
 		else {
 			contentType = new MimetypesFileTypeMap().getContentType(fileName);
 		}

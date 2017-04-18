@@ -125,10 +125,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
+		log(exchange);
 		service(exchange);
 	}
 
-	protected final void service(final HttpExchange exchange) throws IOException, HttpException {
+	protected void service(final HttpExchange exchange) throws IOException, HttpException {
 		if (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod())) {
 			doGet(exchange);
 		}

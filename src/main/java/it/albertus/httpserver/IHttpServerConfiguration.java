@@ -40,4 +40,6 @@ public interface IHttpServerConfiguration {
 
 	String getRequestLoggingLevel();
 
+	boolean isCompressionEnabled();
+
 }

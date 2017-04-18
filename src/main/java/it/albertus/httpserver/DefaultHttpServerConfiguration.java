@@ -21,6 +21,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		public static final short MAX_REQ_TIME = 10; // seconds
 		public static final short MAX_RSP_TIME = 600; // seconds
 		public static final Level REQUEST_LOGGING_LEVEL = Level.INFO;
+		public static final boolean COMPRESSION_ENABLED = false;
 
 		private Defaults() {
 			throw new IllegalAccessError("Constants class");
@@ -90,6 +91,11 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	@Override
 	public String getRequestLoggingLevel() {
 		return Defaults.REQUEST_LOGGING_LEVEL.getName();
+	}
+
+	@Override
+	public boolean isCompressionEnabled() {
+		return Defaults.COMPRESSION_ENABLED;
 	}
 
 }

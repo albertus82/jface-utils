@@ -3,6 +3,7 @@ package it.albertus.httpserver;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -38,19 +39,26 @@ public class StaticResourceHandler extends AbstractHttpHandler {
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException { // FIXME avoid ByteArrayOutputStream
-		InputStream inputStream = null;
-		ByteArrayOutputStream outputStream = null;
-
-		try {
-			inputStream = getClass().getResourceAsStream(resourceName);
-			outputStream = new ByteArrayOutputStream();
-			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		if (!exchange.getRequestURI().getPath().equals(getPath()) && !exchange.getRequestURI().getRawPath().equals(getPath())) {
+			notFound(exchange);
 		}
-		finally {
-			IOUtils.closeQuietly(outputStream, inputStream);
+		else {
+			InputStream inputStream = null;
+			ByteArrayOutputStream outputStream = null;
+			try {
+				inputStream = getClass().getResourceAsStream(resourceName);
+				outputStream = new ByteArrayOutputStream();
+				IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+			}
+			finally {
+				IOUtils.closeQuietly(outputStream, inputStream);
+			}
+			sendResponse(exchange, outputStream.toByteArray());
 		}
+	}
 
-		sendResponse(exchange, outputStream.toByteArray());
+	private void notFound(HttpExchange exchange) throws IOException {
+		sendResponse(exchange, null, HttpURLConnection.HTTP_NOT_FOUND);
 	}
 
 	@Override

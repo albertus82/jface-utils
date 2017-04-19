@@ -327,6 +327,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (".css".equalsIgnoreCase(extension)) {
 			contentType = "text/css";
 		}
+		else if (".html".equalsIgnoreCase(extension) || ".htm".equalsIgnoreCase(extension)) {
+			contentType = "text/html";
+		}
 		else if (".ico".equalsIgnoreCase(extension)) {
 			contentType = "image/x-icon";
 		}
@@ -531,7 +534,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		catch (final RuntimeException e) {
 			logger.log(Level.WARNING, e.toString(), e);
 		}
+		doLog(exchange, level);
+	}
 
+	protected void doLog(final HttpExchange exchange, final Level level) {
 		if (logger.isLoggable(level) && !Level.OFF.equals(level)) {
 			final Object[] requestInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() };
 			if (!Arrays.equals(requestInfo, getLastRequestInfo())) {

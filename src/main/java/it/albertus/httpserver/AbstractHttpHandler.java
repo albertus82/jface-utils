@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
 
@@ -39,6 +41,8 @@ import it.albertus.util.CRC32OutputStream;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
+import it.albertus.util.ResourceList;
+import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 public abstract class AbstractHttpHandler implements HttpHandler {
@@ -48,6 +52,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	private static final Map<Integer, String> httpStatusCodes;
 
 	private static final Properties contentTypes;
+
+	private static final Collection<String> directories = ResourceList.getResources(Pattern.compile(".*"));
 
 	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
 		@Override
@@ -150,7 +156,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
 		try {
-			if (getHttpServerConfiguration().isEnabled() && isEnabled()) {
+			if (getHttpServerConfiguration().isEnabled() && isEnabled(exchange)) {
 				service(exchange);
 			}
 			else {
@@ -519,6 +525,36 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
+	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException { // FIXME avoid ByteArrayOutputStream
+		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
+		for (final String directory : directories) {
+			final String string = '/' + directory.replace(System.getProperty("file.separator"), "/");
+			if (string.endsWith(resourceBasePath + pathInfo) || (string+'/').endsWith(resourceBasePath + pathInfo )) {
+				notFound(exchange);
+				return;
+			}
+		}
+		InputStream inputStream = null;
+		ByteArrayOutputStream outputStream = null;
+		try {
+			inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
+			if (inputStream == null) {
+				notFound(exchange);
+				return;
+			}
+			outputStream = new ByteArrayOutputStream();
+			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		}
+		finally {
+			IOUtils.closeQuietly(outputStream, inputStream);
+		}
+		sendResponse(exchange, outputStream.toByteArray());
+	}
+
+	protected void notFound(final HttpExchange exchange) throws IOException {
+		sendResponse(exchange, null, HttpURLConnection.HTTP_NOT_FOUND);
+	}
+
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload) throws IOException {
 		sendResponse(exchange, payload, HttpURLConnection.HTTP_OK);
 	}
@@ -546,6 +582,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected Charset getCharset() {
 		return charset;
+	}
+
+	/**
+	 * Returns if this handler is enabled. <b>Handlers are enabled by
+	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
+	 * Status-Code 403: Forbidden.</b>
+	 * 
+	 * @param exchange
+	 * 
+	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
+	 */
+	public boolean isEnabled(final HttpExchange exchange) {
+		return isEnabled();
 	}
 
 	/**

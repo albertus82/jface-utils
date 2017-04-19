@@ -83,17 +83,23 @@ public class StaticResourceHandler extends AbstractHttpHandler {
 	protected static String guessContentType(final String fileName) {
 		final String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
 		final String contentType;
-		if ("js".equalsIgnoreCase(extension)) {
-			contentType = "application/javascript";
+		if ("ico".equalsIgnoreCase(extension)) {
+			contentType = "image/x-icon";
 		}
 		else if ("css".equalsIgnoreCase(extension)) {
 			contentType = "text/css";
 		}
+		else if ("js".equalsIgnoreCase(extension)) {
+			contentType = "application/javascript";
+		}
 		else if ("xml".equalsIgnoreCase(extension)) {
 			contentType = "application/xml";
 		}
-		else if ("ico".equalsIgnoreCase(extension)) {
-			contentType = "image/x-icon";
+		else if ("xhtml".equalsIgnoreCase(extension)) {
+			contentType = "application/xhtml+xml";
+		}
+		else if ("pdf".equalsIgnoreCase(extension)) {
+			contentType = "application/pdf";
 		}
 		else {
 			contentType = new MimetypesFileTypeMap().getContentType(fileName);

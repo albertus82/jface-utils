@@ -123,14 +123,29 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private IHttpServerConfiguration httpServerConfiguration;
 
+	private boolean enabled = true;
+
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
 		try {
-			service(exchange);
+			if (getHttpServerConfiguration().isEnabled() && isEnabled()) {
+				service(exchange);
+			}
+			else {
+				sendForbidden(exchange);
+			}
+		}
+		catch (final HttpException e) {
+			logger.log(Level.WARNING, e.toString(), e);
+			sendError(exchange, e);
 		}
 		catch (final IOException e) {
 			logger.log(Level.FINE, e.toString(), e); // often caused by the client that interrupts the stream.
+		}
+		catch (final Exception e) {
+			logger.log(Level.SEVERE, e.toString(), e);
+			sendInternalError(exchange);
 		}
 		finally {
 			exchange.close();
@@ -162,6 +177,18 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		else {
 			throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
 		}
+	}
+
+	protected void sendForbidden(final HttpExchange exchange) throws IOException {
+		sendResponse(exchange, null, HttpURLConnection.HTTP_FORBIDDEN);
+	}
+
+	protected void sendInternalError(final HttpExchange exchange) throws IOException {
+		sendResponse(exchange, null, HttpURLConnection.HTTP_INTERNAL_ERROR);
+	}
+
+	protected void sendError(final HttpExchange exchange, final HttpException e) throws IOException {
+		sendResponse(exchange, null, e.getStatusCode());
 	}
 
 	protected void doHead(final HttpExchange exchange) throws IOException, HttpException {
@@ -420,7 +447,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload, final int statusCode) throws IOException {
 		final String currentEtag;
-		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE) {
+		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
 			currentEtag = generateEtag(payload);
 			addEtagHeader(exchange, currentEtag);
 		}
@@ -436,16 +463,23 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			exchange.getResponseBody().close(); // Needed when no write occurs.
 		}
 		else {
-			addCommonHeaders(exchange);
-			final byte[] response = compressResponse(payload, exchange);
-			if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
-				exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
-				exchange.sendResponseHeaders(statusCode, -1);
-				exchange.getResponseBody().close(); // no body
+			if (payload != null) {
+				addCommonHeaders(exchange);
+				final byte[] response = compressResponse(payload, exchange);
+				if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
+					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
+					exchange.sendResponseHeaders(statusCode, -1);
+					exchange.getResponseBody().close(); // no body
+				}
+				else {
+					exchange.sendResponseHeaders(statusCode, response.length);
+					exchange.getResponseBody().write(response);
+				}
 			}
-			else {
-				exchange.sendResponseHeaders(statusCode, response.length);
-				exchange.getResponseBody().write(response);
+			else { // no payload
+				addDateHeader(exchange);
+				exchange.sendResponseHeaders(statusCode, -1);
+				exchange.getResponseBody().close();
 			}
 		}
 	}
@@ -484,7 +518,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
 	 */
 	public boolean isEnabled() {
-		return true;
+		return enabled;
+	}
+
+	public void setEnabled(final boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public static Map<Integer, String> getHttpStatusCodes() {

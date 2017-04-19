@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -45,6 +46,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
 
 	private static final Map<Integer, String> httpStatusCodes;
+
+	private static final Properties contentTypes;
+
+	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
+		@Override
+		protected MimetypesFileTypeMap initialValue() {
+			return new MimetypesFileTypeMap();
+		}
+	};
 
 	static {
 		httpStatusCodes = new HashMap<Integer, String>();
@@ -108,6 +118,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		httpStatusCodes.put(508, "Loop Detected");
 		httpStatusCodes.put(510, "Not Extended");
 		httpStatusCodes.put(511, "Network Authentication Required");
+
+		contentTypes = new Properties();
+		try {
+			contentTypes.load(AbstractHttpHandler.class.getResourceAsStream("mime.properties"));
+		}
+		catch (final IOException e) {
+			logger.log(Level.SEVERE, e.toString(), e);
+		}
 	}
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
@@ -318,40 +336,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void addContentTypeHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Content-Type", getContentType(getPath()));
+		exchange.getResponseHeaders().add("Content-Type", getContentType(exchange.getRequestURI().getPath()));
 	}
 
 	protected String getContentType(final String fileName) {
-		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.')).trim() : null;
-		final String contentType;
-		if (".css".equalsIgnoreCase(extension)) {
-			contentType = "text/css";
+		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.') + 1).trim().toLowerCase() : null;
+		String contentType = null;
+		if (extension != null && !extension.isEmpty()) {
+			contentType = contentTypes.getProperty(extension);
 		}
-		else if (".html".equalsIgnoreCase(extension) || ".htm".equalsIgnoreCase(extension)) {
-			contentType = "text/html";
+		if (contentType == null) {
+			contentType = mimetypesFileTypeMap.get().getContentType(fileName);
 		}
-		else if (".ico".equalsIgnoreCase(extension)) {
-			contentType = "image/x-icon";
-		}
-		else if (".js".equalsIgnoreCase(extension)) {
-			contentType = "application/javascript";
-		}
-		else if (".json".equalsIgnoreCase(extension)) {
-			contentType = "application/json";
-		}
-		else if (".pdf".equalsIgnoreCase(extension)) {
-			contentType = "application/pdf";
-		}
-		else if (".xhtml".equalsIgnoreCase(extension)) {
-			contentType = "application/xhtml+xml";
-		}
-		else if (".xml".equalsIgnoreCase(extension)) {
-			contentType = "application/xml";
-		}
-		else {
-			contentType = new MimetypesFileTypeMap().getContentType(fileName);
-		}
-		return contentType;
+		return contentType.trim();
 	}
 
 	/**

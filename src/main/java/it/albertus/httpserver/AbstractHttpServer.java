@@ -7,7 +7,7 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -122,7 +122,7 @@ public abstract class AbstractHttpServer {
 	 * 
 	 * @return the {@code Set} containing the handlers.
 	 */
-	protected abstract Set<AbstractHttpHandler> createHandlers();
+	protected abstract List<AbstractHttpHandler> createHandlers();
 
 	protected class HttpServerStartThread extends Thread {
 

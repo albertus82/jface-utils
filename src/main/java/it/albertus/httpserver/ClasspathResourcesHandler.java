@@ -11,53 +11,54 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.util.IOUtils;
+import it.albertus.util.StringUtils;
 
-public class StaticResourceHandler extends AbstractHttpHandler {
+public class ClasspathResourcesHandler extends AbstractHttpHandler {
 
 	protected static final String DEFAULT_CACHE_CONTROL = "no-transform,public,max-age=86400,s-maxage=259200";
 
-	private final String resourceName;
+	private final String resourceBasePath;
 	private final Headers headers;
 
-	public StaticResourceHandler(final String resourceName, final String urlPath, final Headers headers) {
-		this.resourceName = resourceName;
-		setPath(urlPath);
+	public ClasspathResourcesHandler(final String resourceBasePath, final String urlBasePath, final Headers headers) {
+		this.resourceBasePath = resourceBasePath;
+		setPath(urlBasePath);
 		this.headers = headers;
 	}
 
-	public StaticResourceHandler(final String resourceName, final String urlPath) {
-		this(resourceName, urlPath, null);
+	public ClasspathResourcesHandler(final String resourceBasePath, final String urlBasePath) {
+		this(resourceBasePath, urlBasePath, null);
 	}
 
-	public StaticResourceHandler(final String resourceName, final Headers headers) {
-		this(resourceName, resourceName, headers);
+	public ClasspathResourcesHandler(final String resourceBasePath, final Headers headers) {
+		this(resourceBasePath, resourceBasePath, headers);
 	}
 
-	public StaticResourceHandler(final String resourceName) {
-		this(resourceName, resourceName, null);
+	public ClasspathResourcesHandler(final String resourceBasePath) {
+		this(resourceBasePath, resourceBasePath, null);
 	}
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException { // FIXME avoid ByteArrayOutputStream
-		if (!exchange.getRequestURI().getPath().equals(getPath()) && !exchange.getRequestURI().getRawPath().equals(getPath())) {
-			notFound(exchange);
-		}
-		else {
-			InputStream inputStream = null;
-			ByteArrayOutputStream outputStream = null;
-			try {
-				inputStream = getClass().getResourceAsStream(resourceName);
-				outputStream = new ByteArrayOutputStream();
-				IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
+		InputStream inputStream = null;
+		ByteArrayOutputStream outputStream = null;
+		try {
+			inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
+			if (inputStream == null) {
+				notFound(exchange);
+				return;
 			}
-			finally {
-				IOUtils.closeQuietly(outputStream, inputStream);
-			}
-			sendResponse(exchange, outputStream.toByteArray());
+			outputStream = new ByteArrayOutputStream();
+			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
 		}
+		finally {
+			IOUtils.closeQuietly(outputStream, inputStream);
+		}
+		sendResponse(exchange, outputStream.toByteArray());
 	}
 
-	private void notFound(HttpExchange exchange) throws IOException {
+	private void notFound(final HttpExchange exchange) throws IOException {
 		sendResponse(exchange, null, HttpURLConnection.HTTP_NOT_FOUND);
 	}
 
@@ -83,11 +84,11 @@ public class StaticResourceHandler extends AbstractHttpHandler {
 		}
 	}
 
-	public String getResourceName() {
-		return resourceName;
+	protected String getResourceBasePath() {
+		return resourceBasePath;
 	}
 
-	public Headers getHeaders() {
+	protected Headers getHeaders() {
 		return headers;
 	}
 

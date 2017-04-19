@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.activation.MimetypesFileTypeMap;
-
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -15,17 +13,14 @@ import it.albertus.util.IOUtils;
 
 public class StaticResourceHandler extends AbstractHttpHandler {
 
-	protected static final int BUFFER_SIZE = 4096;
-
 	protected static final String DEFAULT_CACHE_CONTROL = "no-transform,public,max-age=86400,s-maxage=259200";
 
 	private final String resourceName;
-	private final String urlPath;
 	private final Headers headers;
 
 	public StaticResourceHandler(final String resourceName, final String urlPath, final Headers headers) {
 		this.resourceName = resourceName;
-		this.urlPath = urlPath;
+		setPath(urlPath);
 		this.headers = headers;
 	}
 
@@ -76,40 +71,8 @@ public class StaticResourceHandler extends AbstractHttpHandler {
 	protected void addContentTypeHeader(final HttpExchange exchange) {
 		final Headers responseHeaders = exchange.getResponseHeaders();
 		if (!responseHeaders.containsKey("Content-Type")) {
-			responseHeaders.add("Content-Type", guessContentType(resourceName));
+			super.addContentTypeHeader(exchange);
 		}
-	}
-
-	protected static String guessContentType(final String fileName) {
-		final String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
-		final String contentType;
-		if ("ico".equalsIgnoreCase(extension)) {
-			contentType = "image/x-icon";
-		}
-		else if ("css".equalsIgnoreCase(extension)) {
-			contentType = "text/css";
-		}
-		else if ("js".equalsIgnoreCase(extension)) {
-			contentType = "application/javascript";
-		}
-		else if ("xml".equalsIgnoreCase(extension)) {
-			contentType = "application/xml";
-		}
-		else if ("xhtml".equalsIgnoreCase(extension)) {
-			contentType = "application/xhtml+xml";
-		}
-		else if ("pdf".equalsIgnoreCase(extension)) {
-			contentType = "application/pdf";
-		}
-		else {
-			contentType = new MimetypesFileTypeMap().getContentType(fileName);
-		}
-		return contentType;
-	}
-
-	@Override
-	public String getPath() {
-		return urlPath;
 	}
 
 	public String getResourceName() {

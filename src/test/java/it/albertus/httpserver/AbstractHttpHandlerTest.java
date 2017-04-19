@@ -62,6 +62,20 @@ public class AbstractHttpHandlerTest {
 		Assert.assertEquals(expectedContentMd5, handler.generateContentMd5(originalFile));
 	}
 
+	@Test
+	public void getContentTypeTest() {
+		Assert.assertEquals("image/x-icon", handler.getContentType("asdfghjkl.ICO "));
+		Assert.assertEquals("text/css", handler.getContentType("zxcvbnm.css"));
+		Assert.assertEquals("application/javascript", handler.getContentType("qwertyuiop.Js   "));
+		Assert.assertEquals("application/json", handler.getContentType(" qwert-yuiop.json"));
+		Assert.assertEquals("application/xml", handler.getContentType("asdfghjkl.XML"));
+		Assert.assertEquals("application/xhtml+xml", handler.getContentType("zxcvbnm.xHtml"));
+		Assert.assertEquals("application/pdf", handler.getContentType("qwertyuiop.pdf"));
+		Assert.assertEquals("text/html", handler.getContentType("qwertyuiop.HTML"));
+		Assert.assertEquals("text/html", handler.getContentType("asdfg hjkl.htm"));
+		Assert.assertEquals("application/octet-stream", handler.getContentType("zxcvbnm"));
+	}
+
 	@AfterClass
 	public static void destroy() {
 		if (originalFile.delete()) {

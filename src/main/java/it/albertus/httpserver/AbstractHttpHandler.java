@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.protocol.HttpDateGenerator;
@@ -111,11 +112,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
+	protected static final int BUFFER_SIZE = 4096;
+
 	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
-
-	private static final int BUFFER_SIZE = 4096;
 
 	private static final Charset charset = initCharset();
 
@@ -124,6 +125,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	private IHttpServerConfiguration httpServerConfiguration;
 
 	private boolean enabled = true;
+
+	private String path;
 
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
@@ -314,7 +317,39 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		addDateHeader(exchange);
 	}
 
-	protected abstract void addContentTypeHeader(HttpExchange exchange);
+	protected void addContentTypeHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().add("Content-Type", getContentType(getPath()));
+	}
+
+	protected String getContentType(final String fileName) {
+		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.')).trim() : null;
+		final String contentType;
+		if (".css".equalsIgnoreCase(extension)) {
+			contentType = "text/css";
+		}
+		else if (".ico".equalsIgnoreCase(extension)) {
+			contentType = "image/x-icon";
+		}
+		else if (".js".equalsIgnoreCase(extension)) {
+			contentType = "application/javascript";
+		}
+		else if (".json".equalsIgnoreCase(extension)) {
+			contentType = "application/json";
+		}
+		else if (".pdf".equalsIgnoreCase(extension)) {
+			contentType = "application/pdf";
+		}
+		else if (".xhtml".equalsIgnoreCase(extension)) {
+			contentType = "application/xhtml+xml";
+		}
+		else if (".xml".equalsIgnoreCase(extension)) {
+			contentType = "application/xml";
+		}
+		else {
+			contentType = new MimetypesFileTypeMap().getContentType(fileName);
+		}
+		return contentType;
+	}
 
 	/**
 	 * Adds {@code Date} header to the provided {@link HttpExchange} object.
@@ -530,7 +565,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	public String getPath() {
-		return getPath(this.getClass());
+		return path != null ? path : getPath(this.getClass());
+	}
+
+	protected void setPath(final String path) {
+		this.path = path;
 	}
 
 	public static String getPath(final Class<? extends HttpHandler> clazz) {

@@ -542,8 +542,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				try {
 					inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
 					if (inputStream == null) {
-						notFound(exchange);
-						return;
+						throw new IllegalStateException(resourceBasePath + pathInfo);
 					}
 					outputStream = new ByteArrayOutputStream();
 					IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
@@ -551,14 +550,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				finally {
 					IOUtils.closeQuietly(outputStream, inputStream);
 				}
+				addCacheControlHeader(exchange);
 				sendResponse(exchange, outputStream.toByteArray());
 			}
 		}
-		notFound(exchange);
+		sendNotFound(exchange);
 		return;
 	}
 
-	protected void notFound(final HttpExchange exchange) throws IOException {
+	protected void addCacheControlHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().add("Cache-Control", "no-transform,public,max-age=86400,s-maxage=259200");
+	}
+
+	protected void sendNotFound(final HttpExchange exchange) throws IOException {
 		sendResponse(exchange, null, HttpURLConnection.HTTP_NOT_FOUND);
 	}
 

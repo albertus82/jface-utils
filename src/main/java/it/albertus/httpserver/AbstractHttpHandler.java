@@ -13,7 +13,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +53,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Properties contentTypes;
 
-	private static final Collection<String> resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
+	private static final Collection<String> resources;
 
 	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
 		@Override
@@ -76,7 +75,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(is);
 		}
-		httpStatusCodes = new HashMap<Integer, String>();
+		httpStatusCodes = new HashMap<Integer, String>(properties.size());
 		for (final Entry<?, ?> entry : properties.entrySet()) {
 			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
 		}
@@ -93,6 +92,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			IOUtils.closeQuietly(is);
 		}
 
+		resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
 		if (logger.isLoggable(Level.CONFIG)) {
 			logger.config("HTTP static resources:");
 			for (final String resource : resources) {
@@ -614,11 +614,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	public static Map<Integer, String> getHttpStatusCodes() {
-		return Collections.unmodifiableMap(httpStatusCodes);
+		return httpStatusCodes;
 	}
 
 	public static Properties getContentTypes() {
 		return contentTypes;
+	}
+
+	public static Collection<String> getResources() {
+		return resources;
 	}
 
 }

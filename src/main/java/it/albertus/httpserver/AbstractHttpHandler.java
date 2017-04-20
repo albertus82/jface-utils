@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -63,74 +64,33 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	};
 
 	static {
+		final Properties properties = new Properties();
+		InputStream is = null;
+		try {
+			is = AbstractHttpHandler.class.getResourceAsStream("http-codes.properties");
+			properties.load(is);
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
 		httpStatusCodes = new HashMap<Integer, String>();
-		httpStatusCodes.put(100, "Continue");
-		httpStatusCodes.put(101, "Switching Protocols");
-		httpStatusCodes.put(102, "Processing");
-		httpStatusCodes.put(200, "OK");
-		httpStatusCodes.put(201, "Created");
-		httpStatusCodes.put(202, "Accepted");
-		httpStatusCodes.put(203, "Non-Authoritative Information");
-		httpStatusCodes.put(204, "No Content");
-		httpStatusCodes.put(205, "Reset Content");
-		httpStatusCodes.put(206, "Partial Content");
-		httpStatusCodes.put(207, "Multi-Status");
-		httpStatusCodes.put(208, "Already Reported");
-		httpStatusCodes.put(226, "IM Used");
-		httpStatusCodes.put(300, "Multiple Choices");
-		httpStatusCodes.put(301, "Moved Permanently");
-		httpStatusCodes.put(302, "Found");
-		httpStatusCodes.put(303, "See Other");
-		httpStatusCodes.put(304, "Not Modified");
-		httpStatusCodes.put(305, "Use Proxy");
-		httpStatusCodes.put(307, "Temporary Redirect");
-		httpStatusCodes.put(308, "Permanent Redirect");
-		httpStatusCodes.put(400, "Bad Request");
-		httpStatusCodes.put(401, "Unauthorized");
-		httpStatusCodes.put(402, "Payment Required");
-		httpStatusCodes.put(403, "Forbidden");
-		httpStatusCodes.put(404, "Not Found");
-		httpStatusCodes.put(405, "Method Not Allowed");
-		httpStatusCodes.put(406, "Not Acceptable");
-		httpStatusCodes.put(407, "Proxy Authentication Required");
-		httpStatusCodes.put(408, "Request Timeout");
-		httpStatusCodes.put(409, "Conflict");
-		httpStatusCodes.put(410, "Gone");
-		httpStatusCodes.put(411, "Length Required");
-		httpStatusCodes.put(412, "Precondition Failed");
-		httpStatusCodes.put(413, "Request Entity Too Large");
-		httpStatusCodes.put(414, "Request-URI Too Long");
-		httpStatusCodes.put(415, "Unsupported Media Type");
-		httpStatusCodes.put(416, "Requested Range Not Satisfiable");
-		httpStatusCodes.put(417, "Expectation Failed");
-		httpStatusCodes.put(418, "I'm a teapot");
-		httpStatusCodes.put(421, "Misdirected Request");
-		httpStatusCodes.put(422, "Unprocessable Entity");
-		httpStatusCodes.put(423, "Locked");
-		httpStatusCodes.put(424, "Failed Dependency");
-		httpStatusCodes.put(426, "Upgrade Required");
-		httpStatusCodes.put(428, "Precondition Required");
-		httpStatusCodes.put(429, "Too Many Requests");
-		httpStatusCodes.put(431, "Request Header Fields Too Large");
-		httpStatusCodes.put(451, "Unavailable For Legal Reasons");
-		httpStatusCodes.put(500, "Internal Server Error");
-		httpStatusCodes.put(501, "Not Implemented");
-		httpStatusCodes.put(502, "Bad Gateway");
-		httpStatusCodes.put(503, "Service Unavailable");
-		httpStatusCodes.put(504, "Gateway Timeout");
-		httpStatusCodes.put(505, "HTTP Version Not Supported");
-		httpStatusCodes.put(506, "Variant Also Negotiates");
-		httpStatusCodes.put(507, "Insufficient Storage");
-		httpStatusCodes.put(508, "Loop Detected");
-		httpStatusCodes.put(510, "Not Extended");
-		httpStatusCodes.put(511, "Network Authentication Required");
+		for (final Entry<?, ?> entry : properties.entrySet()) {
+			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
+		}
 
 		contentTypes = new Properties();
 		try {
-			contentTypes.load(AbstractHttpHandler.class.getResourceAsStream("mime.properties"));
+			is = AbstractHttpHandler.class.getResourceAsStream("mime-types.properties");
+			contentTypes.load(is);
 		}
 		catch (final IOException e) {
-			logger.log(Level.SEVERE, e.toString(), e);
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
 		}
 
 		if (logger.isLoggable(Level.CONFIG)) {
@@ -532,13 +492,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException { // FIXME avoid ByteArrayOutputStream
+	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException {
 		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
 		for (final String resource : resources) {
-			final String string = '/' + resource.replace(File.separatorChar, '/');
-			if (string.endsWith(resourceBasePath + pathInfo) || (string + '/').endsWith(resourceBasePath + pathInfo)) {
+			if (('/' + resource.replace(File.separatorChar, '/')).endsWith(resourceBasePath + pathInfo)) {
 				InputStream inputStream = null;
-				ByteArrayOutputStream outputStream = null;
+				ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
 				try {
 					inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
 					if (inputStream == null) {
@@ -625,10 +584,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		this.enabled = enabled;
 	}
 
-	public static Map<Integer, String> getHttpStatusCodes() {
-		return Collections.unmodifiableMap(httpStatusCodes);
-	}
-
 	public String getPath() {
 		return path != null ? path : getPath(this.getClass());
 	}
@@ -656,6 +611,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
 		this.httpServerConfiguration = httpServerConfiguration;
+	}
+
+	public static Map<Integer, String> getHttpStatusCodes() {
+		return Collections.unmodifiableMap(httpStatusCodes);
+	}
+
+	public static Properties getContentTypes() {
+		return contentTypes;
 	}
 
 }

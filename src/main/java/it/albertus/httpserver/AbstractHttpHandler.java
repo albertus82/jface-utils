@@ -504,25 +504,29 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
 		for (final String resource : resources) {
 			if (('/' + resource.replace(File.separatorChar, '/')).endsWith(resourceBasePath + pathInfo)) {
-				InputStream inputStream = null;
-				ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
-				try {
-					inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
-					if (inputStream == null) {
-						throw new IllegalStateException(resourceBasePath + pathInfo);
-					}
-					outputStream = new ByteArrayOutputStream();
-					IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
-				}
-				finally {
-					IOUtils.closeQuietly(outputStream, inputStream);
-				}
-				addCacheControlHeader(exchange);
-				sendResponse(exchange, outputStream.toByteArray());
+				doSendStaticResource(exchange, resourceBasePath, pathInfo);
+				return;
 			}
 		}
 		sendNotFound(exchange);
-		return;
+	}
+
+	protected void doSendStaticResource(final HttpExchange exchange, final String resourceBasePath, final String pathInfo) throws IOException {
+		InputStream inputStream = null;
+		ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
+		try {
+			inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
+			if (inputStream == null) {
+				throw new IllegalStateException(resourceBasePath + pathInfo);
+			}
+			outputStream = new ByteArrayOutputStream();
+			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		}
+		finally {
+			IOUtils.closeQuietly(outputStream, inputStream);
+		}
+		addCacheControlHeader(exchange);
+		sendResponse(exchange, outputStream.toByteArray());
 	}
 
 	protected void addCacheControlHeader(final HttpExchange exchange) {
@@ -593,14 +597,22 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	public String getPath() {
-		return path != null ? path : getPath(this.getClass());
+		return path != null ? path : getAnnotatedPath(getClass());
 	}
 
 	protected void setPath(final String path) {
 		this.path = path;
 	}
 
-	public static String getPath(final Class<? extends HttpHandler> clazz) {
+	protected IHttpServerConfiguration getHttpServerConfiguration() {
+		return httpServerConfiguration;
+	}
+
+	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
+		this.httpServerConfiguration = httpServerConfiguration;
+	}
+
+	public static String getAnnotatedPath(final Class<? extends HttpHandler> clazz) {
 		final Path annotation = clazz.getAnnotation(Path.class);
 		return annotation != null ? annotation.value() : null;
 	}
@@ -611,14 +623,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected static void setLastRequestInfo(final Object[] requestInfo) {
 		lastRequestInfo = requestInfo;
-	}
-
-	protected IHttpServerConfiguration getHttpServerConfiguration() {
-		return httpServerConfiguration;
-	}
-
-	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
-		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
 	public static Map<Integer, String> getHttpStatusCodes() {

@@ -13,8 +13,10 @@ public class ClasspathResourcesHandler extends AbstractHttpHandler {
 		setPath(urlBasePath);
 	}
 
+	public ClasspathResourcesHandler() {/* Default constructor */}
+
 	@Override
-	protected void doGet(final HttpExchange exchange) throws IOException { // FIXME avoid ByteArrayOutputStream
+	protected void doGet(final HttpExchange exchange) throws IOException {
 		sendStaticResource(exchange, resourceBasePath);
 	}
 

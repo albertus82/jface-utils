@@ -53,7 +53,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Properties contentTypes;
 
-	private static final Collection<String> directories = ResourceList.getResources(Pattern.compile(".*"));
+	private static final Collection<String> resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
 
 	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
 		@Override
@@ -131,6 +131,13 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 		catch (final IOException e) {
 			logger.log(Level.SEVERE, e.toString(), e);
+		}
+
+		if (logger.isLoggable(Level.CONFIG)) {
+			logger.config("HTTP static resources:");
+			for (final String resource : resources) {
+				logger.config(resource);
+			}
 		}
 	}
 
@@ -527,28 +534,28 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException { // FIXME avoid ByteArrayOutputStream
 		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
-		for (final String directory : directories) {
-			final String string = '/' + directory.replace(System.getProperty("file.separator"), "/");
-			if (string.endsWith(resourceBasePath + pathInfo) || (string+'/').endsWith(resourceBasePath + pathInfo )) {
-				notFound(exchange);
-				return;
+		for (final String resource : resources) {
+			final String string = '/' + resource.replace(File.separatorChar, '/');
+			if (string.endsWith(resourceBasePath + pathInfo) || (string + '/').endsWith(resourceBasePath + pathInfo)) {
+				InputStream inputStream = null;
+				ByteArrayOutputStream outputStream = null;
+				try {
+					inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
+					if (inputStream == null) {
+						notFound(exchange);
+						return;
+					}
+					outputStream = new ByteArrayOutputStream();
+					IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+				}
+				finally {
+					IOUtils.closeQuietly(outputStream, inputStream);
+				}
+				sendResponse(exchange, outputStream.toByteArray());
 			}
 		}
-		InputStream inputStream = null;
-		ByteArrayOutputStream outputStream = null;
-		try {
-			inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
-			if (inputStream == null) {
-				notFound(exchange);
-				return;
-			}
-			outputStream = new ByteArrayOutputStream();
-			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
-		}
-		finally {
-			IOUtils.closeQuietly(outputStream, inputStream);
-		}
-		sendResponse(exchange, outputStream.toByteArray());
+		notFound(exchange);
+		return;
 	}
 
 	protected void notFound(final HttpExchange exchange) throws IOException {
@@ -587,9 +594,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	/**
 	 * Returns if this handler is enabled. <b>Handlers are enabled by
 	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
-	 * Status-Code 403: Forbidden.</b>
+	 * Status-Code 403: Forbidden.</b> Calling this method is equivalent to
+	 * invoke the overloaded version without arguments: {@code isEnabled()}. You
+	 * are allowed to override this method to take any other kind of decision.
 	 * 
-	 * @param exchange
+	 * @param exchange the current {@link HttpExchange} object.
 	 * 
 	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
 	 */

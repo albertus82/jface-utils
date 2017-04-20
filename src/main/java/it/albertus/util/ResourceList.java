@@ -65,7 +65,7 @@ public class ResourceList {
 			final ZipEntry ze = e.nextElement();
 			final String fileName = ze.getName();
 			final boolean accept = pattern.matcher(fileName).matches();
-			if (accept && ze.isDirectory()) {
+			if (accept && !ze.isDirectory()) {
 				retval.add(fileName);
 			}
 		}
@@ -83,22 +83,20 @@ public class ResourceList {
 		final File[] fileList = directory.listFiles();
 		for (final File file : fileList) {
 			if (file.isDirectory()) {
-				
-				retval.add(file.getPath());
- 			retval.addAll(getResourcesFromDirectory(file, pattern));
+				retval.addAll(getResourcesFromDirectory(file, pattern));
 			}
-			//			else {
-			//				try {
-			//					final String fileName = file.getCanonicalPath();
-			//					final boolean accept = pattern.matcher(fileName).matches();
-			//					if (accept) {
-			//						retval.add(fileName);
-			//					}
-			//				}
-			//				catch (final IOException e) {
-			//					throw new Error(e);
-			//				}
-			//			}
+			else {
+				try {
+					final String fileName = file.getCanonicalPath();
+					final boolean accept = pattern.matcher(fileName).matches();
+					if (accept) {
+						retval.add(fileName);
+					}
+				}
+				catch (final IOException e) {
+					throw new Error(e);
+				}
+			}
 		}
 		return retval;
 	}

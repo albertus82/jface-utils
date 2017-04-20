@@ -49,11 +49,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
 
-	private static final Map<Integer, String> httpStatusCodes;
+	private static final Map<Integer, String> httpStatusCodes = initHttpStatusCodes();
 
-	private static final Properties contentTypes;
+	private static final Properties contentTypes = initContentTypes();
 
-	private static final Collection<String> resources;
+	private static final Collection<String> resources = initResources();
 
 	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
 		@Override
@@ -61,45 +61,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			return new MimetypesFileTypeMap();
 		}
 	};
-
-	static {
-		final Properties properties = new Properties();
-		InputStream is = null;
-		try {
-			is = AbstractHttpHandler.class.getResourceAsStream("http-codes.properties");
-			properties.load(is);
-		}
-		catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			IOUtils.closeQuietly(is);
-		}
-		httpStatusCodes = new HashMap<Integer, String>(properties.size());
-		for (final Entry<?, ?> entry : properties.entrySet()) {
-			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
-		}
-
-		contentTypes = new Properties();
-		try {
-			is = AbstractHttpHandler.class.getResourceAsStream("mime-types.properties");
-			contentTypes.load(is);
-		}
-		catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			IOUtils.closeQuietly(is);
-		}
-
-		resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
-		if (logger.isLoggable(Level.CONFIG)) {
-			logger.config("HTTP static resources:");
-			for (final String resource : resources) {
-				logger.config(resource);
-			}
-		}
-	}
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
@@ -118,6 +79,53 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	private boolean enabled = true;
 
 	private String path;
+
+	private static Map<Integer, String> initHttpStatusCodes() {
+		final Properties properties = new Properties();
+		InputStream is = null;
+		try {
+			is = AbstractHttpHandler.class.getResourceAsStream("http-codes.properties");
+			properties.load(is);
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
+		final Map<Integer, String> httpStatusCodes = new HashMap<Integer, String>(properties.size());
+		for (final Entry<?, ?> entry : properties.entrySet()) {
+			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
+		}
+		return httpStatusCodes;
+	}
+
+	private static Properties initContentTypes() {
+		final Properties contentTypes = new Properties();
+		InputStream is = null;
+		try {
+			is = AbstractHttpHandler.class.getResourceAsStream("mime-types.properties");
+			contentTypes.load(is);
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
+		return contentTypes;
+	}
+
+	private static Collection<String> initResources() {
+		final Collection<String> resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
+		if (logger.isLoggable(Level.CONFIG)) {
+			logger.config("HTTP static resources:");
+			for (final String resource : resources) {
+				logger.config(resource);
+			}
+		}
+		return resources;
+	}
 
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {

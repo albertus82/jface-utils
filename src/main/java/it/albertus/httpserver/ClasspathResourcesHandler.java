@@ -17,7 +17,7 @@ public class ClasspathResourcesHandler extends AbstractHttpHandler {
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {
-		sendStaticResource(exchange, resourceBasePath);
+		sendStaticResource(exchange, resourceBasePath + getPathInfo(exchange));
 	}
 
 	public String getResourceBasePath() {

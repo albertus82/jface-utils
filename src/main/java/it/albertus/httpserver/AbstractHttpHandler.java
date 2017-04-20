@@ -513,8 +513,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
 	}
 
-	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException {
-		final String resourcePath = resourceBasePath + getPathInfo(exchange);
+	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath) throws IOException {
 		if (existsStaticResource(resourcePath)) {
 			doSendStaticResource(exchange, resourcePath);
 		}

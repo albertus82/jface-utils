@@ -500,24 +500,36 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException {
-		final String pathInfo = StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
+	protected boolean existsStaticResource(final String resourcePath) {
 		for (final String resource : resources) {
-			if (('/' + resource.replace(File.separatorChar, '/')).endsWith(resourceBasePath + pathInfo)) {
-				doSendStaticResource(exchange, resourceBasePath, pathInfo);
-				return;
+			if (('/' + resource.replace(File.separatorChar, '/')).endsWith(resourcePath)) {
+				return true;
 			}
 		}
-		sendNotFound(exchange);
+		return false;
 	}
 
-	protected void doSendStaticResource(final HttpExchange exchange, final String resourceBasePath, final String pathInfo) throws IOException {
+	protected String getPathInfo(final HttpExchange exchange) {
+		return StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
+	}
+
+	protected void sendStaticResource(final HttpExchange exchange, final String resourceBasePath) throws IOException {
+		final String resourcePath = resourceBasePath + getPathInfo(exchange);
+		if (existsStaticResource(resourcePath)) {
+			doSendStaticResource(exchange, resourcePath);
+		}
+		else {
+			sendNotFound(exchange);
+		}
+	}
+
+	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath) throws IOException {
 		InputStream inputStream = null;
 		ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
 		try {
-			inputStream = getClass().getResourceAsStream(resourceBasePath + pathInfo);
+			inputStream = getClass().getResourceAsStream(resourcePath);
 			if (inputStream == null) {
-				throw new IllegalStateException(resourceBasePath + pathInfo);
+				throw new IllegalStateException(resourcePath);
 			}
 			outputStream = new ByteArrayOutputStream();
 			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);

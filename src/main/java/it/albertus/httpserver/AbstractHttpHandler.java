@@ -55,12 +55,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Collection<String> resources = initResources();
 
-	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
-		@Override
-		protected MimetypesFileTypeMap initialValue() {
-			return new MimetypesFileTypeMap();
-		}
-	};
+	private static final Charset charset = initCharset();
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
@@ -69,8 +64,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
-
-	private static final Charset charset = initCharset();
 
 	private static Object[] lastRequestInfo;
 
@@ -327,7 +320,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			contentType = contentTypes.getProperty(extension);
 		}
 		if (contentType == null) {
-			contentType = mimetypesFileTypeMap.get().getContentType(fileName);
+			contentType = new MimetypesFileTypeMap().getContentType(fileName);
 		}
 		return contentType.trim();
 	}

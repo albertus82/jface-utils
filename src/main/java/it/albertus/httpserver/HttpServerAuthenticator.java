@@ -82,8 +82,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		}
 	}
 
-	private boolean checkPassword(final String provided, final char[] expected) {
-		boolean equal = true;
+	private synchronized boolean checkPassword(final String provided, final char[] expected) {
 		final char[] computed;
 		if (messageDigest != null) {
 			messageDigest.reset();
@@ -93,6 +92,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 			computed = provided.toCharArray();
 		}
 
+		boolean equal = true;
 		if (computed.length != expected.length) {
 			equal = false;
 		}

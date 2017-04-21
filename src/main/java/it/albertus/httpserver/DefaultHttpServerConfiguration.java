@@ -12,7 +12,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		public static final boolean ENABLED = false;
 		public static final boolean AUTHENTICATION = true;
 		public static final String PASSWORD_HASH_ALGORITHM = "SHA-256";
-		public static final byte THREADS = 2;
+		public static final byte THREAD_COUNT = 2;
 		public static final boolean SSL_ENABLED = false;
 		public static final String SSL_KEYSTORE_TYPE = "JKS";
 		public static final String SSL_PROTOCOL = "TLS";
@@ -85,7 +85,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	@Override
 	public byte getThreadCount() {
-		return Defaults.THREADS;
+		return Defaults.THREAD_COUNT;
 	}
 
 	@Override

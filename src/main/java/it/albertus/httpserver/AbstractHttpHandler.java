@@ -503,7 +503,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String getPathInfo(final HttpExchange exchange) {
-		return StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath());
+		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath()), "?"); //FIXME substringAfterLast
 	}
 
 	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath) throws IOException {

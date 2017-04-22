@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -347,6 +348,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	protected void addEtagHeader(final HttpExchange exchange, final String eTag) {
 		if (eTag != null) {
 			exchange.getResponseHeaders().add("ETag", eTag);
+		}
+	}
+
+	protected void addLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
+		if (lastModified != null) {
+			exchange.getResponseHeaders().add("Last-Modified", httpDateGenerator.format(lastModified));
 		}
 	}
 

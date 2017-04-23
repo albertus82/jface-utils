@@ -360,15 +360,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
 		if (getHttpServerConfiguration().isCompressionEnabled()) {
-			final List<String> headerRows = exchange.getRequestHeaders().get("Accept-Encoding");
-			if (headerRows != null) {
-				for (final String headerRow : headerRows) {
-					if (headerRow != null) {
-						for (final String headerValue : headerRow.split(",")) {
-							if ("gzip".equalsIgnoreCase(headerValue.trim())) {
-								return true;
-							}
-						}
+			final List<String> headers = exchange.getRequestHeaders().get("Accept-Encoding");
+			if (headers != null) {
+				for (final String header : headers) {
+					if (header != null && header.trim().toLowerCase().contains("gzip")) {
+						return true;
 					}
 				}
 			}
@@ -485,6 +481,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 			addDateHeader(exchange);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
+			exchange.getResponseBody().close(); // Needed when no write occurs.
 		}
 		else {
 			if (payload != null) {
@@ -493,6 +490,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
 					exchange.sendResponseHeaders(statusCode, -1);
+					exchange.getResponseBody().close(); // no body
 				}
 				else {
 					exchange.sendResponseHeaders(statusCode, response.length);
@@ -502,9 +500,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			else { // no payload
 				addDateHeader(exchange);
 				exchange.sendResponseHeaders(statusCode, -1);
+				exchange.getResponseBody().close();
 			}
 		}
-		exchange.getResponseBody().close();
 	}
 
 	protected boolean existsStaticResource(final String resourcePath) {

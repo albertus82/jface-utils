@@ -79,6 +79,7 @@ public class AbstractHttpHandlerTest {
 		Assert.assertEquals("image/gif", handler.getContentType("qwertyuiop.gif"));
 		Assert.assertEquals("image/png", handler.getContentType("asdfghjkl.png"));
 		Assert.assertEquals("application/octet-stream", handler.getContentType("asdfghjkl."));
+		Assert.assertEquals("text/x-log", handler.getContentType(".log"));
 	}
 
 	@AfterClass

@@ -360,11 +360,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
 		if (getHttpServerConfiguration().isCompressionEnabled()) {
-			final List<String> headers = exchange.getRequestHeaders().get("Accept-Encoding");
-			if (headers != null) {
-				for (final String header : headers) {
-					if (header != null && header.trim().toLowerCase().contains("gzip")) {
-						return true;
+			final List<String> headerRows = exchange.getRequestHeaders().get("Accept-Encoding");
+			if (headerRows != null) {
+				for (final String headerRow : headerRows) {
+					if (headerRow != null) {
+						for (final String headerValue : headerRow.split(",")) {
+							if ("gzip".equalsIgnoreCase(headerValue.trim())) {
+								return true;
+							}
+						}
 					}
 				}
 			}

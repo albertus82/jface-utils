@@ -21,7 +21,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		public static final short MAX_REQ_TIME = 10; // seconds
 		public static final short MAX_RSP_TIME = 600; // seconds
 		public static final Level REQUEST_LOGGING_LEVEL = Level.INFO;
-		public static final boolean COMPRESSION_ENABLED = false;
+		public static final boolean COMPRESSION_ENABLED = true;
 
 		private Defaults() {
 			throw new IllegalAccessError("Constants class");

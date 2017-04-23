@@ -176,15 +176,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void sendForbidden(final HttpExchange exchange) throws IOException {
-		sendResponse(exchange, null, HttpURLConnection.HTTP_FORBIDDEN);
+		sendResponse(exchange, HttpURLConnection.HTTP_FORBIDDEN);
 	}
 
 	protected void sendInternalError(final HttpExchange exchange) throws IOException {
-		sendResponse(exchange, null, HttpURLConnection.HTTP_INTERNAL_ERROR);
+		sendResponse(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR);
 	}
 
 	protected void sendError(final HttpExchange exchange, final HttpException e) throws IOException {
-		sendResponse(exchange, null, e.getStatusCode());
+		sendResponse(exchange, e.getStatusCode());
 	}
 
 	protected void doHead(final HttpExchange exchange) throws IOException, HttpException {
@@ -461,6 +461,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
+	protected void sendResponse(final HttpExchange exchange, final int statusCode) throws IOException {
+		sendResponse(exchange, null, statusCode);
+	}
+
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload, final int statusCode) throws IOException {
 		final String currentEtag;
 		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
@@ -547,7 +551,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void sendNotFound(final HttpExchange exchange) throws IOException {
-		sendResponse(exchange, null, HttpURLConnection.HTTP_NOT_FOUND);
+		sendResponse(exchange, HttpURLConnection.HTTP_NOT_FOUND);
 	}
 
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload) throws IOException {

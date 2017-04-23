@@ -217,7 +217,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 		responseString.append(NewLine.CRLF);
 
-		exchange.getResponseHeaders().set("Content-Type", "message/http");
+		setContentTypeHeader(exchange, "message/http");
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseString.length());
 		final OutputStream out = exchange.getResponseBody();
 		out.write(responseString.toString().getBytes(getCharset()));
@@ -252,7 +252,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			allow.append(allowedMethod);
 		}
 
-		exchange.getResponseHeaders().add("Allow", allow.toString());
+		exchange.getResponseHeaders().set("Allow", allow.toString());
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
 	}
 
@@ -306,13 +306,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addCommonHeaders(final HttpExchange exchange) {
-		addContentTypeHeader(exchange);
-		addDateHeader(exchange);
+	protected void setCommonHeaders(final HttpExchange exchange) {
+		setContentTypeHeader(exchange);
+		setDateHeader(exchange);
 	}
 
-	protected void addContentTypeHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Content-Type", getContentType(exchange.getRequestURI().getPath()));
+	protected void setContentTypeHeader(final HttpExchange exchange) {
+		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
+	}
+
+	protected void setContentTypeHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().set("Content-Type", value);
+		}
 	}
 
 	protected String getContentType(final String fileName) {
@@ -332,8 +338,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addDateHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Date", httpDateGenerator.getCurrentDate());
+	protected void setDateHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().set("Date", httpDateGenerator.getCurrentDate());
 	}
 
 	/**
@@ -342,20 +348,24 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addGzipHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Content-Encoding", "gzip");
+	protected void setGzipHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().set("Content-Encoding", "gzip");
 	}
 
-	protected void addEtagHeader(final HttpExchange exchange, final String eTag) {
+	protected void setEtagHeader(final HttpExchange exchange, final String eTag) {
 		if (eTag != null) {
-			exchange.getResponseHeaders().add("ETag", eTag);
+			exchange.getResponseHeaders().set("ETag", eTag);
 		}
 	}
 
-	protected void addLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
+	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
 		if (lastModified != null) {
-			exchange.getResponseHeaders().add("Last-Modified", httpDateGenerator.format(lastModified));
+			exchange.getResponseHeaders().set("Last-Modified", httpDateGenerator.format(lastModified));
 		}
+	}
+
+	protected void setRefreshHeader(final HttpExchange exchange, final int seconds) {
+		exchange.getResponseHeaders().set("Refresh", Integer.toString(seconds));
 	}
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
@@ -398,7 +408,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(gzos, baos);
 		}
-		addGzipHeader(exchange);
+		setGzipHeader(exchange);
 		return baos.toByteArray();
 	}
 
@@ -448,18 +458,18 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return DatatypeConverter.printBase64Binary(digest.digest());
 	}
 
-	protected void addContentMd5Header(final HttpExchange exchange, final File file) {
+	protected void setContentMd5Header(final HttpExchange exchange, final File file) {
 		try {
-			exchange.getResponseHeaders().add("Content-MD5", generateContentMd5(file));
+			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(file));
 		}
 		catch (final Exception e) {
 			logger.log(Level.WARNING, e.toString(), e);
 		}
 	}
 
-	protected void addContentMd5Header(final HttpExchange exchange, final byte[] responseBody) {
+	protected void setContentMd5Header(final HttpExchange exchange, final byte[] responseBody) {
 		try {
-			exchange.getResponseHeaders().add("Content-MD5", generateContentMd5(responseBody));
+			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(responseBody));
 		}
 		catch (final Exception e) {
 			logger.log(Level.WARNING, e.toString(), e);
@@ -474,7 +484,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final String currentEtag;
 		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
 			currentEtag = generateEtag(payload);
-			addEtagHeader(exchange, currentEtag);
+			setEtagHeader(exchange, currentEtag);
 		}
 		else {
 			currentEtag = null;
@@ -483,12 +493,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		// If-None-Match...
 		final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
-			addDateHeader(exchange);
+			setDateHeader(exchange);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
 		}
 		else {
 			if (payload != null) {
-				addCommonHeaders(exchange);
+				setCommonHeaders(exchange);
 				final byte[] response = compressResponse(payload, exchange);
 				if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
@@ -500,7 +510,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				}
 			}
 			else { // no payload
-				addDateHeader(exchange);
+				setDateHeader(exchange);
 				exchange.sendResponseHeaders(statusCode, -1);
 			}
 		}
@@ -543,13 +553,13 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(outputStream, inputStream);
 		}
-		addCacheControlHeader(exchange, cacheControl);
+		setCacheControlHeader(exchange, cacheControl);
 		sendResponse(exchange, outputStream.toByteArray());
 	}
 
-	protected void addCacheControlHeader(final HttpExchange exchange, final String value) {
+	protected void setCacheControlHeader(final HttpExchange exchange, final String value) {
 		if (value != null && !value.isEmpty()) {
-			exchange.getResponseHeaders().add("Cache-Control", value);
+			exchange.getResponseHeaders().set("Cache-Control", value);
 		}
 	}
 

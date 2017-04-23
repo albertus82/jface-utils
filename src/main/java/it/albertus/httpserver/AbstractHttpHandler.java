@@ -513,16 +513,16 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath()), "?");
 	}
 
-	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath) throws IOException {
+	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
 		if (existsStaticResource(resourcePath)) {
-			doSendStaticResource(exchange, resourcePath);
+			doSendStaticResource(exchange, resourcePath, cacheControl);
 		}
 		else {
 			sendNotFound(exchange);
 		}
 	}
 
-	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath) throws IOException {
+	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
 		InputStream inputStream = null;
 		ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
 		try {
@@ -536,12 +536,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(outputStream, inputStream);
 		}
-		addCacheControlHeader(exchange);
+		addCacheControlHeader(exchange, cacheControl);
 		sendResponse(exchange, outputStream.toByteArray());
 	}
 
-	protected void addCacheControlHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Cache-Control", "no-transform,public,max-age=86400,s-maxage=259200");
+	protected void addCacheControlHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().add("Cache-Control", value);
+		}
 	}
 
 	protected void sendNotFound(final HttpExchange exchange) throws IOException {

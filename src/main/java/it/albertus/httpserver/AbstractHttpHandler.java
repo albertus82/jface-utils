@@ -39,10 +39,11 @@ import com.sun.net.httpserver.HttpHandler;
 import it.albertus.httpserver.annotation.Path;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.CRC32OutputStream;
+import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
-import it.albertus.util.ResourceList;
+import it.albertus.util.Resource;
 import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -54,7 +55,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Properties contentTypes = initContentTypes();
 
-	private static final Collection<String> resources = initResources();
+	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
 	private static final Charset charset = initCharset();
 
@@ -110,12 +111,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return contentTypes;
 	}
 
-	private static Collection<String> initResources() {
-		final Collection<String> resources = ResourceList.getResources(Pattern.compile(".*(?<!\\.class)$"));
+	private static Collection<Resource> initResources() {
+		final Collection<Resource> resources = ClasspathResourceUtils.getResourceList(Pattern.compile(".*(?<!\\.class)$"));
 		if (logger.isLoggable(Level.CONFIG)) {
 			logger.config("HTTP static resources:");
-			for (final String resource : resources) {
-				logger.config(resource);
+			for (final Resource resource : resources) {
+				logger.config(resource.toString());
 			}
 		}
 		return resources;
@@ -505,8 +506,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected boolean existsStaticResource(final String resourcePath) {
-		for (final String resource : resources) {
-			if (('/' + resource.replace(File.separatorChar, '/')).endsWith(resourcePath)) {
+		for (final Resource resource : getResources()) {
+			if (('/' + resource.getName().replace(File.separatorChar, '/')).endsWith(resourcePath)) {
 				return true;
 			}
 		}
@@ -650,7 +651,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return contentTypes;
 	}
 
-	public static Collection<String> getResources() {
+	public static synchronized Collection<Resource> getResources() {
+		if (resources == null) {
+			resources = initResources();
+		}
 		return resources;
 	}
 

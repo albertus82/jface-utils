@@ -488,8 +488,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload, final int statusCode) throws IOException {
-		setStatusHeader(exchange, statusCode);
-
 		final String currentEtag;
 		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
 			currentEtag = generateEtag(payload);
@@ -503,9 +501,11 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 			setDateHeader(exchange);
+			setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
 		}
 		else {
+			setStatusHeader(exchange, statusCode);
 			if (payload != null) {
 				setCommonHeaders(exchange);
 				final byte[] response = compressResponse(payload, exchange);

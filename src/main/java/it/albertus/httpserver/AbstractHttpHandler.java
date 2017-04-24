@@ -480,7 +480,16 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		sendResponse(exchange, null, statusCode);
 	}
 
+	protected void setStatusHeader(final HttpExchange exchange, final int statusCode) {
+		final String description = getHttpStatusCodes().get(statusCode);
+		if (description != null) {
+			exchange.getResponseHeaders().set("Status", statusCode + " " + description);
+		}
+	}
+
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload, final int statusCode) throws IOException {
+		setStatusHeader(exchange, statusCode);
+
 		final String currentEtag;
 		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
 			currentEtag = generateEtag(payload);

@@ -8,8 +8,9 @@ import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +43,7 @@ public abstract class AbstractHttpServer {
 
 	protected volatile HttpServer httpServer;
 	protected volatile boolean running = false;
-	protected volatile ExecutorService threadPool;
+	protected volatile ThreadPoolExecutor threadPool;
 
 	private final Object lock = new Object();
 
@@ -192,9 +193,10 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final byte threads = httpServerConfiguration.getThreadCount();
-					if (threads > 1) {
-						threadPool = Executors.newFixedThreadPool(threads, new DaemonThreadFactory());
+					final byte maximumPoolSize = httpServerConfiguration.getThreadCount();
+					if (maximumPoolSize > 1) {
+						threadPool = new ThreadPoolExecutor(maximumPoolSize, maximumPoolSize, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Byte.MAX_VALUE), new DaemonThreadFactory());
+						threadPool.allowCoreThreadTimeOut(true);
 						httpServer.setExecutor(threadPool);
 					}
 

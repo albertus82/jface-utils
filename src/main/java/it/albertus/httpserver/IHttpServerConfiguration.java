@@ -16,9 +16,9 @@ public interface IHttpServerConfiguration {
 
 	int getPort();
 
-	short getMaxReqTime();
+	long getMaxReqTime();
 
-	short getMaxRspTime();
+	long getMaxRspTime();
 
 	boolean isSslEnabled();
 
@@ -36,7 +36,7 @@ public interface IHttpServerConfiguration {
 
 	String getTrustManagerFactoryAlgorithm();
 
-	byte getThreadCount();
+	int getMaxThreadCount();
 
 	String getRequestLoggingLevel();
 

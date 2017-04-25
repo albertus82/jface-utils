@@ -139,8 +139,8 @@ public abstract class AbstractHttpServer {
 			try {
 				synchronized (lock) {
 					// Avoid server starvation
-					System.setProperty("sun.net.httpserver.maxReqTime", Short.toString(httpServerConfiguration.getMaxReqTime()));
-					System.setProperty("sun.net.httpserver.maxRspTime", Short.toString(httpServerConfiguration.getMaxRspTime()));
+					System.setProperty("sun.net.httpserver.maxReqTime", Long.toString(httpServerConfiguration.getMaxReqTime()));
+					System.setProperty("sun.net.httpserver.maxRspTime", Long.toString(httpServerConfiguration.getMaxRspTime()));
 
 					if (httpServerConfiguration.isSslEnabled()) {
 						final char[] storepass = httpServerConfiguration.getStorePass();
@@ -193,7 +193,7 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final byte maximumPoolSize = httpServerConfiguration.getThreadCount();
+					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
 					if (maximumPoolSize > 1) {
 						threadPool = new ThreadPoolExecutor(maximumPoolSize, maximumPoolSize, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Byte.MAX_VALUE), new DaemonThreadFactory());
 						threadPool.allowCoreThreadTimeOut(true);

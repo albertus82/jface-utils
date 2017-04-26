@@ -186,9 +186,9 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
-					if (maximumPoolSize > 1) {
-						threadPool = new ThreadPoolExecutor(maximumPoolSize, maximumPoolSize, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Byte.MAX_VALUE), new DaemonThreadFactory());
+					final int poolSize = httpServerConfiguration.getThreadCount();
+					if (poolSize > 1) {
+						threadPool = new ThreadPoolExecutor(poolSize, poolSize, httpServerConfiguration.getThreadKeepAliveTime(), TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Byte.MAX_VALUE), new DaemonThreadFactory());
 						threadPool.allowCoreThreadTimeOut(true);
 						httpServer.setExecutor(threadPool);
 					}

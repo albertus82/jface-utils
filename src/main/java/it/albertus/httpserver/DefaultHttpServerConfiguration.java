@@ -14,14 +14,15 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		public static final boolean ENABLED = false;
 		public static final boolean AUTHENTICATION = true;
 		public static final String PASSWORD_HASH_ALGORITHM = "SHA-256";
-		public static final int MAX_THREAD_COUNT = 16;
+		public static final int THREAD_COUNT = 15;
+		public static final long THREAD_KEEP_ALIVE_TIME = 60L * 10; // seconds
 		public static final boolean SSL_ENABLED = false;
 		public static final String SSL_KEYSTORE_TYPE = "JKS";
 		public static final String SSL_PROTOCOL = "TLS";
 		public static final String SSL_KMF_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
 		public static final String SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
-		public static final long MAX_REQ_TIME = 60; // seconds
-		public static final long MAX_RSP_TIME = 60 * 60 * 24L; // seconds
+		public static final long MAX_REQ_TIME = 60L; // seconds
+		public static final long MAX_RSP_TIME = 60L * 60 * 24; // seconds
 		public static final Level REQUEST_LOGGING_LEVEL = Level.INFO;
 		public static final boolean COMPRESSION_ENABLED = true;
 
@@ -50,11 +51,21 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		return Defaults.PORT;
 	}
 
+	/**
+	 * Returns the maximum time a request is allowed to take.
+	 * 
+	 * @return {@link Defaults#MAX_REQ_TIME}.
+	 */
 	@Override
 	public long getMaxReqTime() {
 		return Defaults.MAX_REQ_TIME;
 	}
 
+	/**
+	 * Returns the maximum time a response is allowed to take.
+	 * 
+	 * @return {@link Defaults#MAX_RSP_TIME}.
+	 */
 	@Override
 	public long getMaxRspTime() {
 		return Defaults.MAX_RSP_TIME;
@@ -104,8 +115,13 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	}
 
 	@Override
-	public int getMaxThreadCount() {
-		return Defaults.MAX_THREAD_COUNT;
+	public int getThreadCount() {
+		return Defaults.THREAD_COUNT;
+	}
+
+	@Override
+	public long getThreadKeepAliveTime() {
+		return Defaults.THREAD_KEEP_ALIVE_TIME;
 	}
 
 	@Override

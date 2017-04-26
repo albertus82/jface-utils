@@ -9,7 +9,8 @@ import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -186,10 +187,21 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final int poolSize = httpServerConfiguration.getThreadCount();
-					if (poolSize > 1) {
-						threadPool = new ThreadPoolExecutor(poolSize, poolSize, httpServerConfiguration.getThreadKeepAliveTime(), TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Byte.MAX_VALUE), new DaemonThreadFactory());
-						threadPool.allowCoreThreadTimeOut(true);
+					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
+					if (maximumPoolSize > 1) {
+						threadPool = new ThreadPoolExecutor(httpServerConfiguration.getMinThreadCount(), maximumPoolSize, httpServerConfiguration.getThreadKeepAliveTime(), TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new DaemonThreadFactory());
+						threadPool.setRejectedExecutionHandler(new RejectedExecutionHandler() {
+							@Override
+							public void rejectedExecution(final Runnable r, final ThreadPoolExecutor executor) {
+								try {
+									executor.getQueue().put(r);
+								}
+								catch (final InterruptedException e) {
+									logger.log(Level.FINE, e.toString(), e);
+									Thread.currentThread().interrupt();
+								}
+							}
+						});
 						httpServer.setExecutor(threadPool);
 					}
 

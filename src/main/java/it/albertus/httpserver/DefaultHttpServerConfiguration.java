@@ -14,8 +14,9 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		public static final boolean ENABLED = false;
 		public static final boolean AUTHENTICATION = true;
 		public static final String PASSWORD_HASH_ALGORITHM = "SHA-256";
-		public static final int THREAD_COUNT = 15;
-		public static final long THREAD_KEEP_ALIVE_TIME = 60L * 10; // seconds
+		public static final int MAX_THREAD_COUNT = 15;
+		public static final int MIN_THREAD_COUNT = MAX_THREAD_COUNT / 10;
+		public static final long THREAD_KEEP_ALIVE_TIME = 60L; // seconds
 		public static final boolean SSL_ENABLED = false;
 		public static final String SSL_KEYSTORE_TYPE = "JKS";
 		public static final String SSL_PROTOCOL = "TLS";
@@ -114,9 +115,24 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 		return context.getDefaultSSLParameters();
 	}
 
+	/**
+	 * Returns the maximum number of threads to allow in the pool.
+	 * 
+	 * @return {@link Defaults#MAX_THREAD_COUNT}
+	 */
 	@Override
-	public int getThreadCount() {
-		return Defaults.THREAD_COUNT;
+	public int getMaxThreadCount() {
+		return Defaults.MAX_THREAD_COUNT;
+	}
+
+	/**
+	 * Returns the number of threads to keep in the pool, even if they are idle.
+	 * 
+	 * @return {@link #getMaxThreadCount()} / 10.
+	 */
+	@Override
+	public int getMinThreadCount() {
+		return getMaxThreadCount() / 10;
 	}
 
 	@Override

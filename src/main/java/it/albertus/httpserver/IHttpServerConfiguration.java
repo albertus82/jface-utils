@@ -20,15 +20,11 @@ public interface IHttpServerConfiguration {
 	int getPort();
 
 	/**
-	 * Returns the maximum time a request is allowed to take, in seconds.
-	 * 
 	 * @return the maximum time a request is allowed to take, in seconds.
 	 */
 	long getMaxReqTime();
 
 	/**
-	 * Returns the maximum time a response is allowed to take, in seconds.
-	 * 
 	 * @return the maximum time a response is allowed to take, in seconds.
 	 */
 	long getMaxRspTime();
@@ -51,14 +47,19 @@ public interface IHttpServerConfiguration {
 
 	SSLParameters getSslParameters(SSLContext context);
 
-	int getThreadCount();
+	/**
+	 * @return the maximum number of threads to allow in the pool.
+	 */
+	int getMaxThreadCount();
 
 	/**
-	 * Returns the maximum time that idle threads will wait for new tasks before
-	 * terminating, in seconds.
-	 * 
-	 * @return the maximum time that idle threads will wait for new tasks before
-	 *         terminating, in seconds.
+	 * @return the number of threads to keep in the pool, even if they are idle.
+	 */
+	int getMinThreadCount();
+
+	/**
+	 * @return the maximum time that excess idle threads will wait for new tasks
+	 *         before terminating, in seconds.
 	 */
 	long getThreadKeepAliveTime();
 

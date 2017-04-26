@@ -7,6 +7,7 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,7 +17,6 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -166,21 +166,14 @@ public abstract class AbstractHttpServer {
 
 						final SSLContext sslContext = SSLContext.getInstance(httpServerConfiguration.getSslProtocol());
 						sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+
+						final SSLParameters sslParameters = httpServerConfiguration.getSslParameters(sslContext);
+						logger.log(Level.CONFIG, "SSLParameters [cipherSuites={0}, protocols={1}, wantClientAuth={2}, needClientAuth={3}]", new Object[] { Arrays.toString(sslParameters.getCipherSuites()), Arrays.toString(sslParameters.getProtocols()), sslParameters.getWantClientAuth(), sslParameters.getNeedClientAuth() });
+
 						final HttpsConfigurator httpsConfigurator = new HttpsConfigurator(sslContext) {
 							@Override
 							public void configure(final HttpsParameters params) {
-								try {
-									final SSLEngine sslEngine = getSSLContext().createSSLEngine();
-									params.setNeedClientAuth(false);
-									params.setCipherSuites(sslEngine.getEnabledCipherSuites());
-									params.setProtocols(sslEngine.getEnabledProtocols());
-
-									final SSLParameters defaultSSLParameters = getSSLContext().getDefaultSSLParameters();
-									params.setSSLParameters(defaultSSLParameters);
-								}
-								catch (final Exception e) {
-									logger.log(Level.SEVERE, e.toString(), e);
-								}
+								params.setSSLParameters(sslParameters);
 							}
 						};
 

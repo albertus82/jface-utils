@@ -3,6 +3,8 @@ package it.albertus.httpserver;
 import java.util.logging.Level;
 
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 
 public abstract class DefaultHttpServerConfiguration implements IHttpServerConfiguration {
@@ -81,6 +83,24 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	@Override
 	public String getTrustManagerFactoryAlgorithm() {
 		return Defaults.SSL_TMF_ALGORITHM;
+	}
+
+	/**
+	 * Returns a copy of the SSLParameters indicating the default settings for
+	 * the given SSL context.
+	 *
+	 * <p>
+	 * The parameters will always have the ciphersuites and protocols arrays set
+	 * to non-null values.
+	 * 
+	 * @param context the {@link javax.net.ssl.SSLContext SSLContext}.
+	 * @return a copy of the SSLParameters object with the default settings
+	 * @throws UnsupportedOperationException if the default SSL parameters could
+	 *         not be obtained.
+	 */
+	@Override
+	public SSLParameters getSslParameters(final SSLContext context) {
+		return context.getDefaultSSLParameters();
 	}
 
 	@Override

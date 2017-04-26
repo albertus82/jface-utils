@@ -1,5 +1,8 @@
 package it.albertus.httpserver;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+
 public interface IHttpServerConfiguration {
 
 	boolean isEnabled();
@@ -35,6 +38,8 @@ public interface IHttpServerConfiguration {
 	String getKeyManagerFactoryAlgorithm();
 
 	String getTrustManagerFactoryAlgorithm();
+
+	SSLParameters getSslParameters(SSLContext context);
 
 	int getMaxThreadCount();
 

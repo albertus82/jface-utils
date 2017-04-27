@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.ByteVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
@@ -22,9 +22,9 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 		super(name, labelText, parent);
 		setMinValidValue((byte) 0); // Positive by default
 		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly (127)
-		getTextControl().addVerifyListener(new ByteVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new ByteVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().byteValue() < 0;
 			}
 		}));

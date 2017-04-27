@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 import com.sun.net.httpserver.BasicAuthenticator;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class HttpServerAuthenticator extends BasicAuthenticator {
@@ -25,19 +25,19 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	private final MessageDigest messageDigest;
 	private Charset charset;
 
-	private final Configured<String> username;
-	private final Configured<char[]> password;
+	private final Supplier<String> username;
+	private final Supplier<char[]> password;
 
 	private int failDelayInMillis = DEFAULT_FAIL_DELAY_IN_MILLIS;
 
-	public HttpServerAuthenticator(final String realm, final Configured<String> username, final Configured<char[]> password) {
+	public HttpServerAuthenticator(final String realm, final Supplier<String> username, final Supplier<char[]> password) {
 		super(realm);
 		this.username = username;
 		this.password = password;
 		this.messageDigest = null;
 	}
 
-	public HttpServerAuthenticator(final String realm, final Configured<String> username, final Configured<char[]> password, final String hashAlgorithm) throws NoSuchAlgorithmException {
+	public HttpServerAuthenticator(final String realm, final Supplier<String> username, final Supplier<char[]> password, final String hashAlgorithm) throws NoSuchAlgorithmException {
 		super(realm);
 		this.username = username;
 		this.password = password;
@@ -57,13 +57,13 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return fail();
 			}
 
-			final String expectedUsername = username.getValue();
+			final String expectedUsername = username.get();
 			if (expectedUsername == null || expectedUsername.isEmpty()) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.username"));
 				return fail();
 			}
 
-			final char[] expectedPassword = password.getValue();
+			final char[] expectedPassword = password.get();
 			if (expectedPassword == null || expectedPassword.length == 0) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.password"));
 				return fail();

@@ -28,7 +28,7 @@ import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
@@ -87,15 +87,15 @@ public class EnhancedHttpServer {
 		final Authenticator authenticator;
 		if (httpServerConfiguration.isAuthenticationRequired()) {
 			try {
-				final Configured<String> username = new Configured<String>() {
+				final Supplier<String> username = new Supplier<String>() {
 					@Override
-					public String getValue() {
+					public String get() {
 						return httpServerConfiguration.getUsername();
 					}
 				};
-				final Configured<char[]> password = new Configured<char[]>() {
+				final Supplier<char[]> password = new Supplier<char[]>() {
 					@Override
-					public char[] getValue() {
+					public char[] get() {
 						return httpServerConfiguration.getPassword();
 					}
 				};

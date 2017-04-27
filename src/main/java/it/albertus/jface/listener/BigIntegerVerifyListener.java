@@ -1,13 +1,13 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 
 import java.math.BigInteger;
 
 /** Accepts only {@code BigInteger} inputs and trims automatically. */
 public class BigIntegerVerifyListener extends AbstractIntegerVerifyListener<BigInteger> {
 
-	public BigIntegerVerifyListener(final Configured<Boolean> allowNegatives) {
+	public BigIntegerVerifyListener(final Supplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 

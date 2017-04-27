@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.LongVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
@@ -21,9 +21,9 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 	public LongFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
 		setMinValidValue(Long.valueOf(0L)); // Positive by default
-		getTextControl().addVerifyListener(new LongVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new LongVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().longValue() < 0;
 			}
 		}));

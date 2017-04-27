@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.DoubleVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
@@ -20,9 +20,9 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 
 	public DoubleFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		getTextControl().addVerifyListener(new DoubleVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new DoubleVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().doubleValue() < 0;
 			}
 		}));

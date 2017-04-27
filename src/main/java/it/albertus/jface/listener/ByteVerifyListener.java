@@ -1,11 +1,11 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 
 /** Accepts only {@code Short} inputs and trims automatically. */
 public class ByteVerifyListener extends AbstractIntegerVerifyListener<Byte> {
 
-	public ByteVerifyListener(final Configured<Boolean> allowNegatives) {
+	public ByteVerifyListener(final Supplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 

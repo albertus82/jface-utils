@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -34,9 +33,9 @@ import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public abstract class AbstractHttpServer {
+public class EnhancedHttpServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(EnhancedHttpServer.class);
 
 	protected static final int STOP_DELAY = 0;
 
@@ -48,7 +47,7 @@ public abstract class AbstractHttpServer {
 
 	private final Object lock = new Object();
 
-	public AbstractHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
+	public EnhancedHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
 		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
@@ -122,9 +121,11 @@ public abstract class AbstractHttpServer {
 	/**
 	 * Creates {@code HttpHandler} objects.
 	 * 
-	 * @return the {@code Set} containing the handlers.
+	 * @return the array containing the handlers.
 	 */
-	protected abstract List<AbstractHttpHandler> createHandlers();
+	protected AbstractHttpHandler[] createHandlers() {
+		return httpServerConfiguration.getHandlers();
+	}
 
 	protected class HttpServerStartThread extends Thread {
 

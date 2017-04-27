@@ -5,6 +5,8 @@ import javax.net.ssl.SSLParameters;
 
 public interface IHttpServerConfiguration {
 
+	AbstractHttpHandler[] getHandlers();
+
 	boolean isEnabled();
 
 	boolean isAuthenticationRequired();

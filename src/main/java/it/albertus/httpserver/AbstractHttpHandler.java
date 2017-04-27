@@ -41,6 +41,7 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.util.CRC32OutputStream;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
+import it.albertus.util.DigestUtils;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.Resource;
@@ -60,6 +61,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	private static final Charset charset = initCharset();
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
+
+	protected static final String ETAG_ALGORITHM = "MD5";
 
 	protected static final int BUFFER_SIZE = 4096;
 
@@ -413,13 +416,29 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		final CRC32 crc = new CRC32();
-		crc.update(payload);
-		return Long.toHexString(crc.getValue());
+		String value;
+		try {
+			final MessageDigest digest = MessageDigest.getInstance(ETAG_ALGORITHM);
+			value = String.valueOf(DigestUtils.encodeHex(digest.digest(payload)));
+		}
+		catch (final NoSuchAlgorithmException e) {
+			logger.log(Level.FINE, e.toString(), e);
+			final CRC32 crc = new CRC32();
+			crc.update(payload);
+			value = Long.toHexString(crc.getValue());
+		}
+		return value;
 	}
 
 	protected String generateEtag(final File file) throws IOException {
-		final CRC32OutputStream os = new CRC32OutputStream();
+		OutputStream os;
+		try {
+			os = new DigestOutputStream(ETAG_ALGORITHM);
+		}
+		catch (final NoSuchAlgorithmException e) {
+			logger.log(Level.FINE, e.toString(), e);
+			os = new CRC32OutputStream();
+		}
 		InputStream is = null;
 		try {
 			is = new FileInputStream(file);
@@ -443,7 +462,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		DigestOutputStream dos = null;
 		try {
 			fis = new FileInputStream(file);
-			dos = new DigestOutputStream("MD5");
+			dos = new DigestOutputStream(ETAG_ALGORITHM);
 			IOUtils.copy(fis, dos, BUFFER_SIZE);
 		}
 		finally {
@@ -453,7 +472,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String generateContentMd5(final byte[] responseBody) throws NoSuchAlgorithmException {
-		final MessageDigest digest = MessageDigest.getInstance("MD5");
+		final MessageDigest digest = MessageDigest.getInstance(ETAG_ALGORITHM);
 		digest.update(responseBody);
 		return DatatypeConverter.printBase64Binary(digest.digest());
 	}

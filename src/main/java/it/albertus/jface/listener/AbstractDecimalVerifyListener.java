@@ -1,6 +1,6 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 
 abstract class AbstractDecimalVerifyListener<T extends Number> extends AbstractNumberVerifyListener<T> {
 
@@ -8,7 +8,7 @@ abstract class AbstractDecimalVerifyListener<T extends Number> extends AbstractN
 		super(allowNegatives);
 	}
 
-	public AbstractDecimalVerifyListener(final Configured<Boolean> allowNegatives) {
+	public AbstractDecimalVerifyListener(final Supplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 
@@ -20,7 +20,7 @@ abstract class AbstractDecimalVerifyListener<T extends Number> extends AbstractN
 				return true;
 			}
 			catch (final NumberFormatException nfe) {
-				if (".".equals(string) || "e".equalsIgnoreCase(string) || (allowNegatives.getValue() && "-".equals(string))) {
+				if (".".equals(string) || "e".equalsIgnoreCase(string) || (allowNegatives.get() && "-".equals(string))) {
 					return true;
 				}
 			}

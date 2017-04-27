@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.ShortVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
@@ -22,9 +22,9 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 		super(name, labelText, parent);
 		setMinValidValue((short) 0); // Positive by default
 		setMaxValidValue(Short.MAX_VALUE); // Not so ugly
-		getTextControl().addVerifyListener(new ShortVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new ShortVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().shortValue() < 0;
 			}
 		}));

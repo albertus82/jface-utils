@@ -2,7 +2,7 @@ package it.albertus.httpserver;
 
 public class HttpException extends RuntimeException {
 
-	private static final long serialVersionUID = -3054911937326730091L;
+	private static final long serialVersionUID = -7213287704920911183L;
 
 	private final int statusCode;
 

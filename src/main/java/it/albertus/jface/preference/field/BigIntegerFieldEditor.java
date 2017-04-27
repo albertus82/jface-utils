@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.BigIntegerVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger> {
@@ -19,9 +19,9 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 
 	public BigIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		getTextControl().addVerifyListener(new BigIntegerVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new BigIntegerVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().intValue() < 0;
 			}
 		}));

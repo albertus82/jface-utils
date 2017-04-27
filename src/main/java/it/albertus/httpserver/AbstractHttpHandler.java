@@ -12,17 +12,19 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.CRC32;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPOutputStream;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -35,110 +37,47 @@ import com.sun.net.httpserver.HttpHandler;
 
 import it.albertus.httpserver.annotation.Path;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.CRC32OutputStream;
+import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
+import it.albertus.util.Resource;
+import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
 
-	private static final Map<Integer, String> httpStatusCodes;
+	private static final Map<Integer, String> httpStatusCodes = initHttpStatusCodes();
 
-	private static final Properties contentTypes;
+	private static final Properties contentTypes = initContentTypes();
 
-	private static final ThreadLocal<MimetypesFileTypeMap> mimetypesFileTypeMap = new ThreadLocal<MimetypesFileTypeMap>() {
-		@Override
-		protected MimetypesFileTypeMap initialValue() {
-			return new MimetypesFileTypeMap();
-		}
-	};
+	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
-	static {
-		httpStatusCodes = new HashMap<Integer, String>();
-		httpStatusCodes.put(100, "Continue");
-		httpStatusCodes.put(101, "Switching Protocols");
-		httpStatusCodes.put(102, "Processing");
-		httpStatusCodes.put(200, "OK");
-		httpStatusCodes.put(201, "Created");
-		httpStatusCodes.put(202, "Accepted");
-		httpStatusCodes.put(203, "Non-Authoritative Information");
-		httpStatusCodes.put(204, "No Content");
-		httpStatusCodes.put(205, "Reset Content");
-		httpStatusCodes.put(206, "Partial Content");
-		httpStatusCodes.put(207, "Multi-Status");
-		httpStatusCodes.put(208, "Already Reported");
-		httpStatusCodes.put(226, "IM Used");
-		httpStatusCodes.put(300, "Multiple Choices");
-		httpStatusCodes.put(301, "Moved Permanently");
-		httpStatusCodes.put(302, "Found");
-		httpStatusCodes.put(303, "See Other");
-		httpStatusCodes.put(304, "Not Modified");
-		httpStatusCodes.put(305, "Use Proxy");
-		httpStatusCodes.put(307, "Temporary Redirect");
-		httpStatusCodes.put(308, "Permanent Redirect");
-		httpStatusCodes.put(400, "Bad Request");
-		httpStatusCodes.put(401, "Unauthorized");
-		httpStatusCodes.put(402, "Payment Required");
-		httpStatusCodes.put(403, "Forbidden");
-		httpStatusCodes.put(404, "Not Found");
-		httpStatusCodes.put(405, "Method Not Allowed");
-		httpStatusCodes.put(406, "Not Acceptable");
-		httpStatusCodes.put(407, "Proxy Authentication Required");
-		httpStatusCodes.put(408, "Request Timeout");
-		httpStatusCodes.put(409, "Conflict");
-		httpStatusCodes.put(410, "Gone");
-		httpStatusCodes.put(411, "Length Required");
-		httpStatusCodes.put(412, "Precondition Failed");
-		httpStatusCodes.put(413, "Request Entity Too Large");
-		httpStatusCodes.put(414, "Request-URI Too Long");
-		httpStatusCodes.put(415, "Unsupported Media Type");
-		httpStatusCodes.put(416, "Requested Range Not Satisfiable");
-		httpStatusCodes.put(417, "Expectation Failed");
-		httpStatusCodes.put(418, "I'm a teapot");
-		httpStatusCodes.put(421, "Misdirected Request");
-		httpStatusCodes.put(422, "Unprocessable Entity");
-		httpStatusCodes.put(423, "Locked");
-		httpStatusCodes.put(424, "Failed Dependency");
-		httpStatusCodes.put(426, "Upgrade Required");
-		httpStatusCodes.put(428, "Precondition Required");
-		httpStatusCodes.put(429, "Too Many Requests");
-		httpStatusCodes.put(431, "Request Header Fields Too Large");
-		httpStatusCodes.put(451, "Unavailable For Legal Reasons");
-		httpStatusCodes.put(500, "Internal Server Error");
-		httpStatusCodes.put(501, "Not Implemented");
-		httpStatusCodes.put(502, "Bad Gateway");
-		httpStatusCodes.put(503, "Service Unavailable");
-		httpStatusCodes.put(504, "Gateway Timeout");
-		httpStatusCodes.put(505, "HTTP Version Not Supported");
-		httpStatusCodes.put(506, "Variant Also Negotiates");
-		httpStatusCodes.put(507, "Insufficient Storage");
-		httpStatusCodes.put(508, "Loop Detected");
-		httpStatusCodes.put(510, "Not Extended");
-		httpStatusCodes.put(511, "Network Authentication Required");
+	private static final Charset charset = initCharset();
 
-		contentTypes = new Properties();
-		try {
-			contentTypes.load(AbstractHttpHandler.class.getResourceAsStream("mime.properties"));
-		}
-		catch (final IOException e) {
-			logger.log(Level.SEVERE, e.toString(), e);
-		}
-	}
+	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
 	protected static final int BUFFER_SIZE = 4096;
 
-	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
-
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
 
-	private static final Charset charset = initCharset();
-
 	private static Object[] lastRequestInfo;
+
+	private static final ThreadLocal<MessageDigest> md5Digest = new ThreadLocal<MessageDigest>() {
+		@Override
+		protected MessageDigest initialValue() {
+			try {
+				return MessageDigest.getInstance("MD5");
+			}
+			catch (final NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	};
 
 	private IHttpServerConfiguration httpServerConfiguration;
 
@@ -146,11 +85,58 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private String path;
 
+	private static Map<Integer, String> initHttpStatusCodes() {
+		final Properties properties = new Properties();
+		InputStream is = null;
+		try {
+			is = AbstractHttpHandler.class.getResourceAsStream("http-codes.properties");
+			properties.load(is);
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
+		final Map<Integer, String> httpStatusCodes = new HashMap<Integer, String>(properties.size());
+		for (final Entry<?, ?> entry : properties.entrySet()) {
+			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
+		}
+		return httpStatusCodes;
+	}
+
+	private static Properties initContentTypes() {
+		final Properties contentTypes = new Properties();
+		InputStream is = null;
+		try {
+			is = AbstractHttpHandler.class.getResourceAsStream("mime-types.properties");
+			contentTypes.load(is);
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
+		return contentTypes;
+	}
+
+	private static Collection<Resource> initResources() {
+		final Collection<Resource> resources = ClasspathResourceUtils.getResourceList(Pattern.compile(".*(?<!\\.class)$"));
+		logger.log(Level.CONFIG, JFaceMessages.get("msg.httpserver.resources.found"), Integer.toString(resources.size()));
+		if (logger.isLoggable(Level.FINE)) {
+			for (final Resource resource : resources) {
+				logger.fine(String.valueOf(resource));
+			}
+		}
+		return resources;
+	}
+
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
 		try {
-			if (getHttpServerConfiguration().isEnabled() && isEnabled()) {
+			if (getHttpServerConfiguration().isEnabled() && isEnabled(exchange)) {
 				service(exchange);
 			}
 			else {
@@ -201,15 +187,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void sendForbidden(final HttpExchange exchange) throws IOException {
-		sendResponse(exchange, null, HttpURLConnection.HTTP_FORBIDDEN);
+		sendResponse(exchange, HttpURLConnection.HTTP_FORBIDDEN);
 	}
 
 	protected void sendInternalError(final HttpExchange exchange) throws IOException {
-		sendResponse(exchange, null, HttpURLConnection.HTTP_INTERNAL_ERROR);
+		sendResponse(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR);
 	}
 
 	protected void sendError(final HttpExchange exchange, final HttpException e) throws IOException {
-		sendResponse(exchange, null, e.getStatusCode());
+		sendResponse(exchange, e.getStatusCode());
 	}
 
 	protected void doHead(final HttpExchange exchange) throws IOException, HttpException {
@@ -241,7 +227,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 		responseString.append(NewLine.CRLF);
 
-		exchange.getResponseHeaders().set("Content-Type", "message/http");
+		setContentTypeHeader(exchange, "message/http");
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseString.length());
 		final OutputStream out = exchange.getResponseBody();
 		out.write(responseString.toString().getBytes(getCharset()));
@@ -276,7 +262,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			allow.append(allowedMethod);
 		}
 
-		exchange.getResponseHeaders().add("Allow", allow.toString());
+		exchange.getResponseHeaders().set("Allow", allow.toString());
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
 	}
 
@@ -330,13 +316,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addCommonHeaders(final HttpExchange exchange) {
-		addContentTypeHeader(exchange);
-		addDateHeader(exchange);
+	protected void setCommonHeaders(final HttpExchange exchange) {
+		setContentTypeHeader(exchange);
+		setDateHeader(exchange);
 	}
 
-	protected void addContentTypeHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Content-Type", getContentType(exchange.getRequestURI().getPath()));
+	protected void setContentTypeHeader(final HttpExchange exchange) {
+		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
+	}
+
+	protected void setContentTypeHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().set("Content-Type", value);
+		}
 	}
 
 	protected String getContentType(final String fileName) {
@@ -346,7 +338,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			contentType = contentTypes.getProperty(extension);
 		}
 		if (contentType == null) {
-			contentType = mimetypesFileTypeMap.get().getContentType(fileName);
+			contentType = new MimetypesFileTypeMap().getContentType(fileName);
 		}
 		return contentType.trim();
 	}
@@ -356,8 +348,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addDateHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Date", httpDateGenerator.getCurrentDate());
+	protected void setDateHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().set("Date", httpDateGenerator.getCurrentDate());
 	}
 
 	/**
@@ -366,23 +358,37 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
 	 */
-	protected void addGzipHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().add("Content-Encoding", "gzip");
+	protected void setGzipHeader(final HttpExchange exchange) {
+		exchange.getResponseHeaders().set("Content-Encoding", "gzip");
 	}
 
-	protected void addEtagHeader(final HttpExchange exchange, final String eTag) {
+	protected void setEtagHeader(final HttpExchange exchange, final String eTag) {
 		if (eTag != null) {
-			exchange.getResponseHeaders().add("ETag", eTag);
+			exchange.getResponseHeaders().set("ETag", eTag);
 		}
+	}
+
+	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
+		if (lastModified != null) {
+			exchange.getResponseHeaders().set("Last-Modified", httpDateGenerator.format(lastModified));
+		}
+	}
+
+	protected void setRefreshHeader(final HttpExchange exchange, final int seconds) {
+		exchange.getResponseHeaders().set("Refresh", Integer.toString(seconds));
 	}
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
 		if (getHttpServerConfiguration().isCompressionEnabled()) {
-			final List<String> headers = exchange.getRequestHeaders().get("Accept-Encoding");
-			if (headers != null) {
-				for (final String header : headers) {
-					if (header != null && header.trim().toLowerCase().contains("gzip")) {
-						return true;
+			final List<String> headerRows = exchange.getRequestHeaders().get("Accept-Encoding");
+			if (headerRows != null) {
+				for (final String headerRow : headerRows) {
+					if (headerRow != null) {
+						for (final String headerValue : headerRow.split(",")) {
+							if ("gzip".equalsIgnoreCase(headerValue.trim())) {
+								return true;
+							}
+						}
 					}
 				}
 			}
@@ -412,19 +418,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(gzos, baos);
 		}
-		addGzipHeader(exchange);
+		setGzipHeader(exchange);
 		return baos.toByteArray();
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		final CRC32 crc = new CRC32();
-		crc.update(payload);
-		return Long.toHexString(crc.getValue());
+		final MessageDigest md = md5Digest.get();
+		md.reset();
+		return DatatypeConverter.printHexBinary(md.digest(payload)).toLowerCase();
 	}
 
 	protected String generateEtag(final File file) throws IOException {
-		final CRC32OutputStream os = new CRC32OutputStream();
 		InputStream is = null;
+		final OutputStream os = new DigestOutputStream(md5Digest.get());
 		try {
 			is = new FileInputStream(file);
 			IOUtils.copy(is, os, BUFFER_SIZE);
@@ -435,6 +441,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return os.toString();
 	}
 
+	protected String generateContentMd5(final byte[] responseBody) {
+		final MessageDigest md = md5Digest.get();
+		md.reset();
+		return DatatypeConverter.printBase64Binary(md.digest(responseBody));
+	}
+
 	/*
 	 * The MD5 digest is computed based on the content of the entity-body,
 	 * including any content-coding that has been applied, but not including any
@@ -442,41 +454,45 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * with a transfer-encoding, that encoding MUST be removed prior to checking
 	 * the Content-MD5 value against the received entity.
 	 */
-	protected String generateContentMd5(final File file) throws NoSuchAlgorithmException, IOException {
-		FileInputStream fis = null;
-		DigestOutputStream dos = null;
+	protected String generateContentMd5(final File file) throws IOException {
+		InputStream is = null;
+		final DigestOutputStream os = new DigestOutputStream(md5Digest.get());
 		try {
-			fis = new FileInputStream(file);
-			dos = new DigestOutputStream("MD5");
-			IOUtils.copy(fis, dos, BUFFER_SIZE);
+			is = new FileInputStream(file);
+			IOUtils.copy(is, os, BUFFER_SIZE);
 		}
 		finally {
-			IOUtils.closeQuietly(dos, fis);
+			IOUtils.closeQuietly(os, is);
 		}
-		return DatatypeConverter.printBase64Binary(dos.getValue());
+		return DatatypeConverter.printBase64Binary(os.getValue());
 	}
 
-	protected String generateContentMd5(final byte[] responseBody) throws NoSuchAlgorithmException {
-		final MessageDigest digest = MessageDigest.getInstance("MD5");
-		digest.update(responseBody);
-		return DatatypeConverter.printBase64Binary(digest.digest());
-	}
-
-	protected void addContentMd5Header(final HttpExchange exchange, final File file) {
+	protected void setContentMd5Header(final HttpExchange exchange, final File file) {
 		try {
-			exchange.getResponseHeaders().add("Content-MD5", generateContentMd5(file));
+			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(file));
 		}
 		catch (final Exception e) {
 			logger.log(Level.WARNING, e.toString(), e);
 		}
 	}
 
-	protected void addContentMd5Header(final HttpExchange exchange, final byte[] responseBody) {
+	protected void setContentMd5Header(final HttpExchange exchange, final byte[] responseBody) {
 		try {
-			exchange.getResponseHeaders().add("Content-MD5", generateContentMd5(responseBody));
+			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(responseBody));
 		}
 		catch (final Exception e) {
 			logger.log(Level.WARNING, e.toString(), e);
+		}
+	}
+
+	protected void sendResponse(final HttpExchange exchange, final int statusCode) throws IOException {
+		sendResponse(exchange, null, statusCode);
+	}
+
+	protected void setStatusHeader(final HttpExchange exchange, final int statusCode) {
+		final String description = getHttpStatusCodes().get(statusCode);
+		if (description != null) {
+			exchange.getResponseHeaders().set("Status", statusCode + " " + description);
 		}
 	}
 
@@ -484,7 +500,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final String currentEtag;
 		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
 			currentEtag = generateEtag(payload);
-			addEtagHeader(exchange, currentEtag);
+			setEtagHeader(exchange, currentEtag);
 		}
 		else {
 			currentEtag = null;
@@ -493,18 +509,18 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		// If-None-Match...
 		final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
-			addDateHeader(exchange);
+			setDateHeader(exchange);
+			setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
-			exchange.getResponseBody().close(); // Needed when no write occurs.
 		}
 		else {
+			setStatusHeader(exchange, statusCode);
 			if (payload != null) {
-				addCommonHeaders(exchange);
+				setCommonHeaders(exchange);
 				final byte[] response = compressResponse(payload, exchange);
 				if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
 					exchange.sendResponseHeaders(statusCode, -1);
-					exchange.getResponseBody().close(); // no body
 				}
 				else {
 					exchange.sendResponseHeaders(statusCode, response.length);
@@ -512,11 +528,61 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				}
 			}
 			else { // no payload
-				addDateHeader(exchange);
+				setDateHeader(exchange);
 				exchange.sendResponseHeaders(statusCode, -1);
-				exchange.getResponseBody().close();
 			}
 		}
+		exchange.getResponseBody().close();
+	}
+
+	protected boolean existsStaticResource(final String resourcePath) {
+		for (final Resource resource : getResources()) {
+			if (('/' + resource.getName().replace(File.separatorChar, '/')).endsWith(resourcePath)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected String getPathInfo(final HttpExchange exchange) {
+		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath()), "?");
+	}
+
+	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
+		if (existsStaticResource(resourcePath)) {
+			doSendStaticResource(exchange, resourcePath, cacheControl);
+		}
+		else {
+			sendNotFound(exchange);
+		}
+	}
+
+	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
+		InputStream inputStream = null;
+		ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
+		try {
+			inputStream = getClass().getResourceAsStream(resourcePath);
+			if (inputStream == null) {
+				throw new IllegalStateException(resourcePath);
+			}
+			outputStream = new ByteArrayOutputStream();
+			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		}
+		finally {
+			IOUtils.closeQuietly(outputStream, inputStream);
+		}
+		setCacheControlHeader(exchange, cacheControl);
+		sendResponse(exchange, outputStream.toByteArray());
+	}
+
+	protected void setCacheControlHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().set("Cache-Control", value);
+		}
+	}
+
+	protected void sendNotFound(final HttpExchange exchange) throws IOException {
+		sendResponse(exchange, HttpURLConnection.HTTP_NOT_FOUND);
 	}
 
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload) throws IOException {
@@ -551,6 +617,21 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	/**
 	 * Returns if this handler is enabled. <b>Handlers are enabled by
 	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
+	 * Status-Code 403: Forbidden.</b> Calling this method is equivalent to
+	 * invoke the overloaded version without arguments: {@code isEnabled()}. You
+	 * are allowed to override this method to take any other kind of decision.
+	 * 
+	 * @param exchange the current {@link HttpExchange} object.
+	 * 
+	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
+	 */
+	public boolean isEnabled(final HttpExchange exchange) {
+		return isEnabled();
+	}
+
+	/**
+	 * Returns if this handler is enabled. <b>Handlers are enabled by
+	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
 	 * Status-Code 403: Forbidden.</b>
 	 * 
 	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
@@ -563,19 +644,23 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		this.enabled = enabled;
 	}
 
-	public static Map<Integer, String> getHttpStatusCodes() {
-		return Collections.unmodifiableMap(httpStatusCodes);
-	}
-
 	public String getPath() {
-		return path != null ? path : getPath(this.getClass());
+		return path != null ? path : getAnnotatedPath(getClass());
 	}
 
 	protected void setPath(final String path) {
 		this.path = path;
 	}
 
-	public static String getPath(final Class<? extends HttpHandler> clazz) {
+	protected IHttpServerConfiguration getHttpServerConfiguration() {
+		return httpServerConfiguration;
+	}
+
+	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
+		this.httpServerConfiguration = httpServerConfiguration;
+	}
+
+	public static String getAnnotatedPath(final Class<? extends HttpHandler> clazz) {
 		final Path annotation = clazz.getAnnotation(Path.class);
 		return annotation != null ? annotation.value() : null;
 	}
@@ -588,12 +673,19 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		lastRequestInfo = requestInfo;
 	}
 
-	protected IHttpServerConfiguration getHttpServerConfiguration() {
-		return httpServerConfiguration;
+	public static Map<Integer, String> getHttpStatusCodes() {
+		return httpStatusCodes;
 	}
 
-	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
-		this.httpServerConfiguration = httpServerConfiguration;
+	public static Properties getContentTypes() {
+		return contentTypes;
+	}
+
+	public static synchronized Collection<Resource> getResources() {
+		if (resources == null) {
+			resources = initResources();
+		}
+		return resources;
 	}
 
 }

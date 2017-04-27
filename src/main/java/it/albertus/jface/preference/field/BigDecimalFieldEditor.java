@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.BigDecimalVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal> {
@@ -19,9 +19,9 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 
 	public BigDecimalFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		getTextControl().addVerifyListener(new BigDecimalVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new BigDecimalVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().compareTo(BigDecimal.ZERO) < 0;
 			}
 		}));

@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.listener.FloatVerifyListener;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
@@ -20,9 +20,9 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 
 	public FloatFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
-		getTextControl().addVerifyListener(new FloatVerifyListener(new Configured<Boolean>() {
+		getTextControl().addVerifyListener(new FloatVerifyListener(new Supplier<Boolean>() {
 			@Override
-			public Boolean getValue() {
+			public Boolean get() {
 				return getMinValidValue() == null || getMinValidValue().floatValue() < 0;
 			}
 		}));

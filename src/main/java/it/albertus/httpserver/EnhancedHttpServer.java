@@ -7,15 +7,16 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Arrays;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -27,14 +28,14 @@ import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public abstract class AbstractHttpServer {
+public class EnhancedHttpServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(EnhancedHttpServer.class);
 
 	protected static final int STOP_DELAY = 0;
 
@@ -42,11 +43,11 @@ public abstract class AbstractHttpServer {
 
 	protected volatile HttpServer httpServer;
 	protected volatile boolean running = false;
-	protected volatile ExecutorService threadPool;
+	protected volatile ThreadPoolExecutor threadPool;
 
 	private final Object lock = new Object();
 
-	public AbstractHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
+	public EnhancedHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
 		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
@@ -86,15 +87,15 @@ public abstract class AbstractHttpServer {
 		final Authenticator authenticator;
 		if (httpServerConfiguration.isAuthenticationRequired()) {
 			try {
-				final Configured<String> username = new Configured<String>() {
+				final Supplier<String> username = new Supplier<String>() {
 					@Override
-					public String getValue() {
+					public String get() {
 						return httpServerConfiguration.getUsername();
 					}
 				};
-				final Configured<char[]> password = new Configured<char[]>() {
+				final Supplier<char[]> password = new Supplier<char[]>() {
 					@Override
-					public char[] getValue() {
+					public char[] get() {
 						return httpServerConfiguration.getPassword();
 					}
 				};
@@ -120,9 +121,11 @@ public abstract class AbstractHttpServer {
 	/**
 	 * Creates {@code HttpHandler} objects.
 	 * 
-	 * @return the {@code Set} containing the handlers.
+	 * @return the array containing the handlers.
 	 */
-	protected abstract List<AbstractHttpHandler> createHandlers();
+	protected AbstractHttpHandler[] createHandlers() {
+		return httpServerConfiguration.getHandlers();
+	}
 
 	protected class HttpServerStartThread extends Thread {
 
@@ -138,8 +141,8 @@ public abstract class AbstractHttpServer {
 			try {
 				synchronized (lock) {
 					// Avoid server starvation
-					System.setProperty("sun.net.httpserver.maxReqTime", Short.toString(httpServerConfiguration.getMaxReqTime()));
-					System.setProperty("sun.net.httpserver.maxRspTime", Short.toString(httpServerConfiguration.getMaxRspTime()));
+					System.setProperty("sun.net.httpserver.maxReqTime", Long.toString(httpServerConfiguration.getMaxReqTime()));
+					System.setProperty("sun.net.httpserver.maxRspTime", Long.toString(httpServerConfiguration.getMaxRspTime()));
 
 					if (httpServerConfiguration.isSslEnabled()) {
 						final char[] storepass = httpServerConfiguration.getStorePass();
@@ -165,21 +168,14 @@ public abstract class AbstractHttpServer {
 
 						final SSLContext sslContext = SSLContext.getInstance(httpServerConfiguration.getSslProtocol());
 						sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+
+						final SSLParameters sslParameters = httpServerConfiguration.getSslParameters(sslContext);
+						logger.log(Level.CONFIG, "SSLParameters [cipherSuites={0}, protocols={1}, wantClientAuth={2}, needClientAuth={3}]", new Object[] { Arrays.toString(sslParameters.getCipherSuites()), Arrays.toString(sslParameters.getProtocols()), sslParameters.getWantClientAuth(), sslParameters.getNeedClientAuth() });
+
 						final HttpsConfigurator httpsConfigurator = new HttpsConfigurator(sslContext) {
 							@Override
 							public void configure(final HttpsParameters params) {
-								try {
-									final SSLEngine sslEngine = getSSLContext().createSSLEngine();
-									params.setNeedClientAuth(false);
-									params.setCipherSuites(sslEngine.getEnabledCipherSuites());
-									params.setProtocols(sslEngine.getEnabledProtocols());
-
-									final SSLParameters defaultSSLParameters = getSSLContext().getDefaultSSLParameters();
-									params.setSSLParameters(defaultSSLParameters);
-								}
-								catch (final Exception e) {
-									logger.log(Level.SEVERE, e.toString(), e);
-								}
+								params.setSSLParameters(sslParameters);
 							}
 						};
 
@@ -192,9 +188,21 @@ public abstract class AbstractHttpServer {
 					}
 					createContexts();
 
-					final byte threads = httpServerConfiguration.getThreadCount();
-					if (threads > 1) {
-						threadPool = Executors.newFixedThreadPool(threads, new DaemonThreadFactory());
+					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
+					if (maximumPoolSize > 1) {
+						threadPool = new ThreadPoolExecutor(httpServerConfiguration.getMinThreadCount(), maximumPoolSize, httpServerConfiguration.getThreadKeepAliveTime(), TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new DaemonThreadFactory());
+						threadPool.setRejectedExecutionHandler(new RejectedExecutionHandler() {
+							@Override
+							public void rejectedExecution(final Runnable r, final ThreadPoolExecutor executor) {
+								try {
+									executor.getQueue().put(r);
+								}
+								catch (final InterruptedException e) {
+									logger.log(Level.FINE, e.toString(), e);
+									Thread.currentThread().interrupt();
+								}
+							}
+						});
 						httpServer.setExecutor(threadPool);
 					}
 

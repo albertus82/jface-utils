@@ -1,13 +1,13 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 
 import java.math.BigDecimal;
 
 /** Accepts only {@code BigDecimal} inputs and trims automatically. */
 public class BigDecimalVerifyListener extends AbstractDecimalVerifyListener<BigDecimal> {
 
-	public BigDecimalVerifyListener(final Configured<Boolean> allowNegatives) {
+	public BigDecimalVerifyListener(final Supplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 

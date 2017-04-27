@@ -11,8 +11,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.sun.net.httpserver.HttpExchange;
-
 import it.albertus.util.IOUtils;
 
 public class AbstractHttpHandlerTest {
@@ -22,19 +20,14 @@ public class AbstractHttpHandlerTest {
 	private static final String originalString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 	private static File originalFile;
 
-	private static final String expectedEtag = "98b2c5bd";
+	private static final String expectedEtag = "db89bb5ceab87f9c0fcc2ab36c189c2c";
 	private static final String expectedContentMd5 = "24m7XOq4f5wPzCqzbBicLA=="; // DatatypeConverter.printBase64Binary(new byte[] { (byte) 0xDB, (byte) 0x89, (byte) 0xBB, 0x5C, (byte) 0xEA, (byte) 0xB8, 0x7F, (byte) 0x9C, 0x0F, (byte) 0xCC, 0x2A, (byte) 0xB3, 0x6C, 0x18, (byte) 0x9C, 0x2C }); // "db89bb5ceab87f9c0fcc2ab36c189c2c";
-
-	public static class DummyHttpHandler extends AbstractHttpHandler {
-		@Override
-		protected void addContentTypeHeader(final HttpExchange exchange) {}
-	}
 
 	private static AbstractHttpHandler handler;
 
 	@BeforeClass
 	public static void init() throws IOException {
-		handler = new DummyHttpHandler();
+		handler = new AbstractHttpHandler() {};
 		originalFile = File.createTempFile(AbstractHttpHandlerTest.class.getSimpleName() + '-', null);
 		FileWriter fw = null;
 		BufferedWriter bw = null;
@@ -79,6 +72,7 @@ public class AbstractHttpHandlerTest {
 		Assert.assertEquals("image/gif", handler.getContentType("qwertyuiop.gif"));
 		Assert.assertEquals("image/png", handler.getContentType("asdfghjkl.png"));
 		Assert.assertEquals("application/octet-stream", handler.getContentType("asdfghjkl."));
+		Assert.assertEquals("text/x-log", handler.getContentType(".log"));
 	}
 
 	@AfterClass

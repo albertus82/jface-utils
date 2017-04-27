@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Scrollable;
 
 import it.albertus.jface.DisplayThreadExecutor;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Configured;
+import it.albertus.util.Supplier;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 import it.albertus.util.logging.LoggingSupport;
@@ -38,7 +38,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	protected final T scrollable;
 	protected ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 
-	private Configured<Integer> limit;
+	private Supplier<Integer> limit;
 
 	protected ScrollableConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
 		this.redirectSystemStream = redirectSystemStream;
@@ -182,7 +182,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 
 	public int getLimit() {
 		try {
-			return limit != null && limit.getValue() != null ? limit.getValue() : getDefaultLimit();
+			return limit != null && limit.get() != null ? limit.get() : getDefaultLimit();
 		}
 		catch (final RuntimeException re) {
 			logger.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", getDefaultLimit()), re);
@@ -190,14 +190,14 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 		}
 	}
 
-	public void setLimit(final Configured<Integer> limit) {
+	public void setLimit(final Supplier<Integer> limit) {
 		this.limit = limit;
 	}
 
 	public void setLimit(final int limit) {
-		this.limit = new Configured<Integer>() {
+		this.limit = new Supplier<Integer>() {
 			@Override
-			public Integer getValue() {
+			public Integer get() {
 				return limit;
 			}
 		};

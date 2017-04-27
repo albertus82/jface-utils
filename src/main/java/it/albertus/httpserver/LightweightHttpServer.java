@@ -33,9 +33,9 @@ import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public class EnhancedHttpServer {
+public class LightweightHttpServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(EnhancedHttpServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServer.class);
 
 	protected static final int STOP_DELAY = 0;
 
@@ -47,7 +47,7 @@ public class EnhancedHttpServer {
 
 	private final Object lock = new Object();
 
-	public EnhancedHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
+	public LightweightHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
 		this.httpServerConfiguration = httpServerConfiguration;
 	}
 

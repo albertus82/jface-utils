@@ -7,11 +7,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.bind.DatatypeConverter;
+
 import com.sun.net.httpserver.BasicAuthenticator;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.Configured;
-import it.albertus.util.DigestUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 public class HttpServerAuthenticator extends BasicAuthenticator {
@@ -86,7 +87,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		final char[] computed;
 		if (messageDigest != null) {
 			messageDigest.reset();
-			computed = DigestUtils.encodeHex(messageDigest.digest(provided.getBytes(charset)));
+			computed = DatatypeConverter.printHexBinary(messageDigest.digest(provided.getBytes(charset))).toLowerCase().toCharArray();
 		}
 		else {
 			computed = provided.toCharArray();

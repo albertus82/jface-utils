@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
  * This class implements an output stream that can be used to compute the digest
  * of a data stream. The digest value can be retrieved using
@@ -24,11 +26,12 @@ public class DigestOutputStream extends OutputStream {
 	private byte[] result;
 
 	/**
-	 * Creates a new DigestOutputStream object.
+	 * Creates a new DigestOutputStream object. The given digest will be reset.
 	 * 
 	 * @param digest the digest object associated with this stream instance.
 	 */
 	public DigestOutputStream(final MessageDigest digest) {
+		digest.reset();
 		this.digest = digest;
 	}
 
@@ -52,7 +55,7 @@ public class DigestOutputStream extends OutputStream {
 	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final int b) throws IOException {
+	public synchronized void write(final int b) throws IOException {
 		ensureOpen();
 		digest.update((byte) b);
 	}
@@ -70,7 +73,7 @@ public class DigestOutputStream extends OutputStream {
 	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final byte[] b, final int off, final int len) throws IOException {
+	public synchronized void write(final byte[] b, final int off, final int len) throws IOException {
 		ensureOpen();
 		digest.update(b, off, len);
 	}
@@ -83,7 +86,7 @@ public class DigestOutputStream extends OutputStream {
 	 * @throws IOException if the stream is closed.
 	 */
 	@Override
-	public void write(final byte[] b) throws IOException {
+	public synchronized void write(final byte[] b) throws IOException {
 		ensureOpen();
 		digest.update(b);
 	}
@@ -93,7 +96,7 @@ public class DigestOutputStream extends OutputStream {
 	 * padding. Call this method before {@link #getValue} or {@link #toString}.
 	 */
 	@Override
-	public void close() {
+	public synchronized void close() {
 		if (result == null) {
 			result = digest.digest();
 		}
@@ -112,7 +115,13 @@ public class DigestOutputStream extends OutputStream {
 	 */
 	@Override
 	public String toString() {
-		return String.valueOf(DigestUtils.encodeHex(getValue()));
+		final byte[] value = getValue();
+		if (value != null) {
+			return DatatypeConverter.printHexBinary(value).toLowerCase();
+		}
+		else {
+			return "";
+		}
 	}
 
 	private void ensureOpen() throws IOException {

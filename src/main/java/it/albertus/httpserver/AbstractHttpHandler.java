@@ -25,7 +25,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -38,10 +37,8 @@ import com.sun.net.httpserver.HttpHandler;
 
 import it.albertus.httpserver.annotation.Path;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.CRC32OutputStream;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
-import it.albertus.util.DigestUtils;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.Resource;
@@ -60,17 +57,27 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Charset charset = initCharset();
 
+	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
+
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
-	protected static final String ETAG_ALGORITHM = "MD5";
-
 	protected static final int BUFFER_SIZE = 4096;
-
-	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
 
 	private static Object[] lastRequestInfo;
+
+	private static final ThreadLocal<MessageDigest> md5Digest = new ThreadLocal<MessageDigest>() {
+		@Override
+		protected MessageDigest initialValue() {
+			try {
+				return MessageDigest.getInstance("MD5");
+			}
+			catch (final NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	};
 
 	private IHttpServerConfiguration httpServerConfiguration;
 
@@ -416,30 +423,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		String value;
-		try {
-			final MessageDigest digest = MessageDigest.getInstance(ETAG_ALGORITHM);
-			value = String.valueOf(DigestUtils.encodeHex(digest.digest(payload)));
-		}
-		catch (final NoSuchAlgorithmException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			final CRC32 crc = new CRC32();
-			crc.update(payload);
-			value = Long.toHexString(crc.getValue());
-		}
-		return value;
+		final MessageDigest md = md5Digest.get();
+		md.reset();
+		return DatatypeConverter.printHexBinary(md.digest(payload)).toLowerCase();
 	}
 
 	protected String generateEtag(final File file) throws IOException {
-		OutputStream os;
-		try {
-			os = new DigestOutputStream(ETAG_ALGORITHM);
-		}
-		catch (final NoSuchAlgorithmException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			os = new CRC32OutputStream();
-		}
 		InputStream is = null;
+		final OutputStream os = new DigestOutputStream(md5Digest.get());
 		try {
 			is = new FileInputStream(file);
 			IOUtils.copy(is, os, BUFFER_SIZE);
@@ -450,6 +441,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return os.toString();
 	}
 
+	protected String generateContentMd5(final byte[] responseBody) {
+		final MessageDigest md = md5Digest.get();
+		md.reset();
+		return DatatypeConverter.printBase64Binary(md.digest(responseBody));
+	}
+
 	/*
 	 * The MD5 digest is computed based on the content of the entity-body,
 	 * including any content-coding that has been applied, but not including any
@@ -457,24 +454,17 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	 * with a transfer-encoding, that encoding MUST be removed prior to checking
 	 * the Content-MD5 value against the received entity.
 	 */
-	protected String generateContentMd5(final File file) throws NoSuchAlgorithmException, IOException {
-		FileInputStream fis = null;
-		DigestOutputStream dos = null;
+	protected String generateContentMd5(final File file) throws IOException {
+		InputStream is = null;
+		final DigestOutputStream os = new DigestOutputStream(md5Digest.get());
 		try {
-			fis = new FileInputStream(file);
-			dos = new DigestOutputStream(ETAG_ALGORITHM);
-			IOUtils.copy(fis, dos, BUFFER_SIZE);
+			is = new FileInputStream(file);
+			IOUtils.copy(is, os, BUFFER_SIZE);
 		}
 		finally {
-			IOUtils.closeQuietly(dos, fis);
+			IOUtils.closeQuietly(os, is);
 		}
-		return DatatypeConverter.printBase64Binary(dos.getValue());
-	}
-
-	protected String generateContentMd5(final byte[] responseBody) throws NoSuchAlgorithmException {
-		final MessageDigest digest = MessageDigest.getInstance(ETAG_ALGORITHM);
-		digest.update(responseBody);
-		return DatatypeConverter.printBase64Binary(digest.digest());
+		return DatatypeConverter.printBase64Binary(os.getValue());
 	}
 
 	protected void setContentMd5Header(final HttpExchange exchange, final File file) {

@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -18,7 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.DigestUtils;
 
 public class PasswordFieldEditor extends StringFieldEditor {
 
@@ -125,13 +126,13 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	}
 
 	@Override
-	protected void valueChanged() {
+	protected synchronized void valueChanged() {
 		if (messageDigest == null) {
 			value = textField.getTextChars();
 		}
 		else {
 			messageDigest.reset();
-			value = DigestUtils.encodeHex(messageDigest.digest(textField.getText().getBytes(charset)));
+			value = DatatypeConverter.printHexBinary(messageDigest.digest(textField.getText().getBytes(charset))).toLowerCase().toCharArray();
 		}
 		setPresentsDefaultValue(false);
 		boolean oldState = isValid();

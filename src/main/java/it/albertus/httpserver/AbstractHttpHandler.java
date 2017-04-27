@@ -123,10 +123,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static Collection<Resource> initResources() {
 		final Collection<Resource> resources = ClasspathResourceUtils.getResourceList(Pattern.compile(".*(?<!\\.class)$"));
-		if (logger.isLoggable(Level.CONFIG)) {
-			logger.config("HTTP static resources:");
+		logger.log(Level.CONFIG, JFaceMessages.get("msg.httpserver.resources.found"), Integer.toString(resources.size()));
+		if (logger.isLoggable(Level.FINE)) {
 			for (final Resource resource : resources) {
-				logger.config(resource.toString());
+				logger.fine(String.valueOf(resource));
 			}
 		}
 		return resources;

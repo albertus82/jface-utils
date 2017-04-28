@@ -17,7 +17,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 
 	private static final Logger logger = LoggerFactory.getLogger(HousekeepingFilter.class);
 
-	private static final int MIN_HISTORY = 1;
+	public static final int MIN_HISTORY = 1;
 
 	private final ILogFileManager logFileManager;
 	private final int maxHistory;

@@ -15,17 +15,11 @@ import java.util.logging.LogRecord;
 
 public class TimeBasedRollingFileHandler extends Handler {
 
-	public static class Defaults {
-		public static final String DATE_PATTERN = "yyyyMMdd";
-		public static final int LIMIT = 0;
-		public static final int COUNT = 1;
-		public static final String FILENAME_PATTERN = "%h/java%d%u.log";
-		public static final boolean APPEND = false;
-
-		private Defaults() {
-			throw new IllegalAccessError("Constants class");
-		}
-	}
+	public static final String DEFAULT_DATE_PATTERN = "yyyyMMdd";
+	public static final int DEFAULT_LIMIT = 0;
+	public static final int DEFAULT_COUNT = 1;
+	public static final String DEFAULT_FILENAME_PATTERN = "%h/java%d%u.log";
+	public static final boolean DEFAULT_APPEND = false;
 
 	private final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -34,11 +28,11 @@ public class TimeBasedRollingFileHandler extends Handler {
 		}
 	};
 
-	private String datePattern = Defaults.DATE_PATTERN;
-	private int limit = Defaults.LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
-	private int count = Defaults.COUNT; // count specifies how many output files to cycle through (defaults to 1).
-	private String fileNamePattern = Defaults.FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
-	private boolean append = Defaults.APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
+	private String datePattern = DEFAULT_DATE_PATTERN;
+	private int limit = DEFAULT_LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
+	private int count = DEFAULT_COUNT; // count specifies how many output files to cycle through (defaults to 1).
+	private String fileNamePattern = DEFAULT_FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
+	private boolean append = DEFAULT_APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
 
 	private FileHandler underlyingFileHandler;
 	private String underlyingFileHandlerPattern;

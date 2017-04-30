@@ -9,92 +9,86 @@ import javax.net.ssl.TrustManagerFactory;
 
 public abstract class DefaultHttpServerConfiguration implements IHttpServerConfiguration {
 
-	public static class Defaults {
-		public static final int PORT = 8080;
-		public static final boolean ENABLED = false;
-		public static final boolean AUTHENTICATION = true;
-		public static final String PASSWORD_HASH_ALGORITHM = "SHA-256";
-		public static final int MAX_THREAD_COUNT = 15;
-		public static final int MIN_THREAD_COUNT = MAX_THREAD_COUNT / 10;
-		public static final long THREAD_KEEP_ALIVE_TIME = 60L; // seconds
-		public static final boolean SSL_ENABLED = false;
-		public static final String SSL_KEYSTORE_TYPE = "JKS";
-		public static final String SSL_PROTOCOL = "TLS";
-		public static final String SSL_KMF_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
-		public static final String SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
-		public static final long MAX_REQ_TIME = 60L; // seconds
-		public static final long MAX_RSP_TIME = 60L * 60 * 24; // seconds
-		public static final Level REQUEST_LOGGING_LEVEL = Level.INFO;
-		public static final boolean COMPRESSION_ENABLED = true;
-
-		private Defaults() {
-			throw new IllegalAccessError("Constants class");
-		}
-	}
+	public static final int DEFAULT_PORT = 8080;
+	public static final boolean DEFAULT_ENABLED = false;
+	public static final boolean DEFAULT_AUTHENTICATION = true;
+	public static final String DEFAULT_PASSWORD_HASH_ALGORITHM = "SHA-256";
+	public static final int DEFAULT_MAX_THREAD_COUNT = 15;
+	public static final int DEFAULT_MIN_THREAD_COUNT = DEFAULT_MAX_THREAD_COUNT / 10;
+	public static final long DEFAULT_THREAD_KEEP_ALIVE_TIME = 60L; // seconds
+	public static final boolean DEFAULT_SSL_ENABLED = false;
+	public static final String DEFAULT_SSL_KEYSTORE_TYPE = "JKS";
+	public static final String DEFAULT_SSL_PROTOCOL = "TLS";
+	public static final String DEFAULT_SSL_KMF_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
+	public static final String DEFAULT_SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
+	public static final long DEFAULT_MAX_REQ_TIME = 60L; // seconds
+	public static final long DEFAULT_MAX_RSP_TIME = 60L * 60 * 24; // seconds
+	public static final Level DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO;
+	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
 
 	@Override
 	public boolean isEnabled() {
-		return Defaults.ENABLED;
+		return DEFAULT_ENABLED;
 	}
 
 	@Override
 	public boolean isAuthenticationRequired() {
-		return Defaults.AUTHENTICATION;
+		return DEFAULT_AUTHENTICATION;
 	}
 
 	@Override
 	public String getPasswordHashAlgorithm() {
-		return Defaults.PASSWORD_HASH_ALGORITHM;
+		return DEFAULT_PASSWORD_HASH_ALGORITHM;
 	}
 
 	@Override
 	public int getPort() {
-		return Defaults.PORT;
+		return DEFAULT_PORT;
 	}
 
 	/**
 	 * Returns the maximum time a request is allowed to take.
 	 * 
-	 * @return {@link Defaults#MAX_REQ_TIME}.
+	 * @return {@link #DEFAULT_MAX_REQ_TIME}.
 	 */
 	@Override
 	public long getMaxReqTime() {
-		return Defaults.MAX_REQ_TIME;
+		return DEFAULT_MAX_REQ_TIME;
 	}
 
 	/**
 	 * Returns the maximum time a response is allowed to take.
 	 * 
-	 * @return {@link Defaults#MAX_RSP_TIME}.
+	 * @return {@link #DEFAULT_MAX_RSP_TIME}.
 	 */
 	@Override
 	public long getMaxRspTime() {
-		return Defaults.MAX_RSP_TIME;
+		return DEFAULT_MAX_RSP_TIME;
 	}
 
 	@Override
 	public boolean isSslEnabled() {
-		return Defaults.SSL_ENABLED;
+		return DEFAULT_SSL_ENABLED;
 	}
 
 	@Override
 	public String getKeyStoreType() {
-		return Defaults.SSL_KEYSTORE_TYPE;
+		return DEFAULT_SSL_KEYSTORE_TYPE;
 	}
 
 	@Override
 	public String getSslProtocol() {
-		return Defaults.SSL_PROTOCOL;
+		return DEFAULT_SSL_PROTOCOL;
 	}
 
 	@Override
 	public String getKeyManagerFactoryAlgorithm() {
-		return Defaults.SSL_KMF_ALGORITHM;
+		return DEFAULT_SSL_KMF_ALGORITHM;
 	}
 
 	@Override
 	public String getTrustManagerFactoryAlgorithm() {
-		return Defaults.SSL_TMF_ALGORITHM;
+		return DEFAULT_SSL_TMF_ALGORITHM;
 	}
 
 	/**
@@ -118,11 +112,11 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	/**
 	 * Returns the maximum number of threads to allow in the pool.
 	 * 
-	 * @return {@link Defaults#MAX_THREAD_COUNT}
+	 * @return {@link #DEFAULT_MAX_THREAD_COUNT}
 	 */
 	@Override
 	public int getMaxThreadCount() {
-		return Defaults.MAX_THREAD_COUNT;
+		return DEFAULT_MAX_THREAD_COUNT;
 	}
 
 	/**
@@ -137,17 +131,17 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	@Override
 	public long getThreadKeepAliveTime() {
-		return Defaults.THREAD_KEEP_ALIVE_TIME;
+		return DEFAULT_THREAD_KEEP_ALIVE_TIME;
 	}
 
 	@Override
 	public String getRequestLoggingLevel() {
-		return Defaults.REQUEST_LOGGING_LEVEL.getName();
+		return DEFAULT_REQUEST_LOGGING_LEVEL.getName();
 	}
 
 	@Override
 	public boolean isCompressionEnabled() {
-		return Defaults.COMPRESSION_ENABLED;
+		return DEFAULT_COMPRESSION_ENABLED;
 	}
 
 }

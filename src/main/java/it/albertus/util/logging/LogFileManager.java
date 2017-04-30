@@ -9,59 +9,43 @@ import it.albertus.util.Supplier;
 
 public class LogFileManager implements ILogFileManager {
 
-	public static final class Defaults {
-		public static final String LOG_FILE_EXTENSION = ".log";
-		public static final String LOCK_FILE_EXTENSION = ".lck";
+	public static final String DEFAULT_LOG_FILE_EXTENSION = ".log";
+	public static final String DEFAULT_LOCK_FILE_EXTENSION = ".lck";
 
-		private Defaults() {
-			throw new IllegalAccessError("Constants class");
-		}
-	}
+	private Supplier<String> path;
 
-	private final FilenameFilter logFilenameFilter = new FilenameFilter() {
+	private String logFileExtension = DEFAULT_LOG_FILE_EXTENSION;
+	private String lockFileExtension = DEFAULT_LOCK_FILE_EXTENSION;
+
+	private FilenameFilter logFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
 			return name != null && name.toLowerCase().contains(getLogFileExtension()) && !name.endsWith(getLockFileExtension());
 		}
 	};
-
-	private final FilenameFilter lockFilenameFilter = new FilenameFilter() {
+	private FilenameFilter lockFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
 			return name != null && name.endsWith(getLockFileExtension());
 		}
 	};
 
-	private Supplier<String> path;
-	private String logFileExtension;
-	private String lockFileExtension;
-
 	public LogFileManager(final Supplier<String> path) {
-		this(path, Defaults.LOG_FILE_EXTENSION, Defaults.LOCK_FILE_EXTENSION);
+		this.path = path;
 	}
 
 	public LogFileManager(final String path) {
-		this(path, Defaults.LOG_FILE_EXTENSION, Defaults.LOCK_FILE_EXTENSION);
-	}
-
-	public LogFileManager(final String path, final String logFileExtension, final String lockFileExtension) {
-		this(new Supplier<String>() {
+		this.path = new Supplier<String>() {
 			@Override
 			public String get() {
 				return path;
 			}
-		}, logFileExtension, lockFileExtension);
-	}
-
-	public LogFileManager(final Supplier<String> path, final String logFileExtension, final String lockFileExtension) {
-		this.path = path;
-		this.logFileExtension = logFileExtension;
-		this.lockFileExtension = lockFileExtension;
+		};
 	}
 
 	@Override
 	public File[] listFiles() {
-		return new File(getPath()).listFiles(logFilenameFilter);
+		return new File(getPath()).listFiles(getLogFilenameFilter());
 	}
 
 	@Override
@@ -76,7 +60,7 @@ public class LogFileManager implements ILogFileManager {
 
 	public Set<File> getLockedFiles() {
 		final Set<File> lockedFiles = new HashSet<File>();
-		final File[] lockFiles = new File(getPath()).listFiles(lockFilenameFilter);
+		final File[] lockFiles = new File(getPath()).listFiles(getLockFilenameFilter());
 		if (lockFiles != null) {
 			for (final File lockFile : lockFiles) {
 				final File lockedFile = new File(lockFile.getPath().replace(getLockFileExtension(), ""));
@@ -138,6 +122,22 @@ public class LogFileManager implements ILogFileManager {
 
 	public void setLockFileExtension(final String lockFileExtension) {
 		this.lockFileExtension = lockFileExtension;
+	}
+
+	public FilenameFilter getLogFilenameFilter() {
+		return logFilenameFilter;
+	}
+
+	public void setLogFilenameFilter(final FilenameFilter logFilenameFilter) {
+		this.logFilenameFilter = logFilenameFilter;
+	}
+
+	public FilenameFilter getLockFilenameFilter() {
+		return lockFilenameFilter;
+	}
+
+	public void setLockFilenameFilter(final FilenameFilter lockFilenameFilter) {
+		this.lockFilenameFilter = lockFilenameFilter;
 	}
 
 }

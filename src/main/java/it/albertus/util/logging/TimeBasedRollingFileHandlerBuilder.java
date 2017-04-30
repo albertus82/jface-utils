@@ -9,15 +9,15 @@ import java.util.logging.XMLFormatter;
 
 public class TimeBasedRollingFileHandlerBuilder {
 
-	private String datePattern = TimeBasedRollingFileHandler.Defaults.DATE_PATTERN;
+	private String datePattern = TimeBasedRollingFileHandler.DEFAULT_DATE_PATTERN;
 	private Level level = Level.ALL; // level specifies the default level for the Handler (defaults to Level.ALL).
 	private Filter filter = null; // filter specifies the name of a Filter class to use (defaults to no Filter).
 	private Formatter formatter = new XMLFormatter(); // formatter specifies the name of a Formatter class to use (defaults to java.util.logging.XMLFormatter)
 	private String encoding = Charset.defaultCharset().name(); // encoding the name of the character set encoding to use (defaults to the default platform encoding).
-	private int limit = TimeBasedRollingFileHandler.Defaults.LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
-	private int count = TimeBasedRollingFileHandler.Defaults.COUNT; // count specifies how many output files to cycle through (defaults to 1).
-	private String fileNamePattern = TimeBasedRollingFileHandler.Defaults.FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
-	private boolean append = TimeBasedRollingFileHandler.Defaults.APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
+	private int limit = TimeBasedRollingFileHandler.DEFAULT_LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
+	private int count = TimeBasedRollingFileHandler.DEFAULT_COUNT; // count specifies how many output files to cycle through (defaults to 1).
+	private String fileNamePattern = TimeBasedRollingFileHandler.DEFAULT_FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
+	private boolean append = TimeBasedRollingFileHandler.DEFAULT_APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
 
 	public TimeBasedRollingFileHandlerBuilder datePattern(final String datePattern) {
 		this.datePattern = datePattern;

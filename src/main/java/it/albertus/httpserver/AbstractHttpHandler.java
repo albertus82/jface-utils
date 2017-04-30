@@ -77,6 +77,13 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				throw new RuntimeException(e);
 			}
 		}
+
+		@Override
+		public MessageDigest get() {
+			final MessageDigest md = super.get();
+			md.reset();
+			return md;
+		};
 	};
 
 	private IHttpServerConfiguration httpServerConfiguration;
@@ -423,9 +430,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		final MessageDigest md = md5Digest.get();
-		md.reset();
-		return DatatypeConverter.printHexBinary(md.digest(payload)).toLowerCase();
+		return DatatypeConverter.printHexBinary(md5Digest.get().digest(payload)).toLowerCase();
 	}
 
 	protected String generateEtag(final File file) throws IOException {
@@ -442,9 +447,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String generateContentMd5(final byte[] responseBody) {
-		final MessageDigest md = md5Digest.get();
-		md.reset();
-		return DatatypeConverter.printBase64Binary(md.digest(responseBody));
+		return DatatypeConverter.printBase64Binary(md5Digest.get().digest(responseBody));
 	}
 
 	/*

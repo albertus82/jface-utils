@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import it.albertus.httpserver.annotation.Path;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -41,8 +42,8 @@ public class LightweightHttpServerTest {
 	private static final String REALM = "Test Realm";
 	private static final String CREDENTIALS_BASE64 = "dGVzdDpURVNUdGVzdDEyMzQ1";
 
-	private static final String HANDLER_NAME_LOREM = "/loremIpsum.txt";
-	private static final String HANDLER_NAME_DISABLED = "/disabled";
+	private static final String HANDLER_PATH_TXT = "/loremIpsum.txt";
+	private static final String HANDLER_PATH_DISABLED = "/disabled.txt";
 
 	private static final String payload = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 	private static final String payloadMd5 = "db89bb5ceab87f9c0fcc2ab36c189c2c";
@@ -52,6 +53,14 @@ public class LightweightHttpServerTest {
 
 	private static LightweightHttpServer server;
 	private static File certificate;
+
+	@Path(HANDLER_PATH_DISABLED)
+	private static class DisabledHandler extends AbstractHttpHandler {
+		@Override
+		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
+			sendResponse(exchange, payload.getBytes());
+		}
+	}
 
 	@BeforeClass
 	public static void init() throws InterruptedException, IOException {
@@ -67,25 +76,18 @@ public class LightweightHttpServerTest {
 		}
 
 		final IHttpServerConfiguration configuration = new DefaultHttpServerConfiguration() {
-
 			@Override
 			public AbstractHttpHandler[] getHandlers() {
-				final AbstractHttpHandler handler1 = new AbstractHttpHandler() {
+				final AbstractHttpHandler h1 = new AbstractHttpHandler() {
 					@Override
 					protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 						sendResponse(exchange, payload.getBytes());
 					}
 				};
-				handler1.setPath(HANDLER_NAME_LOREM);
-				final AbstractHttpHandler handler2 = new AbstractHttpHandler() {
-					@Override
-					protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
-						sendResponse(exchange, payload.getBytes());
-					}
-				};
-				handler2.setEnabled(false);
-				handler2.setPath(HANDLER_NAME_DISABLED);
-				return new AbstractHttpHandler[] { handler1, handler2 };
+				h1.setPath(HANDLER_PATH_TXT);
+				final AbstractHttpHandler h2 = new DisabledHandler();
+				h2.setEnabled(false);
+				return new AbstractHttpHandler[] { h1, h2 };
 			}
 
 			@Override
@@ -146,7 +148,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("ETAG"));
@@ -170,7 +172,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
@@ -194,7 +196,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		Assert.assertEquals(401, connection.getResponseCode());
 		connection.disconnect();
@@ -205,7 +207,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
@@ -234,10 +236,10 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_DISABLED);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_DISABLED);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		Assert.assertEquals(403, connection.getResponseCode());
-		Assert.assertNotNull(connection.getHeaderField("Date"));
+		Assert.assertNotEquals(0, connection.getDate());
 		connection.disconnect();
 	}
 
@@ -257,7 +259,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
@@ -287,7 +289,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
@@ -324,7 +326,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
@@ -354,7 +356,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_NAME_LOREM);
+		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));

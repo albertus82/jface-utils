@@ -10,8 +10,8 @@ import javax.net.ssl.TrustManagerFactory;
 public abstract class DefaultHttpServerConfiguration implements IHttpServerConfiguration {
 
 	public static final int DEFAULT_PORT = 8080;
-	public static final boolean DEFAULT_ENABLED = false;
-	public static final boolean DEFAULT_AUTHENTICATION = true;
+	public static final boolean DEFAULT_ENABLED = true;
+	public static final boolean DEFAULT_AUTHENTICATION = false;
 	public static final String DEFAULT_PASSWORD_HASH_ALGORITHM = "SHA-256";
 	public static final int DEFAULT_MAX_THREAD_COUNT = 15;
 	public static final int DEFAULT_MIN_THREAD_COUNT = DEFAULT_MAX_THREAD_COUNT / 10;
@@ -142,6 +142,36 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	@Override
 	public boolean isCompressionEnabled() {
 		return DEFAULT_COMPRESSION_ENABLED;
+	}
+
+	@Override
+	public String getRealm() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return null;
+	}
+
+	@Override
+	public char[] getPassword() {
+		return null;
+	}
+
+	@Override
+	public char[] getStorePass() {
+		return null;
+	}
+
+	@Override
+	public String getKeyStoreFileName() {
+		return null;
+	}
+
+	@Override
+	public char[] getKeyPass() {
+		return null;
 	}
 
 }

@@ -150,6 +150,8 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("ETAG"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -174,6 +176,8 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
 		Assert.assertNotEquals(0, connection.getDate());
@@ -198,6 +202,8 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(401, connection.getResponseCode());
 		connection.disconnect();
 	}
@@ -209,10 +215,14 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
 		connection.disconnect();
 		connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
@@ -238,6 +248,8 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_DISABLED);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(403, connection.getResponseCode());
 		Assert.assertNotEquals(0, connection.getDate());
 		connection.disconnect();
@@ -250,6 +262,8 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + "/qwertyuiop");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(404, connection.getResponseCode());
 		connection.disconnect();
 	}
@@ -261,10 +275,14 @@ public class LightweightHttpServerTest {
 		startServer();
 		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
 		connection.disconnect();
 		connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
@@ -291,6 +309,8 @@ public class LightweightHttpServerTest {
 		configureSsl();
 		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -316,6 +336,8 @@ public class LightweightHttpServerTest {
 		configureSsl();
 		final URL url = new URL("https://localhost:8888/qwertyuiop");
 		final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(404, connection.getResponseCode());
 		connection.disconnect();
 	}
@@ -328,10 +350,14 @@ public class LightweightHttpServerTest {
 		configureSsl();
 		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
 		connection.disconnect();
 		connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		Assert.assertEquals(200, connection.getResponseCode());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
@@ -358,10 +384,14 @@ public class LightweightHttpServerTest {
 		configureSsl();
 		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		Assert.assertEquals(401, connection.getResponseCode());
 		Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
 		connection.disconnect();
 		connection = (HttpsURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());

@@ -436,8 +436,9 @@ public class LightweightHttpServerTest {
 	}
 
 	@After
-	public void stopServer() {
+	public void stopServer() throws InterruptedException {
 		server.stop();
+		TimeUnit.MILLISECONDS.sleep(100);
 	}
 
 	@AfterClass

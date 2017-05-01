@@ -10,7 +10,11 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -44,6 +48,7 @@ public class LightweightHttpServerTest {
 
 	private static final String HANDLER_PATH_TXT = "/loremIpsum.txt";
 	private static final String HANDLER_PATH_DISABLED = "/disabled.txt";
+	private static final String HANDLER_PATH_PARAMS = "/params.txt";
 
 	private static final String payload = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 	private static final String payloadMd5 = "db89bb5ceab87f9c0fcc2ab36c189c2c";
@@ -59,6 +64,27 @@ public class LightweightHttpServerTest {
 		@Override
 		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 			sendResponse(exchange, payload.getBytes());
+		}
+	}
+
+	@Path(HANDLER_PATH_PARAMS)
+	private static class RequestParameterHandler extends AbstractHttpHandler {
+		@Override
+		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
+			logger.log(Level.INFO, exchange.getRequestHeaders().entrySet().toString());
+			RequestParameterExtractor r = new RequestParameterExtractor(exchange);
+			Assert.assertEquals(4, r.getParameterMap().size());
+
+			final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
+			params.putAll(r.getParameterMap());
+
+			final String queryString = buildQueryString(params);
+			sendResponse(exchange, queryString.getBytes());
+		}
+
+		@Override
+		protected void doPost(HttpExchange exchange) throws IOException, HttpException {
+			doGet(exchange);
 		}
 	}
 
@@ -87,7 +113,8 @@ public class LightweightHttpServerTest {
 				h1.setPath(HANDLER_PATH_TXT);
 				final AbstractHttpHandler h2 = new DisabledHandler();
 				h2.setEnabled(false);
-				return new AbstractHttpHandler[] { h1, h2 };
+				final AbstractHttpHandler h3 = new RequestParameterHandler();
+				return new AbstractHttpHandler[] { h1, h2, h3 };
 			}
 
 			@Override
@@ -141,6 +168,75 @@ public class LightweightHttpServerTest {
 			}
 		};
 		server = new LightweightHttpServer(configuration);
+	}
+
+	@Test
+	public void makeGetRequestWithParams() throws IOException, InterruptedException {
+		final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
+		params.put("param1", new String[] { "qwertyuiop" });
+		params.put("param2", new String[] { "asdfghjkl" });
+		params.put("param3", new String[] { "zxcvbnm" });
+		params.put("multi", new String[] { "value1", "value2", "value3" });
+		final String queryString = buildQueryString(params);
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_PARAMS + '?' + queryString);
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, 256);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(queryString, os.toString());
+	}
+
+	@Test
+	public void makePostRequestWithParams() throws IOException, InterruptedException {
+		final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
+		params.put("param1", new String[] { "qwertyuiop" });
+		params.put("param2", new String[] { "asdfghjkl" });
+		params.put("param3", new String[] { "zxcvbnm" });
+		params.put("multi", new String[] { "value1", "value2", "value3" });
+		final String queryString = buildQueryString(params);
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_PARAMS);
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.setRequestMethod(HttpMethod.POST.toUpperCase());
+		connection.setDoOutput(true);
+		connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.addRequestProperty("Content-Length", Integer.toString(queryString.length() - 1));
+		connection.getOutputStream().write(queryString.getBytes());
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, 256);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(queryString, os.toString());
 	}
 
 	@Test
@@ -446,6 +542,17 @@ public class LightweightHttpServerTest {
 		if (!certificate.delete()) {
 			certificate.deleteOnExit();
 		}
+	}
+
+	private static String buildQueryString(final Map<String, String[]> params) {
+		final StringBuilder queryString = new StringBuilder();
+		for (final Entry<String, String[]> e : params.entrySet()) {
+			for (final String value : e.getValue()) {
+				queryString.append('&');
+				queryString.append(e.getKey()).append('=').append(value);
+			}
+		}
+		return queryString.substring(1);
 	}
 
 }

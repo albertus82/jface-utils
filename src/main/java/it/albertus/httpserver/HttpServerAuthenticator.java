@@ -21,6 +21,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final int DEFAULT_FAIL_DELAY_IN_MILLIS = 3000;
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
+	private static final Level DEFAULT_FAILURE_LOGGING_LEVEL = Level.WARNING;
 
 	private final MessageDigest messageDigest;
 	private Charset charset;
@@ -28,6 +29,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	private final Supplier<String> username;
 	private final Supplier<char[]> password;
 
+	private Level failureLoggingLevel = DEFAULT_FAILURE_LOGGING_LEVEL;
 	private int failDelayInMillis = DEFAULT_FAIL_DELAY_IN_MILLIS;
 
 	public HttpServerAuthenticator(final String realm, final Supplier<String> username, final Supplier<char[]> password) {
@@ -73,7 +75,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return true;
 			}
 			else {
-				logger.log(Level.WARNING, JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
+				logger.log(failureLoggingLevel, JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
 				return fail();
 			}
 		}
@@ -130,6 +132,14 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	public void setFailDelayInMillis(final int failDelayInMillis) {
 		this.failDelayInMillis = failDelayInMillis;
+	}
+
+	public Level getFailureLoggingLevel() {
+		return failureLoggingLevel;
+	}
+
+	public void setFailureLoggingLevel(final Level failureLoggingLevel) {
+		this.failureLoggingLevel = failureLoggingLevel;
 	}
 
 }

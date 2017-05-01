@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyManagementException;
@@ -36,6 +37,8 @@ import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 public class LightweightHttpServerTest {
+
+	private static final String MD5_LOREM_LG = "677560ee0c55b61d73bf47e79835f83a";
 
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServerTest.class);
 
@@ -112,10 +115,17 @@ public class LightweightHttpServerTest {
 					}
 				};
 				h1.setPath(HANDLER_PATH_TXT);
+
 				final AbstractHttpHandler h2 = new DisabledHandler();
 				h2.setEnabled(false);
+
 				final AbstractHttpHandler h3 = new RequestParameterHandler();
-				return new AbstractHttpHandler[] { h1, h2, h3 };
+
+				final FilesHandler h4 = new FilesHandler(certificate.getParentFile().getPath(), "/files/");
+
+				final ResourcesHandler h5 = new ResourcesHandler(getClass().getPackage(), "/resources/");
+
+				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5 };
 			}
 
 			@Override
@@ -177,6 +187,199 @@ public class LightweightHttpServerTest {
 	}
 
 	@Test
+	public void makeRequest200SmallStaticResource() throws InterruptedException, IOException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/resources/lorem-sm.txt");
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals(payloadMd5, connection.getHeaderField("ETAG"));
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
+		Assert.assertEquals(payload.length(), connection.getContentLength());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(payload, os.toString());
+	}
+
+	@Test
+	public void makeRequest304SmallStaticResource() throws InterruptedException, IOException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/resources/lorem-sm.txt");
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.addRequestProperty("If-None-Match", payloadMd5);
+		Assert.assertEquals(304, connection.getResponseCode());
+		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+		Assert.assertEquals(payloadMd5, connection.getHeaderField("ETAG"));
+		Assert.assertNull(connection.getContentType());
+		Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(0, os.size());
+	}
+
+	@Test
+	public void makeRequest200LargeStaticResource() throws InterruptedException, IOException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/resources/lorem-lg.txt");
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals(MD5_LOREM_LG, connection.getHeaderField("ETAG"));
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(1082518, os.size());
+	}
+
+	@Test
+	public void makeRequest200SmallStaticFile() throws InterruptedException, IOException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/files/" + certificate.getName());
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
+		Assert.assertNotNull(connection.getHeaderField("Etag"));
+		Assert.assertEquals(certificate.length(), connection.getContentLength());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(certificate.length(), os.size());
+	}
+
+	@Test
+	public void makeRequest200LargeStaticFile() throws InterruptedException, IOException {
+		InputStream tis = null;
+		OutputStream tos = null;
+		File temp = null;
+		try {
+			tis = getClass().getResourceAsStream("lorem-lg.txt");
+			temp = File.createTempFile("lorem-", ".txt");
+			tos = new FileOutputStream(temp);
+			IOUtils.copy(tis, tos, 1024);
+		}
+		finally {
+			IOUtils.closeQuietly(tos, tis);
+		}
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/files/" + temp.getName());
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals(MD5_LOREM_LG, connection.getHeaderField("eTag"));
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(temp.length(), os.size());
+	}
+
+	@Test
+	public void makeRequest304LargeStaticFile() throws InterruptedException, IOException {
+		InputStream tis = null;
+		OutputStream tos = null;
+		File temp = null;
+		try {
+			tis = getClass().getResourceAsStream("lorem-lg.txt");
+			temp = File.createTempFile("lorem-", ".txt");
+			tos = new FileOutputStream(temp);
+			IOUtils.copy(tis, tos, 1024);
+		}
+		finally {
+			IOUtils.closeQuietly(tos, tis);
+		}
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/files/" + temp.getName());
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.addRequestProperty("If-None-Match", MD5_LOREM_LG);
+		Assert.assertEquals(304, connection.getResponseCode());
+		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+		Assert.assertEquals(MD5_LOREM_LG, connection.getHeaderField("eTag"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, payload.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(0, os.size());
+	}
+
+	@Test
 	public void makeGetRequestWithParams() throws IOException, InterruptedException {
 		final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
 		params.put("param1", new String[] { "qwertyuiop" });
@@ -193,7 +396,9 @@ public class LightweightHttpServerTest {
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNotNull(connection.getHeaderField("Etag"));
 		Assert.assertNotEquals(0, connection.getDate());
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -230,8 +435,10 @@ public class LightweightHttpServerTest {
 		connection.addRequestProperty("Content-Length", Integer.toString(queryString.length() - 1));
 		connection.getOutputStream().write(queryString.getBytes());
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 		Assert.assertNotEquals(0, connection.getDate());
+		Assert.assertNull(connection.getHeaderField("Etag"));
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
@@ -255,6 +462,7 @@ public class LightweightHttpServerTest {
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("ETAG"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 		Assert.assertNotEquals(0, connection.getDate());
@@ -282,6 +490,7 @@ public class LightweightHttpServerTest {
 		connection.setReadTimeout(20000);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
+		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
 		Assert.assertNotEquals(0, connection.getDate());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		InputStream is = null;
@@ -327,6 +536,7 @@ public class LightweightHttpServerTest {
 		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 		Assert.assertNotEquals(0, connection.getDate());
@@ -353,6 +563,7 @@ public class LightweightHttpServerTest {
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
 		Assert.assertEquals(403, connection.getResponseCode());
+		Assert.assertEquals("403 " + AbstractHttpHandler.getHttpStatusCodes().get(403), connection.getHeaderField("Status"));
 		Assert.assertNotEquals(0, connection.getDate());
 		connection.disconnect();
 	}
@@ -388,6 +599,7 @@ public class LightweightHttpServerTest {
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
+		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
 		Assert.assertNotEquals(0, connection.getDate());
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		InputStream is = null;
@@ -414,6 +626,7 @@ public class LightweightHttpServerTest {
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 		Assert.assertNotEquals(0, connection.getDate());
@@ -462,6 +675,7 @@ public class LightweightHttpServerTest {
 		connection.setReadTimeout(20000);
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 		Assert.assertNotEquals(0, connection.getDate());
@@ -497,6 +711,7 @@ public class LightweightHttpServerTest {
 		connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 		connection.addRequestProperty("If-None-Match", payloadMd5);
 		Assert.assertEquals(304, connection.getResponseCode());
+		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
 		Assert.assertEquals(payloadMd5, connection.getHeaderField("Etag"));
 		Assert.assertNotEquals(0, connection.getDate());
 		InputStream is = null;
@@ -538,7 +753,7 @@ public class LightweightHttpServerTest {
 	}
 
 	@After
-	public void stopServer() throws InterruptedException {
+	public void stopServer() {
 		server.stop();
 	}
 

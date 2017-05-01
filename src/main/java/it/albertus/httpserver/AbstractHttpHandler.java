@@ -3,6 +3,7 @@ package it.albertus.httpserver;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -61,7 +62,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
-	protected static final int BUFFER_SIZE = 4096;
+	protected static final int IN_MEMORY_SIZE_LIMIT = 512 * 1024; // 512 KiB
+
+	protected static final int BUFFER_SIZE = 4096; // 4 KiB
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
 
@@ -370,7 +373,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void setEtagHeader(final HttpExchange exchange, final String eTag) {
-		if (eTag != null) {
+		if (eTag != null && (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod()))) {
 			exchange.getResponseHeaders().set("ETag", eTag);
 		}
 	}
@@ -435,13 +438,22 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected String generateEtag(final File file) throws IOException {
 		InputStream is = null;
-		final OutputStream os = new DigestOutputStream(md5Digest.get());
 		try {
 			is = new FileInputStream(file);
-			IOUtils.copy(is, os, BUFFER_SIZE);
+			return generateEtag(is);
 		}
 		finally {
-			IOUtils.closeQuietly(os, is);
+			IOUtils.closeQuietly(is);
+		}
+	}
+
+	protected String generateEtag(final InputStream inputStream) throws IOException {
+		final OutputStream os = new DigestOutputStream(md5Digest.get());
+		try {
+			IOUtils.copy(inputStream, os, BUFFER_SIZE);
+		}
+		finally {
+			IOUtils.closeQuietly(os);
 		}
 		return os.toString();
 	}
@@ -500,8 +512,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void sendResponse(final HttpExchange exchange, final byte[] payload, final int statusCode) throws IOException {
+		final String method = exchange.getRequestMethod();
 		final String currentEtag;
-		if (statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && payload != null) {
+		if (payload != null && statusCode >= HttpURLConnection.HTTP_OK && statusCode < HttpURLConnection.HTTP_MULT_CHOICE && (HttpMethod.GET.equalsIgnoreCase(method) || HttpMethod.HEAD.equalsIgnoreCase(method))) {
 			currentEtag = generateEtag(payload);
 			setEtagHeader(exchange, currentEtag);
 		}
@@ -521,7 +534,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			if (payload != null) {
 				setCommonHeaders(exchange);
 				final byte[] response = compressResponse(payload, exchange);
-				if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
+				if (HttpMethod.HEAD.equalsIgnoreCase(method)) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
 					exchange.sendResponseHeaders(statusCode, -1);
 				}
@@ -538,44 +551,201 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		exchange.getResponseBody().close();
 	}
 
-	protected boolean existsStaticResource(final String resourcePath) {
+	protected Resource getStaticResource(final String resourcePath) {
 		for (final Resource resource : getResources()) {
 			if (('/' + resource.getName().replace(File.separatorChar, '/')).endsWith(resourcePath)) {
-				return true;
+				return resource;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	protected String getPathInfo(final HttpExchange exchange) {
 		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath()), "?");
 	}
 
-	protected void sendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
-		if (existsStaticResource(resourcePath)) {
-			doSendStaticResource(exchange, resourcePath, cacheControl);
+	protected void sendStaticResource(final HttpExchange exchange, String resourcePath, final boolean attachment, final String cacheControl) throws IOException {
+		if (!resourcePath.startsWith("/")) {
+			resourcePath = "/" + resourcePath;
+		}
+		final Resource resource = getStaticResource(resourcePath);
+		if (resource != null) {
+			doSendStaticResource(exchange, resourcePath, resource, attachment, cacheControl);
 		}
 		else {
 			sendNotFound(exchange);
 		}
 	}
 
-	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final String cacheControl) throws IOException {
+	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final Resource resource, final boolean attachment, final String cacheControl) throws IOException {
+		final String method = exchange.getRequestMethod();
+		final String fileName = new File(resource.getName()).getName();
+		final long fileSize = resource.getSize();
 		InputStream inputStream = null;
-		ByteArrayOutputStream outputStream = null; // FIXME avoid ByteArrayOutputStream
 		try {
-			inputStream = getClass().getResourceAsStream(resourcePath);
-			if (inputStream == null) {
-				throw new IllegalStateException(resourcePath);
+			if (fileSize >= 0 && fileSize < IN_MEMORY_SIZE_LIMIT) {
+				// In memory for small files
+				inputStream = getClass().getResourceAsStream(resourcePath);
+				if (inputStream == null) {
+					throw new IllegalStateException(resourcePath);
+				}
+				sendStaticInMemoryResponse(exchange, attachment, cacheControl, fileName, inputStream);
 			}
-			outputStream = new ByteArrayOutputStream();
-			IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+			else {
+				// Streaming for large files
+				final String currentEtag;
+				if (HttpMethod.GET.equalsIgnoreCase(method) || HttpMethod.HEAD.equalsIgnoreCase(method)) {
+					inputStream = getClass().getResourceAsStream(resourcePath);
+					if (inputStream == null) {
+						throw new IllegalStateException(resourcePath);
+					}
+					currentEtag = generateEtag(inputStream);
+					IOUtils.closeQuietly(inputStream);
+					setEtagHeader(exchange, currentEtag);
+				}
+				else {
+					currentEtag = null;
+				}
+
+				// If-None-Match...
+				final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
+				if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
+					sendStaticNotModifiedResponse(exchange, cacheControl);
+				}
+				else {
+					final boolean headMethod = HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod());
+					setStaticHeaders(exchange, fileName, attachment, cacheControl);
+
+					OutputStream output = null;
+					try {
+						output = prepareStaticOutputStream(exchange, fileSize, headMethod);
+						if (!headMethod) {
+							inputStream = getClass().getResourceAsStream(resourcePath);
+							if (inputStream == null) {
+								throw new IllegalStateException(resourcePath);
+							}
+							IOUtils.copy(inputStream, output, BUFFER_SIZE);
+						}
+					}
+					finally {
+						IOUtils.closeQuietly(output);
+					}
+				}
+			}
 		}
 		finally {
-			IOUtils.closeQuietly(outputStream, inputStream);
+			IOUtils.closeQuietly(inputStream);
 		}
+	}
+
+	private void sendStaticInMemoryResponse(final HttpExchange exchange, final boolean attachment, final String cacheControl, final String fileName, InputStream inputStream) throws IOException {
+		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
+		IOUtils.closeQuietly(inputStream);
 		setCacheControlHeader(exchange, cacheControl);
+		if (attachment) {
+			setContentDispositionHeader(exchange, "attachment; filename=\"" + fileName + "\"");
+		}
 		sendResponse(exchange, outputStream.toByteArray());
+	}
+
+	private OutputStream prepareStaticOutputStream(final HttpExchange exchange, final long fileSize, final boolean headMethod) throws IOException {
+		OutputStream output = null;
+		if (canCompressResponse(exchange)) {
+			setGzipHeader(exchange);
+			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0); // Transfer-Encoding: chunked
+			if (!headMethod) {
+				output = new GZIPOutputStream(exchange.getResponseBody(), BUFFER_SIZE);
+			}
+		}
+		else {
+			if (!headMethod) {
+				exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, fileSize);
+				output = exchange.getResponseBody();
+			}
+			else {
+				exchange.getResponseHeaders().set("Content-Length", Long.toString(fileSize));
+				exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+			}
+		}
+		return output;
+	}
+
+	protected void sendStaticFile(final HttpExchange exchange, final File file, final boolean attachment, final String cacheControl) throws IOException {
+		final String method = exchange.getRequestMethod();
+		final String fileName = file.getName();
+		final long fileSize = file.length();
+		InputStream inputStream = null;
+		try {
+			if (fileSize >= 0 && fileSize < IN_MEMORY_SIZE_LIMIT) {
+				inputStream = new FileInputStream(file);
+				sendStaticInMemoryResponse(exchange, attachment, cacheControl, fileName, inputStream);
+			}
+			else {
+				// Streaming for large files
+				final String currentEtag;
+				if (HttpMethod.GET.equalsIgnoreCase(method) || HttpMethod.HEAD.equalsIgnoreCase(method)) {
+					inputStream = new FileInputStream(file);
+					currentEtag = generateEtag(inputStream);
+					IOUtils.closeQuietly(inputStream);
+					setEtagHeader(exchange, currentEtag);
+				}
+				else {
+					currentEtag = null;
+				}
+
+				// If-None-Match...
+				final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
+				if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
+					sendStaticNotModifiedResponse(exchange, cacheControl);
+				}
+				else {
+					final boolean headMethod = HttpMethod.HEAD.equalsIgnoreCase(method);
+					setStaticHeaders(exchange, fileName, attachment, cacheControl);
+
+					OutputStream output = null;
+					try {
+						output = prepareStaticOutputStream(exchange, fileSize, headMethod);
+						if (!headMethod) {
+							inputStream = new FileInputStream(file);
+							IOUtils.copy(inputStream, output, BUFFER_SIZE);
+						}
+					}
+					finally {
+						IOUtils.closeQuietly(output);
+					}
+				}
+			}
+		}
+		catch (final FileNotFoundException e) {
+			logger.log(Level.FINE, e.toString(), e);
+			sendNotFound(exchange);
+		}
+		finally {
+			IOUtils.closeQuietly(inputStream);
+		}
+	}
+
+	private void sendStaticNotModifiedResponse(final HttpExchange exchange, final String cacheControl) throws IOException {
+		setDateHeader(exchange);
+		setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
+		setCacheControlHeader(exchange, cacheControl);
+		exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
+	}
+
+	private void setStaticHeaders(final HttpExchange exchange, final String fileName, final boolean attachment, final String cacheControl) {
+		setCommonHeaders(exchange);
+		setCacheControlHeader(exchange, cacheControl);
+		setStatusHeader(exchange, HttpURLConnection.HTTP_OK);
+		if (attachment) {
+			setContentDispositionHeader(exchange, "attachment; filename=\"" + fileName + "\"");
+		}
+	}
+
+	protected void setContentDispositionHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().set("Content-Disposition", value);
+		}
 	}
 
 	protected void setCacheControlHeader(final HttpExchange exchange, final String value) {

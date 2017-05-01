@@ -393,7 +393,7 @@ public class LightweightHttpServerTest {
 		final int retryPeriod = 100; // ms
 		final int timeout = 5000; // ms
 		int time = 0;
-		while (!server.isRunning() && time < timeout) {
+		do {
 			try {
 				TimeUnit.MILLISECONDS.sleep(time += retryPeriod);
 			}
@@ -402,6 +402,7 @@ public class LightweightHttpServerTest {
 				throw e;
 			}
 		}
+		while (!server.isRunning() && time < timeout);
 	}
 
 	@After

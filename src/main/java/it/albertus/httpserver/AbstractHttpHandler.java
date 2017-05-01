@@ -83,7 +83,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			final MessageDigest md = super.get();
 			md.reset();
 			return md;
-		};
+		}
 	};
 
 	private IHttpServerConfiguration httpServerConfiguration;

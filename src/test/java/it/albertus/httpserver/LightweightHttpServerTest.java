@@ -25,6 +25,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,7 +40,6 @@ public class LightweightHttpServerTest {
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServerTest.class);
 
 	private static final String JKS = "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";
-	private static final int PORT = 8888;
 	private static final String USERNAME = "test";
 	// private static final String PASSWORD = "TESTtest12345";
 	private static final String PASSWORD_HASH = "92f1a57051141e9d24396bc42ae43b6500d13f8b";
@@ -55,6 +55,7 @@ public class LightweightHttpServerTest {
 
 	private static boolean authenticationRequired = false;
 	private static boolean sslEnabled = false;
+	private static int port = 8880;
 
 	private static LightweightHttpServer server;
 	private static File certificate;
@@ -119,7 +120,7 @@ public class LightweightHttpServerTest {
 
 			@Override
 			public int getPort() {
-				return PORT;
+				return port;
 			}
 
 			@Override
@@ -170,6 +171,11 @@ public class LightweightHttpServerTest {
 		server = new LightweightHttpServer(configuration);
 	}
 
+	@Before
+	public void changePort() {
+		port++;
+	}
+
 	@Test
 	public void makeGetRequestWithParams() throws IOException, InterruptedException {
 		final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
@@ -182,7 +188,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_PARAMS + '?' + queryString);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_PARAMS + '?' + queryString);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -214,7 +220,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_PARAMS);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_PARAMS);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -244,7 +250,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -270,7 +276,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -296,7 +302,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_TXT);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -309,7 +315,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -342,7 +348,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_DISABLED);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_DISABLED);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -356,7 +362,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = false;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + "/qwertyuiop");
+		final URL url = new URL("http://localhost:" + port + "/qwertyuiop");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -369,7 +375,7 @@ public class LightweightHttpServerTest {
 		authenticationRequired = true;
 		sslEnabled = false;
 		startServer();
-		final URL url = new URL("http://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_TXT);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -403,7 +409,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("https://localhost:" + port + HANDLER_PATH_TXT);
 		final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -430,7 +436,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888/qwertyuiop");
+		final URL url = new URL("https://localhost:" + port + "/qwertyuiop");
 		final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -444,7 +450,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("https://localhost:" + port + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -478,7 +484,7 @@ public class LightweightHttpServerTest {
 		sslEnabled = true;
 		startServer();
 		configureSsl();
-		final URL url = new URL("https://localhost:8888" + HANDLER_PATH_TXT);
+		final URL url = new URL("https://localhost:" + port + HANDLER_PATH_TXT);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setConnectTimeout(20000);
 		connection.setReadTimeout(20000);
@@ -517,7 +523,7 @@ public class LightweightHttpServerTest {
 		server.start();
 
 		final int retryPeriod = 100; // ms
-		final int timeout = 5000; // ms
+		final int timeout = 10000; // ms
 		int time = 0;
 		do {
 			try {
@@ -534,7 +540,6 @@ public class LightweightHttpServerTest {
 	@After
 	public void stopServer() throws InterruptedException {
 		server.stop();
-		TimeUnit.MILLISECONDS.sleep(100);
 	}
 
 	@AfterClass

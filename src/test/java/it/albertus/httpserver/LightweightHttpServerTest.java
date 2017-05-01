@@ -390,7 +390,7 @@ public class LightweightHttpServerTest {
 	private static void startServer() throws InterruptedException {
 		server.start();
 
-		final int retryPeriod = 50; // ms
+		final int retryPeriod = 100; // ms
 		final int timeout = 5000; // ms
 		int time = 0;
 		while (!server.isRunning() && time < timeout) {

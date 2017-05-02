@@ -339,6 +339,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (value != null && !value.isEmpty()) {
 			exchange.getResponseHeaders().set("Content-Type", value);
 		}
+		else {
+			exchange.getResponseHeaders().remove("Content-Type");
+		}
 	}
 
 	protected String getContentType(final String fileName) {
@@ -376,16 +379,27 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (eTag != null && (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod()))) {
 			exchange.getResponseHeaders().set("ETag", eTag);
 		}
-	}
-
-	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
-		if (lastModified != null) {
-			exchange.getResponseHeaders().set("Last-Modified", httpDateGenerator.format(lastModified));
+		else {
+			exchange.getResponseHeaders().remove("ETag");
 		}
 	}
 
-	protected void setRefreshHeader(final HttpExchange exchange, final int seconds) {
-		exchange.getResponseHeaders().set("Refresh", Integer.toString(seconds));
+	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
+		if (lastModified != null && (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod()))) {
+			exchange.getResponseHeaders().set("Last-Modified", httpDateGenerator.format(lastModified));
+		}
+		else {
+			exchange.getResponseHeaders().remove("Last-Modified");
+		}
+	}
+
+	protected void setRefreshHeader(final HttpExchange exchange, final Integer seconds) {
+		if (seconds != null) {
+			exchange.getResponseHeaders().set("Refresh", seconds.toString());
+		}
+		else {
+			exchange.getResponseHeaders().remove("Refresh");
+		}
 	}
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
@@ -527,6 +541,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 			setDateHeader(exchange);
 			setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
+			setContentDispositionHeader(exchange, null);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
 		}
 		else {
@@ -746,11 +761,17 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		if (value != null && !value.isEmpty()) {
 			exchange.getResponseHeaders().set("Content-Disposition", value);
 		}
+		else {
+			exchange.getResponseHeaders().remove("Content-Disposition");
+		}
 	}
 
 	protected void setCacheControlHeader(final HttpExchange exchange, final String value) {
 		if (value != null && !value.isEmpty()) {
 			exchange.getResponseHeaders().set("Cache-Control", value);
+		}
+		else {
+			exchange.getResponseHeaders().remove("Cache-Control");
 		}
 	}
 

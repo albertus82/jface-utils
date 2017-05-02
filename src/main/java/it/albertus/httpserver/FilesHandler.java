@@ -5,14 +5,10 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class FilesHandler extends AbstractHttpHandler {
-
-	private String fileBasePath;
-	private String cacheControl;
-	private boolean attachment;
+public class FilesHandler extends AbstractStaticHandler {
 
 	public FilesHandler(final String fileBasePath, final String urlBasePath) {
-		setFileBasePath(fileBasePath);
+		setBasePath(fileBasePath);
 		setPath(urlBasePath);
 	}
 
@@ -20,34 +16,11 @@ public class FilesHandler extends AbstractHttpHandler {
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {
-		sendStaticFile(exchange, new File(fileBasePath + getPathInfo(exchange)), attachment, cacheControl);
+		sendStaticFile(exchange, new File(getBasePath() + getPathInfo(exchange)), isAttachment(), getCacheControl());
 	}
 
-	public String getFileBasePath() {
-		return fileBasePath;
-	}
-
-	public void setFileBasePath(final String fileBasePath) {
-		this.fileBasePath = normalizeBasePath(fileBasePath);
-	}
-
-	public String getCacheControl() {
-		return cacheControl;
-	}
-
-	public void setCacheControl(final String cacheControl) {
-		this.cacheControl = cacheControl;
-	}
-
-	public boolean isAttachment() {
-		return attachment;
-	}
-
-	public void setAttachment(final boolean attachment) {
-		this.attachment = attachment;
-	}
-
-	private static String normalizeBasePath(final String resourceBasePath) {
+	@Override
+	protected String normalizeBasePath(final String resourceBasePath) {
 		String normalizedBasePath = resourceBasePath;
 		if (!resourceBasePath.endsWith("/")) {
 			normalizedBasePath += Character.toString('/');

@@ -910,7 +910,6 @@ public class LightweightHttpServerTest {
 		Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
 		Assert.assertNotEquals(0, connection.getDate());
 		Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
-		System.out.println(connection.getContentLengthLong());
 		Assert.assertNull(connection.getHeaderField("Content-Disposition"));
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();

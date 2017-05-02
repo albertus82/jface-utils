@@ -161,12 +161,12 @@ public class LightweightHttpServerTest {
 			}
 
 			@Override
-			public char[] getPassword() {
+			public char[] getAuthenticationPassword() {
 				return PASSWORD_HASH.toCharArray();
 			}
 
 			@Override
-			public String getPasswordHashAlgorithm() {
+			public String getAuthenticationPasswordHashAlgorithm() {
 				return "SHA-1";
 			}
 
@@ -176,7 +176,7 @@ public class LightweightHttpServerTest {
 			}
 
 			@Override
-			public String getRealm() {
+			public String getAuthenticationRealm() {
 				return REALM;
 			}
 
@@ -186,7 +186,7 @@ public class LightweightHttpServerTest {
 			}
 
 			@Override
-			public String getUsername() {
+			public String getAuthenticationUsername() {
 				return USERNAME;
 			}
 

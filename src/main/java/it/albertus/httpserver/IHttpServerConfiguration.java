@@ -11,13 +11,17 @@ public interface IHttpServerConfiguration {
 
 	boolean isAuthenticationRequired();
 
-	String getRealm();
+	String getAuthenticationRealm();
 
-	String getUsername();
+	String getAuthenticationUsername();
 
-	char[] getPassword();
+	char[] getAuthenticationPassword();
 
-	String getPasswordHashAlgorithm();
+	String getAuthenticationPasswordHashAlgorithm();
+
+	int getAuthenticationFailDelay();
+
+	String getAuthenticationFailureLoggingLevel();
 
 	int getPort();
 

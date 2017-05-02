@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
@@ -28,7 +27,6 @@ import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Supplier;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
@@ -86,24 +84,7 @@ public class LightweightHttpServer {
 	protected void createContexts() {
 		final Authenticator authenticator;
 		if (httpServerConfiguration.isAuthenticationRequired()) {
-			try {
-				final Supplier<String> username = new Supplier<String>() {
-					@Override
-					public String get() {
-						return httpServerConfiguration.getUsername();
-					}
-				};
-				final Supplier<char[]> password = new Supplier<char[]>() {
-					@Override
-					public char[] get() {
-						return httpServerConfiguration.getPassword();
-					}
-				};
-				authenticator = new HttpServerAuthenticator(httpServerConfiguration.getRealm(), username, password, httpServerConfiguration.getPasswordHashAlgorithm());
-			}
-			catch (final NoSuchAlgorithmException e) {
-				throw new RuntimeException(e);
-			}
+			authenticator = new HttpServerAuthenticator(httpServerConfiguration);
 		}
 		else {
 			authenticator = null;

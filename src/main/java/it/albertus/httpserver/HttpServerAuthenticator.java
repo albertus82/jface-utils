@@ -12,40 +12,42 @@ import javax.xml.bind.DatatypeConverter;
 import com.sun.net.httpserver.BasicAuthenticator;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 
 public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final Logger logger = LoggerFactory.getLogger(HttpServerAuthenticator.class);
 
-	private static final int DEFAULT_FAIL_DELAY_IN_MILLIS = 3000;
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
-	private static final Level DEFAULT_FAILURE_LOGGING_LEVEL = Level.WARNING;
 
-	private final MessageDigest messageDigest;
+	private final ThreadLocal<MessageDigest> messageDigest;
+	private final IHttpServerConfiguration configuration;
 	private Charset charset;
 
-	private final Supplier<String> username;
-	private final Supplier<char[]> password;
-
-	private Level failureLoggingLevel = DEFAULT_FAILURE_LOGGING_LEVEL;
-	private int failDelayInMillis = DEFAULT_FAIL_DELAY_IN_MILLIS;
-
-	public HttpServerAuthenticator(final String realm, final Supplier<String> username, final Supplier<char[]> password) {
-		super(realm);
-		this.username = username;
-		this.password = password;
-		this.messageDigest = null;
-	}
-
-	public HttpServerAuthenticator(final String realm, final Supplier<String> username, final Supplier<char[]> password, final String hashAlgorithm) throws NoSuchAlgorithmException {
-		super(realm);
-		this.username = username;
-		this.password = password;
+	public HttpServerAuthenticator(final IHttpServerConfiguration configuration) {
+		super(configuration.getAuthenticationRealm());
+		this.configuration = configuration;
+		final String hashAlgorithm = configuration.getAuthenticationPasswordHashAlgorithm();
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
-			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
 			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
+			this.messageDigest = new ThreadLocal<MessageDigest>() {
+				@Override
+				protected MessageDigest initialValue() {
+					try {
+						return MessageDigest.getInstance(hashAlgorithm);
+					}
+					catch (final NoSuchAlgorithmException e) {
+						throw new RuntimeException(e);
+					}
+				};
+
+				@Override
+				public MessageDigest get() {
+					final MessageDigest md = super.get();
+					md.reset();
+					return md;
+				}
+			};
 		}
 		else {
 			this.messageDigest = null;
@@ -59,13 +61,13 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return fail();
 			}
 
-			final String expectedUsername = username.get();
+			final String expectedUsername = configuration.getAuthenticationUsername();
 			if (expectedUsername == null || expectedUsername.isEmpty()) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.username"));
 				return fail();
 			}
 
-			final char[] expectedPassword = password.get();
+			final char[] expectedPassword = configuration.getAuthenticationPassword();
 			if (expectedPassword == null || expectedPassword.length == 0) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.password"));
 				return fail();
@@ -75,7 +77,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return true;
 			}
 			else {
-				logger.log(failureLoggingLevel, JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
+				logger.log(Level.parse(configuration.getAuthenticationFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
 				return fail();
 			}
 		}
@@ -85,11 +87,10 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		}
 	}
 
-	private synchronized boolean checkPassword(final String provided, final char[] expected) {
+	private boolean checkPassword(final String provided, final char[] expected) {
 		final char[] computed;
 		if (messageDigest != null) {
-			messageDigest.reset();
-			computed = DatatypeConverter.printHexBinary(messageDigest.digest(provided.getBytes(charset))).toLowerCase().toCharArray();
+			computed = DatatypeConverter.printHexBinary(messageDigest.get().digest(provided.getBytes(charset))).toLowerCase().toCharArray();
 		}
 		else {
 			computed = provided.toCharArray();
@@ -109,7 +110,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private boolean fail() {
 		try {
-			TimeUnit.MILLISECONDS.sleep(failDelayInMillis);
+			TimeUnit.MILLISECONDS.sleep(configuration.getAuthenticationFailDelay());
 		}
 		catch (final InterruptedException e) {
 			logger.log(Level.FINE, e.toString(), e);
@@ -124,22 +125,6 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	public void setCharset(final Charset charset) {
 		this.charset = charset;
-	}
-
-	public int getFailDelayInMillis() {
-		return failDelayInMillis;
-	}
-
-	public void setFailDelayInMillis(final int failDelayInMillis) {
-		this.failDelayInMillis = failDelayInMillis;
-	}
-
-	public Level getFailureLoggingLevel() {
-		return failureLoggingLevel;
-	}
-
-	public void setFailureLoggingLevel(final Level failureLoggingLevel) {
-		this.failureLoggingLevel = failureLoggingLevel;
 	}
 
 }

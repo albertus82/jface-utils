@@ -13,6 +13,8 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	public static final boolean DEFAULT_ENABLED = true;
 	public static final boolean DEFAULT_AUTHENTICATION = false;
 	public static final String DEFAULT_PASSWORD_HASH_ALGORITHM = "SHA-256";
+	public static final int DEFAULT_AUTHENTICATION_FAIL_DELAY = 3000;
+	public static final String DEFAULT_AUTHENTICATION_FAILURE_LOGGING_LEVEL = Level.FINE.getName();
 	public static final int DEFAULT_MAX_THREAD_COUNT = 15;
 	public static final int DEFAULT_MIN_THREAD_COUNT = DEFAULT_MAX_THREAD_COUNT / 10;
 	public static final long DEFAULT_THREAD_KEEP_ALIVE_TIME = 60L; // seconds
@@ -23,7 +25,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	public static final String DEFAULT_SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
 	public static final long DEFAULT_MAX_REQ_TIME = 60L; // seconds
 	public static final long DEFAULT_MAX_RSP_TIME = 60L * 60 * 24; // seconds
-	public static final Level DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO;
+	public static final String DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO.getName();
 	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
 
 	@Override
@@ -37,8 +39,33 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	}
 
 	@Override
-	public String getPasswordHashAlgorithm() {
+	public String getAuthenticationPasswordHashAlgorithm() {
 		return DEFAULT_PASSWORD_HASH_ALGORITHM;
+	}
+
+	@Override
+	public int getAuthenticationFailDelay() {
+		return DEFAULT_AUTHENTICATION_FAIL_DELAY;
+	}
+
+	@Override
+	public String getAuthenticationFailureLoggingLevel() {
+		return DEFAULT_AUTHENTICATION_FAILURE_LOGGING_LEVEL;
+	}
+
+	@Override
+	public String getAuthenticationRealm() {
+		return null;
+	}
+
+	@Override
+	public String getAuthenticationUsername() {
+		return null;
+	}
+
+	@Override
+	public char[] getAuthenticationPassword() {
+		return null;
 	}
 
 	@Override
@@ -136,27 +163,12 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	@Override
 	public String getRequestLoggingLevel() {
-		return DEFAULT_REQUEST_LOGGING_LEVEL.getName();
+		return DEFAULT_REQUEST_LOGGING_LEVEL;
 	}
 
 	@Override
 	public boolean isCompressionEnabled() {
 		return DEFAULT_COMPRESSION_ENABLED;
-	}
-
-	@Override
-	public String getRealm() {
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		return null;
-	}
-
-	@Override
-	public char[] getPassword() {
-		return null;
 	}
 
 	@Override

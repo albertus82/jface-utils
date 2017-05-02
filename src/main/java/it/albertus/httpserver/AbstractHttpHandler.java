@@ -348,7 +348,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.') + 1).trim().toLowerCase() : null;
 		String contentType = null;
 		if (extension != null && !extension.isEmpty()) {
-			contentType = contentTypes.getProperty(extension);
+			contentType = getContentTypes().getProperty(extension);
 		}
 		if (contentType == null) {
 			contentType = new MimetypesFileTypeMap().getContentType(fileName);
@@ -604,7 +604,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				if (inputStream == null) {
 					throw new IllegalStateException(resourcePath);
 				}
-				sendStaticInMemoryResponse(exchange, attachment, cacheControl, fileName, inputStream);
+				sendStaticInMemoryResponse(exchange, inputStream, attachment ? fileName : null, cacheControl);
 			}
 			else {
 				// Streaming for large files
@@ -628,13 +628,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 					sendStaticNotModifiedResponse(exchange, cacheControl);
 				}
 				else {
-					final boolean headMethod = HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod());
-					setStaticHeaders(exchange, fileName, attachment, cacheControl);
+					setStaticHeaders(exchange, attachment ? fileName : null, cacheControl);
 
 					OutputStream output = null;
 					try {
-						output = prepareStaticOutputStream(exchange, fileSize, headMethod);
-						if (!headMethod) {
+						output = prepareStaticOutputStream(exchange, fileSize);
+						if (!HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 							inputStream = getClass().getResourceAsStream(resourcePath);
 							if (inputStream == null) {
 								throw new IllegalStateException(resourcePath);
@@ -653,28 +652,28 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	private void sendStaticInMemoryResponse(final HttpExchange exchange, final boolean attachment, final String cacheControl, final String fileName, InputStream inputStream) throws IOException {
+	private void sendStaticInMemoryResponse(final HttpExchange exchange, InputStream inputStream, final String fileName, final String cacheControl) throws IOException {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		IOUtils.copy(inputStream, outputStream, BUFFER_SIZE);
 		IOUtils.closeQuietly(inputStream);
 		setCacheControlHeader(exchange, cacheControl);
-		if (attachment) {
+		if (fileName != null) {
 			setContentDispositionHeader(exchange, "attachment; filename=\"" + fileName + "\"");
 		}
 		sendResponse(exchange, outputStream.toByteArray());
 	}
 
-	private OutputStream prepareStaticOutputStream(final HttpExchange exchange, final long fileSize, final boolean headMethod) throws IOException {
+	private OutputStream prepareStaticOutputStream(final HttpExchange exchange, final long fileSize) throws IOException {
 		OutputStream output = null;
 		if (canCompressResponse(exchange)) {
 			setGzipHeader(exchange);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0); // Transfer-Encoding: chunked
-			if (!headMethod) {
+			if (!HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 				output = new GZIPOutputStream(exchange.getResponseBody(), BUFFER_SIZE);
 			}
 		}
 		else {
-			if (!headMethod) {
+			if (!HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 				exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, fileSize);
 				output = exchange.getResponseBody();
 			}
@@ -694,7 +693,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		try {
 			if (fileSize >= 0 && fileSize < IN_MEMORY_SIZE_LIMIT) {
 				inputStream = new FileInputStream(file);
-				sendStaticInMemoryResponse(exchange, attachment, cacheControl, fileName, inputStream);
+				sendStaticInMemoryResponse(exchange, inputStream, attachment ? fileName : null, cacheControl);
 			}
 			else {
 				// Streaming for large files
@@ -715,13 +714,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 					sendStaticNotModifiedResponse(exchange, cacheControl);
 				}
 				else {
-					final boolean headMethod = HttpMethod.HEAD.equalsIgnoreCase(method);
-					setStaticHeaders(exchange, fileName, attachment, cacheControl);
+					setStaticHeaders(exchange, attachment ? fileName : null, cacheControl);
 
 					OutputStream output = null;
 					try {
-						output = prepareStaticOutputStream(exchange, fileSize, headMethod);
-						if (!headMethod) {
+						output = prepareStaticOutputStream(exchange, fileSize);
+						if (!HttpMethod.HEAD.equalsIgnoreCase(method)) {
 							inputStream = new FileInputStream(file);
 							IOUtils.copy(inputStream, output, BUFFER_SIZE);
 						}
@@ -745,14 +743,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		setDateHeader(exchange);
 		setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 		setCacheControlHeader(exchange, cacheControl);
+		setContentDispositionHeader(exchange, null);
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
 	}
 
-	private void setStaticHeaders(final HttpExchange exchange, final String fileName, final boolean attachment, final String cacheControl) {
+	private void setStaticHeaders(final HttpExchange exchange, final String fileName, final String cacheControl) {
 		setCommonHeaders(exchange);
 		setCacheControlHeader(exchange, cacheControl);
 		setStatusHeader(exchange, HttpURLConnection.HTTP_OK);
-		if (attachment) {
+		if (fileName != null) {
 			setContentDispositionHeader(exchange, "attachment; filename=\"" + fileName + "\"");
 		}
 	}

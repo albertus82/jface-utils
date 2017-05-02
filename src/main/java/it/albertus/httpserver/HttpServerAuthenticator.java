@@ -39,7 +39,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 					catch (final NoSuchAlgorithmException e) {
 						throw new RuntimeException(e);
 					}
-				};
+				}
 
 				@Override
 				public MessageDigest get() {

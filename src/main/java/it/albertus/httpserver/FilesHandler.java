@@ -20,9 +20,9 @@ public class FilesHandler extends AbstractStaticHandler {
 	}
 
 	@Override
-	protected String normalizeBasePath(final String resourceBasePath) {
-		String normalizedBasePath = resourceBasePath;
-		if (!resourceBasePath.endsWith("/")) {
+	protected String normalizeBasePath(final String fileBasePath) {
+		String normalizedBasePath = fileBasePath;
+		if (!fileBasePath.endsWith("/")) {
 			normalizedBasePath += Character.toString('/');
 		}
 		return normalizedBasePath;

@@ -81,7 +81,7 @@
 			<bootclasspath path="${build.compiler.compilerArguments.bootclasspath}" />
 		</javac>
 
-		<copy todir="${build.outputTestDirectory}">
+		<copy todir="${build.outputTestDirectory}" failonerror="false">
 			<fileset dir="${build.testResourcesDirectory}" />
 		</copy>
 

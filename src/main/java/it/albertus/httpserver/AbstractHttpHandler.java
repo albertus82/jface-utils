@@ -581,7 +581,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected void sendStaticResource(final HttpExchange exchange, String resourcePath, final boolean attachment, final String cacheControl) throws IOException {
 		if (!resourcePath.startsWith("/")) {
-			resourcePath = "/" + resourcePath;
+			resourcePath = '/' + resourcePath;
 		}
 		final Resource resource = getStaticResource(resourcePath);
 		if (resource != null) {

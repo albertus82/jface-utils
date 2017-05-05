@@ -61,12 +61,7 @@ public class LightweightHttpServer {
 				try {
 					httpServer.stop(STOP_DELAY);
 					if (threadPool != null && !threadPool.isShutdown()) {
-						try {
-							threadPool.shutdown();
-						}
-						catch (final Exception e) {
-							logger.log(Level.SEVERE, e.toString(), e);
-						}
+						shutdownThreadPool();
 					}
 				}
 				catch (final Exception e) {
@@ -74,6 +69,15 @@ public class LightweightHttpServer {
 				}
 				running = false;
 			}
+		}
+	}
+
+	private void shutdownThreadPool() {
+		try {
+			threadPool.shutdown();
+		}
+		catch (final Exception e) {
+			logger.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 

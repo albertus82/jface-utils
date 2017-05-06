@@ -1,19 +1,13 @@
 package it.albertus.util;
 
 import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.Checksum;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import it.albertus.util.logging.LoggerFactory;
-
 public class CRC16Test {
-
-	private static final Logger logger = LoggerFactory.getLogger(CRC16Test.class);
 
 	private static byte[] bytes;
 
@@ -56,8 +50,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final IndexOutOfBoundsException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -65,8 +59,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final IndexOutOfBoundsException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -74,8 +68,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final IndexOutOfBoundsException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -83,8 +77,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final IndexOutOfBoundsException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -92,8 +86,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final IndexOutOfBoundsException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -101,8 +95,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final NullPointerException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -110,8 +104,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final NullPointerException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 
 		try {
@@ -119,8 +113,8 @@ public class CRC16Test {
 			Assert.assertTrue(false);
 		}
 		catch (final NullPointerException e) {
-			logger.log(Level.INFO, e.toString(), e);
 			Assert.assertNotNull(e);
+			e.printStackTrace();
 		}
 	}
 

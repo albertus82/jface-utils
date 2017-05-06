@@ -133,6 +133,8 @@ public class ConfigurationTest {
 			bw.newLine();
 			bw.write("string=Qwertyuiop Asdfghjkl Zxcvbnm");
 			bw.newLine();
+			bw.write("test.password=TestPassword12345");
+			bw.newLine();
 		}
 		finally {
 			IOUtils.closeQuietly(bw, fw);
@@ -165,6 +167,20 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	public void testConstructors() throws IOException {
+		Assert.assertNotNull(new Configuration(propertiesFile.getPath(), true));
+		Assert.assertNotNull(new Configuration(propertiesFile.getPath(), false));
+	}
+
+	@Test
+	public void testToString() {
+		final String string = configuration.toString();
+		Assert.assertNotNull(string);
+		Assert.assertNotEquals("", string);
+		Assert.assertFalse(string.contains("TestPassword12345"));
+	}
+
+	@Test
 	public void testStaticMethods() {
 		String str = Configuration.getOsSpecificConfigurationDir();
 		Assert.assertNotNull(str);
@@ -183,6 +199,12 @@ public class ConfigurationTest {
 		file = new File(str);
 		Assert.assertNotNull(file);
 		System.out.println(file);
+	}
+
+	@Test
+	public void testContains() {
+		Assert.assertTrue(configuration.contains("bigdecimal.ok"));
+		Assert.assertFalse(configuration.contains("Non-existent key"));
 	}
 
 	@Test

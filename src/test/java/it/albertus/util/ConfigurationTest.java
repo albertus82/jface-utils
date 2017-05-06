@@ -163,6 +163,27 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	public void testStaticMethods() {
+		String str = Configuration.getOsSpecificConfigurationDir();
+		Assert.assertNotNull(str);
+		File file = new File(str);
+		Assert.assertNotNull(file);
+		System.out.println(file);
+
+		str = Configuration.getOsSpecificDocumentsDir();
+		Assert.assertNotNull(str);
+		file = new File(str);
+		Assert.assertNotNull(file);
+		System.out.println(file);
+
+		str = Configuration.getOsSpecificLocalAppDataDir();
+		Assert.assertNotNull(str);
+		file = new File(str);
+		Assert.assertNotNull(file);
+		System.out.println(file);
+	}
+
+	@Test
 	public void getLong() {
 		final String type = "long";
 		Assert.assertEquals(Long.valueOf(123456789012345L), configuration.getLong(type + ".ok"));

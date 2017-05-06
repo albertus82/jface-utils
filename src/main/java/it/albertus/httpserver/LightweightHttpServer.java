@@ -7,6 +7,8 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,7 +29,6 @@ import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
-import it.albertus.httpserver.filter.GzipRequestFilter;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
@@ -96,11 +97,21 @@ public class LightweightHttpServer {
 			authenticator = null;
 		}
 
-		final Filter gzipReqFilter = new GzipRequestFilter();
+		final Filter[] filtersArray = createFilters();
+		final List<Filter> filtersList;
+		if (filtersArray != null && filtersArray.length != 0) {
+			filtersList = Arrays.asList(filtersArray);
+		}
+		else {
+			filtersList = Collections.emptyList();
+		}
+
 		for (final AbstractHttpHandler handler : createHandlers()) {
 			handler.setHttpServerConfiguration(httpServerConfiguration); // Injection
 			final HttpContext httpContext = httpServer.createContext(handler.getPath(), handler);
-			httpContext.getFilters().add(gzipReqFilter);
+			if (filtersArray != null && filtersArray.length != 0) {
+				httpContext.getFilters().addAll(filtersList);
+			}
 			if (authenticator != null) {
 				httpContext.setAuthenticator(authenticator);
 			}
@@ -108,12 +119,21 @@ public class LightweightHttpServer {
 	}
 
 	/**
-	 * Creates {@code HttpHandler} objects.
+	 * Creates {@link AbstractHttpHandler} objects.
 	 * 
 	 * @return the array containing the handlers.
 	 */
 	protected AbstractHttpHandler[] createHandlers() {
 		return httpServerConfiguration.getHandlers();
+	}
+
+	/**
+	 * Creates {@link com.sun.net.httpserver.Filter Filter} objects.
+	 * 
+	 * @return the array containing the filters.
+	 */
+	protected Filter[] createFilters() {
+		return httpServerConfiguration.getFilters();
 	}
 
 	protected class HttpServerStartThread extends Thread {

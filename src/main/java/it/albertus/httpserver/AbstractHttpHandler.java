@@ -31,8 +31,6 @@ import java.util.zip.GZIPOutputStream;
 import javax.activation.MimetypesFileTypeMap;
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.http.protocol.HttpDateGenerator;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -58,7 +56,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Charset charset = initCharset();
 
-	protected static final HttpDateGenerator httpDateGenerator = new HttpDateGenerator();
+	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {
+		@Override
+		protected HttpDateGenerator initialValue() {
+			return new HttpDateGenerator();
+		}
+	};
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
@@ -318,17 +321,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	/**
-	 * Adds {@code Content-Type} and {@code Date} headers to the provided
-	 * {@link HttpExchange} object.
-	 * 
-	 * @param exchange the {@link HttpExchange} to be modified.
-	 */
-	protected void setCommonHeaders(final HttpExchange exchange) {
-		setContentTypeHeader(exchange);
-		setDateHeader(exchange);
-	}
-
 	protected void setContentTypeHeader(final HttpExchange exchange) {
 		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
 	}
@@ -355,15 +347,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	/**
-	 * Adds {@code Date} header to the provided {@link HttpExchange} object.
-	 * 
-	 * @param exchange the {@link HttpExchange} to be modified.
-	 */
-	protected void setDateHeader(final HttpExchange exchange) {
-		exchange.getResponseHeaders().set("Date", httpDateGenerator.getCurrentDate());
-	}
-
-	/**
 	 * Adds {@code Content-Encoding: gzip} header to the provided
 	 * {@link HttpExchange} object.
 	 * 
@@ -384,7 +367,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
 		if (lastModified != null && (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod()))) {
-			exchange.getResponseHeaders().set("Last-Modified", httpDateGenerator.format(lastModified));
+			exchange.getResponseHeaders().set("Last-Modified", getHttpDateGenerator().format(lastModified));
 		}
 		else {
 			exchange.getResponseHeaders().remove("Last-Modified");
@@ -537,7 +520,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		// If-None-Match...
 		final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
-			setDateHeader(exchange);
 			setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 			setContentDispositionHeader(exchange, null);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_MODIFIED, -1);
@@ -545,7 +527,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		else {
 			setStatusHeader(exchange, statusCode);
 			if (payload != null) {
-				setCommonHeaders(exchange);
+				setContentTypeHeader(exchange);
 				final byte[] response = compressResponse(payload, exchange);
 				if (HttpMethod.HEAD.equalsIgnoreCase(method)) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
@@ -557,7 +539,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				}
 			}
 			else { // no payload
-				setDateHeader(exchange);
 				exchange.sendResponseHeaders(statusCode, -1);
 			}
 		}
@@ -738,7 +719,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	private void sendStaticNotModifiedResponse(final HttpExchange exchange, final String cacheControl) throws IOException {
-		setDateHeader(exchange);
 		setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 		setCacheControlHeader(exchange, cacheControl);
 		setContentDispositionHeader(exchange, null);
@@ -746,7 +726,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	private void setStaticHeaders(final HttpExchange exchange, final String fileName, final String cacheControl) {
-		setCommonHeaders(exchange);
+		setContentTypeHeader(exchange);
 		setCacheControlHeader(exchange, cacheControl);
 		setStatusHeader(exchange, HttpURLConnection.HTTP_OK);
 		if (fileName != null) {
@@ -877,6 +857,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			resources = initResources();
 		}
 		return resources;
+	}
+
+	public static HttpDateGenerator getHttpDateGenerator() {
+		return httpDateGenerator.get();
 	}
 
 }

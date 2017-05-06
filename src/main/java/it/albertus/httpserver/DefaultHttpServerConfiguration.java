@@ -7,6 +7,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 
+import com.sun.net.httpserver.Filter;
+
+import it.albertus.httpserver.filter.DateResponseFilter;
+import it.albertus.httpserver.filter.GzipRequestFilter;
+
 public abstract class DefaultHttpServerConfiguration implements IHttpServerConfiguration {
 
 	public static final int DEFAULT_PORT = 8080;
@@ -28,6 +33,14 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	public static final String DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO.getName();
 	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
 	public static final int DEFAULT_RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
+
+	@Override
+	public Filter[] getFilters() {
+		final Filter[] filters = new Filter[2];
+		filters[0] = new GzipRequestFilter();
+		filters[1] = new DateResponseFilter();
+		return filters;
+	}
 
 	@Override
 	public boolean isEnabled() {

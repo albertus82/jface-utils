@@ -25,7 +25,7 @@
  *
  */
 
-package org.apache.http.protocol;
+package it.albertus.httpserver;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,6 +35,13 @@ import java.util.TimeZone;
 
 /**
  * Generates a date in the format required by the HTTP protocol.
+ * 
+ * <h3><a name="synchronization">Synchronization</a></h3>
+ *
+ * <p>
+ * This class is not synchronized. It is recommended to create separate
+ * instances for each thread. If multiple threads access this class
+ * concurrently, it must be synchronized externally.
  *
  * @since 4.0
  */
@@ -51,12 +58,11 @@ public class HttpDateGenerator {
 	private String dateAsText = null;
 
 	public HttpDateGenerator() {
-		super();
 		this.dateformat = new SimpleDateFormat(PATTERN_RFC1123, Locale.US);
 		this.dateformat.setTimeZone(GMT);
 	}
 
-	public synchronized String getCurrentDate() {
+	public String getCurrentDate() {
 		final long now = System.currentTimeMillis();
 		if (now - this.dateAsLong > 1000) {
 			// Generate new date string
@@ -66,7 +72,7 @@ public class HttpDateGenerator {
 		return this.dateAsText;
 	}
 
-	public synchronized String format(final Date date) {
+	public String format(final Date date) {
 		return this.dateformat.format(date);
 	}
 

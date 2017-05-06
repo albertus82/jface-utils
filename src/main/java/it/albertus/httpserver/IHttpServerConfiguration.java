@@ -3,9 +3,13 @@ package it.albertus.httpserver;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 
+import com.sun.net.httpserver.Filter;
+
 public interface IHttpServerConfiguration {
 
 	AbstractHttpHandler[] getHandlers();
+
+	Filter[] getFilters();
 
 	boolean isEnabled();
 

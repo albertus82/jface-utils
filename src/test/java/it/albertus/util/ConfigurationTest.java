@@ -131,6 +131,8 @@ public class ConfigurationTest {
 			bw.newLine();
 			bw.write("string.empty=");
 			bw.newLine();
+			bw.write("string=Qwertyuiop Asdfghjkl Zxcvbnm");
+			bw.newLine();
 		}
 		finally {
 			IOUtils.closeQuietly(bw, fw);
@@ -185,6 +187,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getLong() {
+		Assert.assertNull(configuration.getLong("Non-existent key"));
 		final String type = "long";
 		Assert.assertEquals(Long.valueOf(123456789012345L), configuration.getLong(type + ".ok"));
 		Assert.assertEquals(Long.valueOf(246801357924680L), Long.valueOf(configuration.getLong(type + ".null.1", 246801357924680L)));
@@ -205,6 +208,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getInt() {
+		Assert.assertNull(configuration.getInt("Non-existent key"));
 		final String type = "int";
 		Assert.assertEquals(Integer.valueOf(-1234567890), configuration.getInt(type + ".ok"));
 		Assert.assertEquals(Integer.valueOf(24680), Integer.valueOf(configuration.getInt(type + ".null.1", 24680)));
@@ -225,6 +229,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getShort() {
+		Assert.assertNull(configuration.getShort("Non-existent key"));
 		final String type = "short";
 		Assert.assertEquals(Short.valueOf((short) -12345), configuration.getShort(type + ".ok"));
 		Assert.assertEquals(Short.valueOf((short) 13579), Short.valueOf(configuration.getShort(type + ".null.1", (short) 13579)));
@@ -245,6 +250,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getByte() {
+		Assert.assertNull(configuration.getByte("Non-existent key"));
 		final String type = "byte";
 		Assert.assertEquals(Byte.valueOf((byte) 127), configuration.getByte(type + ".ok"));
 		Assert.assertEquals(Byte.valueOf((byte) -100), Byte.valueOf(configuration.getByte(type + ".null.1", (byte) -100)));
@@ -265,6 +271,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getFloat() {
+		Assert.assertNull(configuration.getFloat("Non-existent key"));
 		final String type = "float";
 		Assert.assertEquals(Float.valueOf(123.456f), configuration.getFloat(type + ".ok"));
 		Assert.assertEquals(Float.valueOf(-246.80135f), Float.valueOf(configuration.getFloat(type + ".null.1", -246.80135f)));
@@ -285,6 +292,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getDouble() {
+		Assert.assertNull(configuration.getDouble("Non-existent key"));
 		final String type = "double";
 		Assert.assertEquals(Double.valueOf(1e38), configuration.getDouble(type + ".ok"));
 		Assert.assertEquals(Double.valueOf(-13579.24680), Double.valueOf(configuration.getDouble(type + ".null.1", -13579.24680)));
@@ -305,6 +313,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getBigDecimal() {
+		Assert.assertNull(configuration.getBigDecimal("Non-existent key"));
 		final String type = "bigdecimal";
 		Assert.assertEquals(new BigDecimal("12345678901234567890.24680135792468013579"), configuration.getBigDecimal(type + ".ok"));
 		Assert.assertEquals(new BigDecimal("1122334455.6677889900"), configuration.getBigDecimal(type + ".null.1", new BigDecimal("1122334455.6677889900")));
@@ -325,6 +334,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getBigInteger() {
+		Assert.assertNull(configuration.getBigInteger("Non-existent key"));
 		final String type = "biginteger";
 		Assert.assertEquals(new BigInteger("123456789012345678902468013579"), configuration.getBigInteger(type + ".ok"));
 		Assert.assertEquals(new BigInteger("11223344556677889900123456789012345678902468013579"), configuration.getBigInteger(type + ".null.1", new BigInteger("11223344556677889900123456789012345678902468013579")));
@@ -345,6 +355,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getChar() {
+		Assert.assertNull(configuration.getChar("Non-existent key"));
 		final String type = "char";
 		Assert.assertEquals(Character.valueOf('X'), configuration.getChar(type + ".ok.1"));
 		Assert.assertEquals(Character.valueOf(' '), configuration.getChar(type + ".ok.2"));
@@ -366,6 +377,7 @@ public class ConfigurationTest {
 
 	@Test
 	public void getBoolean() {
+		Assert.assertNull(configuration.getBoolean("Non-existent key"));
 		final String type = "boolean";
 		for (int i = 1; i <= 5; i++) {
 			Assert.assertTrue(configuration.getBoolean(type + ".true." + i));
@@ -378,12 +390,20 @@ public class ConfigurationTest {
 
 	@Test
 	public void getString() {
+		Assert.assertNull(configuration.getString("Non-existent key"));
 		Assert.assertEquals("", configuration.getString("string.empty"));
 		Assert.assertEquals("", configuration.getString("string.empty", ""));
 		Assert.assertEquals("", configuration.getString("string.empty", true));
 		Assert.assertEquals("", configuration.getString("string.null", true));
 		Assert.assertNull(configuration.getString("string.null", false));
 		Assert.assertNull(configuration.getString("string.null"));
+	}
+
+	@Test
+	public void getCharArray() {
+		Assert.assertNull(configuration.getCharArray("Non-existent key"));
+		Assert.assertArrayEquals(new char[] {}, configuration.getCharArray("string.empty"));
+		Assert.assertArrayEquals("Qwertyuiop Asdfghjkl Zxcvbnm".toCharArray(), configuration.getCharArray("string"));
 	}
 
 	@AfterClass

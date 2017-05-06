@@ -25,6 +25,8 @@ public class Configuration extends PropertiesConfiguration {
 	private static String osSpecificConfigurationDir; // Cache
 	private static String osSpecificLocalAppDataDir; // Cache
 
+	static final String PASSWORD_PLACEHOLDER = "********";
+
 	public Configuration(final String fileName) throws IOException {
 		super(fileName);
 	}
@@ -394,7 +396,7 @@ public class Configuration extends PropertiesConfiguration {
 	public String toString() {
 		final Map<String, String> properties = new TreeMap<String, String>();
 		for (final Object key : getProperties().keySet()) {
-			properties.put(key.toString(), key.toString().toLowerCase().contains("password") ? "********" : getProperties().getProperty(key.toString()));
+			properties.put(key.toString(), key.toString().toLowerCase().contains("password") ? PASSWORD_PLACEHOLDER : getProperties().getProperty(key.toString()));
 		}
 		return properties.toString();
 	}

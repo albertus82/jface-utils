@@ -178,6 +178,7 @@ public class ConfigurationTest {
 		Assert.assertNotNull(string);
 		Assert.assertNotEquals("", string);
 		Assert.assertFalse(string.contains("TestPassword12345"));
+		Assert.assertTrue(string.contains("test.password=" + Configuration.PASSWORD_PLACEHOLDER));
 	}
 
 	@Test
@@ -401,6 +402,10 @@ public class ConfigurationTest {
 	@Test
 	public void getBoolean() {
 		Assert.assertNull(configuration.getBoolean("Non-existent key"));
+		Assert.assertTrue(configuration.getBoolean("Non-existent key", true));
+		Assert.assertFalse(configuration.getBoolean("Non-existent key", false));
+		Assert.assertFalse(configuration.getBoolean("double.ok")); // invalid boolean string -> false
+		Assert.assertFalse(configuration.getBoolean("double.ok", true)); // invalid boolean string -> false
 		final String type = "boolean";
 		for (int i = 1; i <= 5; i++) {
 			Assert.assertTrue(configuration.getBoolean(type + ".true." + i));

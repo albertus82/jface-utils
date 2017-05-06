@@ -43,6 +43,7 @@ public class OutputStreamTest {
 	@Test
 	public void testCRC16OutputStream() throws IOException {
 		CRC16OutputStream cos = new CRC16OutputStream();
+		Assert.assertTrue(cos instanceof ChecksumOutputStream<?>);
 		Assert.assertEquals("0000", cos.toString());
 
 		final ByteArrayInputStream bais = new ByteArrayInputStream(originalString.getBytes(CHARSET));
@@ -68,12 +69,18 @@ public class OutputStreamTest {
 		Assert.assertEquals(expectedCrc16, cos.toString());
 
 		cos.reset();
+		cos.write(originalString.getBytes(CHARSET));
+		Assert.assertEquals(expectedCrc16, cos.toString());
+		Assert.assertEquals(expectedCrc16, cos.toString());
+
+		cos.reset();
 		Assert.assertEquals("0000", cos.toString());
 	}
 
 	@Test
 	public void testCRC32OutputStream() throws IOException {
 		CRC32OutputStream cos = new CRC32OutputStream();
+		Assert.assertTrue(cos instanceof ChecksumOutputStream<?>);
 		Assert.assertEquals("00000000", cos.toString());
 
 		final ByteArrayInputStream bais = new ByteArrayInputStream(originalString.getBytes(CHARSET));
@@ -95,6 +102,11 @@ public class OutputStreamTest {
 		finally {
 			IOUtils.closeQuietly(cos, fis);
 		}
+		Assert.assertEquals(expectedCrc32, cos.toString());
+		Assert.assertEquals(expectedCrc32, cos.toString());
+
+		cos.reset();
+		cos.write(originalString.getBytes(CHARSET));
 		Assert.assertEquals(expectedCrc32, cos.toString());
 		Assert.assertEquals(expectedCrc32, cos.toString());
 

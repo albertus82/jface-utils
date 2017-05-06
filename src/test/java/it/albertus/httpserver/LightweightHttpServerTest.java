@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -31,6 +32,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.httpserver.annotation.Path;
@@ -49,6 +51,14 @@ public class LightweightHttpServerTest {
 
 	@Path(HANDLER_PATH_PARAMS)
 	private static class RequestParameterHandler extends AbstractHttpHandler {
+		@Override
+		protected void service(HttpExchange exchange) throws IOException, HttpException {
+			for (final Filter filter : exchange.getHttpContext().getFilters()) {
+				logger.fine(filter.description());
+			}
+			super.service(exchange);
+		}
+
 		@Override
 		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 			logger.log(Level.INFO, exchange.getRequestHeaders().entrySet().toString());
@@ -306,6 +316,60 @@ public class LightweightHttpServerTest {
 		}
 		connection.disconnect();
 		Assert.assertEquals(queryString, os.toString());
+	}
+
+	@Test
+	public void makePostRequestWithGzippedBody() throws IOException, InterruptedException {
+		final Map<String, String[]> params = new TreeMap<String, String[]>(); // sorted
+		params.put("param1", new String[] { "qwertyuiop" });
+		params.put("param2", new String[] { "asdfghjkl" });
+		params.put("param3", new String[] { "zxcvbnm" });
+		params.put("multi", new String[] { "value1", "value2", "value3" });
+		final String queryString = buildQueryString(params);
+
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		GZIPOutputStream gzos = null;
+		try {
+			gzos = new GZIPOutputStream(baos);
+			gzos.write(queryString.getBytes());
+		}
+		finally {
+			gzos.close();
+		}
+		final byte[] compressedQueryString = baos.toByteArray();
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_PARAMS);
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.setRequestMethod(HttpMethod.POST.toUpperCase());
+		connection.setDoOutput(true);
+		connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.addRequestProperty("Content-Length", Integer.toString(compressedQueryString.length - 1));
+		connection.addRequestProperty("Content-Encoding", "gzip");
+		connection.getOutputStream().write(compressedQueryString);
+		logger.log(Level.INFO, "Compressed bytes POSTed: ===>{0}<=== ({1})", new String[] { new String(compressedQueryString), DatatypeConverter.printHexBinary(compressedQueryString) });
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNull(connection.getHeaderField("Etag"));
+		Assert.assertEquals(queryString.length(), connection.getContentLength());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, 256);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(queryString, os.toString());
+		logger.log(Level.INFO, "Bytes received: ===>{0}<===", os);
 	}
 
 	@Test

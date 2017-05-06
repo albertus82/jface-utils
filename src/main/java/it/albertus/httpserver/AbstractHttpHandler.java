@@ -214,7 +214,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			@Override
 			public void write(final int b) {/* Dummy */}
 		};
-		exchange.setStreams(exchange.getRequestBody(), dummy);
+		exchange.setStreams(null, dummy);
 		try {
 			doGet(exchange);
 		}

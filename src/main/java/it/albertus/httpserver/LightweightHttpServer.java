@@ -20,12 +20,14 @@ import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 
 import com.sun.net.httpserver.Authenticator;
+import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
+import it.albertus.httpserver.filter.GzipRequestFilter;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
@@ -94,9 +96,11 @@ public class LightweightHttpServer {
 			authenticator = null;
 		}
 
+		final Filter gzipReqFilter = new GzipRequestFilter();
 		for (final AbstractHttpHandler handler : createHandlers()) {
 			handler.setHttpServerConfiguration(httpServerConfiguration); // Injection
 			final HttpContext httpContext = httpServer.createContext(handler.getPath(), handler);
+			httpContext.getFilters().add(gzipReqFilter);
 			if (authenticator != null) {
 				httpContext.setAuthenticator(authenticator);
 			}

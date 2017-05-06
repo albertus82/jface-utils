@@ -49,7 +49,7 @@ public class CRC16Test {
 			crc.update(bytes, -1, -1);
 			Assert.assertTrue(false);
 		}
-		catch (final IndexOutOfBoundsException e) {
+		catch (final ArrayIndexOutOfBoundsException e) {
 			Assert.assertNotNull(e);
 			e.printStackTrace();
 		}
@@ -58,7 +58,7 @@ public class CRC16Test {
 			crc.update(bytes, -5, 3);
 			Assert.assertTrue(false);
 		}
-		catch (final IndexOutOfBoundsException e) {
+		catch (final ArrayIndexOutOfBoundsException e) {
 			Assert.assertNotNull(e);
 			e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class CRC16Test {
 			crc.update(bytes, 0, -2);
 			Assert.assertTrue(false);
 		}
-		catch (final IndexOutOfBoundsException e) {
+		catch (final ArrayIndexOutOfBoundsException e) {
 			Assert.assertNotNull(e);
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class CRC16Test {
 			crc.update(bytes, 8, 3);
 			Assert.assertTrue(false);
 		}
-		catch (final IndexOutOfBoundsException e) {
+		catch (final ArrayIndexOutOfBoundsException e) {
 			Assert.assertNotNull(e);
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ public class CRC16Test {
 			crc.update(bytes, 10, 1);
 			Assert.assertTrue(false);
 		}
-		catch (final IndexOutOfBoundsException e) {
+		catch (final ArrayIndexOutOfBoundsException e) {
 			Assert.assertNotNull(e);
 			e.printStackTrace();
 		}

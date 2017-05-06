@@ -202,9 +202,10 @@ public class ConfigurationTest {
 	}
 
 	@Test
-	public void testContains() {
+	public void testOtherMethods() {
 		Assert.assertTrue(configuration.contains("bigdecimal.ok"));
 		Assert.assertFalse(configuration.contains("Non-existent key"));
+		Assert.assertNotNull(configuration.getProperties());
 	}
 
 	@Test

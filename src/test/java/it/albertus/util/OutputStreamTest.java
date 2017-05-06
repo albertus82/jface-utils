@@ -71,6 +71,11 @@ public class OutputStreamTest {
 		cos.reset();
 		cos.write(originalString.getBytes(CHARSET));
 		Assert.assertEquals(expectedCrc16, cos.toString());
+
+		cos.reset();
+		for (final byte b : originalString.getBytes(CHARSET)) {
+			cos.write(b);
+		}
 		Assert.assertEquals(expectedCrc16, cos.toString());
 
 		cos.reset();
@@ -108,6 +113,11 @@ public class OutputStreamTest {
 		cos.reset();
 		cos.write(originalString.getBytes(CHARSET));
 		Assert.assertEquals(expectedCrc32, cos.toString());
+
+		cos.reset();
+		for (final byte b : originalString.getBytes(CHARSET)) {
+			cos.write(b);
+		}
 		Assert.assertEquals(expectedCrc32, cos.toString());
 
 		cos.reset();

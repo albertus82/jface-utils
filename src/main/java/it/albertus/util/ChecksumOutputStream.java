@@ -18,14 +18,16 @@ import java.util.zip.Checksum;
 public abstract class ChecksumOutputStream<T extends Checksum> extends OutputStream {
 
 	protected final T checksum;
+	protected final int bits;
 
 	/**
 	 * Creates a new ChecksumOutputStream object.
 	 * 
 	 * @param checksum the checksum object associated with this stream instance.
 	 */
-	public ChecksumOutputStream(final T checksum) {
+	public ChecksumOutputStream(final T checksum, final int bits) {
 		this.checksum = checksum;
+		this.bits = bits;
 	}
 
 	/**
@@ -76,7 +78,7 @@ public abstract class ChecksumOutputStream<T extends Checksum> extends OutputStr
 	 */
 	@Override
 	public String toString() {
-		return Long.toHexString(checksum.getValue());
+		return String.format("%0" + bits / 4 + "x", checksum.getValue());
 	}
 
 }

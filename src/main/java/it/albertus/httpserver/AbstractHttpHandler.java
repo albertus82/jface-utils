@@ -62,8 +62,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
-	protected static final int IN_MEMORY_SIZE_LIMIT = 512 * 1024; // 512 KiB
-
 	protected static final int BUFFER_SIZE = 4096; // 4 KiB
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
@@ -598,7 +596,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final long fileSize = resource.getSize();
 		InputStream inputStream = null;
 		try {
-			if (fileSize >= 0 && fileSize < IN_MEMORY_SIZE_LIMIT) {
+			if (fileSize >= 0 && fileSize < httpServerConfiguration.getResponseBufferLimit()) {
 				// In memory for small files
 				inputStream = getClass().getResourceAsStream(resourcePath);
 				if (inputStream == null) {
@@ -691,7 +689,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final long fileSize = file.length();
 		InputStream inputStream = null;
 		try {
-			if (fileSize >= 0 && fileSize < IN_MEMORY_SIZE_LIMIT) {
+			if (fileSize >= 0 && fileSize < httpServerConfiguration.getResponseBufferLimit()) {
 				inputStream = new FileInputStream(file);
 				sendStaticInMemoryResponse(exchange, inputStream, attachment ? fileName : null, cacheControl);
 			}

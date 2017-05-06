@@ -38,6 +38,7 @@ import com.sun.net.httpserver.HttpExchange;
 import it.albertus.httpserver.annotation.Path;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
+import it.albertus.util.logging.LoggingSupport;
 
 public class LightweightHttpServerTest {
 
@@ -123,6 +124,7 @@ public class LightweightHttpServerTest {
 
 	@BeforeClass
 	public static void init() throws InterruptedException, IOException {
+		LoggingSupport.setRootLevel(Level.FINE);
 		certificate = File.createTempFile("cert-", ".jks");
 		logger.info(certificate.toString());
 		FileOutputStream fos = null;
@@ -1280,6 +1282,61 @@ public class LightweightHttpServerTest {
 		}
 		connection.disconnect();
 		Assert.assertTrue(os.toString().isEmpty());
+	}
+
+	@Test
+	public void makeOptionsRequest() throws IOException, InterruptedException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_PARAMS);
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.setRequestMethod(HttpMethod.OPTIONS.toUpperCase());
+		Assert.assertEquals(200, connection.getResponseCode());
+		//		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		final String allow = connection.getHeaderField("Allow").toLowerCase();
+		Assert.assertTrue(allow.contains(HttpMethod.GET) && allow.contains(HttpMethod.HEAD) && allow.contains(HttpMethod.POST) && allow.contains(HttpMethod.TRACE) && allow.contains(HttpMethod.OPTIONS));
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, loremSmallTxt.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(0, os.size());
+	}
+
+	@Test
+	public void makeTraceRequest() throws IOException, InterruptedException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + HANDLER_PATH_PARAMS);
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.setRequestMethod(HttpMethod.TRACE.toUpperCase());
+		Assert.assertEquals(200, connection.getResponseCode());
+		//		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, loremSmallTxt.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertNotEquals(0, os.size());
+		logger.info(os.toString());
 	}
 
 	@After

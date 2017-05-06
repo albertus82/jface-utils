@@ -73,4 +73,6 @@ public interface IHttpServerConfiguration {
 
 	boolean isCompressionEnabled();
 
+	int getResponseBufferLimit();
+
 }

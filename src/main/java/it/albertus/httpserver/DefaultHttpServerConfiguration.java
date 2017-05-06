@@ -27,6 +27,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	public static final long DEFAULT_MAX_RSP_TIME = 60L * 60 * 24; // seconds
 	public static final String DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO.getName();
 	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
+	public static final int DEFAULT_RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
 
 	@Override
 	public boolean isEnabled() {
@@ -169,6 +170,11 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	@Override
 	public boolean isCompressionEnabled() {
 		return DEFAULT_COMPRESSION_ENABLED;
+	}
+
+	@Override
+	public int getResponseBufferLimit() {
+		return DEFAULT_RESPONSE_BUFFER_LIMIT;
 	}
 
 	@Override

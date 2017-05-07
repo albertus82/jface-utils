@@ -37,13 +37,11 @@ import java.util.TimeZone;
  * Generates a date in the format required by the HTTP protocol.
  * 
  * <h3><a name="synchronization">Synchronization</a></h3>
- *
+ * 
  * <p>
  * This class is not synchronized. It is recommended to create separate
  * instances for each thread. If multiple threads access this class
  * concurrently, it must be synchronized externally.
- *
- * @since 4.0
  */
 public class HttpDateGenerator {
 

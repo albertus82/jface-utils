@@ -16,7 +16,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	public static final int DEFAULT_PORT = 8080;
 	public static final boolean DEFAULT_ENABLED = true;
-	public static final boolean DEFAULT_AUTHENTICATION = false;
+	public static final boolean DEFAULT_AUTHENTICATION_REQUIRED = false;
 	public static final String DEFAULT_PASSWORD_HASH_ALGORITHM = "SHA-256";
 	public static final int DEFAULT_AUTHENTICATION_FAIL_DELAY = 3000;
 	public static final String DEFAULT_AUTHENTICATION_FAILURE_LOGGING_LEVEL = Level.FINE.getName();
@@ -49,7 +49,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	@Override
 	public boolean isAuthenticationRequired() {
-		return DEFAULT_AUTHENTICATION;
+		return DEFAULT_AUTHENTICATION_REQUIRED;
 	}
 
 	@Override

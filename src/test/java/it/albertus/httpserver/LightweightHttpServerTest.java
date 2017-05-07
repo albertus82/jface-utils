@@ -179,7 +179,9 @@ public class LightweightHttpServerTest {
 				h5.setAttachment(true);
 				h5.setCacheControl("max-age=86400");
 
-				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5 };
+				final ResourcesHandler h6 = new ResourcesHandler((Package) null, "/root/");
+
+				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5, h6 };
 			}
 
 			@Override
@@ -859,6 +861,38 @@ public class LightweightHttpServerTest {
 		Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
 		Assert.assertEquals("max-age=86400", connection.getHeaderField("cache-control"));
 		Assert.assertEquals("attachment; filename=\"lorem-sm.txt\"", connection.getHeaderField("Content-disposition"));
+		InputStream is = null;
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, loremSmallTxt.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(loremSmallTxt, os.toString());
+	}
+
+	@Test
+	public void makeRequest200RootSmallStaticResource() throws InterruptedException, IOException {
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		final URL url = new URL("http://localhost:" + port + "/root/root-res.txt");
+		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		connection.addRequestProperty("If-None-Match", "1qaz2wsx3edc"); // invalid Etag
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
+		Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		Assert.assertNull(connection.getHeaderField("Transfer-Encoding")); // not chunked
+		Assert.assertNull(connection.getHeaderField("cache-control"));
+		Assert.assertNull(connection.getHeaderField("Content-disposition"));
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {

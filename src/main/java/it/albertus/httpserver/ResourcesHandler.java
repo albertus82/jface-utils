@@ -12,7 +12,7 @@ public class ResourcesHandler extends AbstractStaticHandler {
 	}
 
 	public ResourcesHandler(final Package resourceBasePackage, final String urlBasePath) {
-		this(resourceBasePackage.getName().replace('.', '/'), urlBasePath);
+		this(resourceBasePackage != null ? resourceBasePackage.getName().replace('.', '/') : "/", urlBasePath);
 	}
 
 	public ResourcesHandler() {/* Default constructor */}

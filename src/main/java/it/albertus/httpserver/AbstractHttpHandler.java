@@ -180,6 +180,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		else if (HttpMethod.PUT.equalsIgnoreCase(exchange.getRequestMethod())) {
 			doPut(exchange);
 		}
+		else if (HttpMethod.PATCH.equalsIgnoreCase(exchange.getRequestMethod())) {
+			doPatch(exchange);
+		}
 		else if (HttpMethod.DELETE.equalsIgnoreCase(exchange.getRequestMethod())) {
 			doDelete(exchange);
 		}
@@ -286,6 +289,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void doPut(final HttpExchange exchange) throws IOException, HttpException {
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+	}
+
+	protected void doPatch(final HttpExchange exchange) throws IOException, HttpException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
 	}
 

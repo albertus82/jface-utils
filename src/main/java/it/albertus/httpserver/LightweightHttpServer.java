@@ -53,8 +53,12 @@ public class LightweightHttpServer {
 	}
 
 	public void start() {
+		start(true);
+	}
+
+	public void start(final boolean daemon) {
 		if (!running && httpServerConfiguration.isEnabled()) {
-			new HttpServerStartThread().start();
+			new HttpServerStartThread(daemon).start();
 		}
 	}
 
@@ -138,9 +142,9 @@ public class LightweightHttpServer {
 
 	protected class HttpServerStartThread extends Thread {
 
-		public HttpServerStartThread() {
+		public HttpServerStartThread(final boolean daemon) {
 			this.setName("httpServerStartThread");
-			this.setDaemon(true);
+			this.setDaemon(daemon);
 		}
 
 		@Override

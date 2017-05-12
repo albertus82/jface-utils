@@ -1,6 +1,5 @@
 package it.albertus.httpserver;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -16,7 +15,7 @@ public class FilesHandler extends AbstractStaticHandler {
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {
-		sendStaticFile(exchange, new File(getBasePath() + getPathInfo(exchange)), isAttachment(), getCacheControl());
+		sendStaticFile(exchange, getBasePath() + getPathInfo(exchange), isAttachment(), getCacheControl());
 	}
 
 	@Override

@@ -430,8 +430,14 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		finally {
 			IOUtils.closeQuietly(gzos, baos);
 		}
-		setGzipHeader(exchange);
-		return baos.toByteArray();
+		final byte[] compressed = baos.toByteArray();
+		if (compressed.length < uncompressed.length) {
+			setGzipHeader(exchange);
+			return compressed;
+		}
+		else {
+			return uncompressed;
+		}
 	}
 
 	protected String generateEtag(final byte[] payload) {
@@ -562,7 +568,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected String getPathInfo(final HttpExchange exchange) {
-		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().toString(), getPath()), "?");
+		return StringUtils.substringBefore(StringUtils.substringAfter(exchange.getRequestURI().getPath(), getPath()), "?");
 	}
 
 	protected void sendStaticResource(final HttpExchange exchange, String resourcePath, final boolean attachment, final String cacheControl) throws IOException {
@@ -671,8 +677,9 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return output;
 	}
 
-	protected void sendStaticFile(final HttpExchange exchange, final File file, final boolean attachment, final String cacheControl) throws IOException {
+	protected void sendStaticFile(final HttpExchange exchange, final String pathName, final boolean attachment, final String cacheControl) throws IOException {
 		final String method = exchange.getRequestMethod();
+		final File file = new File(pathName);
 		final String fileName = file.getName();
 		final long fileSize = file.length();
 		InputStream inputStream = null;

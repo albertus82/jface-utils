@@ -15,7 +15,7 @@ public class FilesHandler extends AbstractStaticHandler {
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {
-		sendStaticFile(exchange, getBasePath() + getPathInfo(exchange), isAttachment(), getCacheControl());
+		sendStaticFile(exchange, getBasePath(), getPathInfo(exchange), isAttachment(), getCacheControl());
 	}
 
 	@Override

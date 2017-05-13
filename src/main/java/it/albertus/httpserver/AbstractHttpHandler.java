@@ -677,9 +677,24 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return output;
 	}
 
-	protected void sendStaticFile(final HttpExchange exchange, final String pathName, final boolean attachment, final String cacheControl) throws IOException {
+	protected void sendStaticFile(final HttpExchange exchange, final String basePath, final String pathInfo, final boolean attachment, final String cacheControl) throws IOException {
+		final File file = new File(basePath + pathInfo);
+		try {
+			if (file.getCanonicalPath().startsWith(new File(basePath).getCanonicalPath())) {
+				doSendStaticFile(exchange, file, attachment, cacheControl);
+			}
+			else {
+				sendNotFound(exchange); // directory traversal not allowed
+			}
+		}
+		catch (final IOException e) {
+			logger.log(Level.WARNING, e.toString(), e);
+			sendNotFound(exchange);
+		}
+	}
+
+	protected void doSendStaticFile(final HttpExchange exchange, final File file, final boolean attachment, final String cacheControl) throws IOException {
 		final String method = exchange.getRequestMethod();
-		final File file = new File(pathName);
 		final String fileName = file.getName();
 		final long fileSize = file.length();
 		InputStream inputStream = null;

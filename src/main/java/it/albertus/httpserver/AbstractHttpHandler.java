@@ -65,7 +65,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
-	protected static final int BUFFER_SIZE = 4096; // 4 KiB
+	protected static final int BUFFER_SIZE = 8192; // 8 KiB
 
 	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
 
@@ -679,18 +679,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected void sendStaticFile(final HttpExchange exchange, final String basePath, final String pathInfo, final boolean attachment, final String cacheControl) throws IOException {
 		final File file = new File(basePath + pathInfo);
-		try {
-			if (file.getCanonicalPath().startsWith(new File(basePath).getCanonicalPath())) {
-				doSendStaticFile(exchange, file, attachment, cacheControl);
-			}
-			else {
-				sendNotFound(exchange);
-				logger.log(Level.WARNING, JFaceMessages.get("err.httpserver.traversal", file, exchange.getRemoteAddress()));
-			}
+		if (file.getCanonicalPath().startsWith(new File(basePath).getCanonicalPath())) {
+			doSendStaticFile(exchange, file, attachment, cacheControl);
 		}
-		catch (final IOException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+		else {
 			sendNotFound(exchange);
+			logger.log(Level.WARNING, JFaceMessages.get("err.httpserver.traversal", file, exchange.getRemoteAddress()));
 		}
 	}
 

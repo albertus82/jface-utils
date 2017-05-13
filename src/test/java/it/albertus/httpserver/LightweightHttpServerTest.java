@@ -2,6 +2,7 @@ package it.albertus.httpserver;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -181,7 +182,9 @@ public class LightweightHttpServerTest {
 
 				final ResourcesHandler h6 = new ResourcesHandler((Package) null, "/root/");
 
-				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5, h6 };
+				final FilesHandler h7 = new FilesHandler(certificate.getParentFile().getPath() + "/backtracking", "/backtracking/");
+
+				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5, h6, h7 };
 			}
 
 			@Override
@@ -1371,6 +1374,109 @@ public class LightweightHttpServerTest {
 		connection.disconnect();
 		Assert.assertNotEquals(0, os.size());
 		logger.info(os.toString());
+	}
+
+	@Test
+	public void testBacktrackingProtection() throws InterruptedException, IOException {
+		InputStream tis = null;
+		OutputStream tos = null;
+		File allowed = null;
+		try {
+			File subDir = new File(certificate.getParentFile().getPath() + "/backtracking");
+			subDir.mkdir();
+			tis = getClass().getResourceAsStream("lorem-sm.txt");
+			allowed = new File(subDir + "/allowed.txt");
+			tos = new FileOutputStream(allowed);
+			IOUtils.copy(tis, tos, 1024);
+		}
+		finally {
+			IOUtils.closeQuietly(tos, tis);
+		}
+
+		File denied = null;
+		try {
+			tis = getClass().getResourceAsStream("lorem-sm.txt");
+			denied = File.createTempFile("denied", ".txt");
+			tos = new FileOutputStream(denied);
+			IOUtils.copy(tis, tos, 1024);
+		}
+		finally {
+			IOUtils.closeQuietly(tos, tis);
+		}
+
+		authenticationRequired = false;
+		sslEnabled = false;
+		startServer();
+		URL url = new URL("http://localhost:" + port + "/backtracking/allowed.txt");
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(200, connection.getResponseCode());
+		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
+		Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
+		Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
+		InputStream is = null;
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			IOUtils.copy(is, os, loremSmallTxt.length() / 3);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+		Assert.assertEquals(loremSmallTxt, os.toString());
+
+		url = new URL("http://localhost:" + port + "/backtracking/..%2F/" + denied.getName());
+		connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(404, connection.getResponseCode());
+		Assert.assertEquals("404 " + AbstractHttpHandler.getHttpStatusCodes().get(404), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		is = null;
+		os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			Assert.assertFalse(true);
+		}
+		catch (final FileNotFoundException e) {
+			Assert.assertNotNull(e);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+
+		url = new URL("http://localhost:" + port + "/backtracking/../" + denied.getName());
+		connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(20000);
+		connection.setReadTimeout(20000);
+		Assert.assertEquals(404, connection.getResponseCode());
+		Assert.assertEquals("404 " + AbstractHttpHandler.getHttpStatusCodes().get(404), connection.getHeaderField("Status"));
+		Assert.assertNotEquals(0, connection.getDate());
+		is = null;
+		os = new ByteArrayOutputStream();
+		try {
+			is = connection.getInputStream();
+			Assert.assertFalse(true);
+		}
+		catch (final FileNotFoundException e) {
+			Assert.assertNotNull(e);
+		}
+		finally {
+			IOUtils.closeQuietly(os, is);
+		}
+		connection.disconnect();
+
+		if (!allowed.delete()) {
+			allowed.deleteOnExit();
+		}
+		if (!denied.delete()) {
+			denied.deleteOnExit();
+		}
 	}
 
 	@After

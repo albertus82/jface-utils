@@ -221,6 +221,7 @@ public class LightweightHttpServer {
 
 					httpServer.start();
 					running = true;
+					logger.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", port));
 				}
 			}
 			catch (final BindException e) {

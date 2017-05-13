@@ -584,7 +584,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	protected void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final Resource resource, final boolean attachment, final String cacheControl) throws IOException {
+	private void doSendStaticResource(final HttpExchange exchange, final String resourcePath, final Resource resource, final boolean attachment, final String cacheControl) throws IOException {
 		final String method = exchange.getRequestMethod();
 		final String fileName = new File(resource.getName()).getName();
 		final long fileSize = resource.getSize();
@@ -684,7 +684,8 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				doSendStaticFile(exchange, file, attachment, cacheControl);
 			}
 			else {
-				sendNotFound(exchange); // directory traversal not allowed
+				sendNotFound(exchange);
+				logger.log(Level.WARNING, JFaceMessages.get("err.httpserver.traversal", file, exchange.getRemoteAddress()));
 			}
 		}
 		catch (final IOException e) {
@@ -693,7 +694,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	}
 
-	protected void doSendStaticFile(final HttpExchange exchange, final File file, final boolean attachment, final String cacheControl) throws IOException {
+	private void doSendStaticFile(final HttpExchange exchange, final File file, final boolean attachment, final String cacheControl) throws IOException {
 		final String method = exchange.getRequestMethod();
 		final String fileName = file.getName();
 		final long fileSize = file.length();

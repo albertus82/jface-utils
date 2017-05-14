@@ -122,6 +122,7 @@ public class LightweightHttpServerTest {
 		if (!certificate.delete()) {
 			certificate.deleteOnExit();
 		}
+		LoggingSupport.setRootLevel(Level.INFO);
 	}
 
 	@BeforeClass

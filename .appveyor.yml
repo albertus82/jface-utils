@@ -3,41 +3,33 @@ version: '{build}'
 clone_depth: 50
 
 environment:
-  JRE6_HOME: $(ProgramFiles)\Java\jdk1.6.0\jre
-  ANT_VERSION: 1.10.1
+  MVN_VERSION: 3.5.0
 
   matrix:
     - platform: x86
-      JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.6.0
-      ANT_VERSION: 1.9.9
-    - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
-      ANT_VERSION: 1.9.9
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
     - platform: x64
-      JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-      ANT_VERSION: 1.9.9
-    - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
-      ANT_VERSION: 1.9.9
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
 
 cache:
-  - $(ChocolateyInstall)\lib\ant -> .appveyor.yml
+  - $(ChocolateyInstall)\lib -> .appveyor.yml
+  - $(ChocolateyInstall)\bin -> .appveyor.yml
 
 install:
-  - ps: if (!(Test-Path -Path ($env:ChocolateyInstall + '\lib\ant\apache-ant-' + $env:ANT_VERSION))) { cinst ant -i --version $env:ANT_VERSION }
-  - cmd: PATH %ChocolateyInstall%\lib\ant\apache-ant-%ANT_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
+  - ps: cinst maven -i --version $env:MVN_VERSION
+  - cmd: PATH %ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%PATH%
 
 before_build:
   - cmd: java -Xmx32m -version
   - cmd: javac -J-Xmx32m -version
-  - cmd: ant -version
+  - cmd: mvn -version
 
 build_script:
-  - ant all
+  - mvn clean install
 
 after_build:
   - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.*' }

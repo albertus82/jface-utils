@@ -7,9 +7,17 @@ environment:
 
   matrix:
     - platform: x86
+      JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.6.0
+      MVN_VERSION: 3.2.5
+      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
+    - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
+    - platform: x64
+      JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
+      MVN_VERSION: 3.2.5
+      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
     - platform: x64
@@ -20,8 +28,8 @@ cache:
   - $(ChocolateyInstall)\bin -> .appveyor.yml
 
 install:
-  - ps: cinst maven -i --version $env:MVN_VERSION
-  - cmd: PATH %ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%PATH%
+  - ps: cinst maven -i --version $env:MVN_VERSION --allow-empty-checksums
+  - cmd: PATH %SystemDrive%\bin\apache-maven-%MVN_VERSION%\bin;%ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
 
 before_build:
   - cmd: java -Xmx32m -version

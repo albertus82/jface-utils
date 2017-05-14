@@ -18,7 +18,7 @@
 			<id>gtk-linux-armhf</id>
 			<activation>
 				<os>
-					<arch>armhf</arch>
+					<arch>arm</arch>
 				</os>
 			</activation>
 			<dependencies>

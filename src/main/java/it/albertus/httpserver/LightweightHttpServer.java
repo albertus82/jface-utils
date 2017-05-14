@@ -34,6 +34,7 @@ import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
+@SuppressWarnings("restriction")
 public class LightweightHttpServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServer.class);

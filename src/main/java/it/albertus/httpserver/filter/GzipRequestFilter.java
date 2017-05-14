@@ -7,6 +7,7 @@ import java.util.zip.GZIPInputStream;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
+@SuppressWarnings("restriction")
 public class GzipRequestFilter extends Filter {
 
 	@Override

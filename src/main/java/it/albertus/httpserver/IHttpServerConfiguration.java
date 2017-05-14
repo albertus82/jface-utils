@@ -5,6 +5,7 @@ import javax.net.ssl.SSLParameters;
 
 import com.sun.net.httpserver.Filter;
 
+@SuppressWarnings("restriction")
 public interface IHttpServerConfiguration {
 
 	AbstractHttpHandler[] getHandlers();

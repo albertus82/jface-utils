@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+@SuppressWarnings("restriction")
 public class FilesHandler extends AbstractStaticHandler {
 
 	public FilesHandler(final String fileBasePath, final String urlBasePath) {

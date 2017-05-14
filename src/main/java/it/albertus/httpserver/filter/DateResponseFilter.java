@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.httpserver.HttpDateGenerator;
 
+@SuppressWarnings("restriction")
 public class DateResponseFilter extends Filter {
 
 	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {

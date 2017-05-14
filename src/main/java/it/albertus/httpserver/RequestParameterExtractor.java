@@ -21,6 +21,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.util.logging.LoggerFactory;
 
+@SuppressWarnings("restriction")
 public class RequestParameterExtractor {
 
 	private static final Logger logger = LoggerFactory.getLogger(RequestParameterExtractor.class);

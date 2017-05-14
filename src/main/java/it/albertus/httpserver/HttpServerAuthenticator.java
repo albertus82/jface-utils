@@ -14,6 +14,7 @@ import com.sun.net.httpserver.BasicAuthenticator;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
+@SuppressWarnings("restriction")
 public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final Logger logger = LoggerFactory.getLogger(HttpServerAuthenticator.class);

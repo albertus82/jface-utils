@@ -44,6 +44,7 @@ import it.albertus.util.Resource;
 import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractHttpHandler implements HttpHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);

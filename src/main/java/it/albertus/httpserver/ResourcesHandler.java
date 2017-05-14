@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+@SuppressWarnings("restriction")
 public class ResourcesHandler extends AbstractStaticHandler {
 
 	public ResourcesHandler(final String resourceBasePath, final String urlBasePath) {

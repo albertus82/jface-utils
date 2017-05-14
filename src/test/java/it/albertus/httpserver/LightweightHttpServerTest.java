@@ -41,6 +41,7 @@ import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 import it.albertus.util.logging.LoggingSupport;
 
+@SuppressWarnings("restriction")
 public class LightweightHttpServerTest {
 
 	@Path(HANDLER_PATH_DISABLED)

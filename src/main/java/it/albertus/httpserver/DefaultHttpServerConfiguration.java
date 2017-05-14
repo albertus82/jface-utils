@@ -12,6 +12,7 @@ import com.sun.net.httpserver.Filter;
 import it.albertus.httpserver.filter.DateResponseFilter;
 import it.albertus.httpserver.filter.GzipRequestFilter;
 
+@SuppressWarnings("restriction")
 public abstract class DefaultHttpServerConfiguration implements IHttpServerConfiguration {
 
 	public static final int DEFAULT_PORT = 8080;

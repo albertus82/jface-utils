@@ -26,6 +26,7 @@ environment:
 cache:
   - $(ChocolateyInstall)\lib -> .appveyor.yml
   - $(ChocolateyInstall)\bin -> .appveyor.yml
+  - $(SystemDrive)\bin -> .appveyor.yml
 
 install:
   - ps: cinst maven -i --version $env:MVN_VERSION --allow-empty-checksums

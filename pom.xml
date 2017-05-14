@@ -9,7 +9,7 @@
 
 	<properties>
 		<date>2017-05-14</date>
-		<swt.version>4.5.2</swt.version>
+		<swt.version>4.3.2</swt.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
@@ -26,7 +26,7 @@
 				<dependency>
 					<groupId>org.eclipse.swt</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.armhf</artifactId>
-					<version>4.3.2</version>
+					<version>${swt.version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>

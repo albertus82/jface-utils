@@ -6,6 +6,11 @@
 	<version>9.0.0</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/Albertus82/JFaceUtils</url>
+	<licenses>
+		<license>
+			<url>http://www.gnu.org/licenses/gpl.html</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<date>2017-05-14</date>

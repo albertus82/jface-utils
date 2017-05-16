@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,9 +44,11 @@ public class LightweightHttpServer {
 
 	protected final IHttpServerConfiguration httpServerConfiguration;
 
-	protected volatile HttpServer httpServer;
+	private volatile HttpServer httpServer;
 	protected volatile boolean running = false;
 	protected volatile ThreadPoolExecutor threadPool;
+
+	private List<HttpContext> httpContexts;
 
 	private final Object lock = new Object();
 
@@ -93,7 +96,16 @@ public class LightweightHttpServer {
 		return running;
 	}
 
-	protected void createContexts() {
+	public HttpServer getHttpServer() {
+		return httpServer;
+	}
+
+	public List<HttpContext> getHttpContexts() {
+		return httpContexts;
+	}
+
+	protected List<HttpContext> createContexts() {
+		final List<HttpContext> httpContexts = new ArrayList<HttpContext>();
 		final Authenticator authenticator;
 		if (httpServerConfiguration.isAuthenticationRequired()) {
 			authenticator = new HttpServerAuthenticator(httpServerConfiguration);
@@ -120,7 +132,9 @@ public class LightweightHttpServer {
 			if (authenticator != null) {
 				httpContext.setAuthenticator(authenticator);
 			}
+			httpContexts.add(httpContext);
 		}
+		return httpContexts;
 	}
 
 	/**
@@ -200,7 +214,7 @@ public class LightweightHttpServer {
 					else {
 						httpServer = HttpServer.create(address, 0);
 					}
-					createContexts();
+					httpContexts = createContexts();
 
 					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
 					if (maximumPoolSize > 1) {

@@ -29,7 +29,7 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.armhf</artifactId>
 					<version>${swt.version}</version>
 					<scope>provided</scope>
@@ -248,23 +248,23 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse</groupId>
+			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.10.2.v20141021-1035</version>
+			<version>3.10.2</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.eclipse.core</groupId>
+			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.core.commands</artifactId>
-			<version>3.6.100.v20140528-1422</version>
+			<version>3.6.100</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
+			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.6.200.v20130402-1505</version>
+			<version>3.6.200</version>
 			<scope>provided</scope>
 		</dependency>
 

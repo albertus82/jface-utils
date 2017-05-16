@@ -129,9 +129,9 @@
 
 	<distributionManagement>
 		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/mvn-repo</url>
+			<id>local.repo</id>
+			<name>Local Maven Repository</name>
+			<url>file://${project.basedir}/mvn-repo</url>
 		</repository>
 	</distributionManagement>
 
@@ -151,6 +151,7 @@
 				<targetPath>META-INF</targetPath>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -223,42 +224,16 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.2</version>
 				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+					<altDeploymentRepository>local.repo::default::file://${project.basedir}/mvn-repo</altDeploymentRepository>
 				</configuration>
 			</plugin>
-
-			<!-- <plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.12</version>
-				<configuration>
-					<message>Maven artifacts for ${project.version}</message>
-					<noJekyll>true</noJekyll>
-					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-					<branch>refs/heads/master</branch>
-					<includes>
-						<include>**/*</include>
-					</includes>
-					<repositoryName>Maven</repositoryName>
-					<repositoryOwner>Albertus82</repositoryOwner>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>deploy</phase>
-					</execution>
-				</executions>
-			</plugin> -->
-
 		</plugins>
 	</build>
 
 	<repositories>
 		<repository>
-			<id>maven-albertus-repo</id>
-			<url>https://raw.githubusercontent.com/Albertus82/Maven/master</url>
+			<id>local-maven-repo</id>
+			<url>file:${project.basedir}/mvn-repo</url>
 		</repository>
 		<repository>
 			<id>maven-eclipse-repo</id>

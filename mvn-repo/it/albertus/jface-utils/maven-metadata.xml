@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>it.albertus</groupId>
+  <artifactId>jface-utils</artifactId>
+  <versioning>
+    <versions>
+      <version>9.0.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20170516100922</lastUpdated>
+  </versioning>
+</metadata>

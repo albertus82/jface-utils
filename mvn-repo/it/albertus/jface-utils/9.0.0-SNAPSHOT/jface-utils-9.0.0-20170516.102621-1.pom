@@ -12,7 +12,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<date>2017-05-14</date>
+		<date>2017-05-16</date>
 		<swt.version>4.3.2</swt.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>

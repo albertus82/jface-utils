@@ -34,6 +34,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	public static final String DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO.getName();
 	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
 	public static final int DEFAULT_RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
+	public static final int DEFAULT_STOP_DELAY = 0; // seconds
 
 	@Override
 	public Filter[] getFilters() {
@@ -189,6 +190,11 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 	@Override
 	public int getResponseBufferLimit() {
 		return DEFAULT_RESPONSE_BUFFER_LIMIT;
+	}
+
+	@Override
+	public int getStopDelay() {
+		return DEFAULT_STOP_DELAY;
 	}
 
 	@Override

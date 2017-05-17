@@ -14,6 +14,8 @@ public interface IHttpServerConfiguration {
 
 	boolean isEnabled();
 
+	int getPort();
+
 	boolean isAuthenticationRequired();
 
 	String getAuthenticationRealm();
@@ -28,7 +30,9 @@ public interface IHttpServerConfiguration {
 
 	String getAuthenticationFailureLoggingLevel();
 
-	int getPort();
+	boolean isCompressionEnabled();
+
+	int getResponseBufferLimit();
 
 	/**
 	 * @return the maximum time a request is allowed to take, in seconds.
@@ -74,10 +78,12 @@ public interface IHttpServerConfiguration {
 	 */
 	long getThreadKeepAliveTime();
 
+	/**
+	 * @return the maximum time in seconds to wait until exchanges have
+	 *         finished.
+	 */
+	int getStopDelay();
+
 	String getRequestLoggingLevel();
-
-	boolean isCompressionEnabled();
-
-	int getResponseBufferLimit();
 
 }

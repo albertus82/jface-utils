@@ -8,8 +8,8 @@ import java.net.InetSocketAddress;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -40,15 +40,13 @@ public class LightweightHttpServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServer.class);
 
-	protected static final int STOP_DELAY = 0;
-
 	protected final IHttpServerConfiguration httpServerConfiguration;
 
-	private volatile HttpServer httpServer;
+	private volatile HttpServer server;
 	protected volatile boolean running = false;
 	protected volatile ThreadPoolExecutor threadPool;
 
-	private List<HttpContext> httpContexts;
+	private Collection<HttpContext> contexts;
 
 	private final Object lock = new Object();
 
@@ -56,24 +54,45 @@ public class LightweightHttpServer {
 		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
+	/**
+	 * Starts this server as a daemon.
+	 */
 	public void start() {
 		start(true);
 	}
 
+	/**
+	 * Starts this server.
+	 * 
+	 * @param daemon determine if the server thread will be configured as a
+	 *        deamon or not.
+	 * 
+	 */
 	public void start(final boolean daemon) {
 		if (!running && httpServerConfiguration.isEnabled()) {
 			new HttpServerStartThread(daemon).start();
 		}
 	}
 
-	public void stop() {
-		if (httpServer != null) {
+	/**
+	 * Stops this server by closing the listening socket and disallowing any new
+	 * exchanges from being processed. The method will then block until all
+	 * current exchange handlers have completed or else when approximately
+	 * <i>delay</i> seconds have elapsed (whichever happens sooner). Then, all
+	 * open TCP connections are closed, the background thread created by start()
+	 * exits, the thread pool is shutdown and the method returns.
+	 * <p>
+	 *
+	 * @param delay the maximum time in seconds to wait until exchanges have
+	 *        finished.
+	 * @throws IllegalArgumentException if delay is less than zero.
+	 */
+	public void stop(final int delay) {
+		if (server != null) {
 			synchronized (lock) {
 				try {
-					httpServer.stop(STOP_DELAY);
-					if (threadPool != null && !threadPool.isShutdown()) {
-						shutdownThreadPool();
-					}
+					server.stop(delay);
+					shutdownThreadPool();
 				}
 				catch (final Exception e) {
 					logger.log(Level.SEVERE, e.toString(), e);
@@ -83,29 +102,62 @@ public class LightweightHttpServer {
 		}
 	}
 
+	/**
+	 * Stops this server by closing the listening socket and disallowing any new
+	 * exchanges from being processed. The method will then block until all
+	 * current exchange handlers have completed or else when approximately the
+	 * number of seconds returned by
+	 * {@link IHttpServerConfiguration#getStopDelay()} has elapsed (whichever
+	 * happens sooner). Then, all open TCP connections are closed, the
+	 * background thread created by start() exits, the thread pool is shutdown
+	 * and the method returns.
+	 * <p>
+	 *
+	 * @throws IllegalArgumentException if delay is less than zero.
+	 * @see LightweightHttpServer#stop(int)
+	 * @see IHttpServerConfiguration#getStopDelay()
+	 */
+	public void stop() {
+		stop(httpServerConfiguration.getStopDelay());
+	}
+
 	private void shutdownThreadPool() {
-		try {
-			threadPool.shutdown();
-		}
-		catch (final Exception e) {
-			logger.log(Level.SEVERE, e.toString(), e);
+		if (threadPool != null && !threadPool.isShutdown()) {
+			try {
+				threadPool.shutdown();
+			}
+			catch (final Exception e) {
+				logger.log(Level.SEVERE, e.toString(), e);
+			}
 		}
 	}
 
+	/**
+	 * Returns whether the server is currently running or not.
+	 * 
+	 * @return {@code true} if the server is running, otherwise {@code false}.
+	 */
 	public boolean isRunning() {
 		return running;
 	}
 
-	public HttpServer getHttpServer() {
-		return httpServer;
+	/**
+	 * @return the currently active {@link HttpServer} object or null if the
+	 *         server was never started.
+	 */
+	public HttpServer getServer() {
+		return server;
 	}
 
-	public List<HttpContext> getHttpContexts() {
-		return httpContexts;
+	/**
+	 * @return the currently configured {@link HttpContext} objects or null if
+	 *         the server was never started.
+	 */
+	public Collection<HttpContext> getContexts() {
+		return contexts;
 	}
 
-	protected List<HttpContext> createContexts() {
-		final List<HttpContext> httpContexts = new ArrayList<HttpContext>();
+	protected Collection<HttpContext> createContexts() {
 		final Authenticator authenticator;
 		if (httpServerConfiguration.isAuthenticationRequired()) {
 			authenticator = new HttpServerAuthenticator(httpServerConfiguration);
@@ -115,7 +167,7 @@ public class LightweightHttpServer {
 		}
 
 		final Filter[] filtersArray = createFilters();
-		final List<Filter> filtersList;
+		final Collection<Filter> filtersList;
 		if (filtersArray != null && filtersArray.length != 0) {
 			filtersList = Arrays.asList(filtersArray);
 		}
@@ -123,9 +175,10 @@ public class LightweightHttpServer {
 			filtersList = Collections.emptyList();
 		}
 
+		final Collection<HttpContext> httpContexts = new ArrayList<HttpContext>();
 		for (final AbstractHttpHandler handler : createHandlers()) {
 			handler.setHttpServerConfiguration(httpServerConfiguration); // Injection
-			final HttpContext httpContext = httpServer.createContext(handler.getPath(), handler);
+			final HttpContext httpContext = server.createContext(handler.getPath(), handler);
 			if (filtersArray != null && filtersArray.length != 0) {
 				httpContext.getFilters().addAll(filtersList);
 			}
@@ -209,12 +262,12 @@ public class LightweightHttpServer {
 
 						final HttpsServer httpsServer = HttpsServer.create(address, 0);
 						httpsServer.setHttpsConfigurator(httpsConfigurator);
-						httpServer = httpsServer;
+						server = httpsServer;
 					}
 					else {
-						httpServer = HttpServer.create(address, 0);
+						server = HttpServer.create(address, 0);
 					}
-					httpContexts = createContexts();
+					contexts = createContexts();
 
 					final int maximumPoolSize = httpServerConfiguration.getMaxThreadCount();
 					if (maximumPoolSize > 1) {
@@ -231,10 +284,10 @@ public class LightweightHttpServer {
 								}
 							}
 						});
-						httpServer.setExecutor(threadPool);
+						server.setExecutor(threadPool);
 					}
 
-					httpServer.start();
+					server.start();
 					running = true;
 					logger.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", port));
 				}

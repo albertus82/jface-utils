@@ -12,10 +12,10 @@
 		</license>
 	</licenses>
 	<properties>
-		<date>2017-05-17</date>
+		<version.date>2017-05-17</version.date>
 		<swt.version>4.3.2</swt.version>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<compile.source.jdk>1.6</compile.source.jdk>
+		<compile.target.jdk>1.6</compile.target.jdk>
 	</properties>
 
 	<profiles>
@@ -163,8 +163,8 @@
 				<version>3.6.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<source>${compile.source.jdk}</source>
+					<target>${compile.target.jdk}</target>
 				</configuration>
 			</plugin>
 
@@ -174,7 +174,10 @@
 				<version>3.0.2</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<useDefaultDelimiters>true</useDefaultDelimiters>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>txt</nonFilteredFileExtension>
+						<nonFilteredFileExtension>html</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
 				</configuration>
 			</plugin>
 
@@ -185,8 +188,8 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
-							<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
+							<X-Compile-Source-JDK>${compile.source.jdk}</X-Compile-Source-JDK>
+							<X-Compile-Target-JDK>${compile.target.jdk}</X-Compile-Target-JDK>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>

@@ -16,7 +16,6 @@
 		<swt.version>4.3.2</swt.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<github.global.server>github</github.global.server>
 	</properties>
 
 	<profiles>

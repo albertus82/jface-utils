@@ -59,7 +59,8 @@
 			<activation>
 				<os>
 					<family>unix</family>
-					<arch>x86</arch>
+					<arch>i386</arch>
+					<name>!mac os x</name>
 				</os>
 			</activation>
 			<dependencies>
@@ -79,6 +80,7 @@
 				<os>
 					<family>unix</family>
 					<arch>amd64</arch>
+					<name>!mac os x</name>
 				</os>
 			</activation>
 			<dependencies>

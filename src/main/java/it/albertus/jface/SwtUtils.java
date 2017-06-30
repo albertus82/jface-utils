@@ -18,6 +18,8 @@ public class SwtUtils {
 	public static final char KEY_COPY = 'c';
 	public static final char KEY_PASTE = 'v';
 	public static final char KEY_DELETE = SWT.DEL;
+	public static final char KEY_UNDO = 'z';
+	public static final char KEY_REDO = 'y';
 
 	private SwtUtils() {
 		throw new IllegalAccessError("Utility class");

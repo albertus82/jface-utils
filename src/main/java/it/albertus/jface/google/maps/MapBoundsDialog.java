@@ -25,6 +25,8 @@ public class MapBoundsDialog extends MapDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialog.class);
 
+	private static final int SHELL_SIZE_FACTOR = 3;
+
 	private final MapBounds bounds = new MapBounds();
 
 	public MapBoundsDialog(final Shell parent) {
@@ -87,7 +89,7 @@ public class MapBoundsDialog extends MapDialog {
 	protected Point getSize(final Shell shell) {
 		final Point normalShellSize = shell.getSize();
 		final Point packedShellSize = getMinimumSize(shell);
-		return new Point(Math.min(packedShellSize.x * 3, normalShellSize.x), Math.min(packedShellSize.y * 3, normalShellSize.y));
+		return new Point(Math.min(packedShellSize.x * SHELL_SIZE_FACTOR, normalShellSize.x), Math.min(packedShellSize.y * SHELL_SIZE_FACTOR, normalShellSize.y));
 	}
 
 	@Override

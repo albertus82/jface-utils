@@ -15,8 +15,10 @@ matrix:
 addons:
   sonarcloud:
     organization: "albertus82-github"
-    token:
-      secure: "Kf/FmAkFyIGcGhXuI6ByfRUg3Uhyj/Dr2+3Bc4croxLIQ/xYMEepN21+OBer0l2ERJNlJaK6GrBTkFArPQ7mhnqwiNcBNR0+B96UxWGcr+mrtW2BjVsaiafaEJByw44i+JV3Wy/EbGQZ8N3cW09C2vU75s6klS92lC2AYOFXrrBgoZBtrLB470z7lLK+RyvSbcDQDqdPhGI518O0XbH7Fv/QEk61yUlg+TgnJmPbLxXqpmMpQu2Toot25FjENpq8w2+zuF3CEmvq+0qmscyzuWytRkF06NbatPGnlVASyAuHQ+VwO8NzgBV44/Ja1TuUwE4Hvy73FBiy0VKStkgBbWomv0KmrqoV8tABLJjIbztm2qn/k131oCpiSuR73usMeg3G9/cRxKBT1gsbVjWpgbHwgCIytYlo7oHv7fsThutuBCMMqfczyPh8WEHY6SHxc/68rktQc6cRHhtap5yr9+7Nm9KAOiInIwYJ18V+J0ZwnzhAJJ8CxweFWZIK4dK//8kV7RqE3tlqOjnNDlBmWxbzU0ykG19VaeRnuGQtVRu+lthOBs+tIjfm8NCg+qe7VJgqdV1N1BqDZyE+/CMocTR+kn9FRaI3D5TDJxgyB4BKgV7i//anJm+142GQkq2Ly1qe3YecNtuHWngEEUyEwaXs036dN7DJ9vDRkU8M0cg="
+
+env:
+  global:
+    - secure: "Kf/FmAkFyIGcGhXuI6ByfRUg3Uhyj/Dr2+3Bc4croxLIQ/xYMEepN21+OBer0l2ERJNlJaK6GrBTkFArPQ7mhnqwiNcBNR0+B96UxWGcr+mrtW2BjVsaiafaEJByw44i+JV3Wy/EbGQZ8N3cW09C2vU75s6klS92lC2AYOFXrrBgoZBtrLB470z7lLK+RyvSbcDQDqdPhGI518O0XbH7Fv/QEk61yUlg+TgnJmPbLxXqpmMpQu2Toot25FjENpq8w2+zuF3CEmvq+0qmscyzuWytRkF06NbatPGnlVASyAuHQ+VwO8NzgBV44/Ja1TuUwE4Hvy73FBiy0VKStkgBbWomv0KmrqoV8tABLJjIbztm2qn/k131oCpiSuR73usMeg3G9/cRxKBT1gsbVjWpgbHwgCIytYlo7oHv7fsThutuBCMMqfczyPh8WEHY6SHxc/68rktQc6cRHhtap5yr9+7Nm9KAOiInIwYJ18V+J0ZwnzhAJJ8CxweFWZIK4dK//8kV7RqE3tlqOjnNDlBmWxbzU0ykG19VaeRnuGQtVRu+lthOBs+tIjfm8NCg+qe7VJgqdV1N1BqDZyE+/CMocTR+kn9FRaI3D5TDJxgyB4BKgV7i//anJm+142GQkq2Ly1qe3YecNtuHWngEEUyEwaXs036dN7DJ9vDRkU8M0cg="
 
 script:
   - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar; else mvn deploy; fi;

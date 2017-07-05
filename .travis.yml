@@ -14,6 +14,7 @@ matrix:
 
 addons:
   sonarcloud: true
+    organization: "albertus82-github"
 
 env:
   global:

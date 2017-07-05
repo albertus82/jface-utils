@@ -5,14 +5,23 @@
 	<artifactId>jface-utils</artifactId>
 	<version>9.0.1-SNAPSHOT</version>
 	<name>JFaceUtils</name>
+	<organization>
+		<name>albertus82-github</name>
+		<url>https://github.com/Albertus82</url>
+	</organization>
 	<url>https://github.com/Albertus82/JFaceUtils</url>
 	<licenses>
 		<license>
 			<url>http://www.gnu.org/licenses/gpl.html</url>
 		</license>
 	</licenses>
+	<scm>
+		<connection>scm:git:git@github.com:Albertus82/JFaceUtils.git</connection>
+		<developerConnection>scm:git:git@github.com:Albertus82/JFaceUtils.git</developerConnection>
+		<url>${project.url}</url>
+	</scm>
 	<properties>
-		<version.date>2017-06-30</version.date>
+		<version.date>2017-07-05</version.date>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>

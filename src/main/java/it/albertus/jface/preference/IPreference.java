@@ -1,7 +1,5 @@
 package it.albertus.jface.preference;
 
-import java.util.Collection;
-
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -122,7 +120,7 @@ public interface IPreference {
 
 	boolean isRestartRequired();
 
-	Collection<? extends IPreference> getChildren();
+	IPreference[] getChildren();
 
 	FieldEditor createFieldEditor(Composite parent);
 

@@ -89,6 +89,8 @@ public enum MyPreference implements IPreference {
 	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build()),
 	PATH(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("path").label("Path").build(), new FieldEditorDetailsBuilder(LocalizedPathEditor.class).build());
 
+	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+
 	private PreferenceDetails preferenceDetails;
 	private FieldEditorDetails fieldEditorDetails;
 

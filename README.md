@@ -107,6 +107,8 @@ public enum MyPreference implements IPreference {
 	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
 	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build());
 
+	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+
 	private PreferenceDetails preferenceDetails;
 	private FieldEditorDetails fieldEditorDetails;
 
@@ -183,23 +185,18 @@ You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jf
 
 The [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) helps you to create `FieldEditor` objects, as you saw in the previous [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) example.
 
-
-The [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interface already declares a ready-to-use [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) variable:
-
-```java
-public static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
-```
-
 By default, custom values are presented in *bold* format. If you don't like this behaviour, you can disable it invoking the `setBoldCustomValues(boolean)` method of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java):
 
 ```java
 public enum MyPreference implements IPreference {
 
+	/* Enum values... */
+
+	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+
 	static {
 		fieldEditorFactory.setBoldCustomValues(false);
 	}
-
-	/* Enum values... */
 }
 ```
 
@@ -226,7 +223,7 @@ public class MyFieldEditorFactory extends FieldEditorFactory {
 }
 ```
 
-After that, you can use your new factory instead of the standard one made available by [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java).
+After that, you can use your new factory instead of the default one.
 
 ## macOS integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java)
 

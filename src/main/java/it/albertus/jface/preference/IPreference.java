@@ -34,6 +34,8 @@ import it.albertus.jface.preference.page.IPageDefinition;
  * 	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
  * 	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build());
  * 
+ * 	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+ * 
  * 	private PreferenceDetails preferenceDetails;
  * 	private FieldEditorDetails fieldEditorDetails;
  * 
@@ -78,14 +80,14 @@ import it.albertus.jface.preference.page.IPageDefinition;
  * 	}
  * 
  * 	&#64;Override
- * 	public Set<? extends IPreference> getChildren() {
+ * 	public IPreference[] getChildren() {
  * 		Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
  * 		for (MyPreference item : MyPreference.values()) {
  * 			if (this.equals(item.getParent())) {
  * 				preferences.add(item);
  * 			}
  * 		}
- * 		return preferences;
+ * 		return preferences.toArray(new IPreference[] {});
  * 	}
  * 
  * 	&#64;Override
@@ -104,24 +106,22 @@ import it.albertus.jface.preference.page.IPageDefinition;
  */
 public interface IPreference {
 
-	FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+	FieldEditor createFieldEditor(Composite parent);
 
-	String getName();
-
-	String getLabel();
-
-	IPageDefinition getPageDefinition();
+	IPreference[] getChildren();
 
 	String getDefaultValue();
 
-	boolean isSeparate();
+	String getLabel();
+
+	String getName();
+
+	IPageDefinition getPageDefinition();
 
 	IPreference getParent();
 
 	boolean isRestartRequired();
 
-	IPreference[] getChildren();
-
-	FieldEditor createFieldEditor(Composite parent);
+	boolean isSeparate();
 
 }

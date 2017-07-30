@@ -59,47 +59,47 @@ This is a very simple example of enum that implements [`IPageDefinition`](src/ma
 ```java
 public enum MyPageDefinition implements IPageDefinition {
 
-	TEXT(new PageDefinitionDetailsBuilder().nodeId("text").label("Text").build()),
-	TEXT_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("text.numeric").parent(TEXT).label("Numeric").build()),
-	COMBO(new PageDefinitionDetailsBuilder().nodeId("combo").label("Combo").build()),
-	COMBO_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("combo.numeric").parent(COMBO).label("Numeric").build()),
-	PAGE(new PageDefinitionDetailsBuilder().nodeId("page").label("Page").build()),
-	VARIOUS(new PageDefinitionDetailsBuilder().nodeId("various").label("Various").build());
+    TEXT(new PageDefinitionDetailsBuilder().nodeId("text").label("Text").build()),
+    TEXT_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("text.numeric").parent(TEXT).label("Numeric").build()),
+    COMBO(new PageDefinitionDetailsBuilder().nodeId("combo").label("Combo").build()),
+    COMBO_NUMERIC(new PageDefinitionDetailsBuilder().nodeId("combo.numeric").parent(COMBO).label("Numeric").build()),
+    PAGE(new PageDefinitionDetailsBuilder().nodeId("page").label("Page").build()),
+    VARIOUS(new PageDefinitionDetailsBuilder().nodeId("various").label("Various").build());
 
-	private PageDefinitionDetails pageDefinitionDetails;
+    private PageDefinitionDetails pageDefinitionDetails;
 
-	MyPageDefinition() {
-		this(new PageDefinitionDetailsBuilder().build());
-	}
+    MyPageDefinition() {
+        this(new PageDefinitionDetailsBuilder().build());
+    }
 
-	MyPageDefinition(PageDefinitionDetails pageDefinitionDetails) {
-		this.pageDefinitionDetails = pageDefinitionDetails;
-	}
+    MyPageDefinition(PageDefinitionDetails pageDefinitionDetails) {
+        this.pageDefinitionDetails = pageDefinitionDetails;
+    }
 
-	@Override
-	public String getNodeId() {
-		return pageDefinitionDetails.getNodeId();
-	}
+    @Override
+    public String getNodeId() {
+        return pageDefinitionDetails.getNodeId();
+    }
 
-	@Override
-	public String getLabel() {
-		return pageDefinitionDetails.getLabel().getString();
-	}
+    @Override
+    public String getLabel() {
+        return pageDefinitionDetails.getLabel().getString();
+    }
 
-	@Override
-	public Class<? extends BasePreferencePage> getPageClass() {
-		return pageDefinitionDetails.getPageClass();
-	}
+    @Override
+    public Class<? extends BasePreferencePage> getPageClass() {
+        return pageDefinitionDetails.getPageClass();
+    }
 
-	@Override
-	public IPageDefinition getParent() {
-		return pageDefinitionDetails.getParent();
-	}
+    @Override
+    public IPageDefinition getParent() {
+        return pageDefinitionDetails.getParent();
+    }
 
-	@Override
-	public ImageDescriptor getImage() {
-		return pageDefinitionDetails.getImage();
-	}
+    @Override
+    public ImageDescriptor getImage() {
+        return pageDefinitionDetails.getImage();
+    }
 
 }
 ```
@@ -113,86 +113,86 @@ This is a simple example of enum that implements [`IPreference`](src/main/java/i
 ```java
 public enum MyPreference implements IPreference {
 
-	STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string").label("String").defaultValue("Hello World!").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build()),
-	WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).build()),
+    STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("string").label("String").defaultValue("Hello World!").build(), new FieldEditorDetailsBuilder(DefaultStringFieldEditor.class).build()),
+    WRAP_STRING(new PreferenceDetailsBuilder(MyPageDefinition.TEXT).name("wrapString").label("Wrap String").defaultValue("Long text here.").build(), new FieldEditorDetailsBuilder(WrapStringFieldEditor.class).build()),
 
-	INTEGER(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("integer").label("Integer").defaultValue(12345).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).emptyStringAllowed(true).numberMinimum(-67890).build()),
-	DOUBLE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("double").label("Double").defaultValue(24680.13579).build(), new FieldEditorDetailsBuilder(DoubleFieldEditor.class).emptyStringAllowed(true).build()),
+    INTEGER(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("integer").label("Integer").defaultValue(12345).build(), new FieldEditorDetailsBuilder(EnhancedIntegerFieldEditor.class).emptyStringAllowed(true).numberMinimum(-67890).build()),
+    DOUBLE(new PreferenceDetailsBuilder(MyPageDefinition.TEXT_NUMERIC).name("double").label("Double").defaultValue(24680.13579).build(), new FieldEditorDetailsBuilder(DoubleFieldEditor.class).emptyStringAllowed(true).build()),
 
-	COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("combo").label("Combo").defaultValue("value 1").build(), new FieldEditorDetailsBuilder(DefaultComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 1", "value 1").put("Label 2", "value 2")).build()),
-	VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("validatedCombo").label("Validated Combo").defaultValue("value 5").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 5", "value 5")).emptyStringAllowed(false).build()),
+    COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("combo").label("Combo").defaultValue("value 1").build(), new FieldEditorDetailsBuilder(DefaultComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 1", "value 1").put("Label 2", "value 2")).build()),
+    VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("validatedCombo").label("Validated Combo").defaultValue("value 5").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 5", "value 5")).emptyStringAllowed(false).build()),
 
-	FLOAT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).separate().name("floatCombo").label("Float Combo").defaultValue(123.456f).build(), new FieldEditorDetailsBuilder(FloatComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("float", 1)).emptyStringAllowed(true).numberValidRange(-10000, 20000).build()),
-	BIGDECIMAL_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("bigDecimalCombo").label("BigDecimal Combo").defaultValue(67890.12345).build(), new FieldEditorDetailsBuilder(BigDecimalComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("BigDecimal Value", -10.5).put("invalid", 1000000)).emptyStringAllowed(false).numberValidRange(-1000, 100000).textLimit(20).build()),
+    FLOAT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).separate().name("floatCombo").label("Float Combo").defaultValue(123.456f).build(), new FieldEditorDetailsBuilder(FloatComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("float", 1)).emptyStringAllowed(true).numberValidRange(-10000, 20000).build()),
+    BIGDECIMAL_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("bigDecimalCombo").label("BigDecimal Combo").defaultValue(67890.12345).build(), new FieldEditorDetailsBuilder(BigDecimalComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("BigDecimal Value", -10.5).put("invalid", 1000000)).emptyStringAllowed(false).numberValidRange(-1000, 100000).textLimit(20).build()),
 
-	BOOLEAN(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("boolean").label("Boolean").defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
-	COLOR(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("color").label("Color").defaultValue("255,0,0").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build()),
-	PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("password").label("Password").build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
-	DATE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("date").label("Date").defaultValue("24/12/2015").build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).style(SWT.DROP_DOWN).build()),
+    BOOLEAN(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("boolean").label("Boolean").defaultValue(false).build(), new FieldEditorDetailsBuilder(DefaultBooleanFieldEditor.class).build()),
+    COLOR(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("color").label("Color").defaultValue("255,0,0").build(), new FieldEditorDetailsBuilder(ColorFieldEditor.class).build()),
+    PASSWORD(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("password").label("Password").build(), new FieldEditorDetailsBuilder(PasswordFieldEditor.class).build()),
+    DATE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("date").label("Date").defaultValue("24/12/2015").build(), new FieldEditorDetailsBuilder(DateFieldEditor.class).datePattern("dd/MM/yyyy").dateFrom(new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime()).style(SWT.DROP_DOWN).build()),
 
-	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
-	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build());
+    EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
+    URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build());
 
-	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+    private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
 
-	private PreferenceDetails preferenceDetails;
-	private FieldEditorDetails fieldEditorDetails;
+    private PreferenceDetails preferenceDetails;
+    private FieldEditorDetails fieldEditorDetails;
 
-	MyPreference(PreferenceDetails preferenceDetails, FieldEditorDetails fieldEditorDetails) {
-		this.preferenceDetails = preferenceDetails;
-		this.fieldEditorDetails = fieldEditorDetails;
-	}
+    MyPreference(PreferenceDetails preferenceDetails, FieldEditorDetails fieldEditorDetails) {
+        this.preferenceDetails = preferenceDetails;
+        this.fieldEditorDetails = fieldEditorDetails;
+    }
 
-	@Override
-	public String getName() {
-		return preferenceDetails.getName();
-	}
+    @Override
+    public String getName() {
+        return preferenceDetails.getName();
+    }
 
-	@Override
-	public String getLabel() {
-		return preferenceDetails.getLabel().getString();
-	}
+    @Override
+    public String getLabel() {
+        return preferenceDetails.getLabel().getString();
+    }
 
-	@Override
-	public IPageDefinition getPageDefinition() {
-		return preferenceDetails.getPageDefinition();
-	}
+    @Override
+    public IPageDefinition getPageDefinition() {
+        return preferenceDetails.getPageDefinition();
+    }
 
-	@Override
-	public String getDefaultValue() {
-		return preferenceDetails.getDefaultValue();
-	}
+    @Override
+    public String getDefaultValue() {
+        return preferenceDetails.getDefaultValue();
+    }
 
-	@Override
-	public IPreference getParent() {
-		return preferenceDetails.getParent();
-	}
+    @Override
+    public IPreference getParent() {
+        return preferenceDetails.getParent();
+    }
 
-	@Override
-	public boolean isRestartRequired() {
-		return preferenceDetails.isRestartRequired();
-	}
+    @Override
+    public boolean isRestartRequired() {
+        return preferenceDetails.isRestartRequired();
+    }
 
-	@Override
-	public boolean isSeparate() {
-		return preferenceDetails.isSeparate();
-	}
+    @Override
+    public boolean isSeparate() {
+        return preferenceDetails.isSeparate();
+    }
 
-	@Override
-	public IPreference[] getChildren() {
-		Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
-		for (MyPreference item : MyPreference.values()) {
-			if (this.equals(item.getParent())) {
-				preferences.add(item);
-			}
-		}
-		return preferences.toArray(new IPreference[] {});
-	}
+    @Override
+    public IPreference[] getChildren() {
+        Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
+        for (MyPreference item : MyPreference.values()) {
+            if (this.equals(item.getParent())) {
+                preferences.add(item);
+            }
+        }
+        return preferences.toArray(new IPreference[] {});
+    }
 
-	@Override
-	public FieldEditor createFieldEditor(Composite parent) {
-		return fieldEditorFactory.createFieldEditor(getName(), getLabel(), parent, fieldEditorDetails);
-	}
+    @Override
+    public FieldEditor createFieldEditor(Composite parent) {
+        return fieldEditorFactory.createFieldEditor(getName(), getLabel(), parent, fieldEditorDetails);
+    }
 }
 ```
 
@@ -216,13 +216,13 @@ By default, custom values are presented in *bold* format. If you don't like this
 ```java
 public enum MyPreference implements IPreference {
 
-	/* Enum values... */
+    /* Enum values... */
 
-	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
+    private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();
 
-	static {
-		fieldEditorFactory.setBoldCustomValues(false);
-	}
+    static {
+        fieldEditorFactory.setBoldCustomValues(false);
+    }
 }
 ```
 
@@ -233,19 +233,19 @@ If you need to create your custom `FieldEditor` classes, you can extend [`FieldE
 ```java
 public class MyFieldEditorFactory extends FieldEditorFactory {
 
-	@Override
-	public FieldEditor createFieldEditor(String name, String label, Composite parent, FieldEditorDetails details) {
-		Class<? extends FieldEditor> type = details.getFieldEditorClass();
+    @Override
+    public FieldEditor createFieldEditor(String name, String label, Composite parent, FieldEditorDetails details) {
+        Class<? extends FieldEditor> type = details.getFieldEditorClass();
 
-		if (MyCustomFieldEditor.class.equals(type)) {
-			return new MyCustomFieldEditor(name, label, parent);
-		}
-		if (AnotherCustomFieldEditor.class.equals(type)) {
-			return new AnotherCustomFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
-		}
+        if (MyCustomFieldEditor.class.equals(type)) {
+            return new MyCustomFieldEditor(name, label, parent);
+        }
+        if (AnotherCustomFieldEditor.class.equals(type)) {
+            return new AnotherCustomFieldEditor(name, label, details.getLabelsAndValues().toArray(), parent);
+        }
 
-		return super.createFieldEditor(name, label, parent, details);
-	}
+        return super.createFieldEditor(name, label, parent, details);
+    }
 }
 ```
 
@@ -267,7 +267,7 @@ Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/Coco
 
 ```java
 if (Util.isCocoa()) {
-	new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());
+    new CocoaUIEnhancer(getShell().getDisplay()).hookApplicationMenu(new CloseListener(), new AboutListener(), new PreferencesListener());
 }
 ```
 

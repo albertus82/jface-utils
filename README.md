@@ -8,6 +8,32 @@ JFaceUtils
 
 This library is meant to support the development of small footprint Java client applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some basic Java features such as logging, configuration, I/O and the lightweight HTTP server.
 
+## Usage
+
+### Maven
+
+Add the following elements to your project's `pom.xml` file:
+
+```xml
+<repositories>
+    <repository>
+        <id>jface-utils-repo</id>
+        <url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/master/mvn-repo</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>it.albertus</groupId>
+        <artifactId>jface-utils</artifactId>
+        <version>10.0.0</version>
+    </dependency>
+</dependencies>
+```
+### Manual download
+
+You can download the JARs from the [releases page](https://github.com/Albertus82/JFaceUtils/releases/latest).
+
 ## The Preferences Framework
 
 The creation of a **preferences dialog** to manage the configuration of a SWT/JFace application can be an annoying and time consuming task: you have to create every single field; these fields could be a lot, so you might want to split them across multiple pages. Moreover, the basic JFace's `FieldEditor` classes aren't very flexible.

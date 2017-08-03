@@ -38,10 +38,7 @@ public abstract class DefaultHttpServerConfiguration implements IHttpServerConfi
 
 	@Override
 	public Filter[] getFilters() {
-		final Filter[] filters = new Filter[2];
-		filters[0] = new GzipRequestFilter();
-		filters[1] = new DateResponseFilter();
-		return filters;
+		return new Filter[] { new GzipRequestFilter(), new DateResponseFilter() };
 	}
 
 	@Override

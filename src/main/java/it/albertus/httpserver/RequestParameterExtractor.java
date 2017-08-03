@@ -37,7 +37,7 @@ public class RequestParameterExtractor {
 			params.putAll(parseBodyParameters(exchange, charset));
 		}
 		for (final Entry<String, List<String>> entry : params.entrySet()) {
-			parameterMap.put(entry.getKey(), entry.getValue().toArray(new String[] {}));
+			parameterMap.put(entry.getKey(), entry.getValue().toArray(new String[entry.getValue().size()]));
 		}
 	}
 

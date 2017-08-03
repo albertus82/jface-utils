@@ -142,7 +142,7 @@ public enum MyPreference implements IPreference {
 				preferences.add(item);
 			}
 		}
-		return preferences.toArray(new IPreference[] {});
+		return preferences.toArray(new IPreference[preferences.size()]);
 	}
 
 	@Override

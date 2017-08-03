@@ -160,7 +160,7 @@ public class EnhancedErrorDialog extends ErrorDialog {
 			IOUtils.closeQuietly(br, sr);
 		}
 
-		return new MultiStatus(EnhancedErrorDialog.class.getPackage().getName(), severity, childStatuses.toArray(new IStatus[0]), throwable.toString(), throwable);
+		return new MultiStatus(EnhancedErrorDialog.class.getPackage().getName(), severity, childStatuses.toArray(new IStatus[childStatuses.size()]), throwable.toString(), throwable);
 	}
 
 }

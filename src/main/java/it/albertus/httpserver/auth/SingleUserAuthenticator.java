@@ -1,4 +1,4 @@
-package it.albertus.httpserver;
+package it.albertus.httpserver.auth;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -11,24 +11,25 @@ import javax.xml.bind.DatatypeConverter;
 
 import com.sun.net.httpserver.BasicAuthenticator;
 
+import it.albertus.httpserver.auth.config.ISingleUserAuthenticatorConfig;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
-public class HttpServerAuthenticator extends BasicAuthenticator {
+public class SingleUserAuthenticator extends BasicAuthenticator {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpServerAuthenticator.class);
+	private static final Logger logger = LoggerFactory.getLogger(SingleUserAuthenticator.class);
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
 	private final ThreadLocal<MessageDigest> messageDigest;
-	private final IHttpServerConfiguration configuration;
+	private final ISingleUserAuthenticatorConfig configuration;
 	private Charset charset;
 
-	public HttpServerAuthenticator(final IHttpServerConfiguration configuration) {
-		super(configuration.getAuthenticationRealm());
+	public SingleUserAuthenticator(final ISingleUserAuthenticatorConfig configuration) {
+		super(configuration.getRealm());
 		this.configuration = configuration;
-		final String hashAlgorithm = configuration.getAuthenticationPasswordHashAlgorithm();
+		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
 			this.messageDigest = new ThreadLocal<MessageDigest>() {
@@ -38,7 +39,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 						return MessageDigest.getInstance(hashAlgorithm);
 					}
 					catch (final NoSuchAlgorithmException e) {
-						throw new RuntimeException(e);
+						throw new IllegalArgumentException(hashAlgorithm, e);
 					}
 				}
 
@@ -62,13 +63,13 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return fail();
 			}
 
-			final String expectedUsername = configuration.getAuthenticationUsername();
+			final String expectedUsername = configuration.getUsername();
 			if (expectedUsername == null || expectedUsername.isEmpty()) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.username"));
 				return fail();
 			}
 
-			final char[] expectedPassword = configuration.getAuthenticationPassword();
+			final char[] expectedPassword = configuration.getPassword();
 			if (expectedPassword == null || expectedPassword.length == 0) {
 				logger.warning(JFaceMessages.get("err.httpserver.configuration.password"));
 				return fail();
@@ -78,7 +79,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return true;
 			}
 			else {
-				logger.log(Level.parse(configuration.getAuthenticationFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
+				logger.log(Level.parse(configuration.getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
 				return fail();
 			}
 		}
@@ -111,7 +112,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private boolean fail() {
 		try {
-			TimeUnit.MILLISECONDS.sleep(configuration.getAuthenticationFailDelay());
+			TimeUnit.MILLISECONDS.sleep(configuration.getFailDelay());
 		}
 		catch (final InterruptedException e) {
 			logger.log(Level.FINE, e.toString(), e);

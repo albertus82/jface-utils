@@ -35,6 +35,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import it.albertus.httpserver.annotation.Path;
+import it.albertus.httpserver.config.IHttpServerConfig;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
@@ -68,7 +69,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected static final int BUFFER_SIZE = 8192; // 8 KiB
 
-	private static final String MSG_KEY_BAD_METHOD = "msg.httpserver.bad.method";
+	private static final String MSG_HTTPSERVER_BAD_METHOD = "msg.httpserver.bad.method";
 
 	private static Object[] lastRequestInfo;
 
@@ -79,7 +80,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 				return MessageDigest.getInstance("MD5");
 			}
 			catch (final NoSuchAlgorithmException e) {
-				throw new RuntimeException(e);
+				throw new IllegalStateException(e);
 			}
 		}
 
@@ -91,7 +92,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	};
 
-	private IHttpServerConfiguration httpServerConfiguration;
+	private IHttpServerConfig httpServerConfig;
 
 	private boolean enabled = true;
 
@@ -148,7 +149,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
 		try {
-			if (getHttpServerConfiguration().isEnabled() && isEnabled(exchange)) {
+			if (getHttpServerConfig().isEnabled() && isEnabled(exchange)) {
 				service(exchange);
 			}
 			else {
@@ -197,7 +198,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 			doOptions(exchange);
 		}
 		else {
-			throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+			throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 		}
 	}
 
@@ -282,23 +283,23 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
-		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
 	protected void doPost(final HttpExchange exchange) throws IOException, HttpException {
-		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
 	protected void doPut(final HttpExchange exchange) throws IOException, HttpException {
-		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
 	protected void doPatch(final HttpExchange exchange) throws IOException, HttpException {
-		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
 	protected void doDelete(final HttpExchange exchange) throws IOException, HttpException {
-		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_KEY_BAD_METHOD));
+		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
 	private Method[] getAllDeclaredMethods(final Class<?> c) {
@@ -392,7 +393,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
-		if (getHttpServerConfiguration().isCompressionEnabled()) {
+		if (getHttpServerConfig().isCompressionEnabled()) {
 			final List<String> headerRows = exchange.getRequestHeaders().get("Accept-Encoding");
 			if (headerRows != null) {
 				for (final String headerRow : headerRows) {
@@ -591,7 +592,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final long fileSize = resource.getSize();
 		InputStream inputStream = null;
 		try {
-			if (fileSize >= 0 && fileSize < httpServerConfiguration.getResponseBufferLimit()) {
+			if (fileSize >= 0 && fileSize < httpServerConfig.getResponseBufferLimit()) {
 				// In memory for small files
 				inputStream = getClass().getResourceAsStream(resourcePath);
 				if (inputStream == null) {
@@ -695,7 +696,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		final long fileSize = file.length();
 		InputStream inputStream = null;
 		try {
-			if (fileSize >= 0 && fileSize < httpServerConfiguration.getResponseBufferLimit()) {
+			if (fileSize >= 0 && fileSize < httpServerConfig.getResponseBufferLimit()) {
 				inputStream = new FileInputStream(file);
 				sendStaticInMemoryResponse(exchange, inputStream, attachment ? fileName : null, cacheControl);
 			}
@@ -788,7 +789,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	protected void log(final HttpExchange exchange) {
 		Level level = Level.OFF;
 		try {
-			level = Level.parse(httpServerConfiguration.getRequestLoggingLevel());
+			level = Level.parse(httpServerConfig.getRequestLoggingLevel());
 		}
 		catch (final RuntimeException e) {
 			logger.log(Level.WARNING, e.toString(), e);
@@ -848,12 +849,12 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		this.path = path;
 	}
 
-	protected IHttpServerConfiguration getHttpServerConfiguration() {
-		return httpServerConfiguration;
+	protected IHttpServerConfig getHttpServerConfig() {
+		return httpServerConfig;
 	}
 
-	void setHttpServerConfiguration(final IHttpServerConfiguration httpServerConfiguration) {
-		this.httpServerConfiguration = httpServerConfiguration;
+	void setHttpServerConfig(final IHttpServerConfig httpServerConfig) {
+		this.httpServerConfig = httpServerConfig;
 	}
 
 	public static String getAnnotatedPath(final Class<? extends HttpHandler> clazz) {

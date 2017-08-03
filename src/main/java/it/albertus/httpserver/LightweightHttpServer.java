@@ -30,6 +30,7 @@ import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 
+import it.albertus.httpserver.config.IHttpServerConfig;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.DaemonThreadFactory;
 import it.albertus.util.IOUtils;
@@ -40,7 +41,7 @@ public class LightweightHttpServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServer.class);
 
-	protected final IHttpServerConfiguration httpServerConfiguration;
+	protected final IHttpServerConfig httpServerConfiguration;
 
 	private volatile HttpServer server;
 	protected volatile boolean running = false;
@@ -50,7 +51,7 @@ public class LightweightHttpServer {
 
 	private final Object lock = new Object();
 
-	public LightweightHttpServer(final IHttpServerConfiguration httpServerConfiguration) {
+	public LightweightHttpServer(final IHttpServerConfig httpServerConfiguration) {
 		this.httpServerConfiguration = httpServerConfiguration;
 	}
 
@@ -106,16 +107,15 @@ public class LightweightHttpServer {
 	 * Stops this server by closing the listening socket and disallowing any new
 	 * exchanges from being processed. The method will then block until all
 	 * current exchange handlers have completed or else when approximately the
-	 * number of seconds returned by
-	 * {@link IHttpServerConfiguration#getStopDelay()} has elapsed (whichever
-	 * happens sooner). Then, all open TCP connections are closed, the
-	 * background thread created by start() exits, the thread pool is shutdown
-	 * and the method returns.
+	 * number of seconds returned by {@link IHttpServerConfig#getStopDelay()}
+	 * has elapsed (whichever happens sooner). Then, all open TCP connections
+	 * are closed, the background thread created by start() exits, the thread
+	 * pool is shutdown and the method returns.
 	 * <p>
 	 *
 	 * @throws IllegalArgumentException if delay is less than zero.
 	 * @see LightweightHttpServer#stop(int)
-	 * @see IHttpServerConfiguration#getStopDelay()
+	 * @see IHttpServerConfig#getStopDelay()
 	 */
 	public void stop() {
 		stop(httpServerConfiguration.getStopDelay());
@@ -158,14 +158,6 @@ public class LightweightHttpServer {
 	}
 
 	protected Collection<HttpContext> createContexts() {
-		final Authenticator authenticator;
-		if (httpServerConfiguration.isAuthenticationRequired()) {
-			authenticator = new HttpServerAuthenticator(httpServerConfiguration);
-		}
-		else {
-			authenticator = null;
-		}
-
 		final Filter[] filtersArray = createFilters();
 		final Collection<Filter> filtersList;
 		if (filtersArray != null && filtersArray.length != 0) {
@@ -176,16 +168,23 @@ public class LightweightHttpServer {
 		}
 
 		final Collection<HttpContext> httpContexts = new ArrayList<HttpContext>();
-		for (final AbstractHttpHandler handler : createHandlers()) {
-			handler.setHttpServerConfiguration(httpServerConfiguration); // Injection
-			final HttpContext httpContext = server.createContext(handler.getPath(), handler);
-			if (filtersArray != null && filtersArray.length != 0) {
-				httpContext.getFilters().addAll(filtersList);
+		final Authenticator authenticator = httpServerConfiguration.getAuthenticator();
+		final AbstractHttpHandler[] handlersArray = createHandlers();
+		if (handlersArray != null && handlersArray.length > 0) {
+			for (final AbstractHttpHandler handler : handlersArray) {
+				handler.setHttpServerConfig(httpServerConfiguration); // Injection
+				final HttpContext httpContext = server.createContext(handler.getPath(), handler);
+				if (filtersArray != null && filtersArray.length != 0) {
+					httpContext.getFilters().addAll(filtersList);
+				}
+				if (authenticator != null) {
+					httpContext.setAuthenticator(authenticator);
+				}
+				httpContexts.add(httpContext);
 			}
-			if (authenticator != null) {
-				httpContext.setAuthenticator(authenticator);
-			}
-			httpContexts.add(httpContext);
+		}
+		else {
+			logger.log(Level.WARNING, JFaceMessages.get("msg.httpserver.configuration.handlers.none"));
 		}
 		return httpContexts;
 	}

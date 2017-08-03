@@ -1,34 +1,28 @@
-package it.albertus.httpserver;
+package it.albertus.httpserver.config;
 
+import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 
+import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.Filter;
 
+import it.albertus.httpserver.AbstractHttpHandler;
+
 @SuppressWarnings("restriction")
-public interface IHttpServerConfiguration {
+public interface IHttpServerConfig {
 
 	AbstractHttpHandler[] getHandlers();
 
+	@Nullable
 	Filter[] getFilters();
+
+	@Nullable
+	Authenticator getAuthenticator();
 
 	boolean isEnabled();
 
 	int getPort();
-
-	boolean isAuthenticationRequired();
-
-	String getAuthenticationRealm();
-
-	String getAuthenticationUsername();
-
-	char[] getAuthenticationPassword();
-
-	String getAuthenticationPasswordHashAlgorithm();
-
-	int getAuthenticationFailDelay();
-
-	String getAuthenticationFailureLoggingLevel();
 
 	boolean isCompressionEnabled();
 

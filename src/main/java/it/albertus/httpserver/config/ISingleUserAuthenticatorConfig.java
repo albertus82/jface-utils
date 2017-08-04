@@ -1,6 +1,6 @@
-package it.albertus.httpserver.auth.config;
+package it.albertus.httpserver.config;
 
-public interface ISingleUserAuthenticatorConfig extends IUserAuthenticatorConfig {
+public interface ISingleUserAuthenticatorConfig extends IAuthenticatorConfig {
 
 	/**
 	 * Returns the expected username.

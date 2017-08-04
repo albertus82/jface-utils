@@ -1,4 +1,4 @@
-package it.albertus.httpserver.auth;
+package it.albertus.httpserver;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -11,22 +11,22 @@ import javax.xml.bind.DatatypeConverter;
 
 import com.sun.net.httpserver.BasicAuthenticator;
 
-import it.albertus.httpserver.auth.config.IUserAuthenticatorConfig;
+import it.albertus.httpserver.config.IAuthenticatorConfig;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
-public class UserAuthenticator extends BasicAuthenticator {
+public class HttpServerAuthenticator extends BasicAuthenticator {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserAuthenticator.class);
+	private static final Logger logger = LoggerFactory.getLogger(HttpServerAuthenticator.class);
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
 	private final ThreadLocal<MessageDigest> messageDigest;
-	private final IUserAuthenticatorConfig configuration;
+	private final IAuthenticatorConfig configuration;
 	private Charset charset;
 
-	public UserAuthenticator(final IUserAuthenticatorConfig configuration) {
+	public HttpServerAuthenticator(final IAuthenticatorConfig configuration) {
 		super(configuration.getRealm());
 		this.configuration = configuration;
 		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
@@ -122,7 +122,7 @@ public class UserAuthenticator extends BasicAuthenticator {
 		return messageDigest;
 	}
 
-	protected IUserAuthenticatorConfig getConfiguration() {
+	protected IAuthenticatorConfig getConfiguration() {
 		return configuration;
 	}
 

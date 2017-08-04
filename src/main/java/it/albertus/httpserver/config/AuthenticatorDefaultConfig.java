@@ -1,8 +1,8 @@
-package it.albertus.httpserver.auth.config;
+package it.albertus.httpserver.config;
 
 import java.util.logging.Level;
 
-public abstract class UserAuthenticatorDefaultConfig implements IUserAuthenticatorConfig {
+public abstract class AuthenticatorDefaultConfig implements IAuthenticatorConfig {
 
 	public static final String DEFAULT_PASSWORD_HASH_ALGORITHM = "SHA-256";
 	public static final int DEFAULT_FAIL_DELAY = 3000;

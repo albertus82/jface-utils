@@ -42,10 +42,9 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.httpserver.annotation.Path;
-import it.albertus.httpserver.auth.UserAuthenticator;
-import it.albertus.httpserver.auth.config.SingleUserAuthenticatorDefaultConfig;
 import it.albertus.httpserver.config.HttpServerDefaultConfig;
 import it.albertus.httpserver.config.IHttpServerConfig;
+import it.albertus.httpserver.config.SingleUserAuthenticatorDefaultConfig;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 import it.albertus.util.logging.LoggingSupport;
@@ -109,7 +108,7 @@ public class LightweightHttpServerTest {
 
 	private static final String loremSmallMd5 = "db89bb5ceab87f9c0fcc2ab36c189c2c";
 	private static final String loremLargeMd5 = "677560ee0c55b61d73bf47e79835f83a";
-	private static final Authenticator singleUserAuthenticator = new UserAuthenticator(new SingleUserAuthenticatorDefaultConfig() {
+	private static final Authenticator singleUserAuthenticator = new HttpServerAuthenticator(new SingleUserAuthenticatorDefaultConfig() {
 		@Override
 		public char[] getPassword() {
 			return PASSWORD_SHA1.toCharArray();

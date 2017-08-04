@@ -1,10 +1,10 @@
-package it.albertus.httpserver.auth.config;
+package it.albertus.httpserver.config;
 
 import javax.annotation.Nullable;
 
 import it.albertus.jface.JFaceMessages;
 
-public abstract class SingleUserAuthenticatorDefaultConfig extends UserAuthenticatorDefaultConfig implements ISingleUserAuthenticatorConfig {
+public abstract class SingleUserAuthenticatorDefaultConfig extends AuthenticatorDefaultConfig implements ISingleUserAuthenticatorConfig {
 
 	@Override
 	@Nullable

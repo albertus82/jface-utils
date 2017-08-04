@@ -5,9 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.albertus.httpserver.auth.UserAuthenticator;
-import it.albertus.httpserver.auth.config.SingleUserAuthenticatorDefaultConfig;
 import it.albertus.httpserver.config.HttpServerDefaultConfig;
+import it.albertus.httpserver.config.SingleUserAuthenticatorDefaultConfig;
 import it.albertus.util.NewLine;
 
 public class HttpServerAuthenticatorTest {
@@ -25,8 +24,8 @@ public class HttpServerAuthenticatorTest {
 		}
 
 		@Override
-		public UserAuthenticator getAuthenticator() {
-			return new UserAuthenticator(new SingleUserAuthenticatorDefaultConfig() {
+		public HttpServerAuthenticator getAuthenticator() {
+			return new HttpServerAuthenticator(new SingleUserAuthenticatorDefaultConfig() {
 				@Override
 				public String getUsername() {
 					return "qwertyuiop";
@@ -80,7 +79,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("1234567890");
 		configuration.setRealm(null);
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -98,7 +97,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("e807f1fcf82d132f9bb018ca6738a19f");
 		configuration.setRealm(null);
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -116,7 +115,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("01b307acba4f54f55aafc33bb06bbbf6ca803e9a");
 		configuration.setRealm(null);
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -134,7 +133,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646");
 		configuration.setRealm("TEST REALM");
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -152,7 +151,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("ed845f8b4f2a6d5da86a3bec90352d916d6a66e3420d720e16439adf238f129182c8c64fc4ec8c1e6506bc2b4888baf9");
 		configuration.setRealm(null);
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -170,7 +169,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setPassword("12b03226a6d8be9c6e8cd5e55dc6c7920caaa39df14aab92d5e3ea9340d1c8a4d3d0b8e4314f1f6ef131ba4bf1ceb9186ab87c801af0d5c95b1befb8cedae2b9");
 		configuration.setRealm(null);
 		configuration.setDelay(0);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		Assert.assertTrue(authenticator.checkCredentials("qwertyuiop", "1234567890"));
 		Assert.assertTrue(authenticator.checkCredentials("QwErTyUiOp", "1234567890"));
@@ -187,7 +186,7 @@ public class HttpServerAuthenticatorTest {
 		configuration.setAlgorithm(null);
 		configuration.setPassword("1234567890");
 		configuration.setRealm(null);
-		final UserAuthenticator authenticator = configuration.getAuthenticator();
+		final HttpServerAuthenticator authenticator = configuration.getAuthenticator();
 
 		for (int i = 0; i < 10; i++) {
 			final int delay = (int) (Math.random() * 100);

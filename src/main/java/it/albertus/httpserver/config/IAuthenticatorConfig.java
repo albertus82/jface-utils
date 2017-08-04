@@ -1,8 +1,8 @@
-package it.albertus.httpserver.auth.config;
+package it.albertus.httpserver.config;
 
 import javax.annotation.Nullable;
 
-public interface IUserAuthenticatorConfig {
+public interface IAuthenticatorConfig {
 
 	/**
 	 * Returns the realm name, which will be displayed in the login interface.

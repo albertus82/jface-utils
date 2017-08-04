@@ -1,5 +1,7 @@
 package it.albertus.httpserver.auth.config;
 
+import javax.annotation.Nullable;
+
 public interface ISingleUserAuthenticatorConfig {
 
 	/**
@@ -30,6 +32,7 @@ public interface ISingleUserAuthenticatorConfig {
 	 * 
 	 * @return the password hashing algorithm, or null if no hash is used.
 	 */
+	@Nullable
 	String getPasswordHashAlgorithm();
 
 	/**

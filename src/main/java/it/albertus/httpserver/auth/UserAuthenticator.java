@@ -12,12 +12,13 @@ import javax.xml.bind.DatatypeConverter;
 import com.sun.net.httpserver.BasicAuthenticator;
 
 import it.albertus.httpserver.auth.config.IUserAuthenticatorConfig;
+import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractUserAuthenticator extends BasicAuthenticator {
+public class UserAuthenticator extends BasicAuthenticator {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractUserAuthenticator.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserAuthenticator.class);
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
@@ -25,7 +26,7 @@ public abstract class AbstractUserAuthenticator extends BasicAuthenticator {
 	private final IUserAuthenticatorConfig configuration;
 	private Charset charset;
 
-	public AbstractUserAuthenticator(final IUserAuthenticatorConfig configuration) {
+	public UserAuthenticator(final IUserAuthenticatorConfig configuration) {
 		super(configuration.getRealm());
 		this.configuration = configuration;
 		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
@@ -52,6 +53,28 @@ public abstract class AbstractUserAuthenticator extends BasicAuthenticator {
 		}
 		else {
 			this.messageDigest = null;
+		}
+	}
+
+	@Override
+	public boolean checkCredentials(final String specifiedUsername, final String specifiedPassword) {
+		try {
+			if (specifiedUsername == null || specifiedUsername.isEmpty() || specifiedPassword == null || specifiedPassword.isEmpty()) {
+				return fail();
+			}
+
+			final char[] expectedPassword = getConfiguration().getPassword(specifiedUsername);
+			if (expectedPassword != null && expectedPassword.length > 0 && checkPassword(specifiedPassword, expectedPassword)) {
+				return true;
+			}
+			else {
+				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
+				return fail();
+			}
+		}
+		catch (final Exception e) {
+			logger.log(Level.SEVERE, e.toString(), e);
+			return fail();
 		}
 	}
 

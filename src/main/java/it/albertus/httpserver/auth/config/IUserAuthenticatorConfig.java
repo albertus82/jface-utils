@@ -12,6 +12,19 @@ public interface IUserAuthenticatorConfig {
 	String getRealm();
 
 	/**
+	 * Returns the expected password or the expected password hash for the
+	 * provided username, depending on the value returned by
+	 * {@link #getPasswordHashAlgorithm()}.
+	 * 
+	 * @param username the username of which retrieve the password.
+	 * 
+	 * @return the password or the password hash, or null if the username
+	 *         doesn't exist.
+	 */
+	@Nullable
+	char[] getPassword(String username);
+
+	/**
 	 * Returns the password hashing algoritm (SHA-1, SHA-256, etc.) or null when
 	 * the password is returned as it is.
 	 * 

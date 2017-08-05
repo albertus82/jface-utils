@@ -7,12 +7,12 @@ import javax.net.ssl.SSLParameters;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.Filter;
 
-import it.albertus.httpserver.AbstractHttpHandler;
+import it.albertus.httpserver.HttpPathHandler;
 
 @SuppressWarnings("restriction")
 public interface IHttpServerConfig {
 
-	AbstractHttpHandler[] getHandlers();
+	HttpPathHandler[] getHandlers();
 
 	@Nullable
 	Filter[] getFilters();

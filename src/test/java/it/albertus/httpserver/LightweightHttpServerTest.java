@@ -54,6 +54,10 @@ public class LightweightHttpServerTest {
 
 	@Path(HANDLER_PATH_DISABLED)
 	private static class DisabledHandler extends AbstractHttpHandler {
+		public DisabledHandler(final IHttpServerConfig config) {
+			super(config);
+		}
+
 		@Override
 		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 			sendResponse(exchange, loremSmallTxt.getBytes());
@@ -62,6 +66,10 @@ public class LightweightHttpServerTest {
 
 	@Path(HANDLER_PATH_PARAMS)
 	private static class RequestParameterHandler extends AbstractHttpHandler {
+		public RequestParameterHandler(final IHttpServerConfig config) {
+			super(config);
+		}
+
 		@Override
 		protected void service(HttpExchange exchange) throws IOException, HttpException {
 			for (final Filter filter : exchange.getHttpContext().getFilters()) {
@@ -182,7 +190,7 @@ public class LightweightHttpServerTest {
 
 			@Override
 			public AbstractHttpHandler[] getHandlers() {
-				final AbstractHttpHandler h1 = new AbstractHttpHandler() {
+				final AbstractHttpHandler h1 = new AbstractHttpHandler(this) {
 					@Override
 					protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 						sendResponse(exchange, loremSmallTxt.getBytes());
@@ -190,21 +198,21 @@ public class LightweightHttpServerTest {
 				};
 				h1.setPath(HANDLER_PATH_TXT);
 
-				final AbstractHttpHandler h2 = new DisabledHandler();
+				final AbstractHttpHandler h2 = new DisabledHandler(this);
 				h2.setEnabled(false);
 
-				final AbstractHttpHandler h3 = new RequestParameterHandler();
+				final AbstractHttpHandler h3 = new RequestParameterHandler(this);
 
-				final FilesHandler h4 = new FilesHandler(certificate.getParentFile().getPath(), "/files/");
+				final FilesHandler h4 = new FilesHandler(this, certificate.getParentFile().getPath(), "/files/");
 				h4.setAttachment(true);
 
-				final ResourcesHandler h5 = new ResourcesHandler(getClass().getPackage(), "/resources/");
+				final ResourcesHandler h5 = new ResourcesHandler(this, getClass().getPackage(), "/resources/");
 				h5.setAttachment(true);
 				h5.setCacheControl("max-age=86400");
 
-				final ResourcesHandler h6 = new ResourcesHandler((Package) null, "/root/");
+				final ResourcesHandler h6 = new ResourcesHandler(this, (Package) null, "/root/");
 
-				final FilesHandler h7 = new FilesHandler(certificate.getParentFile().getPath() + "/backtracking", "/backtracking/");
+				final FilesHandler h7 = new FilesHandler(this, certificate.getParentFile().getPath() + "/backtracking", "/backtracking/");
 
 				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5, h6, h7 };
 			}
@@ -1249,7 +1257,7 @@ public class LightweightHttpServerTest {
 			final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
-			final String etag = new AbstractHttpHandler() {}.generateEtag(certificate);
+			final String etag = new AbstractHttpHandler(null) {}.generateEtag(certificate);
 			connection.addRequestProperty("If-None-Match", etag);
 			Assert.assertEquals(304, connection.getResponseCode());
 			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));

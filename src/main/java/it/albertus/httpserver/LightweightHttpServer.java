@@ -169,10 +169,9 @@ public class LightweightHttpServer {
 
 		final Collection<HttpContext> httpContexts = new ArrayList<HttpContext>();
 		final Authenticator authenticator = httpServerConfiguration.getAuthenticator();
-		final AbstractHttpHandler[] handlersArray = createHandlers();
+		final HttpPathHandler[] handlersArray = createHandlers();
 		if (handlersArray != null && handlersArray.length > 0) {
-			for (final AbstractHttpHandler handler : handlersArray) {
-				handler.setHttpServerConfig(httpServerConfiguration); // Injection
+			for (final HttpPathHandler handler : handlersArray) {
 				final HttpContext httpContext = server.createContext(handler.getPath(), handler);
 				if (filtersArray != null && filtersArray.length != 0) {
 					httpContext.getFilters().addAll(filtersList);
@@ -194,7 +193,7 @@ public class LightweightHttpServer {
 	 * 
 	 * @return the array containing the handlers.
 	 */
-	protected AbstractHttpHandler[] createHandlers() {
+	protected HttpPathHandler[] createHandlers() {
 		return httpServerConfiguration.getHandlers();
 	}
 

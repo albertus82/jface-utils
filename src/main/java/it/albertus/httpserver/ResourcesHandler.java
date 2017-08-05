@@ -4,19 +4,24 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import it.albertus.httpserver.config.IHttpServerConfig;
+
 @SuppressWarnings("restriction")
 public class ResourcesHandler extends AbstractStaticHandler {
 
-	public ResourcesHandler(final String resourceBasePath, final String urlBasePath) {
+	public ResourcesHandler(final IHttpServerConfig config, final String resourceBasePath, final String urlBasePath) {
+		this(config);
 		setBasePath(resourceBasePath);
 		setPath(urlBasePath);
 	}
 
-	public ResourcesHandler(final Package resourceBasePackage, final String urlBasePath) {
-		this(resourceBasePackage != null ? resourceBasePackage.getName().replace('.', '/') : "/", urlBasePath);
+	public ResourcesHandler(final IHttpServerConfig config, final Package resourceBasePackage, final String urlBasePath) {
+		this(config, resourceBasePackage != null ? resourceBasePackage.getName().replace('.', '/') : "/", urlBasePath);
 	}
 
-	public ResourcesHandler() {/* Default constructor */}
+	public ResourcesHandler(final IHttpServerConfig config) {
+		super(config);
+	}
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {

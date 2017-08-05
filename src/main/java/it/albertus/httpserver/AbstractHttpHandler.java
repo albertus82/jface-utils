@@ -46,7 +46,7 @@ import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractHttpHandler implements HttpHandler {
+public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
 
@@ -92,7 +92,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		}
 	};
 
-	private IHttpServerConfig httpServerConfig;
+	private final IHttpServerConfig httpServerConfig;
 
 	private boolean enabled = true;
 
@@ -145,11 +145,15 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		return resources;
 	}
 
+	public AbstractHttpHandler(final IHttpServerConfig config) {
+		this.httpServerConfig = config;
+	}
+
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
 		log(exchange);
 		try {
-			if (getHttpServerConfig().isEnabled() && isEnabled(exchange)) {
+			if (httpServerConfig.isEnabled() && isEnabled(exchange)) {
 				service(exchange);
 			}
 			else {
@@ -393,7 +397,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 	}
 
 	protected boolean canCompressResponse(final HttpExchange exchange) {
-		if (getHttpServerConfig().isCompressionEnabled()) {
+		if (httpServerConfig.isCompressionEnabled()) {
 			final List<String> headerRows = exchange.getRequestHeaders().get("Accept-Encoding");
 			if (headerRows != null) {
 				for (final String headerRow : headerRows) {
@@ -841,6 +845,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 		this.enabled = enabled;
 	}
 
+	@Override
 	public String getPath() {
 		return path != null ? path : getAnnotatedPath(getClass());
 	}
@@ -851,10 +856,6 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 	protected IHttpServerConfig getHttpServerConfig() {
 		return httpServerConfig;
-	}
-
-	void setHttpServerConfig(final IHttpServerConfig httpServerConfig) {
-		this.httpServerConfig = httpServerConfig;
 	}
 
 	public static String getAnnotatedPath(final Class<? extends HttpHandler> clazz) {

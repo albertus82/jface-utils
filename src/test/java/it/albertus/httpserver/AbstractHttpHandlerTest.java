@@ -27,7 +27,7 @@ public class AbstractHttpHandlerTest {
 
 	@BeforeClass
 	public static void init() throws IOException {
-		handler = new AbstractHttpHandler() {};
+		handler = new AbstractHttpHandler(null) {};
 		originalFile = File.createTempFile(AbstractHttpHandlerTest.class.getSimpleName() + '-', null);
 		FileWriter fw = null;
 		BufferedWriter bw = null;

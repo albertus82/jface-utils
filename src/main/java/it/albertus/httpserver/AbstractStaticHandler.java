@@ -1,10 +1,16 @@
 package it.albertus.httpserver;
 
+import it.albertus.httpserver.config.IHttpServerConfig;
+
 public abstract class AbstractStaticHandler extends AbstractHttpHandler {
 
 	private String basePath;
 	private String cacheControl;
 	private boolean attachment;
+
+	public AbstractStaticHandler(final IHttpServerConfig config) {
+		super(config);
+	}
 
 	public String getBasePath() {
 		return basePath;

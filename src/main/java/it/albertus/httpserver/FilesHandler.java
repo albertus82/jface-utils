@@ -4,15 +4,20 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import it.albertus.httpserver.config.IHttpServerConfig;
+
 @SuppressWarnings("restriction")
 public class FilesHandler extends AbstractStaticHandler {
 
-	public FilesHandler(final String fileBasePath, final String urlBasePath) {
+	public FilesHandler(final IHttpServerConfig config, final String fileBasePath, final String urlBasePath) {
+		this(config);
 		setBasePath(fileBasePath);
 		setPath(urlBasePath);
 	}
 
-	public FilesHandler() {/* Default constructor */}
+	public FilesHandler(final IHttpServerConfig config) {
+		super(config);
+	}
 
 	@Override
 	protected void doGet(final HttpExchange exchange) throws IOException {

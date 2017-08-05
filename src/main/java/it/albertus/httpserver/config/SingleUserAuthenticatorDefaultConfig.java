@@ -6,6 +6,15 @@ import it.albertus.jface.JFaceMessages;
 
 public abstract class SingleUserAuthenticatorDefaultConfig extends AuthenticatorDefaultConfig implements ISingleUserAuthenticatorConfig {
 
+	/**
+	 * Returns the expected password or the expected password hash for the
+	 * provided username, depending on the value returned by
+	 * {@link #getPasswordHashAlgorithm()}.
+	 * 
+	 * @param username the username.
+	 * 
+	 * @return the password or the password hash.
+	 */
 	@Override
 	@Nullable
 	public char[] getPassword(final String username) {

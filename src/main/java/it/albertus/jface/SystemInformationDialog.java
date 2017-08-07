@@ -42,15 +42,18 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class SystemInformationDialog extends Dialog {
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
-
-	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemInformationDialog.class.getName();
+	private static final String LBL_MENU_ITEM_COPY = "lbl.menu.item.copy";
+	private static final String LBL_MENU_ITEM_SELECT_ALL = "lbl.menu.item.select.all";
 
 	private static final float MONITOR_SIZE_DIVISOR = 1.67f;
 
-	private final Map<String, String> properties;
-	private final Map<String, String> env;
-	private final Collection<String> jvmArgs;
+	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemInformationDialog.class.getName();
+
+	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
+
+	protected @Nullable final Map<String, String> properties;
+	protected @Nullable final Map<String, String> env;
+	protected @Nullable final Collection<String> jvmArgs;
 
 	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Collection<String> jvmArgs) {
 		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties, env, jvmArgs);
@@ -69,12 +72,16 @@ public class SystemInformationDialog extends Dialog {
 		shell.setText(getText());
 		shell.setImage(shell.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
 		createContents(shell);
-		final Rectangle screen = shell.getMonitor().getClientArea();
-		shell.setSize((int) (screen.width / MONITOR_SIZE_DIVISOR), (int) (screen.height / MONITOR_SIZE_DIVISOR));
+		constrainShellSize(shell);
 		shell.open();
 	}
 
-	private void createContents(final Shell shell) {
+	protected void constrainShellSize(final Shell shell) {
+		final Rectangle screen = shell.getMonitor().getClientArea(); // available area
+		shell.setSize((int) (screen.width / MONITOR_SIZE_DIVISOR), (int) (screen.height / MONITOR_SIZE_DIVISOR));
+	}
+
+	protected void createContents(final Shell shell) {
 		GridLayoutFactory.swtDefaults().applyTo(shell);
 		final TabFolder folder = new TabFolder(shell, SWT.NONE);
 		GridLayoutFactory.fillDefaults().applyTo(folder);
@@ -101,73 +108,10 @@ public class SystemInformationDialog extends Dialog {
 			jvmArgsTab.setControl(jvmArgsList);
 		}
 
-		createButton(shell);
+		shell.setDefaultButton(createButton(shell));
 	}
 
-	private static List createList(final Composite parent, final Collection<String> jvmArgs) {
-		final List list = new List(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(list);
-
-		for (final String arg : jvmArgs) {
-			list.add(arg);
-		}
-		list.pack();
-
-		list.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final @Nullable KeyEvent e) {
-				if (e != null && SWT.MOD1 == e.stateMask) {
-					if (SwtUtils.KEY_COPY == e.keyCode) {
-						copy(list);
-					}
-					else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
-						list.selectAll();
-					}
-				}
-			}
-
-		});
-
-		final Menu contextMenu = new Menu(list);
-
-		// Copy...
-		final MenuItem copyMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		copyMenuItem.setText(JFaceMessages.get("lbl.menu.item.copy") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
-		copyMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_COPY); // dummy
-		copyMenuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				copy(list);
-			}
-		});
-
-		new MenuItem(contextMenu, SWT.SEPARATOR);
-
-		// Select all...
-		final MenuItem selectAllMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		selectAllMenuItem.setText(JFaceMessages.get("lbl.menu.item.select.all") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
-		selectAllMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_SELECT_ALL); // dummy
-		selectAllMenuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				list.selectAll();
-			}
-		});
-
-		list.addMenuDetectListener(new MenuDetectListener() {
-			@Override
-			public void menuDetected(final MenuDetectEvent e) {
-				copyMenuItem.setEnabled(canCopy(list));
-				selectAllMenuItem.setEnabled(list.getItemCount() > 0);
-				contextMenu.setVisible(true);
-			}
-
-		});
-		return list;
-	}
-
-	private static Table createTable(final Composite parent, final Map<String, String> map) {
+	protected Table createTable(final Composite parent, final Map<String, String> map) {
 		final Table table = new Table(parent, SWT.FULL_SELECTION | SWT.MULTI);
 
 		table.setLinesVisible(true);
@@ -194,7 +138,7 @@ public class SystemInformationDialog extends Dialog {
 
 		table.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(final @Nullable KeyEvent e) {
+			public void keyPressed(@Nullable final KeyEvent e) {
 				if (e != null && SWT.MOD1 == e.stateMask) {
 					if (SwtUtils.KEY_COPY == e.keyCode) {
 						copy(table);
@@ -210,11 +154,11 @@ public class SystemInformationDialog extends Dialog {
 
 		// Copy...
 		final MenuItem copyMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		copyMenuItem.setText(JFaceMessages.get("lbl.menu.item.copy") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
+		copyMenuItem.setText(JFaceMessages.get(LBL_MENU_ITEM_COPY) + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
 		copyMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_COPY); // dummy
 		copyMenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			public void widgetSelected(@Nullable final SelectionEvent e) {
 				copy(table);
 			}
 		});
@@ -223,18 +167,18 @@ public class SystemInformationDialog extends Dialog {
 
 		// Select all...
 		final MenuItem selectAllMenuItem = new MenuItem(contextMenu, SWT.PUSH);
-		selectAllMenuItem.setText(JFaceMessages.get("lbl.menu.item.select.all") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
+		selectAllMenuItem.setText(JFaceMessages.get(LBL_MENU_ITEM_SELECT_ALL) + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
 		selectAllMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_SELECT_ALL); // dummy
 		selectAllMenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			public void widgetSelected(@Nullable final SelectionEvent e) {
 				table.selectAll();
 			}
 		});
 
 		table.addMenuDetectListener(new MenuDetectListener() {
 			@Override
-			public void menuDetected(final MenuDetectEvent e) {
+			public void menuDetected(@Nullable final MenuDetectEvent e) {
 				copyMenuItem.setEnabled(canCopy(table));
 				selectAllMenuItem.setEnabled(table.getItemCount() > 0);
 				contextMenu.setVisible(true);
@@ -243,7 +187,69 @@ public class SystemInformationDialog extends Dialog {
 		return table;
 	}
 
-	private static Button createButton(final Shell shell) {
+	protected List createList(final Composite parent, final Collection<String> jvmArgs) {
+		final List list = new List(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(list);
+
+		for (final String arg : jvmArgs) {
+			list.add(arg);
+		}
+		list.pack();
+
+		list.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(@Nullable final KeyEvent e) {
+				if (e != null && SWT.MOD1 == e.stateMask) {
+					if (SwtUtils.KEY_COPY == e.keyCode) {
+						copy(list);
+					}
+					else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
+						list.selectAll();
+					}
+				}
+			}
+		});
+
+		final Menu contextMenu = new Menu(list);
+
+		// Copy...
+		final MenuItem copyMenuItem = new MenuItem(contextMenu, SWT.PUSH);
+		copyMenuItem.setText(JFaceMessages.get(LBL_MENU_ITEM_COPY) + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_COPY));
+		copyMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_COPY); // dummy
+		copyMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(@Nullable final SelectionEvent e) {
+				copy(list);
+			}
+		});
+
+		new MenuItem(contextMenu, SWT.SEPARATOR);
+
+		// Select all...
+		final MenuItem selectAllMenuItem = new MenuItem(contextMenu, SWT.PUSH);
+		selectAllMenuItem.setText(JFaceMessages.get(LBL_MENU_ITEM_SELECT_ALL) + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SELECT_ALL));
+		selectAllMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_SELECT_ALL); // dummy
+		selectAllMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(@Nullable final SelectionEvent e) {
+				list.selectAll();
+			}
+		});
+
+		list.addMenuDetectListener(new MenuDetectListener() {
+			@Override
+			public void menuDetected(@Nullable final MenuDetectEvent e) {
+				copyMenuItem.setEnabled(canCopy(list));
+				selectAllMenuItem.setEnabled(list.getItemCount() > 0);
+				contextMenu.setVisible(true);
+			}
+
+		});
+		return list;
+	}
+
+	protected Button createButton(final Shell shell) {
 		final Button okButton = new Button(shell, SWT.PUSH);
 		okButton.setText(JFaceMessages.get("lbl.button.close"));
 		final int buttonWidth = SwtUtils.convertHorizontalDLUsToPixels(okButton, IDialogConstants.BUTTON_WIDTH);
@@ -251,26 +257,25 @@ public class SystemInformationDialog extends Dialog {
 		okButton.setFocus();
 		okButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(final SelectionEvent se) {
+			public void widgetSelected(@Nullable final SelectionEvent se) {
 				shell.close();
 			}
 		});
-		shell.setDefaultButton(okButton);
 		return okButton;
 	}
 
 	/** Copies the current selection to the clipboard. */
-	private static void copy(final Table table) {
+	protected void copy(final Table table) {
 		if (canCopy(table)) {
 			final StringBuilder data = new StringBuilder();
 
-			for (int r = 0; r < table.getSelectionCount(); r++) {
-				for (int c = 0; c < table.getColumnCount(); c++) {
-					data.append(table.getSelection()[r].getText(c));
-					if (c == 0) {
+			for (int row = 0; row < table.getSelectionCount(); row++) {
+				for (int col = 0; col < table.getColumnCount(); col++) {
+					data.append(table.getSelection()[row].getText(col));
+					if (col == 0) {
 						data.append('=');
 					}
-					else if (r != table.getSelectionCount() - 1) {
+					else if (row != table.getSelectionCount() - 1) {
 						data.append(NewLine.SYSTEM_LINE_SEPARATOR);
 					}
 				}
@@ -282,13 +287,13 @@ public class SystemInformationDialog extends Dialog {
 		}
 	}
 
-	private static void copy(final List list) {
+	protected void copy(final List list) {
 		if (canCopy(list)) {
 			final StringBuilder data = new StringBuilder();
 
-			for (int r = 0; r < list.getSelectionCount(); r++) {
-				data.append(list.getSelection()[r]);
-				if (r != list.getSelectionCount() - 1) {
+			for (int row = 0; row < list.getSelectionCount(); row++) {
+				data.append(list.getSelection()[row]);
+				if (row != list.getSelectionCount() - 1) {
 					data.append(NewLine.SYSTEM_LINE_SEPARATOR);
 				}
 			}
@@ -299,14 +304,22 @@ public class SystemInformationDialog extends Dialog {
 		}
 	}
 
-	private static boolean canCopy(final Table table) {
+	protected boolean canCopy(final Table table) {
 		return !table.isDisposed() && table.getColumnCount() > 0 && table.getSelectionCount() > 0;
 	}
 
-	private static boolean canCopy(final List list) {
+	protected boolean canCopy(final List list) {
 		return !list.isDisposed() && list.getSelectionCount() > 0;
 	}
 
+	/**
+	 * Determine if the dialog can be populated with informations. The presence
+	 * of a {@link SecurityManager} could limit the informations that can be
+	 * retrieved.
+	 * 
+	 * @return {@code true} if there are informations to show, otherwise
+	 *         {@code false}.
+	 */
 	public static boolean isAvailable() {
 		final SecurityManager sm = System.getSecurityManager();
 		if (sm != null) {

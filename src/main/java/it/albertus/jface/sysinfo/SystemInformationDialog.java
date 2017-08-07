@@ -1,4 +1,4 @@
-package it.albertus.jface;
+package it.albertus.jface.sysinfo;
 
 import java.lang.management.ManagementPermission;
 import java.util.Collection;
@@ -23,13 +23,12 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -39,8 +38,9 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.SwtUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -60,13 +60,16 @@ public class SystemInformationDialog extends Dialog {
 	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
 
 	/** The map contaning the system properties (can be null). */
-	protected @Nullable final Map<String, String> properties;
+	@Nullable
+	protected final Map<String, String> properties;
 
 	/** The map containing the environment variables (can be null). */
-	protected @Nullable final Map<String, String> env;
+	@Nullable
+	protected final Map<String, String> env;
 
 	/** The collection containing the JVM arguments (can be null). */
-	protected @Nullable final Collection<String> jvmArgs;
+	@Nullable
+	protected final Iterable<String> jvmArgs;
 
 	/**
 	 * Construct a new instance of the <em>System Information</em> dialog with
@@ -80,7 +83,7 @@ public class SystemInformationDialog extends Dialog {
 	 * @see #SystemInformationDialog(Shell, int, Map, Map, Collection)
 	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
 	 */
-	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Collection<String> jvmArgs) {
+	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
 		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties, env, jvmArgs);
 	}
 
@@ -96,7 +99,7 @@ public class SystemInformationDialog extends Dialog {
 	 * 
 	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
 	 */
-	public SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Collection<String> jvmArgs) {
+	public SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
 		super(parent, style);
 		this.properties = properties;
 		this.env = env;
@@ -146,7 +149,7 @@ public class SystemInformationDialog extends Dialog {
 			jvmArgsTab.setControl(jvmArgsList);
 		}
 
-		createButton(shell);
+		createButtons(shell);
 	}
 
 	protected Table createTable(final Composite parent, final Map<String, String> map) {
@@ -177,20 +180,14 @@ public class SystemInformationDialog extends Dialog {
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(@Nullable final KeyEvent e) {
-				if (e != null) {
-					if (SWT.MOD1 == e.stateMask) {
-						if (SwtUtils.KEY_COPY == e.keyCode) {
-							copy(table);
-						}
-						else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
-							table.selectAll();
-						}
+				if (e != null && SWT.MOD1 == e.stateMask) {
+					if (SwtUtils.KEY_COPY == e.keyCode) {
+						copy(table);
 					}
-					else if ((e.keyCode == 10 || e.keyCode == 13) && table.getSelectionIndex() != -1) {
-						new PropertyDetailDialog(table.getShell(), table.getItem(table.getSelectionIndex()).getText(0), table.getItem(table.getSelectionIndex()).getText(1)).open();
+					else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
+						table.selectAll();
 					}
 				}
-
 			}
 		});
 
@@ -203,6 +200,12 @@ public class SystemInformationDialog extends Dialog {
 			}
 		});
 
+		createTableContextMenu(table);
+
+		return table;
+	}
+
+	private Menu createTableContextMenu(final Table table) {
 		final Menu contextMenu = new Menu(table);
 
 		// Open...
@@ -252,10 +255,11 @@ public class SystemInformationDialog extends Dialog {
 				contextMenu.setVisible(true);
 			}
 		});
-		return table;
+
+		return contextMenu;
 	}
 
-	protected List createList(final Composite parent, final Collection<String> jvmArgs) {
+	protected List createList(final Composite parent, final Iterable<String> jvmArgs) {
 		final List list = new List(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(list);
@@ -264,6 +268,15 @@ public class SystemInformationDialog extends Dialog {
 			list.add(arg);
 		}
 		list.pack();
+
+		list.addTraverseListener(new TraverseListener() {
+			@Override
+			public void keyTraversed(@Nullable final TraverseEvent e) {
+				if (e != null && SWT.TRAVERSE_RETURN == e.detail && list.getSelectionIndex() != -1) {
+					new PropertyDetailDialog(list.getShell(), list.getItem(list.getSelectionIndex())).open();
+				}
+			}
+		});
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override
@@ -279,7 +292,37 @@ public class SystemInformationDialog extends Dialog {
 			}
 		});
 
+		list.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(@Nullable final SelectionEvent e) {
+				if (list.getSelectionIndex() != -1) {
+					new PropertyDetailDialog(list.getShell(), list.getItem(list.getSelectionIndex())).open();
+				}
+			}
+		});
+
+		createListContextMenu(list);
+
+		return list;
+	}
+
+	private Menu createListContextMenu(final List list) {
 		final Menu contextMenu = new Menu(list);
+
+		// Open...
+		final MenuItem openMenuItem = new MenuItem(contextMenu, SWT.PUSH);
+		openMenuItem.setText(JFaceMessages.get(LBL_MENU_ITEM_OPEN));
+		openMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(@Nullable final SelectionEvent e) {
+				if (list.getSelectionIndex() != -1) {
+					new PropertyDetailDialog(list.getShell(), list.getItem(list.getSelectionIndex())).open();
+				}
+			}
+		});
+		contextMenu.setDefaultItem(openMenuItem);
+
+		new MenuItem(contextMenu, SWT.SEPARATOR);
 
 		// Copy...
 		final MenuItem copyMenuItem = new MenuItem(contextMenu, SWT.PUSH);
@@ -312,12 +355,12 @@ public class SystemInformationDialog extends Dialog {
 				selectAllMenuItem.setEnabled(list.getItemCount() > 0);
 				contextMenu.setVisible(true);
 			}
-
 		});
-		return list;
+
+		return contextMenu;
 	}
 
-	protected Button createButton(final Shell shell) {
+	protected Button createButtons(final Shell shell) {
 		final Button closeButton = new Button(shell, SWT.PUSH);
 		closeButton.setText(JFaceMessages.get(LBL_BUTTON_CLOSE));
 		final int buttonWidth = SwtUtils.convertHorizontalDLUsToPixels(closeButton, IDialogConstants.BUTTON_WIDTH);
@@ -417,108 +460,6 @@ public class SystemInformationDialog extends Dialog {
 			}
 		}
 		return true;
-	}
-
-	protected static class PropertyDetailDialog extends Dialog {
-
-		private String key;
-		private String value;
-
-		public PropertyDetailDialog(final Shell parentShell, final String key, final String value) {
-			super(parentShell, SWT.SHEET | SWT.RESIZE);
-			this.key = key;
-			this.value = value;
-			setText(JFaceMessages.get("lbl.system.info.detail.dialog.title"));
-		}
-
-		public void open() {
-			final Shell shell = new Shell(getParent(), getStyle());
-			shell.setText(getText());
-			shell.setImage(shell.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
-			createContents(shell);
-			constrainShellSize(shell);
-			shell.open();
-		}
-
-		protected void adjustTextHeight(final Text text, final int height) {
-			if (text.getLayoutData() instanceof GridData) {
-				final GridData gd = (GridData) text.getLayoutData();
-				gd.heightHint = text.getLineHeight() * height;
-				gd.widthHint = 0;
-			}
-		}
-
-		private void createContents(final Shell shell) {
-			GridLayoutFactory.swtDefaults().numColumns(2).applyTo(shell);
-
-			final Label labelKey = new Label(shell, SWT.NONE);
-			labelKey.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TABLE_KEY));
-			GridDataFactory.swtDefaults().applyTo(labelKey);
-			final Text textKey = new Text(shell, SWT.BORDER | SWT.READ_ONLY);
-			textKey.setEditable(false);
-			textKey.setText(key);
-			textKey.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-			GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(textKey);
-			textKey.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(@Nullable final KeyEvent e) {
-					if (e != null && SWT.MOD1 == e.stateMask) {
-						if (SwtUtils.KEY_COPY == e.keyCode) {
-							textKey.copy();
-						}
-						else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
-							textKey.selectAll();
-						}
-					}
-				}
-			});
-
-			final Label labelValue = new Label(shell, SWT.NONE);
-			labelValue.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TABLE_VALUE));
-			GridDataFactory.swtDefaults().applyTo(labelValue);
-			final Text textValue = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
-			textValue.setText(value);
-			textValue.setEditable(false);
-			textValue.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-			GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textValue);
-			adjustTextHeight(textValue, 5);
-			textValue.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(@Nullable final KeyEvent e) {
-					if (e != null && SWT.MOD1 == e.stateMask) {
-						if (SwtUtils.KEY_COPY == e.keyCode) {
-							textValue.copy();
-						}
-						else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
-							textValue.selectAll();
-						}
-					}
-				}
-			});
-
-			final Button closeButton = new Button(shell, SWT.PUSH);
-			closeButton.setText(JFaceMessages.get(LBL_BUTTON_CLOSE));
-			final int buttonWidth = SwtUtils.convertHorizontalDLUsToPixels(closeButton, IDialogConstants.BUTTON_WIDTH);
-			GridDataFactory.swtDefaults().span(2, 1).align(SWT.CENTER, SWT.CENTER).grab(true, false).minSize(buttonWidth, SWT.DEFAULT).applyTo(closeButton);
-			closeButton.setFocus();
-			closeButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(@Nullable final SelectionEvent se) {
-					shell.close();
-				}
-			});
-			shell.setDefaultButton(closeButton);
-		}
-
-		protected void constrainShellSize(final Shell shell) {
-			final Point packedSize = getMinimumSize(shell);
-			final Rectangle screen = shell.getMonitor().getClientArea(); // available area
-			shell.setSize(Math.max(packedSize.x, screen.width / 3), packedSize.y);
-		}
-
-		protected Point getMinimumSize(final Shell shell) {
-			return shell.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
-		}
 	}
 
 }

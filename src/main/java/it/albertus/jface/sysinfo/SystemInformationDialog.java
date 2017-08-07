@@ -1,9 +1,12 @@
 package it.albertus.jface.sysinfo;
 
+import java.lang.management.ManagementFactory;
 import java.lang.management.ManagementPermission;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,6 +75,102 @@ public class SystemInformationDialog extends Dialog {
 	protected final Iterable<String> jvmArgs;
 
 	/**
+	 * Determine if the dialog can be populated with informations. The presence
+	 * of a {@link SecurityManager} could limit the informations that can be
+	 * retrieved.
+	 * 
+	 * @return {@code true} if there are informations to show, otherwise
+	 *         {@code false}.
+	 */
+	public static boolean isAvailable() {
+		final SecurityManager sm = System.getSecurityManager();
+		if (sm != null) {
+			int count = 3;
+			try {
+				sm.checkPropertiesAccess(); // system properties
+			}
+			catch (final SecurityException e) {
+				logger.log(Level.FINE, e.toString(), e);
+				count--;
+			}
+			try {
+				sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables 
+			}
+			catch (final SecurityException e) {
+				logger.log(Level.FINE, e.toString(), e);
+				count--;
+			}
+			try {
+				sm.checkPermission(new ManagementPermission("monitor")); // jvm args 
+			}
+			catch (final SecurityException e) {
+				logger.log(Level.FINE, e.toString(), e);
+				count--;
+			}
+			if (count == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Open a <em>System Information</em> dialog if there are informations
+	 * available.
+	 * 
+	 * @param shell the parent shell
+	 * 
+	 * @see #isAvailable()
+	 */
+	public static void open(final Shell shell) {
+		@Nullable
+		Map<String, String> properties = null;
+		try {
+			final Properties systemProperties = System.getProperties();
+			properties = new TreeMap<String, String>();
+			for (final Entry<?, ?> entry : systemProperties.entrySet()) {
+				if (entry != null) {
+					properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+				}
+			}
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+
+		@Nullable
+		Map<String, String> env = null;
+		try {
+			final Map<String, String> systemEnv = System.getenv();
+			env = new TreeMap<String, String>();
+			for (final Entry<String, String> entry : systemEnv.entrySet()) {
+				if (entry != null) {
+					env.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+				}
+			}
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+
+		@Nullable
+		Iterable<String> jvmArgs = null;
+		try {
+			jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+
+		if (properties != null || env != null || jvmArgs != null) {
+			new SystemInformationDialog(shell, properties, env, jvmArgs).open();
+		}
+		else {
+			logger.log(Level.CONFIG, "System information not available.");
+		}
+	}
+
+	/**
 	 * Construct a new instance of the <em>System Information</em> dialog with
 	 * one or more collections of data.
 	 * 
@@ -83,7 +182,7 @@ public class SystemInformationDialog extends Dialog {
 	 * @see #SystemInformationDialog(Shell, int, Map, Map, Collection)
 	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
 	 */
-	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
+	protected SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
 		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties, env, jvmArgs);
 	}
 
@@ -99,7 +198,7 @@ public class SystemInformationDialog extends Dialog {
 	 * 
 	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
 	 */
-	public SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
+	protected SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {
 		super(parent, style);
 		this.properties = properties;
 		this.env = env;
@@ -108,7 +207,7 @@ public class SystemInformationDialog extends Dialog {
 	}
 
 	/** Open this <em>System Information</em> dialog. */
-	public void open() {
+	protected void open() {
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());
 		shell.setImage(shell.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
@@ -205,7 +304,7 @@ public class SystemInformationDialog extends Dialog {
 		return table;
 	}
 
-	private Menu createTableContextMenu(final Table table) {
+	protected Menu createTableContextMenu(final Table table) {
 		final Menu contextMenu = new Menu(table);
 
 		// Open...
@@ -306,7 +405,7 @@ public class SystemInformationDialog extends Dialog {
 		return list;
 	}
 
-	private Menu createListContextMenu(final List list) {
+	protected Menu createListContextMenu(final List list) {
 		final Menu contextMenu = new Menu(list);
 
 		// Open...
@@ -367,7 +466,7 @@ public class SystemInformationDialog extends Dialog {
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).grab(true, false).minSize(buttonWidth, SWT.DEFAULT).applyTo(closeButton);
 		closeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(@Nullable final SelectionEvent se) {
+			public void widgetSelected(@Nullable final SelectionEvent e) {
 				shell.close();
 			}
 		});
@@ -397,6 +496,7 @@ public class SystemInformationDialog extends Dialog {
 		}
 	}
 
+	/** Copies the current selection to the clipboard. */
 	protected void copy(final List list) {
 		if (canCopy(list)) {
 			final StringBuilder data = new StringBuilder();
@@ -420,46 +520,6 @@ public class SystemInformationDialog extends Dialog {
 
 	protected boolean canCopy(final List list) {
 		return !list.isDisposed() && list.getSelectionCount() > 0;
-	}
-
-	/**
-	 * Determine if the dialog can be populated with informations. The presence
-	 * of a {@link SecurityManager} could limit the informations that can be
-	 * retrieved.
-	 * 
-	 * @return {@code true} if there are informations to show, otherwise
-	 *         {@code false}.
-	 */
-	public static boolean isAvailable() {
-		final SecurityManager sm = System.getSecurityManager();
-		if (sm != null) {
-			int count = 3;
-			try {
-				sm.checkPropertiesAccess(); // system properties
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			try {
-				sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables 
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			try {
-				sm.checkPermission(new ManagementPermission("monitor")); // jvm args 
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			if (count == 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 }

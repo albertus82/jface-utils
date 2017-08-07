@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -96,7 +97,9 @@ public class PropertyDetailDialog extends Dialog {
 			final Text textKey = new Text(shell, key.length() <= WRAP_LENGTH ? SWT.BORDER | SWT.READ_ONLY : SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 			textKey.setText(key);
 			textKey.setEditable(false);
-			textKey.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+			if (Util.isWindows()) {
+				textKey.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+			}
 			textKey.addKeyListener(new TextKeyListener(textKey));
 			if (key.length() <= WRAP_LENGTH) {
 				GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(textKey);
@@ -114,7 +117,9 @@ public class PropertyDetailDialog extends Dialog {
 		final Text textValue = new Text(shell, value.length() <= WRAP_LENGTH ? SWT.BORDER | SWT.READ_ONLY : SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		textValue.setText(value);
 		textValue.setEditable(false);
-		textValue.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		if (Util.isWindows()) {
+			textValue.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		}
 		textValue.addKeyListener(new TextKeyListener(textValue));
 
 		if (value.length() <= WRAP_LENGTH) {

@@ -33,6 +33,8 @@ public class SystemPropertiesDialog extends Dialog {
 
 	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemPropertiesDialog.class.getName();
 
+	private static final float MONITOR_SIZE_DIVISOR = 1.67f;
+
 	private final Map<String, String> properties;
 
 	private Table table;
@@ -54,7 +56,8 @@ public class SystemPropertiesDialog extends Dialog {
 		shell.setText(getText());
 		shell.setImage(shell.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
 		createContents(shell);
-		shell.pack();
+		final Rectangle screen = shell.getMonitor().getClientArea();
+		shell.setSize((int) (screen.width / MONITOR_SIZE_DIVISOR), (int) (screen.height / MONITOR_SIZE_DIVISOR));
 		shell.open();
 	}
 
@@ -69,8 +72,7 @@ public class SystemPropertiesDialog extends Dialog {
 
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		final Rectangle screen = table.getDisplay().getBounds();
-		GridDataFactory.fillDefaults().grab(true, true).hint(screen.width / 2, screen.height / 2).applyTo(table);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
 		for (final String title : new String[] { JFaceMessages.get("lbl.system.properties.dialog.key"), JFaceMessages.get("lbl.system.properties.dialog.value") }) {
 			final TableColumn column = new TableColumn(table, SWT.NONE);

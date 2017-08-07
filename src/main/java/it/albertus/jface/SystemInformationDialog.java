@@ -2,6 +2,10 @@ package it.albertus.jface;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.annotation.Nullable;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -19,36 +23,40 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import it.albertus.util.NewLine;
+import it.albertus.util.logging.LoggerFactory;
 
-public class SystemPropertiesDialog extends Dialog {
+public class SystemInformationDialog extends Dialog {
 
-	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemPropertiesDialog.class.getName();
+	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
+
+	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemInformationDialog.class.getName();
 
 	private static final float MONITOR_SIZE_DIVISOR = 1.67f;
 
 	private final Map<String, String> properties;
+	private final Map<String, String> env;
 
-	private Table table;
-
-	public SystemPropertiesDialog(final Shell parent, final Map<String, String> properties) {
-		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties);
+	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env) {
+		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties, env);
 	}
 
-	public SystemPropertiesDialog(final Shell parent, final int style, final Map<String, String> properties) {
+	public SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env) {
 		super(parent, style);
-		if (properties == null) {
-			throw new NullPointerException();
-		}
 		this.properties = properties;
+		this.env = env;
+		setText(JFaceMessages.get("lbl.system.info.dialog.title"));
 	}
 
 	public void open() {
@@ -63,23 +71,40 @@ public class SystemPropertiesDialog extends Dialog {
 
 	private void createContents(final Shell shell) {
 		GridLayoutFactory.swtDefaults().applyTo(shell);
-		createTable(shell);
+		final TabFolder folder = new TabFolder(shell, SWT.NONE);
+		GridLayoutFactory.fillDefaults().applyTo(folder);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(folder);
+
+		if (properties != null) {
+			final Table propertiesTable = createTable(folder, properties);
+			final TabItem propertiesTab = new TabItem(folder, SWT.NONE);
+			propertiesTab.setText(JFaceMessages.get("lbl.system.info.tab.properties"));
+			propertiesTab.setControl(propertiesTable);
+		}
+
+		if (env != null) {
+			final TabItem envTab = new TabItem(folder, SWT.NONE);
+			envTab.setText(JFaceMessages.get("lbl.system.info.tab.env"));
+			final Table envTable = createTable(folder, env);
+			envTab.setControl(envTable);
+		}
+
 		createButton(shell);
 	}
 
-	private void createTable(final Shell shell) {
-		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+	private static Table createTable(final Composite parent, final Map<String, String> map) {
+		final Table table = new Table(parent, SWT.FULL_SELECTION | SWT.MULTI);
 
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
-		for (final String title : new String[] { JFaceMessages.get("lbl.system.properties.dialog.key"), JFaceMessages.get("lbl.system.properties.dialog.value") }) {
+		for (final String title : new String[] { JFaceMessages.get("lbl.system.info.table.key"), JFaceMessages.get("lbl.system.info.table.value") }) {
 			final TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setText(title);
 		}
 		final FontRegistry fontRegistry = JFaceResources.getFontRegistry();
-		for (final Entry<String, String> entry : properties.entrySet()) {
+		for (final Entry<String, String> entry : map.entrySet()) {
 			final TableItem item = new TableItem(table, SWT.NONE);
 			if (!fontRegistry.hasValueFor(TABLE_ITEM_FONT_SYMBOLIC_NAME)) {
 				fontRegistry.put(TABLE_ITEM_FONT_SYMBOLIC_NAME, item.getFont().getFontData());
@@ -94,10 +119,10 @@ public class SystemPropertiesDialog extends Dialog {
 
 		table.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (SWT.MOD1 == e.stateMask) {
+			public void keyPressed(final @Nullable KeyEvent e) {
+				if (e != null && SWT.MOD1 == e.stateMask) {
 					if (SwtUtils.KEY_COPY == e.keyCode) {
-						copy();
+						copy(table);
 					}
 					else if (SwtUtils.KEY_SELECT_ALL == e.keyCode) {
 						table.selectAll();
@@ -115,7 +140,7 @@ public class SystemPropertiesDialog extends Dialog {
 		copyMenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				copy();
+				copy(table);
 			}
 		});
 
@@ -135,14 +160,15 @@ public class SystemPropertiesDialog extends Dialog {
 		table.addMenuDetectListener(new MenuDetectListener() {
 			@Override
 			public void menuDetected(final MenuDetectEvent e) {
-				copyMenuItem.setEnabled(canCopy());
+				copyMenuItem.setEnabled(canCopy(table));
 				selectAllMenuItem.setEnabled(table.getItemCount() > 0);
 				contextMenu.setVisible(true);
 			}
 		});
+		return table;
 	}
 
-	private void createButton(final Shell shell) {
+	private static Button createButton(final Shell shell) {
 		final Button okButton = new Button(shell, SWT.PUSH);
 		okButton.setText(JFaceMessages.get("lbl.button.close"));
 		final int buttonWidth = SwtUtils.convertHorizontalDLUsToPixels(okButton, IDialogConstants.BUTTON_WIDTH);
@@ -155,11 +181,12 @@ public class SystemPropertiesDialog extends Dialog {
 			}
 		});
 		shell.setDefaultButton(okButton);
+		return okButton;
 	}
 
 	/** Copies the current selection to the clipboard. */
-	public void copy() {
-		if (canCopy()) {
+	private static void copy(final Table table) {
+		if (canCopy(table)) {
 			final StringBuilder data = new StringBuilder();
 
 			for (int r = 0; r < table.getSelectionCount(); r++) {
@@ -180,8 +207,33 @@ public class SystemPropertiesDialog extends Dialog {
 		}
 	}
 
-	private boolean canCopy() {
-		return table != null && !table.isDisposed() && table.getColumnCount() > 0 && table.getSelectionCount() > 0;
+	private static boolean canCopy(final Table table) {
+		return !table.isDisposed() && table.getColumnCount() > 0 && table.getSelectionCount() > 0;
+	}
+
+	public static boolean isAvailable() {
+		final SecurityManager sm = System.getSecurityManager();
+		if (sm != null) {
+			int count = 2;
+			try {
+				sm.checkPropertiesAccess(); // system properties
+			}
+			catch (final SecurityException e) {
+				logger.log(Level.FINE, e.toString(), e);
+				count--;
+			}
+			try {
+				sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables 
+			}
+			catch (final SecurityException e) {
+				logger.log(Level.FINE, e.toString(), e);
+				count--;
+			}
+			if (count == 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -12,17 +12,16 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.SystemPropertiesDialog;
+import it.albertus.jface.SystemInformationDialog;
 import it.albertus.util.logging.LoggerFactory;
 
-public class SystemPropertiesListener implements Listener, SelectionListener {
+public class SystemInformationListener implements Listener, SelectionListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemPropertiesListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(SystemInformationListener.class);
 
 	private final IShellProvider provider;
 
-	public SystemPropertiesListener(final IShellProvider provider) {
+	public SystemInformationListener(final IShellProvider provider) {
 		this.provider = provider;
 	}
 
@@ -40,19 +39,33 @@ public class SystemPropertiesListener implements Listener, SelectionListener {
 	public void widgetDefaultSelected(final SelectionEvent e) {/* Ignore */}
 
 	private void openDialog() {
+		Map<String, String> properties = null;
 		try {
-			final Map<String, String> properties = new TreeMap<String, String>();
+			properties = new TreeMap<String, String>();
 			for (final Entry<?, ?> entry : System.getProperties().entrySet()) {
 				if (entry != null) {
 					properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
 				}
 			}
-			final SystemPropertiesDialog dialog = new SystemPropertiesDialog(provider.getShell(), properties);
-			dialog.setText(JFaceMessages.get("lbl.system.properties.dialog.title"));
-			dialog.open();
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			logger.log(Level.FINE, e.toString(), e);
+		}
+		Map<String, String> env = null;
+		try {
+			env = new TreeMap<String, String>();
+			for (final Entry<String, String> entry : System.getenv().entrySet()) {
+				if (entry != null) {
+					env.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+				}
+			}
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+
+		if (properties != null || env != null) {
+			new SystemInformationDialog(provider.getShell(), properties, env).open();
 		}
 	}
 

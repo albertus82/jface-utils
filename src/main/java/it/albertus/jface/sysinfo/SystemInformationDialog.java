@@ -49,12 +49,15 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class SystemInformationDialog extends Dialog {
 
-	private static final String LBL_SYSTEM_INFO_TABLE_VALUE = "lbl.system.info.table.value";
-	private static final String LBL_SYSTEM_INFO_TABLE_KEY = "lbl.system.info.table.key";
 	private static final String LBL_BUTTON_CLOSE = "lbl.button.close";
 	private static final String LBL_MENU_ITEM_OPEN = "lbl.menu.item.open";
 	private static final String LBL_MENU_ITEM_COPY = "lbl.menu.item.copy";
 	private static final String LBL_MENU_ITEM_SELECT_ALL = "lbl.menu.item.select.all";
+	private static final String LBL_SYSTEM_INFO_TAB_ENV = "lbl.system.info.tab.env";
+	private static final String LBL_SYSTEM_INFO_TAB_JVMARGS = "lbl.system.info.tab.jvmArgs";
+	private static final String LBL_SYSTEM_INFO_TAB_PROPERTIES = "lbl.system.info.tab.properties";
+	private static final String LBL_SYSTEM_INFO_TABLE_KEY = "lbl.system.info.table.key";
+	private static final String LBL_SYSTEM_INFO_TABLE_VALUE = "lbl.system.info.table.value";
 
 	private static final float MONITOR_SIZE_DIVISOR = 1.67f;
 
@@ -230,20 +233,20 @@ public class SystemInformationDialog extends Dialog {
 		if (properties != null) {
 			final Table propertiesTable = createTable(folder, properties);
 			final TabItem propertiesTab = new TabItem(folder, SWT.NONE);
-			propertiesTab.setText(JFaceMessages.get("lbl.system.info.tab.properties"));
+			propertiesTab.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TAB_PROPERTIES));
 			propertiesTab.setControl(propertiesTable);
 		}
 
 		if (env != null) {
 			final TabItem envTab = new TabItem(folder, SWT.NONE);
-			envTab.setText(JFaceMessages.get("lbl.system.info.tab.env"));
+			envTab.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TAB_ENV));
 			final Table envTable = createTable(folder, env);
 			envTab.setControl(envTable);
 		}
 
 		if (jvmArgs != null) {
 			final TabItem jvmArgsTab = new TabItem(folder, SWT.NONE);
-			jvmArgsTab.setText(JFaceMessages.get("lbl.system.info.tab.jvmArgs"));
+			jvmArgsTab.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TAB_JVMARGS));
 			final List jvmArgsList = createList(folder, jvmArgs);
 			jvmArgsTab.setControl(jvmArgsList);
 		}

@@ -25,9 +25,10 @@ import it.albertus.jface.SwtUtils;
 
 public class PropertyDetailDialog extends Dialog {
 
+	private static final String LBL_BUTTON_CLOSE = "lbl.button.close";
+	private static final String LBL_SYSTEM_INFO_DETAIL_DIALOG_TITLE = "lbl.system.info.detail.dialog.title";
 	private static final String LBL_SYSTEM_INFO_TABLE_VALUE = "lbl.system.info.table.value";
 	private static final String LBL_SYSTEM_INFO_TABLE_KEY = "lbl.system.info.table.key";
-	private static final String LBL_BUTTON_CLOSE = "lbl.button.close";
 
 	private static final int MONITOR_SIZE_DIVISOR = 3;
 	private static final int MAX_TEXT_HEIGHT = 5;
@@ -62,7 +63,7 @@ public class PropertyDetailDialog extends Dialog {
 		super(shell, SWT.SHEET);
 		this.key = key;
 		this.value = value;
-		setText(JFaceMessages.get("lbl.system.info.detail.dialog.title"));
+		setText(JFaceMessages.get(LBL_SYSTEM_INFO_DETAIL_DIALOG_TITLE));
 	}
 
 	public PropertyDetailDialog(final Shell shell, final String item) {

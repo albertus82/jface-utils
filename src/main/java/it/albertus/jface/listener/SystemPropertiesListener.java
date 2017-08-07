@@ -20,10 +20,10 @@ public class SystemPropertiesListener implements Listener, SelectionListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemPropertiesListener.class);
 
-	private final IShellProvider gui;
+	private final IShellProvider provider;
 
-	public SystemPropertiesListener(final IShellProvider gui) {
-		this.gui = gui;
+	public SystemPropertiesListener(final IShellProvider provider) {
+		this.provider = provider;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class SystemPropertiesListener implements Listener, SelectionListener {
 					properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
 				}
 			}
-			final SystemPropertiesDialog dialog = new SystemPropertiesDialog(gui.getShell(), properties);
+			final SystemPropertiesDialog dialog = new SystemPropertiesDialog(provider.getShell(), properties);
 			dialog.setText(JFaceMessages.get("lbl.system.properties.dialog.title"));
 			dialog.open();
 		}

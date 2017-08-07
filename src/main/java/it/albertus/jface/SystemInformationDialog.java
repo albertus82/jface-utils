@@ -51,14 +51,43 @@ public class SystemInformationDialog extends Dialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
 
+	/** The map contaning the system properties (can be null). */
 	protected @Nullable final Map<String, String> properties;
+
+	/** The map containing the environment variables (can be null). */
 	protected @Nullable final Map<String, String> env;
+
+	/** The collection containing the JVM arguments (can be null). */
 	protected @Nullable final Collection<String> jvmArgs;
 
+	/**
+	 * Construct a new instance of the <em>System Information</em> dialog with
+	 * one or more collections of data.
+	 * 
+	 * @param parent the parent control
+	 * @param properties a map contaning the system properties (can be null)
+	 * @param env a map containing the environment variables (can be null)
+	 * @param jvmArgs a collection containing the JVM arguments (can be null)
+	 * 
+	 * @see #SystemInformationDialog(Shell, int, Map, Map, Collection)
+	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
+	 */
 	public SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Collection<String> jvmArgs) {
 		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX, properties, env, jvmArgs);
 	}
 
+	/**
+	 * Construct a new instance of the <em>System Information</em> dialog with
+	 * custom style and one or more collections of data.
+	 *
+	 * @param parent the parent control
+	 * @param style the style of the dialog
+	 * @param properties a map contaning the system properties (can be null)
+	 * @param env a map containing the environment variables (can be null)
+	 * @param jvmArgs a collection containing the JVM arguments (can be null)
+	 * 
+	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
+	 */
 	public SystemInformationDialog(final Shell parent, final int style, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Collection<String> jvmArgs) {
 		super(parent, style);
 		this.properties = properties;
@@ -67,6 +96,7 @@ public class SystemInformationDialog extends Dialog {
 		setText(JFaceMessages.get("lbl.system.info.dialog.title"));
 	}
 
+	/** Open this <em>System Information</em> dialog. */
 	public void open() {
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());

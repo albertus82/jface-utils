@@ -1,5 +1,7 @@
 package it.albertus.jface.listener;
 
+import java.lang.management.ManagementFactory;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -64,8 +66,16 @@ public class SystemInformationListener implements Listener, SelectionListener {
 			logger.log(Level.FINE, e.toString(), e);
 		}
 
-		if (properties != null || env != null) {
-			new SystemInformationDialog(provider.getShell(), properties, env).open();
+		List<String> jvmArgs = null;
+		try {
+			jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+
+		if (properties != null || env != null || jvmArgs != null) {
+			new SystemInformationDialog(provider.getShell(), properties, env, jvmArgs).open();
 		}
 	}
 

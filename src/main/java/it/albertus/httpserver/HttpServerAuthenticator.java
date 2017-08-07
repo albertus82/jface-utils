@@ -22,7 +22,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-	private final ThreadLocal<MessageDigest> messageDigest;
+	private final ThreadLocal<MessageDigest> messageDigests;
 	private final IAuthenticatorConfig configuration;
 	private Charset charset;
 
@@ -32,7 +32,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
-			this.messageDigest = new ThreadLocal<MessageDigest>() {
+			this.messageDigests = new ThreadLocal<MessageDigest>() {
 				@Override
 				protected MessageDigest initialValue() {
 					try {
@@ -52,7 +52,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 			};
 		}
 		else {
-			this.messageDigest = null;
+			this.messageDigests = null;
 		}
 	}
 
@@ -80,8 +80,8 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	protected boolean checkPassword(final String provided, final char[] expected) {
 		final char[] computed;
-		if (messageDigest != null) {
-			computed = DatatypeConverter.printHexBinary(messageDigest.get().digest(provided.getBytes(charset))).toLowerCase().toCharArray();
+		if (messageDigests != null) {
+			computed = DatatypeConverter.printHexBinary(messageDigests.get().digest(provided.getBytes(charset))).toLowerCase().toCharArray();
 		}
 		else {
 			computed = provided.toCharArray();
@@ -118,8 +118,8 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		this.charset = charset;
 	}
 
-	protected ThreadLocal<MessageDigest> getMessageDigest() {
-		return messageDigest;
+	protected ThreadLocal<MessageDigest> getMessageDigests() {
+		return messageDigests;
 	}
 
 	protected IAuthenticatorConfig getConfiguration() {

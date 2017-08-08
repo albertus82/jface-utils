@@ -25,15 +25,15 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 
 	/** The map contaning the system properties (can be null). */
 	@Nullable
-	Map<String, String> properties;
+	private Map<String, String> properties;
 
 	/** The map containing the environment variables (can be null). */
 	@Nullable
-	Map<String, String> env;
+	private Map<String, String> env;
 
 	/** The list containing the JVM arguments (can be null). */
 	@Nullable
-	List<String> jvmArgs;
+	private List<String> jvmArgs;
 
 	@Override
 	public void run(final IProgressMonitor monitor) {

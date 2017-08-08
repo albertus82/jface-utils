@@ -31,6 +31,7 @@ public class PropertyDetailDialog extends Dialog {
 	private static final String LBL_SYSTEM_INFO_TABLE_KEY = "lbl.system.info.table.key";
 
 	private static final int MONITOR_SIZE_DIVISOR = 3;
+	private static final int MIN_TEXT_HEIGHT = 2;
 	private static final int MAX_TEXT_HEIGHT = 5;
 	private static final int WRAP_LENGTH = 80;
 
@@ -60,7 +61,7 @@ public class PropertyDetailDialog extends Dialog {
 	protected final String value;
 
 	public PropertyDetailDialog(final Shell shell, @Nullable final String key, final String value) {
-		super(shell, SWT.SHEET);
+		super(shell, value.length() > WRAP_LENGTH || (key != null && key.length() > WRAP_LENGTH) ? SWT.SHEET | SWT.RESIZE : SWT.SHEET);
 		this.key = key;
 		this.value = value;
 		setText(JFaceMessages.get(LBL_SYSTEM_INFO_DETAIL_DIALOG_TITLE));
@@ -79,10 +80,10 @@ public class PropertyDetailDialog extends Dialog {
 		shell.open();
 	}
 
-	protected void adjustTextHeight(final Text text, final int height) {
+	protected void adjustTextHeight(final Text text, final int lines) {
 		if (text.getLayoutData() instanceof GridData) {
 			final GridData gd = (GridData) text.getLayoutData();
-			gd.heightHint = text.getLineHeight() * height;
+			gd.heightHint = text.getLineHeight() * lines;
 			gd.widthHint = 0;
 		}
 	}
@@ -98,7 +99,7 @@ public class PropertyDetailDialog extends Dialog {
 			final Text textKey = new Text(shell, key.length() <= WRAP_LENGTH ? SWT.BORDER | SWT.READ_ONLY : SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 			textKey.setText(key);
 			textKey.setEditable(false);
-			if (Util.isWindows()) {
+			if (Util.isWindows()) { // read-only texts are grayed by default, so force a default "active" background color
 				textKey.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 			}
 			textKey.addKeyListener(new TextKeyListener(textKey));
@@ -107,7 +108,7 @@ public class PropertyDetailDialog extends Dialog {
 			}
 			else {
 				GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textKey);
-				adjustTextHeight(textKey, Math.min(MAX_TEXT_HEIGHT, 2 + key.length() / WRAP_LENGTH));
+				adjustTextHeight(textKey, Math.min(MAX_TEXT_HEIGHT, MIN_TEXT_HEIGHT + key.length() / WRAP_LENGTH));
 			}
 		}
 
@@ -118,7 +119,7 @@ public class PropertyDetailDialog extends Dialog {
 		final Text textValue = new Text(shell, value.length() <= WRAP_LENGTH ? SWT.BORDER | SWT.READ_ONLY : SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		textValue.setText(value);
 		textValue.setEditable(false);
-		if (Util.isWindows()) {
+		if (Util.isWindows()) { // read-only texts are grayed by default, so force a default "active" background color
 			textValue.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		}
 		textValue.addKeyListener(new TextKeyListener(textValue));
@@ -128,7 +129,7 @@ public class PropertyDetailDialog extends Dialog {
 		}
 		else {
 			GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textValue);
-			adjustTextHeight(textValue, Math.min(MAX_TEXT_HEIGHT, 2 + value.length() / WRAP_LENGTH));
+			adjustTextHeight(textValue, Math.min(MAX_TEXT_HEIGHT, MIN_TEXT_HEIGHT + value.length() / WRAP_LENGTH));
 		}
 
 		final Button closeButton = new Button(shell, SWT.PUSH);

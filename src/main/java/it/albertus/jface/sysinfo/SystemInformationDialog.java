@@ -1,20 +1,19 @@
 package it.albertus.jface.sysinfo;
 
-import java.lang.management.ManagementFactory;
 import java.lang.management.ManagementPermission;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -129,53 +128,25 @@ public class SystemInformationDialog extends Dialog {
 	 * @see #isAvailable()
 	 */
 	public static void open(final Shell shell) {
-		@Nullable
-		Map<String, String> properties = null;
 		try {
-			final Properties systemProperties = System.getProperties();
-			properties = new TreeMap<String, String>();
-			for (final Entry<?, ?> entry : systemProperties.entrySet()) {
-				if (entry != null) {
-					properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
-				}
+			shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+			final SystemInformationGatherer gatherer = new SystemInformationGatherer();
+			ModalContext.run(gatherer, true, new NullProgressMonitor(), shell.getDisplay());
+			if (gatherer.getProperties() != null || gatherer.getEnv() != null || gatherer.getJvmArgs() != null) {
+				new SystemInformationDialog(shell, gatherer.getProperties(), gatherer.getEnv(), gatherer.getJvmArgs()).open();
+			}
+			else {
+				final MessageBox box = new MessageBox(shell, SWT.ICON_INFORMATION);
+				box.setText(JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE));
+				box.setMessage(JFaceMessages.get(LBL_SYSTEM_INFO_NOT_AVAILABLE));
+				box.open();
 			}
 		}
-		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+		catch (final Exception e) {
+			throw new IllegalStateException(e);
 		}
-
-		@Nullable
-		Map<String, String> env = null;
-		try {
-			final Map<String, String> systemEnv = System.getenv();
-			env = new TreeMap<String, String>();
-			for (final Entry<String, String> entry : systemEnv.entrySet()) {
-				if (entry != null) {
-					env.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
-				}
-			}
-		}
-		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
-		}
-
-		@Nullable
-		Iterable<String> jvmArgs = null;
-		try {
-			jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
-		}
-		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
-		}
-
-		if (properties != null || env != null || jvmArgs != null) {
-			new SystemInformationDialog(shell, properties, env, jvmArgs).open();
-		}
-		else {
-			final MessageBox box = new MessageBox(shell, SWT.ICON_INFORMATION);
-			box.setText(JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE));
-			box.setMessage(JFaceMessages.get(LBL_SYSTEM_INFO_NOT_AVAILABLE));
-			box.open();
+		finally {
+			shell.setCursor(null);
 		}
 	}
 

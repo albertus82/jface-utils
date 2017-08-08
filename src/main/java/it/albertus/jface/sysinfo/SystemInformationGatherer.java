@@ -1,8 +1,8 @@
 package it.albertus.jface.sysinfo;
 
 import java.lang.management.ManagementFactory;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -31,9 +31,9 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 	@Nullable
 	Map<String, String> env;
 
-	/** The collection containing the JVM arguments (can be null). */
+	/** The list containing the JVM arguments (can be null). */
 	@Nullable
-	Collection<String> jvmArgs;
+	List<String> jvmArgs;
 
 	@Override
 	public void run(final IProgressMonitor monitor) {
@@ -67,7 +67,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 		monitor.worked(1);
 
 		try {
-			jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+			jvmArgs = Collections.unmodifiableList(ManagementFactory.getRuntimeMXBean().getInputArguments());
 		}
 		catch (final SecurityException e) {
 			logger.log(Level.FINE, e.toString(), e);
@@ -97,14 +97,13 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 	}
 
 	/**
-	 * Returns a collection containing the JVM arguments (can be null).
+	 * Returns a list containing the JVM arguments (can be null).
 	 * 
-	 * @return an unmodifiable collection containing the JVM arguments (can be
-	 *         null).
+	 * @return an unmodifiable list containing the JVM arguments (can be null).
 	 */
 	@Nullable
-	public Collection<String> getJvmArgs() {
-		return Collections.unmodifiableCollection(jvmArgs);
+	public List<String> getJvmArgs() {
+		return jvmArgs;
 	}
 
 }

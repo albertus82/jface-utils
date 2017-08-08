@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -53,6 +54,8 @@ public class SystemInformationDialog extends Dialog {
 	private static final String LBL_MENU_ITEM_OPEN = "lbl.menu.item.open";
 	private static final String LBL_MENU_ITEM_COPY = "lbl.menu.item.copy";
 	private static final String LBL_MENU_ITEM_SELECT_ALL = "lbl.menu.item.select.all";
+	private static final String LBL_SYSTEM_INFO_DIALOG_TITLE = "lbl.system.info.dialog.title";
+	private static final String LBL_SYSTEM_INFO_NOT_AVAILABLE = "lbl.system.info.notAvailable";
 	private static final String LBL_SYSTEM_INFO_TAB_ENV = "lbl.system.info.tab.env";
 	private static final String LBL_SYSTEM_INFO_TAB_JVMARGS = "lbl.system.info.tab.jvmArgs";
 	private static final String LBL_SYSTEM_INFO_TAB_PROPERTIES = "lbl.system.info.tab.properties";
@@ -118,8 +121,8 @@ public class SystemInformationDialog extends Dialog {
 	}
 
 	/**
-	 * Open a <em>System Information</em> dialog if there are informations
-	 * available.
+	 * If informations are available, opens a <em>System Information</em>
+	 * dialog, otherwise opens a info message box.
 	 * 
 	 * @param shell the parent shell
 	 * 
@@ -169,12 +172,15 @@ public class SystemInformationDialog extends Dialog {
 			new SystemInformationDialog(shell, properties, env, jvmArgs).open();
 		}
 		else {
-			logger.log(Level.CONFIG, "System information not available.");
+			final MessageBox box = new MessageBox(shell, SWT.ICON_INFORMATION);
+			box.setText(JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE));
+			box.setMessage(JFaceMessages.get(LBL_SYSTEM_INFO_NOT_AVAILABLE));
+			box.open();
 		}
 	}
 
 	/**
-	 * Construct a new instance of the <em>System Information</em> dialog with
+	 * Constructs a new instance of the <em>System Information</em> dialog with
 	 * one or more collections of data.
 	 * 
 	 * @param parent the parent control
@@ -190,7 +196,7 @@ public class SystemInformationDialog extends Dialog {
 	}
 
 	/**
-	 * Construct a new instance of the <em>System Information</em> dialog with
+	 * Constructs a new instance of the <em>System Information</em> dialog with
 	 * custom style and one or more collections of data.
 	 *
 	 * @param parent the parent control
@@ -206,10 +212,10 @@ public class SystemInformationDialog extends Dialog {
 		this.properties = properties;
 		this.env = env;
 		this.jvmArgs = jvmArgs;
-		setText(JFaceMessages.get("lbl.system.info.dialog.title"));
+		setText(JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE));
 	}
 
-	/** Open this <em>System Information</em> dialog. */
+	/** Opens this <em>System Information</em> dialog. */
 	protected void open() {
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());

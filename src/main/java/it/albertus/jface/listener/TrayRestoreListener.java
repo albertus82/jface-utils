@@ -1,7 +1,9 @@
 package it.albertus.jface.listener;
 
-import org.eclipse.swt.events.ShellAdapter;
+import javax.annotation.Nullable;
+
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -12,13 +14,15 @@ import org.eclipse.swt.widgets.TrayItem;
  * should add this listener to both {@link org.eclipse.swt.widgets.Shell Shell}
  * and {@link org.eclipse.swt.widgets.TrayItem TrayItem} widgets.
  */
-public class TrayRestoreListener extends ShellAdapter implements Listener {
+public class TrayRestoreListener implements Listener, ShellListener {
 
 	private final Shell shell;
+
+	@Nullable
 	private final TrayItem trayItem;
 
 	/** Create a listener that restores the shell and hides the tray icon. */
-	public TrayRestoreListener(final Shell shell, final TrayItem trayItem) {
+	public TrayRestoreListener(final Shell shell, @Nullable final TrayItem trayItem) {
 		this.shell = shell;
 		this.trayItem = trayItem;
 	}
@@ -31,7 +35,7 @@ public class TrayRestoreListener extends ShellAdapter implements Listener {
 	}
 
 	@Override
-	public void handleEvent(final Event event) {
+	public void handleEvent(@Nullable final Event event) {
 		if (!shell.isDisposed()) {
 			shell.setVisible(true);
 		}
@@ -39,7 +43,7 @@ public class TrayRestoreListener extends ShellAdapter implements Listener {
 	}
 
 	@Override
-	public void shellDeiconified(final ShellEvent se) {
+	public void shellDeiconified(@Nullable final ShellEvent se) {
 		hideTrayIcon();
 	}
 
@@ -48,5 +52,26 @@ public class TrayRestoreListener extends ShellAdapter implements Listener {
 			trayItem.setVisible(false);
 		}
 	}
+
+	public Shell getShell() {
+		return shell;
+	}
+
+	@Nullable
+	public TrayItem getTrayItem() {
+		return trayItem;
+	}
+
+	@Override
+	public void shellActivated(@Nullable final ShellEvent e) {/* Ignore */}
+
+	@Override
+	public void shellClosed(@Nullable final ShellEvent e) {/* Ignore */}
+
+	@Override
+	public void shellDeactivated(@Nullable final ShellEvent e) {/* Ignore */}
+
+	@Override
+	public void shellIconified(@Nullable final ShellEvent e) {/* Ignore */}
 
 }

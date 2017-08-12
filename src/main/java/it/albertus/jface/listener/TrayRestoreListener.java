@@ -2,10 +2,10 @@ package it.albertus.jface.listener;
 
 import javax.annotation.Nullable;
 
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TrayItem;
 
@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.TrayItem;
  * should add this listener to both {@link org.eclipse.swt.widgets.Shell Shell}
  * and {@link org.eclipse.swt.widgets.TrayItem TrayItem} widgets.
  */
-public class TrayRestoreListener implements Listener, ShellListener {
+public class TrayRestoreListener implements SelectionListener, ShellListener {
 
 	private final Shell shell;
 
@@ -35,31 +35,16 @@ public class TrayRestoreListener implements Listener, ShellListener {
 	}
 
 	@Override
-	public void handleEvent(@Nullable final Event event) {
-		if (!shell.isDisposed()) {
-			shell.setVisible(true);
-		}
-		hideTrayIcon();
-	}
-
-	@Override
 	public void shellDeiconified(@Nullable final ShellEvent se) {
 		hideTrayIcon();
 	}
 
-	protected void hideTrayIcon() {
-		if (trayItem != null && !trayItem.isDisposed()) {
-			trayItem.setVisible(false);
+	@Override
+	public void widgetSelected(@Nullable final SelectionEvent e) {
+		if (!shell.isDisposed()) {
+			shell.setVisible(true);
 		}
-	}
-
-	public Shell getShell() {
-		return shell;
-	}
-
-	@Nullable
-	public TrayItem getTrayItem() {
-		return trayItem;
+		hideTrayIcon();
 	}
 
 	@Override
@@ -73,5 +58,23 @@ public class TrayRestoreListener implements Listener, ShellListener {
 
 	@Override
 	public void shellIconified(@Nullable final ShellEvent e) {/* Ignore */}
+
+	@Override
+	public void widgetDefaultSelected(@Nullable final SelectionEvent e) {/* Ignore */}
+
+	protected void hideTrayIcon() {
+		if (trayItem != null && !trayItem.isDisposed()) {
+			trayItem.setVisible(false);
+		}
+	}
+
+	protected Shell getShell() {
+		return shell;
+	}
+
+	@Nullable
+	protected TrayItem getTrayItem() {
+		return trayItem;
+	}
 
 }

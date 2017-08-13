@@ -1,6 +1,7 @@
 package it.albertus.jface;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
@@ -20,6 +21,8 @@ public class SwtUtils {
 	public static final char KEY_DELETE = SWT.DEL;
 	public static final char KEY_UNDO = 'z';
 	public static final char KEY_REDO = 'y';
+
+	private static final String ORG_ECLIPSE_SWT_INTERNAL_GTK_VERSION = "org.eclipse.swt.internal.gtk.version";
 
 	private SwtUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -73,6 +76,16 @@ public class SwtUtils {
 		final int widthInPixel = Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
 		gc.dispose();
 		return widthInPixel;
+	}
+
+	public static boolean isGtk3() {
+		final String gtkVersion = System.getProperty(ORG_ECLIPSE_SWT_INTERNAL_GTK_VERSION);
+		if (gtkVersion == null) {
+			return Util.isGtk();
+		}
+		else {
+			return Util.isGtk() && System.getProperty(ORG_ECLIPSE_SWT_INTERNAL_GTK_VERSION).startsWith("3");
+		}
 	}
 
 }

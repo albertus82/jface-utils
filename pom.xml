@@ -12,7 +12,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<version.date>2017-08-13</version.date>
+		<version.date>2017-08-16</version.date>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>

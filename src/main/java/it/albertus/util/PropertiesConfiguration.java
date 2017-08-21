@@ -49,13 +49,13 @@ public class PropertiesConfiguration extends PreferencesCallback {
 	public void save() throws IOException {
 		final File file = new File(getFileName());
 		file.getParentFile().mkdirs();
-		OutputStream os = null;
+		OutputStream outputStream = null;
 		try {
-			os = new FileOutputStream(file);
-			getProperties().store(os, null);
+			outputStream = new FileOutputStream(file);
+			properties.store(outputStream, null);
 		}
 		finally {
-			IOUtils.closeQuietly(os);
+			IOUtils.closeQuietly(outputStream);
 		}
 	}
 

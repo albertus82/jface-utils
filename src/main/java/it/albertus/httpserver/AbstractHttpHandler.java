@@ -111,7 +111,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		finally {
 			IOUtils.closeQuietly(is);
 		}
-		final Map<Integer, String> httpStatusCodes = new HashMap<Integer, String>(properties.size());
+		final Map<Integer, String> httpStatusCodes = new HashMap<Integer, String>((int) (properties.size() / 0.75) + 1);
 		for (final Entry<?, ?> entry : properties.entrySet()) {
 			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
 		}

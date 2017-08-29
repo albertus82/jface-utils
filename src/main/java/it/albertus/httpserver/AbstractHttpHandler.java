@@ -15,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,7 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
+import it.albertus.util.MapUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.Resource;
 import it.albertus.util.StringUtils;
@@ -111,7 +111,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		finally {
 			IOUtils.closeQuietly(is);
 		}
-		final Map<Integer, String> httpStatusCodes = new HashMap<Integer, String>((int) (properties.size() / 0.75) + 1);
+		final Map<Integer, String> httpStatusCodes = MapUtils.<Integer, String> newHashMapWithExpectedSize(properties.size());
 		for (final Entry<?, ?> entry : properties.entrySet()) {
 			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
 		}

@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import it.albertus.util.MapUtils;
+
 public class StaticLabelsAndValues implements LabelsAndValues {
 
 	private final Map<String, String> entries;
@@ -12,8 +14,8 @@ public class StaticLabelsAndValues implements LabelsAndValues {
 		entries = new LinkedHashMap<String, String>();
 	}
 
-	public StaticLabelsAndValues(final int initialCapacity) {
-		entries = new LinkedHashMap<String, String>(initialCapacity);
+	public StaticLabelsAndValues(final int expectedSize) {
+		entries = MapUtils.<String, String> newLinkedHashMapWithExpectedSize(expectedSize);
 	}
 
 	public StaticLabelsAndValues(final String name, final Object value) {

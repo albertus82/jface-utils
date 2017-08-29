@@ -1,10 +1,11 @@
 package it.albertus.jface.preference;
 
-import it.albertus.util.Localized;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import it.albertus.util.Localized;
+import it.albertus.util.MapUtils;
 
 public class LocalizedLabelsAndValues implements LabelsAndValues {
 
@@ -14,8 +15,8 @@ public class LocalizedLabelsAndValues implements LabelsAndValues {
 		entries = new LinkedHashMap<Localized, String>();
 	}
 
-	public LocalizedLabelsAndValues(final int initialCapacity) {
-		entries = new LinkedHashMap<Localized, String>(initialCapacity);
+	public LocalizedLabelsAndValues(final int expectedSize) {
+		entries = MapUtils.<Localized, String> newLinkedHashMapWithExpectedSize(expectedSize);
 	}
 
 	public LocalizedLabelsAndValues(final Localized name, final Object value) {

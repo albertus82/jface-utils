@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import it.albertus.httpserver.html.HtmlUtils;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
 import it.albertus.util.IOUtils;
@@ -171,7 +172,7 @@ public class MapDialog extends Dialog {
 							markersBlock.append("var marker").append(index).append(" = new google.maps.Marker({").append(NewLine.SYSTEM_LINE_SEPARATOR);
 							markersBlock.append('\t').append("position: new google.maps.LatLng(").append(marker.getLatitude()).append(", ").append(marker.getLongitude()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
 							markersBlock.append('\t').append("map: map,").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							markersBlock.append('\t').append("title: '").append(marker.getTitle().replace("'", "\\'")).append("'").append(NewLine.SYSTEM_LINE_SEPARATOR);
+							markersBlock.append('\t').append("title: '").append(HtmlUtils.escapeEcmaScript(marker.getTitle())).append("'").append(NewLine.SYSTEM_LINE_SEPARATOR);
 							markersBlock.append("});").append(NewLine.SYSTEM_LINE_SEPARATOR);
 							index++;
 						}

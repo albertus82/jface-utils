@@ -130,7 +130,7 @@ public class SwtUtils {
 		if (!isGtk) { // Windows, macOS, etc.
 			return false;
 		}
-		if (gtkVersion != null) { // only since SWT 4.5.0
+		if (gtkVersion != null) { // only since SWT 4.5.0; if present, trust this!
 			return gtkVersion.startsWith("3");
 		}
 		else {
@@ -140,7 +140,7 @@ public class SwtUtils {
 			else if (swtVersion >= 4300 && swtVersion < 4400) { // = 4.3.x
 				return swtGtk3 != null && "1".equals(swtGtk3);
 			}
-			else { // >= 4.4.x
+			else { // >= 4.4.0
 				return swtGtk3 == null || !"0".equals(swtGtk3);
 			}
 		}

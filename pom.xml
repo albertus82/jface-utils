@@ -276,7 +276,7 @@
 			<groupId>com.github</groupId>
 			<artifactId>brotli-haxe</artifactId>
 			<version>20170316-1902</version>
-			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>

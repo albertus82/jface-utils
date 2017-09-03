@@ -13,7 +13,7 @@ import org.junit.Test;
 public class BrotliAdapterTest {
 
 	private static final int JOBS_COUNT = 50;
-	private static final int CONCURRENT_THREADS = 5;
+	private static final int CONCURRENT_THREADS = 4;
 
 	private static final String CHARSET_NAME = "UTF-8";
 

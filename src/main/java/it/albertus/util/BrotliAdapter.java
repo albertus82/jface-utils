@@ -12,10 +12,10 @@ import haxe.root.Brotli;
  */
 public class BrotliAdapter {
 
-	/** Minimum Brotli compression quality. */
+	/** Minimum Brotli compression quality ({@code 0}). */
 	public static final int MIN_QUALITY = 0;
 
-	/** Maximum Brotli compression quality. */
+	/** Maximum Brotli compression quality ({@code 11}). */
 	public static final int MAX_QUALITY = 11;
 
 	private final Brotli brotli;
@@ -47,17 +47,7 @@ public class BrotliAdapter {
 		if (quality < MIN_QUALITY || quality > MAX_QUALITY) {
 			throw new IllegalArgumentException(quality + " - quality range is " + MIN_QUALITY + " to " + MAX_QUALITY);
 		}
-		final Array<Number> array = (Array<Number>) brotli.compressArray(Array.ofNative(toIntegerObject(uncompressed)), quality);
-
-		final int length = array.length;
-		final byte[] compressed = new byte[length];
-		int i = 0;
-		final ArrayIterator<Number> iterator = (ArrayIterator<Number>) array.iterator();
-		while (i < length) {
-			compressed[i++] = iterator.next().byteValue();
-		}
-
-		return compressed;
+		return toNative((Array<Number>) brotli.compressArray(Array.ofNative(toIntegerObject(uncompressed)), quality));
 	}
 
 	/**
@@ -69,20 +59,22 @@ public class BrotliAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public byte[] decompress(final byte[] compressed) {
-		final Array<Number> array = (Array<Number>) brotli.decompressArray(Array.ofNative(toIntegerObject(compressed)));
-
-		final int length = array.length;
-		final byte[] decompressed = new byte[length];
-		int i = 0;
-		final ArrayIterator<Number> iterator = (ArrayIterator<Number>) array.iterator();
-		while (i < length) {
-			decompressed[i++] = iterator.next().byteValue();
-		}
-
-		return decompressed;
+		return toNative((Array<Number>) brotli.decompressArray(Array.ofNative(toIntegerObject(compressed))));
 	}
 
-	static Integer[] toIntegerObject(final byte[] primitive) {
+	@SuppressWarnings("unchecked")
+	private static byte[] toNative(final Array<? extends Number> haxeArray) {
+		final int length = haxeArray.length;
+		final byte[] nativeArray = new byte[length];
+		int i = 0;
+		final ArrayIterator<? extends Number> iterator = (ArrayIterator<? extends Number>) haxeArray.iterator();
+		while (i < length) {
+			nativeArray[i++] = iterator.next().byteValue();
+		}
+		return nativeArray;
+	}
+
+	private static Integer[] toIntegerObject(final byte[] primitive) {
 		final Integer[] wrapper = new Integer[primitive.length];
 		for (int i = 0; i < primitive.length; i++) {
 			wrapper[i] = primitive[i] & 0xFF;

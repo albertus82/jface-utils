@@ -34,12 +34,12 @@ public class BrotliAdapterTest {
 	public void testArraySingleThread() throws IOException {
 		final int i = new Random().nextInt(4);
 
-		final byte[] uncompressed = testStrings[i].getBytes(CHARSET_NAME);
+		final byte[] original = testStrings[i].getBytes(CHARSET_NAME);
 
-		final byte[] compressed = instance.compress(uncompressed);
+		final byte[] compressed = instance.compress(original, 2);
 		final byte[] decompressed = instance.decompress(compressed);
 
-		Assert.assertArrayEquals(uncompressed, decompressed);
+		Assert.assertArrayEquals(original, decompressed);
 		Assert.assertEquals(testStrings[i], new String(decompressed, CHARSET_NAME));
 	}
 
@@ -59,8 +59,8 @@ public class BrotliAdapterTest {
 			}
 
 			for (final CompressDecompressThread thread : threads) {
-				Assert.assertArrayEquals(thread.uncompressed.getBytes(CHARSET_NAME), thread.decompressed);
-				Assert.assertEquals(thread.uncompressed, new String(thread.decompressed, CHARSET_NAME));
+				Assert.assertArrayEquals(thread.original.getBytes(CHARSET_NAME), thread.decompressed);
+				Assert.assertEquals(thread.original, new String(thread.decompressed, CHARSET_NAME));
 			}
 			System.out.print('.');
 		}
@@ -68,17 +68,17 @@ public class BrotliAdapterTest {
 
 	private class CompressDecompressThread extends Thread {
 
-		private final String uncompressed;
+		private final String original;
 		private byte[] decompressed;
 
-		public CompressDecompressThread(final String uncompressed) {
-			this.uncompressed = uncompressed;
+		public CompressDecompressThread(final String original) {
+			this.original = original;
 		}
 
 		@Override
 		public void run() {
 			try {
-				decompressed = instance.decompress(instance.compress(uncompressed.getBytes(CHARSET_NAME)));
+				decompressed = instance.decompress(instance.compress(original.getBytes(CHARSET_NAME), 2));
 			}
 			catch (final UnsupportedEncodingException e) {
 				throw new RuntimeException(e);

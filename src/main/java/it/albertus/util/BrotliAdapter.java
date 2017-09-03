@@ -10,8 +10,11 @@ public class BrotliAdapter {
 	private final Brotli instance = new Brotli(EmptyObject.EMPTY);
 
 	@SuppressWarnings("unchecked")
-	public byte[] compress(final byte[] uncompressed) {
-		final Array<Number> array = (Array<Number>) instance.compressArray(Array.ofNative(toIntegerObject(uncompressed)), 1);
+	public byte[] compress(final byte[] uncompressed, final int quality) {
+		if (quality < 0 || quality > 11) {
+			throw new IllegalArgumentException(quality + " - Quality range is 0 to 11");
+		}
+		final Array<Number> array = (Array<Number>) instance.compressArray(Array.ofNative(toIntegerObject(uncompressed)), quality);
 
 		final byte[] compressed = new byte[array.length];
 		int i = 0;

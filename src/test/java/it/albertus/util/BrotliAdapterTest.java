@@ -12,6 +12,9 @@ import org.junit.Test;
 
 public class BrotliAdapterTest {
 
+	private static final int JOBS_COUNT = 50;
+	private static final int CONCURRENT_THREADS = 5;
+
 	private static final String CHARSET_NAME = "UTF-8";
 
 	private static final String[] testStrings = {
@@ -43,36 +46,43 @@ public class BrotliAdapterTest {
 	@Test
 	public void testArrayMultiThread() throws IOException, InterruptedException {
 		final Random random = new Random();
-		final List<TestThread> threads = new ArrayList<TestThread>();
-		for (int i = 0; i < 2; i++) {
-			final TestThread thread = new TestThread(testStrings[random.nextInt(4)]);
-			threads.add(thread);
-			thread.start();
-		}
-		for (final Thread thread : threads) {
-			thread.join();
-		}
 
-		for (final TestThread thread : threads) {
-			Assert.assertArrayEquals(thread.uncompressed, thread.decompressed);
-			Assert.assertEquals(thread.testString, new String(thread.decompressed, CHARSET_NAME));
+		for (int i = 0; i < JOBS_COUNT; i++) {
+			final List<CompressDecompressThread> threads = new ArrayList<CompressDecompressThread>();
+			for (int j = 0; j < CONCURRENT_THREADS; j++) {
+				final CompressDecompressThread thread = new CompressDecompressThread(testStrings[random.nextInt(4)]);
+				threads.add(thread);
+				thread.start();
+			}
+			for (final Thread thread : threads) {
+				thread.join();
+			}
+
+			for (final CompressDecompressThread thread : threads) {
+				Assert.assertArrayEquals(thread.uncompressed.getBytes(CHARSET_NAME), thread.decompressed);
+				Assert.assertEquals(thread.uncompressed, new String(thread.decompressed, CHARSET_NAME));
+			}
+			System.out.print('.');
 		}
 	}
 
-	private class TestThread extends Thread {
+	private class CompressDecompressThread extends Thread {
 
-		private final byte[] uncompressed;
-		private final String testString;
+		private final String uncompressed;
 		private byte[] decompressed;
 
-		public TestThread(final String testString) throws UnsupportedEncodingException {
-			this.testString = testString;
-			this.uncompressed = testString.getBytes(CHARSET_NAME);
+		public CompressDecompressThread(final String uncompressed) {
+			this.uncompressed = uncompressed;
 		}
 
 		@Override
 		public void run() {
-			decompressed = instance.decompress(instance.compress(uncompressed));
+			try {
+				decompressed = instance.decompress(instance.compress(uncompressed.getBytes(CHARSET_NAME)));
+			}
+			catch (final UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

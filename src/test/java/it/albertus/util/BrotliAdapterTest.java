@@ -64,6 +64,7 @@ public class BrotliAdapterTest {
 			}
 			System.out.print('.');
 		}
+		System.out.println();
 	}
 
 	private class CompressDecompressThread extends Thread {

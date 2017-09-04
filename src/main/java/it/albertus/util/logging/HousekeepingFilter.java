@@ -53,7 +53,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 			this.maxHistory = maxHistory;
 		}
 		this.datePattern = datePattern;
-		logger.log(Level.CONFIG, "Created new {0}", toString());
+		logger.log(Level.FINE, "Created new {0}", toString());
 	}
 
 	@Override

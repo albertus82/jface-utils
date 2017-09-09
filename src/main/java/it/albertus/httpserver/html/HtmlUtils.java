@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class HtmlUtils {
 
-	private static final Set<Character> charsToEscapeForEcmaScript = new HashSet<Character>(Arrays.asList(new Character[] { '&', '"', '<', '>', '\'', '/', }));
+	private static final Set<Character> charsToEscapeForEcmaScript = new HashSet<Character>(Arrays.asList('&', '"', '<', '>', '\'', '/'));
 
 	private HtmlUtils() {
 		throw new IllegalAccessError("Utility class");

@@ -95,6 +95,11 @@ public class LightweightHttpServerTest {
 		protected void doPost(final HttpExchange exchange) throws IOException, HttpException {
 			doGet(exchange);
 		}
+
+		@Override
+		protected void setContentLanguageHeader(final HttpExchange exchange) {
+			setContentLanguageHeader(exchange, "de");
+		}
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServerTest.class);
@@ -404,6 +409,7 @@ public class LightweightHttpServerTest {
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 			Assert.assertNull(connection.getHeaderField("Etag"));
+			Assert.assertEquals("de", connection.getHeaderField("content-language"));
 			Assert.assertEquals(queryString.length(), connection.getContentLength());
 			InputStream is = null;
 			final ByteArrayOutputStream os = new ByteArrayOutputStream();

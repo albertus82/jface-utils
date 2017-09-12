@@ -334,11 +334,26 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 	}
 
+	/**
+	 * Set the <tt>Content-Type</tt> response header. The value is determined by
+	 * the URI path extension. This method can be overriden by subclasses.
+	 * 
+	 * @param exchange the HTTP exchange.
+	 * @see #setContentTypeHeader(HttpExchange, String)
+	 */
 	protected void setContentTypeHeader(final HttpExchange exchange) {
 		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
 	}
 
-	protected void setContentTypeHeader(final HttpExchange exchange, final String value) {
+	/**
+	 * Set the <tt>Content-Type</tt> response header with the provided value, or
+	 * remove the header if the value argument is null.
+	 * 
+	 * @param exchange the HTTP exchange
+	 * @param value the value to be set or null if the header should be removed
+	 * @see #setContentTypeHeader(HttpExchange)
+	 */
+	protected final void setContentTypeHeader(final HttpExchange exchange, final String value) {
 		if (value != null && !value.isEmpty()) {
 			exchange.getResponseHeaders().set("Content-Type", value);
 		}
@@ -347,6 +362,15 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 	}
 
+	/**
+	 * Tries to determine the <b>media type</b> (aka <b>content type</b> or
+	 * <b>MIME type</b>) for the provided file name.
+	 * 
+	 * @param fileName the file name
+	 * @return the computed media type
+	 * @see #getContentTypes()
+	 * @see MimetypesFileTypeMap#getContentType(String)
+	 */
 	protected String getContentType(final String fileName) {
 		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.') + 1).trim().toLowerCase() : null;
 		String contentType = null;
@@ -360,7 +384,33 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Adds {@code Content-Encoding: gzip} header to the provided
+	 * Hook for subclasses to set the <tt>Content-Language</tt> response header
+	 * as needed. The default implementation does nothing.
+	 * 
+	 * @param exchange the HTTP exchange
+	 * @see #setContentLanguageHeader(HttpExchange, String)
+	 */
+	protected void setContentLanguageHeader(final HttpExchange exchange) {}
+
+	/**
+	 * Set the <tt>Content-Language</tt> response header with the provided
+	 * value, or remove the header if the value argument is null.
+	 * 
+	 * @param exchange the HTTP exchange
+	 * @param value the value to be set or null if the header should be removed
+	 * @see #setContentLanguageHeader(HttpExchange)
+	 */
+	protected final void setContentLanguageHeader(final HttpExchange exchange, final String value) {
+		if (value != null && !value.isEmpty()) {
+			exchange.getResponseHeaders().set("Content-Language", value);
+		}
+		else {
+			exchange.getResponseHeaders().remove("Content-Language");
+		}
+	}
+
+	/**
+	 * Adds <tt>Content-Encoding: gzip</tt> header to the provided
 	 * {@link HttpExchange} object.
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.
@@ -547,6 +597,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 			setStatusHeader(exchange, statusCode);
 			if (payload != null) {
 				setContentTypeHeader(exchange);
+				setContentLanguageHeader(exchange);
 				final byte[] response = compressResponse(payload, exchange);
 				if (HttpMethod.HEAD.equalsIgnoreCase(method)) {
 					exchange.getResponseHeaders().set("Content-Length", Integer.toString(response.length));
@@ -757,6 +808,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	private void setStaticHeaders(final HttpExchange exchange, final String fileName, final String cacheControl) {
 		setContentTypeHeader(exchange);
+		setContentLanguageHeader(exchange);
 		setCacheControlHeader(exchange, cacheControl);
 		setStatusHeader(exchange, HttpURLConnection.HTTP_OK);
 		if (fileName != null) {
@@ -764,7 +816,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 	}
 
-	protected void setContentDispositionHeader(final HttpExchange exchange, final String value) {
+	protected final void setContentDispositionHeader(final HttpExchange exchange, final String value) {
 		if (value != null && !value.isEmpty()) {
 			exchange.getResponseHeaders().set("Content-Disposition", value);
 		}

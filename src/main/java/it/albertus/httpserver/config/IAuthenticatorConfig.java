@@ -37,9 +37,9 @@ public interface IAuthenticatorConfig {
 	 * Returns the time to wait after a failed login; useful to mitigate
 	 * brute-force attacks.
 	 * 
-	 * @return the delay in millis.
+	 * @return the delay in milliseconds.
 	 */
-	int getFailDelay();
+	int getFailDelayMillis();
 
 	/**
 	 * Returns the logging level for login failures (wrong credentials).

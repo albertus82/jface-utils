@@ -1,5 +1,10 @@
 package it.albertus.util;
 
+/**
+ * Represents a supplier of results.
+ * 
+ * @param <T> the type of results supplied by this supplier
+ */
 public abstract class Supplier<T> {
 
 	public abstract T get();

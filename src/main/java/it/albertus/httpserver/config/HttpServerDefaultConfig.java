@@ -16,22 +16,22 @@ import it.albertus.httpserver.filter.GzipRequestFilter;
 @SuppressWarnings("restriction")
 public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 
-	public static final int DEFAULT_PORT = 8080;
-	public static final boolean DEFAULT_ENABLED = true;
-	public static final int DEFAULT_MAX_THREAD_COUNT = 15;
-	public static final int DEFAULT_MIN_THREAD_COUNT = DEFAULT_MAX_THREAD_COUNT / 10;
-	public static final long DEFAULT_THREAD_KEEP_ALIVE_TIME = 60L; // seconds
-	public static final boolean DEFAULT_SSL_ENABLED = false;
-	public static final String DEFAULT_SSL_KEYSTORE_TYPE = "JKS";
-	public static final String DEFAULT_SSL_PROTOCOL = "TLS";
-	public static final String DEFAULT_SSL_KMF_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
-	public static final String DEFAULT_SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
-	public static final long DEFAULT_MAX_REQ_TIME = 60L; // seconds
-	public static final long DEFAULT_MAX_RSP_TIME = 60L * 60 * 24; // seconds
-	public static final String DEFAULT_REQUEST_LOGGING_LEVEL = Level.INFO.getName();
-	public static final boolean DEFAULT_COMPRESSION_ENABLED = true;
-	public static final int DEFAULT_RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
-	public static final int DEFAULT_STOP_DELAY = 0; // seconds
+	public static final int PORT = 8080;
+	public static final boolean ENABLED = true;
+	public static final int MAX_THREAD_COUNT = 15;
+	public static final int MIN_THREAD_COUNT = MAX_THREAD_COUNT / 10;
+	public static final long THREAD_KEEP_ALIVE_TIME = 60L; // seconds
+	public static final boolean SSL_ENABLED = false;
+	public static final String SSL_KEYSTORE_TYPE = "JKS";
+	public static final String SSL_PROTOCOL = "TLS";
+	public static final String SSL_KMF_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();
+	public static final String SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
+	public static final long MAX_REQ_TIME = 60L; // seconds
+	public static final long MAX_RSP_TIME = 60L * 60 * 24; // seconds
+	public static final String REQUEST_LOGGING_LEVEL = Level.INFO.getName();
+	public static final boolean COMPRESSION_ENABLED = true;
+	public static final int RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
+	public static final int STOP_DELAY = 0; // seconds
 
 	@Override
 	public Filter[] getFilters() {
@@ -45,57 +45,57 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 
 	@Override
 	public boolean isEnabled() {
-		return DEFAULT_ENABLED;
+		return ENABLED;
 	}
 
 	@Override
 	public int getPort() {
-		return DEFAULT_PORT;
+		return PORT;
 	}
 
 	/**
 	 * Returns the maximum time a request is allowed to take.
 	 * 
-	 * @return {@link #DEFAULT_MAX_REQ_TIME}.
+	 * @return {@link #MAX_REQ_TIME}.
 	 */
 	@Override
 	public long getMaxReqTime() {
-		return DEFAULT_MAX_REQ_TIME;
+		return MAX_REQ_TIME;
 	}
 
 	/**
 	 * Returns the maximum time a response is allowed to take.
 	 * 
-	 * @return {@link #DEFAULT_MAX_RSP_TIME}.
+	 * @return {@link #MAX_RSP_TIME}.
 	 */
 	@Override
 	public long getMaxRspTime() {
-		return DEFAULT_MAX_RSP_TIME;
+		return MAX_RSP_TIME;
 	}
 
 	@Override
 	public boolean isSslEnabled() {
-		return DEFAULT_SSL_ENABLED;
+		return SSL_ENABLED;
 	}
 
 	@Override
 	public String getKeyStoreType() {
-		return DEFAULT_SSL_KEYSTORE_TYPE;
+		return SSL_KEYSTORE_TYPE;
 	}
 
 	@Override
 	public String getSslProtocol() {
-		return DEFAULT_SSL_PROTOCOL;
+		return SSL_PROTOCOL;
 	}
 
 	@Override
 	public String getKeyManagerFactoryAlgorithm() {
-		return DEFAULT_SSL_KMF_ALGORITHM;
+		return SSL_KMF_ALGORITHM;
 	}
 
 	@Override
 	public String getTrustManagerFactoryAlgorithm() {
-		return DEFAULT_SSL_TMF_ALGORITHM;
+		return SSL_TMF_ALGORITHM;
 	}
 
 	/**
@@ -119,11 +119,11 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	/**
 	 * Returns the maximum number of threads to allow in the pool.
 	 * 
-	 * @return {@link #DEFAULT_MAX_THREAD_COUNT}
+	 * @return {@link #MAX_THREAD_COUNT}
 	 */
 	@Override
 	public int getMaxThreadCount() {
-		return DEFAULT_MAX_THREAD_COUNT;
+		return MAX_THREAD_COUNT;
 	}
 
 	/**
@@ -138,27 +138,27 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 
 	@Override
 	public long getThreadKeepAliveTime() {
-		return DEFAULT_THREAD_KEEP_ALIVE_TIME;
+		return THREAD_KEEP_ALIVE_TIME;
 	}
 
 	@Override
 	public String getRequestLoggingLevel() {
-		return DEFAULT_REQUEST_LOGGING_LEVEL;
+		return REQUEST_LOGGING_LEVEL;
 	}
 
 	@Override
 	public boolean isCompressionEnabled() {
-		return DEFAULT_COMPRESSION_ENABLED;
+		return COMPRESSION_ENABLED;
 	}
 
 	@Override
 	public int getResponseBufferLimit() {
-		return DEFAULT_RESPONSE_BUFFER_LIMIT;
+		return RESPONSE_BUFFER_LIMIT;
 	}
 
 	@Override
 	public int getStopDelay() {
-		return DEFAULT_STOP_DELAY;
+		return STOP_DELAY;
 	}
 
 	@Override

@@ -101,7 +101,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	protected boolean fail() {
 		try {
-			TimeUnit.MILLISECONDS.sleep(configuration.getFailDelay());
+			TimeUnit.MILLISECONDS.sleep(configuration.getFailDelayMillis());
 		}
 		catch (final InterruptedException e) {
 			logger.log(Level.FINE, e.toString(), e);

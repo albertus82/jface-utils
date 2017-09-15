@@ -42,7 +42,7 @@ public class HttpServerAuthenticatorTest {
 				}
 
 				@Override
-				public int getFailDelay() {
+				public int getFailDelayMillis() {
 					return delay;
 				}
 

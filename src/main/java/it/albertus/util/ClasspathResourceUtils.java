@@ -1,6 +1,7 @@
 package it.albertus.util;
 
 import java.io.File;
+import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,13 +9,13 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
  * List resources available from the classpath.
  * 
- * @see <a href="http://stackoverflow.com/a/3923182/3260495">http://stackoverflow.com/a/3923182/3260495</a>
+ * @see <a href="http://stackoverflow.com/a/3923182/3260495">Get a list of
+ *      resources from classpath directory - Stack Overflow</a>
  */
 public class ClasspathResourceUtils {
 
@@ -57,11 +58,8 @@ public class ClasspathResourceUtils {
 		try {
 			zf = new ZipFile(file);
 		}
-		catch (final ZipException e) {
-			throw new Error(e);
-		}
 		catch (final IOException e) {
-			throw new Error(e);
+			throw new IOError(e);
 		}
 		final Enumeration<? extends ZipEntry> e = zf.entries();
 		while (e.hasMoreElements()) {
@@ -75,8 +73,8 @@ public class ClasspathResourceUtils {
 		try {
 			zf.close();
 		}
-		catch (final IOException e1) {
-			throw new Error(e1);
+		catch (final IOException ex) {
+			throw new IOError(ex);
 		}
 		return retval;
 	}
@@ -106,7 +104,7 @@ public class ClasspathResourceUtils {
 	 *        there are no args.
 	 */
 	public static void main(final String[] args) {
-		Pattern pattern;
+		final Pattern pattern;
 		if (args.length < 1) {
 			pattern = Pattern.compile(".*");
 		}

@@ -3,7 +3,6 @@ package it.albertus.jface;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
@@ -15,8 +14,6 @@ public class Events {
 
 	private static final String EVENT_NAMES_RESOURCE_NAME = "event-names.properties";
 
-	private static final Logger logger = LoggerFactory.getLogger(Events.class);
-
 	private static final Properties eventNames;
 
 	static {
@@ -25,7 +22,7 @@ public class Events {
 			eventNames.load(Events.class.getResourceAsStream(EVENT_NAMES_RESOURCE_NAME));
 		}
 		catch (final IOException e) {
-			logger.log(Level.WARNING, "Unable to load resource " + EVENT_NAMES_RESOURCE_NAME, e);
+			LoggerFactory.getLogger(Events.class).log(Level.WARNING, "Unable to load resource " + EVENT_NAMES_RESOURCE_NAME, e);
 		}
 	}
 

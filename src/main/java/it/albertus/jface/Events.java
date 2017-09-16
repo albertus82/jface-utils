@@ -35,10 +35,12 @@ public class Events {
 
 	/**
 	 * Returns the event name corresponding to the provided type, as defined in
-	 * {@link org.eclipse.swt.SWT} class.
+	 * {@link org.eclipse.swt.SWT SWT} class.
 	 * 
 	 * @param type the event type
 	 * @return the event name, or null if there's no match for the provided type
+	 * @see #getName(Event)
+	 * @see org.eclipse.swt.SWT
 	 */
 	@Nullable
 	public static String getName(final int type) {
@@ -47,11 +49,13 @@ public class Events {
 
 	/**
 	 * Returns the event name corresponding to the provided event object, as
-	 * defined in {@link org.eclipse.swt.SWT} class.
+	 * defined in {@link org.eclipse.swt.SWT SWT} class.
 	 * 
 	 * @param event the event object
 	 * @return the event name, or null if the argument is null or there's no
 	 *         match for the event's type
+	 * @see #getName(int)
+	 * @see org.eclipse.swt.SWT
 	 */
 	@Nullable
 	public static String getName(@Nullable final Event event) {

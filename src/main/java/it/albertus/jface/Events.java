@@ -10,6 +10,11 @@ import org.eclipse.swt.widgets.Event;
 
 import it.albertus.util.logging.LoggerFactory;
 
+/**
+ * Utility class for SWT events.
+ * 
+ * @see org.eclipse.swt.widgets.Event
+ */
 public class Events {
 
 	private static final String EVENT_NAMES_RESOURCE_NAME = "event-names.properties";

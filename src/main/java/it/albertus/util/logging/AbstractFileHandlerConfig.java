@@ -16,6 +16,7 @@ public abstract class AbstractFileHandlerConfig {
 	private int count = 1; // count specifies how many output files to cycle through (defaults to 1).
 	private boolean append = false; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
 
+	/** Creates a new instance with default values. */
 	protected AbstractFileHandlerConfig() {}
 
 	protected AbstractFileHandlerConfig(final Level level, final Filter filter, final Formatter formatter, final String encoding, final int limit, final int count, final boolean append) {

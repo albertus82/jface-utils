@@ -8,6 +8,7 @@ public class FileHandlerConfig extends AbstractFileHandlerConfig {
 
 	private String pattern = "%h/java%u.log"; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
 
+	/** Creates a new instance with default values. */
 	public FileHandlerConfig() {}
 
 	public static FileHandlerConfig fromHandler(final EnhancedFileHandler handler) {

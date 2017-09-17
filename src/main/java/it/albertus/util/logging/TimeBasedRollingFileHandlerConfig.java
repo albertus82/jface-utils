@@ -11,6 +11,7 @@ public class TimeBasedRollingFileHandlerConfig extends AbstractFileHandlerConfig
 	private String fileNamePattern = "%h/java%d%u.log";
 	private String datePattern = DEFAULT_DATE_PATTERN;
 
+	/** Creates a new instance with default values. */
 	public TimeBasedRollingFileHandlerConfig() {}
 
 	public static TimeBasedRollingFileHandlerConfig fromHandler(final TimeBasedRollingFileHandler handler) {

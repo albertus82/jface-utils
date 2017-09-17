@@ -38,10 +38,12 @@ public class EnhancedFileHandler extends FileHandler {
 			return (String) patternField.get(this);
 		}
 		catch (final NoSuchFieldException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 		catch (final IllegalAccessException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 	}
 
@@ -53,10 +55,12 @@ public class EnhancedFileHandler extends FileHandler {
 			return patternField.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 		catch (final IllegalAccessException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 	}
 
@@ -68,10 +72,12 @@ public class EnhancedFileHandler extends FileHandler {
 			return patternField.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 		catch (final IllegalAccessException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 	}
 
@@ -83,10 +89,12 @@ public class EnhancedFileHandler extends FileHandler {
 			return patternField.getBoolean(this);
 		}
 		catch (final NoSuchFieldException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 		catch (final IllegalAccessException e) {
-			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
+			throw new LinkageError(FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName);
 		}
 	}
 

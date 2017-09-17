@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.ErrorManager;
-import java.util.logging.FileHandler;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -15,12 +14,6 @@ import java.util.logging.LogRecord;
 
 public class TimeBasedRollingFileHandler extends Handler {
 
-	public static final String DEFAULT_DATE_PATTERN = "yyyyMMdd";
-	public static final int DEFAULT_LIMIT = 0;
-	public static final int DEFAULT_COUNT = 1;
-	public static final String DEFAULT_FILENAME_PATTERN = "%h/java%d%u.log";
-	public static final boolean DEFAULT_APPEND = false;
-
 	private final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
 		protected DateFormat initialValue() {
@@ -28,64 +21,17 @@ public class TimeBasedRollingFileHandler extends Handler {
 		}
 	};
 
-	private String datePattern = DEFAULT_DATE_PATTERN;
-	private int limit = DEFAULT_LIMIT; // limit specifies an approximate maximum amount to write (in bytes) to any one file. If this is zero, then there is no limit. (Defaults to no limit).
-	private int count = DEFAULT_COUNT; // count specifies how many output files to cycle through (defaults to 1).
-	private String fileNamePattern = DEFAULT_FILENAME_PATTERN; // pattern specifies a pattern for generating the output file name. (Defaults to "%h/java%u.log").
-	private boolean append = DEFAULT_APPEND; // append specifies whether the FileHandler should append onto any existing files (defaults to false).
+	private final String fileNamePattern;
+	private final String datePattern;
 
-	private FileHandler underlyingFileHandler;
-	private String underlyingFileHandlerPattern;
+	private EnhancedFileHandler underlyingFileHandler;
 
-	public TimeBasedRollingFileHandler() throws IOException {
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
-	}
+	public TimeBasedRollingFileHandler(final TimeBasedRollingFileHandlerConfig config) throws IOException {
+		fileNamePattern = config.getFileNamePattern();
+		datePattern = config.getDatePattern();
 
-	public TimeBasedRollingFileHandler(final String datePattern) throws IOException {
-		this.datePattern = datePattern;
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
-	}
-
-	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern) throws IOException {
-		this.datePattern = datePattern;
-		this.fileNamePattern = fileNamePattern;
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
-	}
-
-	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final boolean append) throws IOException {
-		this.datePattern = datePattern;
-		this.fileNamePattern = fileNamePattern;
-		this.append = append;
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern, append);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
-	}
-
-	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count) throws IOException {
-		this.datePattern = datePattern;
-		this.fileNamePattern = fileNamePattern;
-		this.limit = limit;
-		this.count = count;
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern, limit, count);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
-	}
-
-	public TimeBasedRollingFileHandler(final String datePattern, final String fileNamePattern, final int limit, final int count, final boolean append) throws IOException {
-		this.datePattern = datePattern;
-		this.fileNamePattern = fileNamePattern;
-		this.limit = limit;
-		this.count = count;
-		this.append = append;
-		final String fileHandlerPattern = getFileHandlerPattern();
-		this.underlyingFileHandler = new FileHandler(fileHandlerPattern, limit, count, append);
-		this.underlyingFileHandlerPattern = fileHandlerPattern;
+		final FileHandlerConfig underlyingFileHandlerConfig = new FileHandlerConfig(config.getLevel(), config.getFilter(), config.getFormatter(), config.getEncoding(), config.getLimit(), config.getCount(), config.isAppend(), generateFileHandlerPattern(config.getFileNamePattern(), dateFormat.get()));
+		underlyingFileHandler = new EnhancedFileHandler(underlyingFileHandlerConfig);
 	}
 
 	@Override
@@ -94,18 +40,19 @@ public class TimeBasedRollingFileHandler extends Handler {
 			return;
 		}
 
-		final String fileHandlerPattern = getFileHandlerPattern();
-		if (!fileHandlerPattern.equals(underlyingFileHandlerPattern)) {
+		final String fileHandlerPattern = generateFileHandlerPattern(fileNamePattern, dateFormat.get());
+		if (!fileHandlerPattern.equals(underlyingFileHandler.getPattern())) { // check if date has changed
 			try {
-				final FileHandler oldFileHandler = underlyingFileHandler;
-				final FileHandler newFileHandler = new FileHandler(fileHandlerPattern, limit, count, append);
-				newFileHandler.setFormatter(oldFileHandler.getFormatter());
-				newFileHandler.setLevel(oldFileHandler.getLevel());
-				newFileHandler.setEncoding(oldFileHandler.getEncoding());
+				final EnhancedFileHandler oldFileHandler = underlyingFileHandler; // must be closed at the end!
+
+				final FileHandlerConfig newFileHandlerConfig = FileHandlerConfig.fromHandler(oldFileHandler);
+				newFileHandlerConfig.setPattern(fileHandlerPattern); // Update the file name pattern with the new date
+
+				final EnhancedFileHandler newFileHandler = new EnhancedFileHandler(newFileHandlerConfig);
 				newFileHandler.setErrorManager(oldFileHandler.getErrorManager());
-				newFileHandler.setFilter(oldFileHandler.getFilter());
+
+				// Switch to the new handler and close the old one.
 				underlyingFileHandler = newFileHandler;
-				underlyingFileHandlerPattern = fileHandlerPattern;
 				oldFileHandler.close();
 			}
 			catch (final IOException e) {
@@ -116,11 +63,11 @@ public class TimeBasedRollingFileHandler extends Handler {
 		underlyingFileHandler.publish(record);
 	}
 
-	protected String getFileHandlerPattern() {
+	private static String generateFileHandlerPattern(final String fileNamePattern, final DateFormat dateFormat) {
 		if (!fileNamePattern.contains("%d")) {
 			throw new IllegalArgumentException("fileNamePattern must contain \"%d\"");
 		}
-		return fileNamePattern.replace("%d", dateFormat.get().format(new Date()));
+		return fileNamePattern.replace("%d", dateFormat.format(new Date()));
 	}
 
 	@Override
@@ -131,6 +78,14 @@ public class TimeBasedRollingFileHandler extends Handler {
 	@Override
 	public void close() {
 		underlyingFileHandler.close();
+	}
+
+	public String getDatePattern() {
+		return datePattern;
+	}
+
+	public String getFileNamePattern() {
+		return fileNamePattern;
 	}
 
 	@Override
@@ -183,24 +138,16 @@ public class TimeBasedRollingFileHandler extends Handler {
 		return underlyingFileHandler.getLevel();
 	}
 
-	public String getDatePattern() {
-		return datePattern;
-	}
-
 	public int getLimit() {
-		return limit;
+		return underlyingFileHandler.getLimit();
 	}
 
 	public int getCount() {
-		return count;
-	}
-
-	public String getFileNamePattern() {
-		return fileNamePattern;
+		return underlyingFileHandler.getCount();
 	}
 
 	public boolean isAppend() {
-		return append;
+		return underlyingFileHandler.isAppend();
 	}
 
 }

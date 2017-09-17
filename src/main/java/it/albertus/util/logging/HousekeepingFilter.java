@@ -32,7 +32,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 				return new SimpleDateFormat(datePattern);
 			}
 			catch (final RuntimeException e) {
-				final String defaultDatePattern = TimeBasedRollingFileHandler.DEFAULT_DATE_PATTERN;
+				final String defaultDatePattern = TimeBasedRollingFileHandlerConfig.DEFAULT_DATE_PATTERN;
 				logger.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.datePattern", datePattern, defaultDatePattern), e);
 				return new SimpleDateFormat(defaultDatePattern);
 			}
@@ -40,7 +40,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 	};
 
 	public HousekeepingFilter(final ILogFileManager logFileManager, final int maxHistory) {
-		this(logFileManager, maxHistory, TimeBasedRollingFileHandler.DEFAULT_DATE_PATTERN);
+		this(logFileManager, maxHistory, TimeBasedRollingFileHandlerConfig.DEFAULT_DATE_PATTERN);
 	}
 
 	public HousekeepingFilter(final ILogFileManager logFileManager, final int maxHistory, final String datePattern) {

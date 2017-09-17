@@ -33,9 +33,9 @@ public class EnhancedFileHandler extends FileHandler {
 	public String getPattern() {
 		final String fieldName = "pattern";
 		try {
-			final Field patternField = FileHandler.class.getDeclaredField(fieldName);
-			patternField.setAccessible(true);
-			return (String) patternField.get(this);
+			final Field field = FileHandler.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return (String) field.get(this);
 		}
 		catch (final NoSuchFieldException e) {
 			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
@@ -50,9 +50,9 @@ public class EnhancedFileHandler extends FileHandler {
 	public int getLimit() {
 		final String fieldName = "limit";
 		try {
-			final Field patternField = FileHandler.class.getDeclaredField(fieldName);
-			patternField.setAccessible(true);
-			return patternField.getInt(this);
+			final Field field = FileHandler.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
 			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
@@ -67,9 +67,9 @@ public class EnhancedFileHandler extends FileHandler {
 	public int getCount() {
 		final String fieldName = "count";
 		try {
-			final Field patternField = FileHandler.class.getDeclaredField(fieldName);
-			patternField.setAccessible(true);
-			return patternField.getInt(this);
+			final Field field = FileHandler.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
 			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);
@@ -84,9 +84,9 @@ public class EnhancedFileHandler extends FileHandler {
 	public boolean isAppend() {
 		final String fieldName = "append";
 		try {
-			final Field patternField = FileHandler.class.getDeclaredField(fieldName);
-			patternField.setAccessible(true);
-			return patternField.getBoolean(this);
+			final Field field = FileHandler.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field.getBoolean(this);
 		}
 		catch (final NoSuchFieldException e) {
 			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);

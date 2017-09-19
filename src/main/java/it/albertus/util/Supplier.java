@@ -5,9 +5,7 @@ package it.albertus.util;
  * 
  * @param <T> the type of results supplied by this supplier
  */
-public abstract class Supplier<T> {
-
-	public abstract T get();
+public abstract class Supplier<T> implements ISupplier<T> {
 
 	@Override
 	public String toString() {

@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Localized;
+import it.albertus.util.ISupplier;
 
 public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implements FieldEditorDefault {
 
@@ -25,7 +25,7 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 	private boolean localized; // Do not set any value here!
 
 	private File filterPath = null;
-	private Localized dialogMessage;
+	private ISupplier<String> dialogMessage;
 
 	private boolean defaultToolTip = true;
 	private boolean boldCustomValues = true;
@@ -196,8 +196,8 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 
 	protected File getDirectory(final File startingDirectory) {
 		final DirectoryDialog fileDialog = new DirectoryDialog(getShell(), SWT.OPEN | SWT.SHEET);
-		if (dialogMessage != null && dialogMessage.getString() != null) {
-			fileDialog.setMessage(dialogMessage.getString());
+		if (dialogMessage != null && dialogMessage.get() != null) {
+			fileDialog.setMessage(dialogMessage.get());
 		}
 		if (startingDirectory != null) {
 			fileDialog.setFilterPath(startingDirectory.getPath());
@@ -215,11 +215,11 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		return null;
 	}
 
-	public Localized getDialogMessage() {
+	public ISupplier<String> getDialogMessage() {
 		return dialogMessage;
 	}
 
-	public void setDialogMessage(final Localized dialogMessage) {
+	public void setDialogMessage(final ISupplier<String> dialogMessage) {
 		this.dialogMessage = dialogMessage;
 	}
 

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.graphics.Image;
 
+import it.albertus.util.ISupplier;
 import it.albertus.util.Localized;
 
 public class FieldEditorDetails {
@@ -53,7 +54,7 @@ public class FieldEditorDetails {
 	private Date dateTo;
 
 	// DirectoryFieldEditor & PathEditor
-	private Localized directoryDialogMessage;
+	private ISupplier<String> directoryDialogMessage;
 	private Boolean directoryMustExist;
 
 	// FileFieldEditor
@@ -61,8 +62,8 @@ public class FieldEditorDetails {
 	private Boolean fileEnforceAbsolute;
 
 	// FontFieldEditor
-	private Localized fontPreviewAreaText;
-	private Localized fontChangeButtonText;
+	private ISupplier<String> fontPreviewAreaText;
+	private ISupplier<String> fontChangeButtonText;
 
 	// Allow extension
 	protected FieldEditorDetails() {}
@@ -244,11 +245,11 @@ public class FieldEditorDetails {
 		this.numberMaximum = numberMaximum;
 	}
 
-	public Localized getDirectoryDialogMessage() {
+	public ISupplier<String> getDirectoryDialogMessage() {
 		return directoryDialogMessage;
 	}
 
-	public void setDirectoryDialogMessage(final Localized directoryDialogMessage) {
+	public void setDirectoryDialogMessage(final ISupplier<String> directoryDialogMessage) {
 		this.directoryDialogMessage = directoryDialogMessage;
 	}
 
@@ -276,19 +277,19 @@ public class FieldEditorDetails {
 		this.fileEnforceAbsolute = fileEnforceAbsolute;
 	}
 
-	public Localized getFontPreviewAreaText() {
+	public ISupplier<String> getFontPreviewAreaText() {
 		return fontPreviewAreaText;
 	}
 
-	public void setFontPreviewAreaText(final Localized fontPreviewAreaText) {
+	public void setFontPreviewAreaText(final ISupplier<String> fontPreviewAreaText) {
 		this.fontPreviewAreaText = fontPreviewAreaText;
 	}
 
-	public Localized getFontChangeButtonText() {
+	public ISupplier<String> getFontChangeButtonText() {
 		return fontChangeButtonText;
 	}
 
-	public void setFontChangeButtonText(final Localized fontChangeButtonText) {
+	public void setFontChangeButtonText(final ISupplier<String> fontChangeButtonText) {
 		this.fontChangeButtonText = fontChangeButtonText;
 	}
 
@@ -374,12 +375,12 @@ public class FieldEditorDetails {
 		private String datePattern;
 		private Date dateFrom;
 		private Date dateTo;
-		private Localized directoryDialogMessage;
+		private ISupplier<String> directoryDialogMessage;
 		private Boolean directoryMustExist;
 		private String[] fileExtensions;
 		private Boolean fileEnforceAbsolute;
-		private Localized fontPreviewAreaText;
-		private Localized fontChangeButtonText;
+		private ISupplier<String> fontPreviewAreaText;
+		private ISupplier<String> fontChangeButtonText;
 
 		public FieldEditorDetailsBuilder(final Class<? extends FieldEditor> fieldEditorClass) {
 			this.fieldEditorClass = fieldEditorClass;
@@ -487,7 +488,7 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder directoryDialogMessage(final Localized dialogMessage) {
+		public FieldEditorDetailsBuilder directoryDialogMessage(final ISupplier<String> dialogMessage) {
 			this.directoryDialogMessage = dialogMessage;
 			return this;
 		}
@@ -527,7 +528,7 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder fontPreviewAreaText(final Localized fontPreviewAreaText) {
+		public FieldEditorDetailsBuilder fontPreviewAreaText(final ISupplier<String> fontPreviewAreaText) {
 			this.fontPreviewAreaText = fontPreviewAreaText;
 			return this;
 		}
@@ -542,7 +543,7 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder fontChangeButtonText(final Localized fontChangeButtonText) {
+		public FieldEditorDetailsBuilder fontChangeButtonText(final ISupplier<String> fontChangeButtonText) {
 			this.fontChangeButtonText = fontChangeButtonText;
 			return this;
 		}

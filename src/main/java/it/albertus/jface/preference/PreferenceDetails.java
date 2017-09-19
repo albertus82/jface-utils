@@ -4,6 +4,7 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.FontData;
 
 import it.albertus.jface.preference.page.IPageDefinition;
+import it.albertus.util.ISupplier;
 import it.albertus.util.Localized;
 
 public class PreferenceDetails {
@@ -12,7 +13,7 @@ public class PreferenceDetails {
 	private IPageDefinition pageDefinition;
 
 	private String name;
-	private Localized label;
+	private ISupplier<String> label;
 	private String defaultValue;
 	private IPreference parent;
 	private boolean restartRequired;
@@ -47,11 +48,11 @@ public class PreferenceDetails {
 		this.name = name;
 	}
 
-	public Localized getLabel() {
+	public ISupplier<String> getLabel() {
 		return label;
 	}
 
-	public void setLabel(final Localized label) {
+	public void setLabel(final ISupplier<String> label) {
 		this.label = label;
 	}
 
@@ -95,7 +96,7 @@ public class PreferenceDetails {
 	public static class PreferenceDetailsBuilder {
 		private final IPageDefinition pageDefinition;
 		private String name;
-		private Localized label;
+		private ISupplier<String> label;
 		private String defaultValue;
 		private IPreference parent;
 		private boolean restartRequired;
@@ -110,7 +111,7 @@ public class PreferenceDetails {
 			return this;
 		}
 
-		public PreferenceDetailsBuilder label(final Localized label) {
+		public PreferenceDetailsBuilder label(final ISupplier<String> label) {
 			this.label = label;
 			return this;
 		}

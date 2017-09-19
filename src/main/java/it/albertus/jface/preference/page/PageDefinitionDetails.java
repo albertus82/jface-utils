@@ -4,12 +4,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
+import it.albertus.util.ISupplier;
 import it.albertus.util.Localized;
 
 public class PageDefinitionDetails {
 
 	private String nodeId;
-	private Localized label;
+	private ISupplier<String> label;
 	private Class<? extends BasePreferencePage> pageClass;
 	private ImageDescriptor image;
 	private IPageDefinition parent;
@@ -32,11 +33,11 @@ public class PageDefinitionDetails {
 		this.nodeId = nodeId;
 	}
 
-	public Localized getLabel() {
+	public ISupplier<String> getLabel() {
 		return label;
 	}
 
-	public void setLabel(final Localized label) {
+	public void setLabel(final ISupplier<String> label) {
 		this.label = label;
 	}
 
@@ -102,7 +103,7 @@ public class PageDefinitionDetails {
 
 	public static class PageDefinitionDetailsBuilder {
 		private String nodeId;
-		private Localized label;
+		private ISupplier<String> label;
 		private Class<? extends BasePreferencePage> pageClass;
 		private ImageDescriptor image;
 		private IPageDefinition parent;
@@ -112,7 +113,7 @@ public class PageDefinitionDetails {
 			return this;
 		}
 
-		public PageDefinitionDetailsBuilder label(final Localized label) {
+		public PageDefinitionDetailsBuilder label(final ISupplier<String> label) {
 			this.label = label;
 			return this;
 		}

@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Localized;
+import it.albertus.util.ISupplier;
 
 public class LocalizedPathEditor extends PathEditor {
 
@@ -21,19 +21,19 @@ public class LocalizedPathEditor extends PathEditor {
 
 	private String lastPath;
 
-	private Localized dirChooserLabelText;
+	private ISupplier<String> dirChooserLabelText;
 
 	protected LocalizedPathEditor() {
 		super();
 		container = false;
 	}
 
-	public LocalizedPathEditor(final String name, final String labelText, final Localized dirChooserLabelText, final Composite parent) {
+	public LocalizedPathEditor(final String name, final String labelText, final ISupplier<String> dirChooserLabelText, final Composite parent) {
 		this(name, labelText, dirChooserLabelText, parent, null);
 	}
 
-	public LocalizedPathEditor(final String name, final String labelText, final Localized dirChooserLabelText, final Composite parent, final Integer horizontalSpan) {
-		super(name, labelText, dirChooserLabelText != null ? dirChooserLabelText.getString() : null, (horizontalSpan != null && horizontalSpan > 0) ? createContainer(parent, horizontalSpan) : parent);
+	public LocalizedPathEditor(final String name, final String labelText, final ISupplier<String> dirChooserLabelText, final Composite parent, final Integer horizontalSpan) {
+		super(name, labelText, dirChooserLabelText != null ? dirChooserLabelText.get() : null, (horizontalSpan != null && horizontalSpan > 0) ? createContainer(parent, horizontalSpan) : parent);
 		this.dirChooserLabelText = dirChooserLabelText;
 		if (horizontalSpan != null && horizontalSpan > 0) {
 			container = true;
@@ -78,8 +78,8 @@ public class LocalizedPathEditor extends PathEditor {
 	@Override
 	protected String getNewInputObject() {
 		final DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.SHEET);
-		if (dirChooserLabelText != null && dirChooserLabelText.getString() != null) {
-			dialog.setMessage(dirChooserLabelText.getString());
+		if (dirChooserLabelText != null && dirChooserLabelText.get() != null) {
+			dialog.setMessage(dirChooserLabelText.get());
 		}
 		if (lastPath != null && new File(lastPath).exists()) {
 			dialog.setFilterPath(lastPath);

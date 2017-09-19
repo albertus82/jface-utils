@@ -636,13 +636,13 @@ public class FieldEditorFactory {
 	protected FontFieldEditor createFontFieldEditor(final String name, final String label, final Composite parent, final FieldEditorDetails details) {
 		final FontFieldEditor fieldEditor;
 		if (details != null && details.getFontPreviewAreaText() != null) {
-			fieldEditor = new FontFieldEditor(name, label, details.getFontPreviewAreaText().getString(), parent);
+			fieldEditor = new FontFieldEditor(name, label, details.getFontPreviewAreaText().get(), parent);
 		}
 		else {
 			fieldEditor = new FontFieldEditor(name, label, parent);
 		}
 		if (details != null && details.getFontChangeButtonText() != null) {
-			fieldEditor.setChangeButtonText(details.getFontChangeButtonText().getString());
+			fieldEditor.setChangeButtonText(details.getFontChangeButtonText().get());
 		}
 		else {
 			fieldEditor.setChangeButtonText(JFaceMessages.get("lbl.button.change"));
@@ -727,7 +727,7 @@ public class FieldEditorFactory {
 				}
 			}
 			catch (final NoSuchAlgorithmException e) {
-				logger.log(Level.WARNING, e.getLocalizedMessage(), e);
+				logger.log(Level.FINE, e.getLocalizedMessage(), e);
 				throw new RuntimeException(e);
 			}
 			if (details.getEmptyStringAllowed() != null) {

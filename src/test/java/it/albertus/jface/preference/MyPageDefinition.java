@@ -1,11 +1,11 @@
 package it.albertus.jface.preference;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import it.albertus.jface.preference.page.BasePreferencePage;
 import it.albertus.jface.preference.page.IPageDefinition;
 import it.albertus.jface.preference.page.PageDefinitionDetails;
 import it.albertus.jface.preference.page.PageDefinitionDetails.PageDefinitionDetailsBuilder;
-
-import org.eclipse.jface.resource.ImageDescriptor;
 
 public enum MyPageDefinition implements IPageDefinition {
 
@@ -33,7 +33,7 @@ public enum MyPageDefinition implements IPageDefinition {
 
 	@Override
 	public String getLabel() {
-		return pageDefinitionDetails.getLabel().getString();
+		return pageDefinitionDetails.getLabel().get();
 	}
 
 	@Override

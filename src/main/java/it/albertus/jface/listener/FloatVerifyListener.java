@@ -1,11 +1,11 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Supplier;
+import it.albertus.util.ISupplier;
 
 /** Accepts only {@code Float} inputs and trims automatically. */
 public class FloatVerifyListener extends AbstractDecimalVerifyListener<Float> {
 
-	public FloatVerifyListener(final Supplier<Boolean> allowNegatives) {
+	public FloatVerifyListener(final ISupplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 
@@ -14,7 +14,7 @@ public class FloatVerifyListener extends AbstractDecimalVerifyListener<Float> {
 	}
 
 	@Override
-	protected Float parseNumber(final String string) throws NumberFormatException {
+	protected Float parseNumber(final String string) {
 		return Float.valueOf(string);
 	}
 

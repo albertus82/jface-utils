@@ -21,8 +21,9 @@ import org.eclipse.swt.widgets.Scrollable;
 
 import it.albertus.jface.DisplayThreadExecutor;
 import it.albertus.jface.JFaceMessages;
-import it.albertus.util.Supplier;
+import it.albertus.util.ISupplier;
 import it.albertus.util.NewLine;
+import it.albertus.util.Supplier;
 import it.albertus.util.logging.LoggerFactory;
 import it.albertus.util.logging.LoggingSupport;
 
@@ -38,7 +39,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 	protected final T scrollable;
 	protected ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 
-	private Supplier<Integer> limit;
+	private ISupplier<Integer> limit;
 
 	protected ScrollableConsole(final Composite parent, final Object layoutData, final boolean redirectSystemStream) {
 		this.redirectSystemStream = redirectSystemStream;
@@ -190,7 +191,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 		}
 	}
 
-	public void setLimit(final Supplier<Integer> limit) {
+	public void setLimit(final ISupplier<Integer> limit) {
 		this.limit = limit;
 	}
 

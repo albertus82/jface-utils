@@ -7,15 +7,15 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import it.albertus.jface.validation.Validator;
-import it.albertus.util.Localized;
+import it.albertus.util.ISupplier;
 
 public class DecorationModifyListener implements ModifyListener, Listener {
 
 	protected final ControlDecoration controlDecoration;
 	protected final Validator validator;
-	protected final Localized message;
+	protected final ISupplier<String> message;
 
-	public DecorationModifyListener(final ControlDecoration controlDecoration, final Validator validator, final Localized message) {
+	public DecorationModifyListener(final ControlDecoration controlDecoration, final Validator validator, final ISupplier<String> message) {
 		this.controlDecoration = controlDecoration;
 		this.validator = validator;
 		this.message = message;
@@ -27,7 +27,7 @@ public class DecorationModifyListener implements ModifyListener, Listener {
 			controlDecoration.hide();
 		}
 		else {
-			controlDecoration.setDescriptionText(message.getString());
+			controlDecoration.setDescriptionText(message.get());
 			controlDecoration.show();
 		}
 	}

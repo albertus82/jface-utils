@@ -1,6 +1,8 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Supplier;
+import javax.annotation.Nullable;
+
+import it.albertus.util.ISupplier;
 
 abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractNumberVerifyListener<T> {
 
@@ -8,12 +10,12 @@ abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractN
 		super(allowNegatives);
 	}
 
-	public AbstractIntegerVerifyListener(final Supplier<Boolean> allowNegatives) {
+	public AbstractIntegerVerifyListener(final ISupplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 
 	@Override
-	protected boolean isNumeric(final String string) {
+	protected boolean isNumeric(@Nullable final String string) {
 		if (string != null) {
 			try {
 				parseNumber(string);

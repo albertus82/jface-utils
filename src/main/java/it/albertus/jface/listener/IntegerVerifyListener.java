@@ -1,11 +1,11 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Supplier;
+import it.albertus.util.ISupplier;
 
 /** Accepts only {@code Integer} inputs and trims automatically. */
 public class IntegerVerifyListener extends AbstractIntegerVerifyListener<Integer> {
 
-	public IntegerVerifyListener(final Supplier<Boolean> allowNegatives) {
+	public IntegerVerifyListener(final ISupplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 
@@ -14,7 +14,7 @@ public class IntegerVerifyListener extends AbstractIntegerVerifyListener<Integer
 	}
 
 	@Override
-	protected Integer parseNumber(final String string) throws NumberFormatException {
+	protected Integer parseNumber(final String string) {
 		return Integer.valueOf(string);
 	}
 

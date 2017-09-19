@@ -1,15 +1,18 @@
 package it.albertus.jface.listener;
 
-import it.albertus.util.Supplier;
+import javax.annotation.Nullable;
 
 import org.eclipse.swt.events.VerifyEvent;
+
+import it.albertus.util.ISupplier;
+import it.albertus.util.Supplier;
 
 /** Accepts only numeric inputs and trims automatically. */
 abstract class AbstractNumberVerifyListener<T extends Number> extends TrimVerifyListener {
 
-	protected final Supplier<Boolean> allowNegatives;
+	protected final ISupplier<Boolean> allowNegatives;
 
-	protected AbstractNumberVerifyListener(final Supplier<Boolean> allowNegatives) {
+	protected AbstractNumberVerifyListener(final ISupplier<Boolean> allowNegatives) {
 		this.allowNegatives = allowNegatives;
 	}
 
@@ -30,8 +33,8 @@ abstract class AbstractNumberVerifyListener<T extends Number> extends TrimVerify
 		}
 	}
 
-	protected abstract boolean isNumeric(String string);
+	protected abstract boolean isNumeric(@Nullable String string);
 
-	protected abstract T parseNumber(String string) throws NumberFormatException;
+	protected abstract T parseNumber(String string);
 
 }

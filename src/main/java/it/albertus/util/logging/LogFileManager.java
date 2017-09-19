@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.util.HashSet;
 import java.util.Set;
 
+import it.albertus.util.ISupplier;
 import it.albertus.util.Supplier;
 
 public class LogFileManager implements ILogFileManager {
@@ -12,7 +13,7 @@ public class LogFileManager implements ILogFileManager {
 	public static final String DEFAULT_LOG_FILE_EXTENSION = ".log";
 	public static final String DEFAULT_LOCK_FILE_EXTENSION = ".lck";
 
-	private Supplier<String> path;
+	private ISupplier<String> path;
 
 	private String logFileExtension = DEFAULT_LOG_FILE_EXTENSION;
 	private String lockFileExtension = DEFAULT_LOCK_FILE_EXTENSION;
@@ -30,7 +31,7 @@ public class LogFileManager implements ILogFileManager {
 		}
 	};
 
-	public LogFileManager(final Supplier<String> path) {
+	public LogFileManager(final ISupplier<String> path) {
 		this.path = path;
 	}
 
@@ -95,7 +96,7 @@ public class LogFileManager implements ILogFileManager {
 		return path.get();
 	}
 
-	public void setPath(final Supplier<String> path) {
+	public void setPath(final ISupplier<String> path) {
 		this.path = path;
 	}
 

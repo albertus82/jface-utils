@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Control;
 
 import it.albertus.jface.listener.DecorationModifyListener;
 import it.albertus.jface.validation.ControlValidator;
+import it.albertus.util.ISupplier;
 import it.albertus.util.Localized;
 
 public class ControlValidatorDecoration {
@@ -19,11 +20,11 @@ public class ControlValidatorDecoration {
 	public static final String DEFAULT_TYPE = FieldDecorationRegistry.DEC_ERROR;
 
 	private final ControlValidator<?> validator;
-	private final Localized message;
+	private final ISupplier<String> message;
 	private final int style;
 	private final String type;
 
-	public ControlValidatorDecoration(final ControlValidator<?> validator, final Localized message, final int style, final String type) {
+	public ControlValidatorDecoration(final ControlValidator<?> validator, final ISupplier<String> message, final int style, final String type) {
 		this.validator = validator;
 		this.message = message;
 		this.style = style;
@@ -38,7 +39,7 @@ public class ControlValidatorDecoration {
 		control.addListener(SWT.Modify, new DecorationModifyListener(controlDecorator, validator, message));
 	}
 
-	public ControlValidatorDecoration(final ControlValidator<?> validator, final Localized message) {
+	public ControlValidatorDecoration(final ControlValidator<?> validator, final ISupplier<String> message) {
 		this(validator, message, DEFAULT_STYLE, DEFAULT_TYPE);
 	}
 
@@ -67,7 +68,7 @@ public class ControlValidatorDecoration {
 		return validator;
 	}
 
-	public Localized getMessage() {
+	public ISupplier<String> getMessage() {
 		return message;
 	}
 

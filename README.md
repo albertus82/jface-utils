@@ -84,7 +84,7 @@ public enum MyPageDefinition implements IPageDefinition {
 
     @Override
     public String getLabel() {
-        return pageDefinitionDetails.getLabel().getString();
+        return pageDefinitionDetails.getLabel().get();
     }
 
     @Override
@@ -151,7 +151,7 @@ public enum MyPreference implements IPreference {
 
     @Override
     public String getLabel() {
-        return preferenceDetails.getLabel().getString();
+        return preferenceDetails.getLabel().get();
     }
 
     @Override

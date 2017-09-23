@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
@@ -16,7 +18,20 @@ import org.eclipse.swt.widgets.Listener;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
-/* http://www.transparentech.com/opensource/cocoauienhancer */
+/**
+ * This class provides a hook to connecting the <b>Preferences</b>, <b>About</b>
+ * and <b>Quit</b> menu items of the macOS application menu.
+ * <p>
+ * This is a modified version of the {@code CocoaUIEnhancer} class available at
+ * <a href="http://www.transparentech.com/opensource/cocoauienhancer">
+ * TransparenTech</a>, and it is released under the
+ * <a href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public
+ * License</a> (EPL).
+ * 
+ * @see <a href="http://www.transparentech.com/opensource/cocoauienhancer">
+ *      CocoaUIEnhancer - Connect the About, Preferences and Quit menus in Mac
+ *      OS X Cocoa SWT and JFace applications</a>
+ */
 public class CocoaUIEnhancer {
 
 	private static final Logger logger = LoggerFactory.getLogger(CocoaUIEnhancer.class);
@@ -34,35 +49,87 @@ public class CocoaUIEnhancer {
 	private long sel_preferencesMenuItemSelected_;
 	private long sel_toolbarButtonClicked_;
 
+	/**
+	 * Creates a new instance associated with the provided display object.
+	 * <p>
+	 * <b>Note:</b> in order to better integrate your JFace application with
+	 * macOS, you should call the following static methods of
+	 * {@link org.eclipse.swt.widgets.Display Display} before this constructor:
+	 * 
+	 * <pre>
+	 * Display.setAppName("My JFace Application");
+	 * Display.setAppVersion("1.2.3");
+	 * </pre>
+	 * 
+	 * @param display the display that contains the macOS menu bar
+	 * 
+	 * @see org.eclipse.swt.widgets.Display
+	 */
 	public CocoaUIEnhancer(final Display display) {
 		this.display = display;
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final Listener aboutListener, final Listener preferencesListener) throws CocoaEnhancerException {
+	/**
+	 * Activates the macOS application menu items and binds them to the provided
+	 * listeners.
+	 * <p>
+	 * If one argument is null, then the respective menu item will be disabled;
+	 * so, for instance, if your application does not have a preferences
+	 * management, you can pass null in place of {@code preferencesListener} and
+	 * the <b>Preferences...</b> menu item will be grayed out.
+	 * 
+	 * @param quitListener the listener that will be notified when the user
+	 *        selects the <b>Quit</b> menu item; should not be null.
+	 * @param aboutListener the listener that will be notified when the user
+	 *        selects the <b>About</b> menu item; can be null.
+	 * @param preferencesListener the listener that will be notified when the
+	 *        user selects the <b>Preferences...</b> menu item; can be null.
+	 * @throws CocoaEnhancerException if the UI cannot be improved because of an
+	 *         error.
+	 */
+	public void hookApplicationMenu(@Nullable final Listener quitListener, @Nullable final Listener aboutListener, @Nullable final Listener preferencesListener) throws CocoaEnhancerException {
 		try {
 			hookApplicationMenu(quitListener, new ListenerCallbackObject(aboutListener, preferencesListener));
 		}
 		catch (final Exception e) {
 			throw new CocoaEnhancerException(e);
 		}
-		catch (final LinkageError le) { // reflective methods may also (erroneously) throw LinkageError!
+		catch (final LinkageError le) { // reflective methods might also (erroneously) throw LinkageError!
 			throw new CocoaEnhancerException(le);
 		}
 	}
 
-	public void hookApplicationMenu(final Listener quitListener, final IAction aboutAction, final IAction preferencesAction) throws CocoaEnhancerException {
+	/**
+	 * Activates the macOS application menu items and binds them to the provided
+	 * listener and actions.
+	 * <p>
+	 * If one argument is null, then the respective menu item will be disabled;
+	 * so, for instance, if your application does not have a preferences
+	 * management, you can pass null in place of {@code preferencesAction} and
+	 * the <b>Preferences...</b> menu item will be grayed out.
+	 * 
+	 * @param quitListener the listener that will be notified when the user
+	 *        selects the <b>Quit</b> menu item; should not be null.
+	 * @param aboutAction the action that will be activated when the user
+	 *        selects the <b>About</b> menu item; can be null.
+	 * @param preferencesAction the action that will be activated when the user
+	 *        selects the <b>Preferences...</b> menu item; can be null.
+	 * @throws CocoaEnhancerException if the UI cannot be improved because of an
+	 *         error.
+	 */
+	public void hookApplicationMenu(@Nullable final Listener quitListener, @Nullable final IAction aboutAction, @Nullable final IAction preferencesAction) throws CocoaEnhancerException {
 		try {
 			hookApplicationMenu(quitListener, new ActionCallbackObject(aboutAction, preferencesAction));
 		}
 		catch (final Exception e) {
 			throw new CocoaEnhancerException(e);
 		}
-		catch (final LinkageError le) { // reflective methods may also (erroneously) throw LinkageError!
+		catch (final LinkageError le) { // reflective methods might also (erroneously) throw LinkageError!
 			throw new CocoaEnhancerException(le);
 		}
 	}
 
-	private void hookApplicationMenu(final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+	private void hookApplicationMenu(@Nullable final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 		// Check platform
 		if (!Util.isCocoa()) {
 			logger.log(Level.WARNING, JFaceMessages.get("err.cocoa.enhancer.platform"));
@@ -229,7 +296,7 @@ public class CocoaUIEnhancer {
 		private final Listener aboutListener;
 		private final Listener preferencesListener;
 
-		private ListenerCallbackObject(final Listener aboutListener, final Listener preferencesListener) {
+		private ListenerCallbackObject(@Nullable final Listener aboutListener, @Nullable final Listener preferencesListener) {
 			super(aboutListener != null, preferencesListener != null);
 			this.aboutListener = aboutListener;
 			this.preferencesListener = preferencesListener;
@@ -251,7 +318,7 @@ public class CocoaUIEnhancer {
 		private final IAction preferencesAction;
 		private final IAction aboutAction;
 
-		private ActionCallbackObject(final IAction aboutAction, final IAction preferencesAction) {
+		private ActionCallbackObject(@Nullable final IAction aboutAction, @Nullable final IAction preferencesAction) {
 			super(aboutAction != null, preferencesAction != null);
 			this.aboutAction = aboutAction;
 			this.preferencesAction = preferencesAction;

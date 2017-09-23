@@ -51,7 +51,7 @@ import it.albertus.jface.preference.page.IPageDefinition;
  * 
  * 	&#64;Override
  * 	public String getLabel() {
- * 		return preferenceDetails.getLabel().getString();
+ * 		return preferenceDetails.getLabel().get();
  * 	}
  * 
  * 	&#64;Override

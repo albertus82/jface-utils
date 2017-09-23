@@ -35,7 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * 
  * 	&#64;Override
  * 	public String getLabel() {
- * 		return pageDefinitionDetails.getLabel().getString();
+ * 		return pageDefinitionDetails.getLabel().get();
  * 	}
  * 
  * 	&#64;Override

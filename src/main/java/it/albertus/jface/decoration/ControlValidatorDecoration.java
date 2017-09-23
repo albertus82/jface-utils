@@ -19,10 +19,10 @@ public class ControlValidatorDecoration {
 	/** FieldDecorationRegistry.DEC_ERROR */
 	public static final String DEFAULT_TYPE = FieldDecorationRegistry.DEC_ERROR;
 
-	private final ControlValidator<?> validator;
-	private final ISupplier<String> message;
-	private final int style;
-	private final String type;
+	protected final ControlValidator<?> validator;
+	protected final ISupplier<String> message;
+	protected final int style;
+	protected final String type;
 
 	public ControlValidatorDecoration(final ControlValidator<?> validator, final ISupplier<String> message, final int style, final String type) {
 		this.validator = validator;
@@ -54,22 +54,6 @@ public class ControlValidatorDecoration {
 
 	protected void adjustLayoutData(final Control control, final Image image) {
 		// The default implementation does nothing. This method can be overridden.
-	}
-
-	public int getStyle() {
-		return style;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public ControlValidator<?> getValidator() {
-		return validator;
-	}
-
-	public ISupplier<String> getMessage() {
-		return message;
 	}
 
 }

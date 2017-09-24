@@ -80,8 +80,9 @@ public class LightweightHttpServer {
 	 * exchanges from being processed. The method will then block until all
 	 * current exchange handlers have completed or else when approximately
 	 * <i>delay</i> seconds have elapsed (whichever happens sooner). Then, all
-	 * open TCP connections are closed, the background thread created by start()
-	 * exits, the thread pool is shutdown and the method returns.
+	 * open TCP connections are closed, the background thread created by
+	 * {@code start()} exits, the thread pool is shutdown and the method
+	 * returns.
 	 * <p>
 	 *
 	 * @param delay the maximum time in seconds to wait until exchanges have
@@ -189,7 +190,7 @@ public class LightweightHttpServer {
 	}
 
 	/**
-	 * Creates {@link AbstractHttpHandler} objects.
+	 * Creates {@link HttpPathHandler} objects.
 	 * 
 	 * @return the array containing the handlers.
 	 */

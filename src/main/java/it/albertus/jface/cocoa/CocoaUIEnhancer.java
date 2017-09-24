@@ -72,7 +72,7 @@ public class CocoaUIEnhancer {
 
 	/**
 	 * Activates the macOS application menu items and binds them to the provided
-	 * listeners.
+	 * listeners. This method must be called before opening the shell.
 	 * <p>
 	 * If one argument is null, then the respective menu item will be disabled;
 	 * so, for instance, if your application does not have a preferences
@@ -102,7 +102,8 @@ public class CocoaUIEnhancer {
 
 	/**
 	 * Activates the macOS application menu items and binds them to the provided
-	 * listener and actions.
+	 * listener and actions. This method must be called before opening the
+	 * shell.
 	 * <p>
 	 * If one argument is null, then the respective menu item will be disabled;
 	 * so, for instance, if your application does not have a preferences

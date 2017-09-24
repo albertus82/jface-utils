@@ -19,7 +19,7 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
 /**
- * This class provides a hook to connecting the <b>Preferences</b>, <b>About</b>
+ * This class provides a hook to connect the <b>Preferences</b>, <b>About</b>
  * and <b>Quit</b> menu items of the macOS application menu.
  * <p>
  * This is a modified version of the {@code CocoaUIEnhancer} class available at
@@ -54,7 +54,8 @@ public class CocoaUIEnhancer {
 	 * <p>
 	 * <b>Note:</b> in order to better integrate your JFace application with
 	 * macOS, you should call the following static methods of
-	 * {@link org.eclipse.swt.widgets.Display Display} before this constructor:
+	 * {@link org.eclipse.swt.widgets.Display Display} before calling this
+	 * constructor:
 	 * 
 	 * <pre>
 	 * Display.setAppName("My JFace Application");

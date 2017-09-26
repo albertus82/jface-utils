@@ -1,40 +1,38 @@
 package it.albertus.jface.preference;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
-import it.albertus.util.Localized;
-import it.albertus.util.MapUtils;
+import it.albertus.util.ISupplier;
 
 public class LocalizedLabelsAndValues implements LabelsAndValues {
 
-	private final Map<Localized, String> entries;
+	private final List<LabelValue> entries;
 
 	public LocalizedLabelsAndValues() {
-		entries = new LinkedHashMap<Localized, String>();
+		entries = new ArrayList<LabelValue>();
 	}
 
-	public LocalizedLabelsAndValues(final int expectedSize) {
-		entries = MapUtils.<Localized, String> newLinkedHashMapWithExpectedSize(expectedSize);
+	public LocalizedLabelsAndValues(final int initialCapacity) {
+		entries = new ArrayList<LabelValue>(initialCapacity);
 	}
 
-	public LocalizedLabelsAndValues(final Localized name, final Object value) {
+	public LocalizedLabelsAndValues(final ISupplier<String> name, final Object value) {
 		this(1);
-		put(name, value);
+		add(name, value);
 	}
 
-	public void put(final Localized name, final Object value) {
-		entries.put(name, String.valueOf(value));
+	public void add(final ISupplier<String> name, final Object value) {
+		entries.add(new LabelValue(name, String.valueOf(value)));
 	}
 
 	@Override
 	public String[][] toArray() {
 		final String[][] options = new String[entries.size()][2];
 		int index = 0;
-		for (final Entry<Localized, String> entry : entries.entrySet()) {
-			options[index][0] = entry.getKey().getString();
-			options[index][1] = entry.getValue();
+		for (final LabelValue entry : entries) {
+			options[index][0] = entry.key.get();
+			options[index][1] = entry.value;
 			index++;
 		}
 		return options;
@@ -43,6 +41,21 @@ public class LocalizedLabelsAndValues implements LabelsAndValues {
 	@Override
 	public String toString() {
 		return entries.toString();
+	}
+
+	private class LabelValue {
+		private final ISupplier<String> key;
+		private final String value;
+
+		private LabelValue(final ISupplier<String> key, final String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return key + "=" + value;
+		}
 	}
 
 }

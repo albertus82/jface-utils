@@ -343,11 +343,69 @@ public class FieldEditorDetails {
 
 	@Override
 	public String toString() {
-		return "FieldEditorDetails [" + (fieldEditorClass != null ? "fieldEditorClass=" + fieldEditorClass + ", " : "") + (emptyStringAllowed != null ? "emptyStringAllowed=" + emptyStringAllowed + ", " : "") + (horizontalSpan != null ? "horizontalSpan=" + horizontalSpan + ", " : "") + (icons != null ? "icons=" + Arrays.toString(icons) + ", " : "") + (defaultToolTip != null ? "defaultToolTip=" + defaultToolTip + ", " : "") + (boldCustomValues != null ? "boldCustomValues=" + boldCustomValues + ", " : "")
-				+ (style != null ? "style=" + style + ", " : "") + (height != null ? "height=" + height + ", " : "") + (labelsAndValues != null ? "labelsAndValues=" + labelsAndValues + ", " : "") + (radioUseGroup != null ? "radioUseGroup=" + radioUseGroup + ", " : "") + (radioNumColumns != null ? "radioNumColumns=" + radioNumColumns + ", " : "") + (scaleMinimum != null ? "scaleMinimum=" + scaleMinimum + ", " : "") + (scaleMaximum != null ? "scaleMaximum=" + scaleMaximum + ", " : "")
-				+ (scaleIncrement != null ? "scaleIncrement=" + scaleIncrement + ", " : "") + (scalePageIncrement != null ? "scalePageIncrement=" + scalePageIncrement + ", " : "") + (textLimit != null ? "textLimit=" + textLimit + ", " : "") + (textWidth != null ? "textWidth=" + textWidth + ", " : "") + (textValidateStrategy != null ? "textValidateStrategy=" + textValidateStrategy + ", " : "") + (hashAlgorithm != null ? "hashAlgorithm=" + hashAlgorithm + ", " : "")
-				+ (numberMinimum != null ? "numberMinimum=" + numberMinimum + ", " : "") + (numberMaximum != null ? "numberMaximum=" + numberMaximum + ", " : "") + (datePattern != null ? "datePattern=" + datePattern + ", " : "") + (dateFrom != null ? "dateFrom=" + dateFrom + ", " : "") + (dateTo != null ? "dateTo=" + dateTo + ", " : "") + (directoryDialogMessage != null ? "directoryDialogMessage=" + directoryDialogMessage + ", " : "")
-				+ (directoryMustExist != null ? "directoryMustExist=" + directoryMustExist + ", " : "") + (fileExtensions != null ? "fileExtensions=" + Arrays.toString(fileExtensions) + ", " : "") + (fileEnforceAbsolute != null ? "fileEnforceAbsolute=" + fileEnforceAbsolute + ", " : "") + (fontPreviewAreaText != null ? "fontPreviewAreaText=" + fontPreviewAreaText + ", " : "") + (fontChangeButtonText != null ? "fontChangeButtonText=" + fontChangeButtonText : "") + "]";
+		final StringBuilder builder = new StringBuilder();
+		builder.append("FieldEditorDetails [fieldEditorClass=");
+		builder.append(fieldEditorClass);
+		builder.append(", emptyStringAllowed=");
+		builder.append(emptyStringAllowed);
+		builder.append(", horizontalSpan=");
+		builder.append(horizontalSpan);
+		builder.append(", icons=");
+		builder.append(Arrays.toString(icons));
+		builder.append(", defaultToolTip=");
+		builder.append(defaultToolTip);
+		builder.append(", boldCustomValues=");
+		builder.append(boldCustomValues);
+		builder.append(", style=");
+		builder.append(style);
+		builder.append(", height=");
+		builder.append(height);
+		builder.append(", labelsAndValues=");
+		builder.append(labelsAndValues);
+		builder.append(", radioUseGroup=");
+		builder.append(radioUseGroup);
+		builder.append(", radioNumColumns=");
+		builder.append(radioNumColumns);
+		builder.append(", scaleMinimum=");
+		builder.append(scaleMinimum);
+		builder.append(", scaleMaximum=");
+		builder.append(scaleMaximum);
+		builder.append(", scaleIncrement=");
+		builder.append(scaleIncrement);
+		builder.append(", scalePageIncrement=");
+		builder.append(scalePageIncrement);
+		builder.append(", textLimit=");
+		builder.append(textLimit);
+		builder.append(", textWidth=");
+		builder.append(textWidth);
+		builder.append(", textValidateStrategy=");
+		builder.append(textValidateStrategy);
+		builder.append(", hashAlgorithm=");
+		builder.append(hashAlgorithm);
+		builder.append(", numberMinimum=");
+		builder.append(numberMinimum);
+		builder.append(", numberMaximum=");
+		builder.append(numberMaximum);
+		builder.append(", datePattern=");
+		builder.append(datePattern);
+		builder.append(", dateFrom=");
+		builder.append(dateFrom);
+		builder.append(", dateTo=");
+		builder.append(dateTo);
+		builder.append(", directoryDialogMessage=");
+		builder.append(directoryDialogMessage);
+		builder.append(", directoryMustExist=");
+		builder.append(directoryMustExist);
+		builder.append(", fileExtensions=");
+		builder.append(Arrays.toString(fileExtensions));
+		builder.append(", fileEnforceAbsolute=");
+		builder.append(fileEnforceAbsolute);
+		builder.append(", fontPreviewAreaText=");
+		builder.append(fontPreviewAreaText);
+		builder.append(", fontChangeButtonText=");
+		builder.append(fontChangeButtonText);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	public static class FieldEditorDetailsBuilder {

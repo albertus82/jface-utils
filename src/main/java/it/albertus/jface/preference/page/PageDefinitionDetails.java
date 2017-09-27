@@ -98,7 +98,7 @@ public class PageDefinitionDetails {
 
 	@Override
 	public String toString() {
-		return "PageDefinitionDetails [" + (nodeId != null ? "nodeId=" + nodeId + ", " : "") + (label != null ? "label=" + label + ", " : "") + (pageClass != null ? "pageClass=" + pageClass + ", " : "") + (image != null ? "image=" + image + ", " : "") + (parent != null ? "parent=" + parent : "") + "]";
+		return "PageDefinitionDetails [nodeId=" + nodeId + ", label=" + label + ", pageClass=" + pageClass + ", image=" + image + ", parent=" + parent + "]";
 	}
 
 	public static class PageDefinitionDetailsBuilder {

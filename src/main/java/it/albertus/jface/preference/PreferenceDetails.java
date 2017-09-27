@@ -90,7 +90,7 @@ public class PreferenceDetails {
 
 	@Override
 	public String toString() {
-		return "PreferenceDetails [" + (pageDefinition != null ? "pageDefinition=" + pageDefinition + ", " : "") + (name != null ? "name=" + name + ", " : "") + (label != null ? "label=" + label + ", " : "") + (defaultValue != null ? "defaultValue=" + defaultValue + ", " : "") + (parent != null ? "parent=" + parent + ", " : "") + "restartRequired=" + restartRequired + ", separate=" + separate + "]";
+		return "PreferenceDetails [pageDefinition=" + pageDefinition + ", name=" + name + ", label=" + label + ", defaultValue=" + defaultValue + ", parent=" + parent + ", restartRequired=" + restartRequired + ", separate=" + separate + "]";
 	}
 
 	public static class PreferenceDetailsBuilder {

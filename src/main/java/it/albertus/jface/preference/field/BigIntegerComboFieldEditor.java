@@ -84,7 +84,7 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 	}
 
 	@Override
-	public BigInteger getNumberValue() throws NumberFormatException {
+	public BigInteger getNumberValue() {
 		return new BigInteger(getValue());
 	}
 

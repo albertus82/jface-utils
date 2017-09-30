@@ -90,7 +90,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 	}
 
 	@Override
-	public Float getNumberValue() throws NumberFormatException {
+	public Float getNumberValue() {
 		return Float.valueOf(getValue());
 	}
 

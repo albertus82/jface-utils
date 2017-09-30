@@ -47,7 +47,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 	}
 
 	@Override
-	protected void doStore() throws NumberFormatException {
+	protected void doStore() {
 		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
@@ -72,7 +72,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 	}
 
 	@Override
-	public BigInteger getNumberValue() throws NumberFormatException {
+	public BigInteger getNumberValue() {
 		return new BigInteger(getStringValue());
 	}
 

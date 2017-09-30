@@ -53,7 +53,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 	}
 
 	@Override
-	protected void doStore() throws NumberFormatException {
+	protected void doStore() {
 		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
@@ -78,7 +78,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 	}
 
 	@Override
-	public Float getNumberValue() throws NumberFormatException {
+	public Float getNumberValue() {
 		return Float.valueOf(getStringValue());
 	}
 

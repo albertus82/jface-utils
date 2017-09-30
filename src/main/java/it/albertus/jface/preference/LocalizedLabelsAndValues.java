@@ -48,13 +48,16 @@ public class LocalizedLabelsAndValues implements LabelsAndValues {
 		private final String value;
 
 		private LabelValue(final ISupplier<String> key, final String value) {
+			if (key == null) {
+				throw new NullPointerException("key cannot be null");
+			}
 			this.key = key;
 			this.value = value;
 		}
 
 		@Override
 		public String toString() {
-			return key + "=" + value;
+			return key.get() + "=" + value;
 		}
 	}
 

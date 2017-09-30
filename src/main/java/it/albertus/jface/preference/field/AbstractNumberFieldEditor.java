@@ -63,7 +63,7 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 		updateTextLimit();
 	}
 
-	public abstract Comparable<T> getNumberValue() throws NumberFormatException;
+	public abstract Comparable<T> getNumberValue();
 
 	protected abstract void updateTextLimit();
 

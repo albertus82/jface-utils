@@ -58,10 +58,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 	}
 
 	protected boolean checkValidRange(final Comparable<T> number) {
-		if ((getMinValidValue() == null || number.compareTo(getMinValidValue()) >= 0) && (getMaxValidValue() == null || number.compareTo(getMaxValidValue()) <= 0)) {
-			return true;
-		}
-		return false;
+		return (getMinValidValue() == null || number.compareTo(getMinValidValue()) >= 0) && (getMaxValidValue() == null || number.compareTo(getMaxValidValue()) <= 0);
 	}
 
 	public void setValidRange(final T min, final T max) {
@@ -126,7 +123,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 		}
 	}
 
-	public abstract Comparable<T> getNumberValue() throws NumberFormatException;
+	public abstract Comparable<T> getNumberValue();
 
 	protected abstract void updateTextLimit();
 

@@ -54,7 +54,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 	}
 
 	@Override
-	protected void doStore() throws NumberFormatException {
+	protected void doStore() {
 		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
@@ -79,7 +79,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 	}
 
 	@Override
-	public Integer getNumberValue() throws NumberFormatException {
+	public Integer getNumberValue() {
 		return Integer.valueOf(getStringValue());
 	}
 

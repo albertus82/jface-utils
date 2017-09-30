@@ -84,7 +84,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 	}
 
 	@Override
-	public BigDecimal getNumberValue() throws NumberFormatException {
+	public BigDecimal getNumberValue() {
 		return new BigDecimal(getValue());
 	}
 

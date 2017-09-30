@@ -73,7 +73,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 	}
 
 	@Override
-	public Integer getNumberValue() throws NumberFormatException {
+	public Integer getNumberValue() {
 		return Integer.valueOf(getValue());
 	}
 

@@ -73,7 +73,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 	}
 
 	@Override
-	public Long getNumberValue() throws NumberFormatException {
+	public Long getNumberValue() {
 		return Long.valueOf(getValue());
 	}
 

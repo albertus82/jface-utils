@@ -55,7 +55,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 	}
 
 	@Override
-	protected void doStore() throws NumberFormatException {
+	protected void doStore() {
 		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
@@ -80,7 +80,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 	}
 
 	@Override
-	public Byte getNumberValue() throws NumberFormatException {
+	public Byte getNumberValue() {
 		return Byte.valueOf(getStringValue());
 	}
 

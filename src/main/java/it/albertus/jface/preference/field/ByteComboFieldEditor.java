@@ -74,7 +74,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 	}
 
 	@Override
-	public Byte getNumberValue() throws NumberFormatException {
+	public Byte getNumberValue() {
 		return Byte.valueOf(getValue());
 	}
 

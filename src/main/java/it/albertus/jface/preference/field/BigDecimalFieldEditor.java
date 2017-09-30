@@ -47,7 +47,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 	}
 
 	@Override
-	protected void doStore() throws NumberFormatException {
+	protected void doStore() {
 		final Text text = getTextControl();
 		if (text != null) {
 			if (text.getText().isEmpty() && isEmptyStringAllowed()) {
@@ -72,7 +72,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 	}
 
 	@Override
-	public BigDecimal getNumberValue() throws NumberFormatException {
+	public BigDecimal getNumberValue() {
 		return new BigDecimal(getStringValue());
 	}
 

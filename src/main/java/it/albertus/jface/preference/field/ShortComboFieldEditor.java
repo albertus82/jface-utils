@@ -74,7 +74,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 	}
 
 	@Override
-	public Short getNumberValue() throws NumberFormatException {
+	public Short getNumberValue() {
 		return Short.valueOf(getValue());
 	}
 

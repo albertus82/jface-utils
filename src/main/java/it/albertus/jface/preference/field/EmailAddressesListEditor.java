@@ -89,7 +89,6 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 
 		private Text textEmailAddress;
 		private Button okButton;
-		private Button cancelButton;
 		private String emailAddress;
 
 		public EmailAddressDialog(final Shell parentShell) {
@@ -138,7 +137,7 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 			okButton.setText(JFaceMessages.get("lbl.button.ok"));
 			okButton.setEnabled(false);
 
-			cancelButton = getButton(IDialogConstants.CANCEL_ID);
+			final Button cancelButton = getButton(IDialogConstants.CANCEL_ID);
 			cancelButton.setText(JFaceMessages.get("lbl.button.cancel"));
 		}
 

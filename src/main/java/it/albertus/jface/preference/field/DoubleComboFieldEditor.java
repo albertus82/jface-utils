@@ -90,7 +90,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 	}
 
 	@Override
-	public Double getNumberValue() throws NumberFormatException {
+	public Double getNumberValue() {
 		return Double.valueOf(getValue());
 	}
 

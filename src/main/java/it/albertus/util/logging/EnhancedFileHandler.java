@@ -13,6 +13,19 @@ public class EnhancedFileHandler extends FileHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(EnhancedFileHandler.class);
 
+	/**
+	 * Initialize a <tt>EnhancedFileHandler</tt>.
+	 *
+	 * @param config the object containing handler configuration
+	 * @exception IOException if there are IO problems opening the files.
+	 * @exception SecurityException if a security manager exists and if the
+	 *            caller does not have <tt>LoggingPermission("control")</tt>.
+	 * @exception IllegalArgumentException if limit < 0, or count < 1.
+	 * @exception IllegalArgumentException if pattern is an empty string
+	 *
+	 * @see FileHandler
+	 * @see FileHandlerConfig
+	 */
 	public EnhancedFileHandler(final FileHandlerConfig config) throws IOException {
 		super(config.getPattern(), config.getLimit(), config.getCount(), config.isAppend());
 		configure(config);
@@ -30,6 +43,11 @@ public class EnhancedFileHandler extends FileHandler {
 		}
 	}
 
+	/**
+	 * Returns the pattern for naming the output file.
+	 * 
+	 * @return the pattern for naming the output file
+	 */
 	public String getPattern() {
 		final String fieldName = "pattern";
 		try {
@@ -47,6 +65,11 @@ public class EnhancedFileHandler extends FileHandler {
 		}
 	}
 
+	/**
+	 * Returns the maximum number of bytes to write to any one file.
+	 * 
+	 * @return the maximum number of bytes to write to any one file
+	 */
 	public int getLimit() {
 		final String fieldName = "limit";
 		try {
@@ -64,6 +87,11 @@ public class EnhancedFileHandler extends FileHandler {
 		}
 	}
 
+	/**
+	 * Returns the number of files to use.
+	 * 
+	 * @return the number of files to use
+	 */
 	public int getCount() {
 		final String fieldName = "count";
 		try {
@@ -81,6 +109,11 @@ public class EnhancedFileHandler extends FileHandler {
 		}
 	}
 
+	/**
+	 * Returns the append mode.
+	 * 
+	 * @return the append mode
+	 */
 	public boolean isAppend() {
 		final String fieldName = "append";
 		try {

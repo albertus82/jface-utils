@@ -208,9 +208,9 @@ public class SystemInformationDialog extends Dialog {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(folder);
 
 		if (properties != null) {
-			final Table propertiesTable = createTable(folder, properties);
 			final TabItem propertiesTab = new TabItem(folder, SWT.NONE);
 			propertiesTab.setText(JFaceMessages.get(LBL_SYSTEM_INFO_TAB_PROPERTIES));
+			final Table propertiesTable = createTable(folder, properties);
 			propertiesTab.setControl(propertiesTable);
 		}
 

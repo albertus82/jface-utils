@@ -30,16 +30,34 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
 
+/**
+ * A variant of {@code java.util.logging}'s {@code SimpleFormatter} that uses a
+ * custom format string.
+ * 
+ * @see SimpleFormatter
+ */
 public class CustomFormatter extends Formatter {
 
 	private String format;
 	private final Date timestamp = new Date();
 
+	/**
+	 * Creates a new formatter with the provided format string.
+	 * 
+	 * @param format the format string
+	 */
 	public CustomFormatter(final String format) {
 		this.format = format;
 	}
 
+	/**
+	 * Format the given LogRecord.
+	 * 
+	 * @param record the log record to be formatted.
+	 * @return a formatted log record
+	 */
 	@Override
 	public synchronized String format(final LogRecord record) {
 		timestamp.setTime(record.getMillis());
@@ -66,10 +84,20 @@ public class CustomFormatter extends Formatter {
 		return String.format(format, timestamp, source, record.getLoggerName(), record.getLevel().getName(), message, throwable);
 	}
 
+	/**
+	 * Returns the current format string.
+	 * 
+	 * @return the format string
+	 */
 	public String getFormat() {
 		return format;
 	}
 
+	/**
+	 * Set a new format string.
+	 * 
+	 * @param format the format string
+	 */
 	public void setFormat(final String format) {
 		this.format = format;
 	}

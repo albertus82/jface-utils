@@ -4,6 +4,11 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 
+/**
+ * Holds the configuration parameters for {@code EnhancedFileHandler}.
+ * 
+ * @see EnhancedFileHandler
+ */
 public class FileHandlerConfig extends AbstractFileHandlerConfig {
 
 	/**

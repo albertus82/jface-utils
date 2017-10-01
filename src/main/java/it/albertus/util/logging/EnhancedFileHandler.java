@@ -14,7 +14,7 @@ public class EnhancedFileHandler extends FileHandler {
 	private static final Logger logger = LoggerFactory.getLogger(EnhancedFileHandler.class);
 
 	/**
-	 * Initialize a <tt>EnhancedFileHandler</tt>.
+	 * Initialize a {@code EnhancedFileHandler}.
 	 *
 	 * @param config the object containing handler configuration
 	 * @exception IOException if there are IO problems opening the files.

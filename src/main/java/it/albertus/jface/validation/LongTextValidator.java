@@ -17,7 +17,7 @@ public class LongTextValidator extends NumberTextValidator<Long> {
 	}
 
 	@Override
-	protected Long toNumber(final String value) throws NumberFormatException {
+	protected Long toNumber(final String value) {
 		return Long.valueOf(value);
 	}
 

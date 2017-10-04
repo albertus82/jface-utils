@@ -19,7 +19,7 @@ public class BigDecimalTextValidator extends NumberTextValidator<BigDecimal> {
 	}
 
 	@Override
-	protected BigDecimal toNumber(final String value) throws NumberFormatException {
+	protected BigDecimal toNumber(final String value) {
 		return new BigDecimal(value);
 	}
 

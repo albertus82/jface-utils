@@ -17,7 +17,7 @@ public class ShortTextValidator extends NumberTextValidator<Short> {
 	}
 
 	@Override
-	protected Short toNumber(final String value) throws NumberFormatException {
+	protected Short toNumber(final String value) {
 		return Short.valueOf(value);
 	}
 

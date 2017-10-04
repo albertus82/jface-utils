@@ -17,7 +17,7 @@ public class DoubleTextValidator extends NumberTextValidator<Double> {
 	}
 
 	@Override
-	protected Double toNumber(final String value) throws NumberFormatException {
+	protected Double toNumber(final String value) {
 		return Double.valueOf(value);
 	}
 

@@ -19,7 +19,7 @@ public class BigIntegerTextValidator extends NumberTextValidator<BigInteger> {
 	}
 
 	@Override
-	protected BigInteger toNumber(final String value) throws NumberFormatException {
+	protected BigInteger toNumber(final String value) {
 		return new BigInteger(value);
 	}
 

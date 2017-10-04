@@ -30,7 +30,7 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 		this.maxValidValue = maxValidValue;
 	}
 
-	protected abstract Comparable<T> toNumber(String value) throws NumberFormatException;
+	protected abstract Comparable<T> toNumber(String value);
 
 	@Override
 	public boolean isValid() {

@@ -17,7 +17,7 @@ public class FloatTextValidator extends NumberTextValidator<Float> {
 	}
 
 	@Override
-	protected Float toNumber(final String value) throws NumberFormatException {
+	protected Float toNumber(final String value) {
 		return Float.valueOf(value);
 	}
 

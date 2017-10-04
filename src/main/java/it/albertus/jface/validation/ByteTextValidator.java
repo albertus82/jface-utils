@@ -17,7 +17,7 @@ public class ByteTextValidator extends NumberTextValidator<Byte> {
 	}
 
 	@Override
-	protected Byte toNumber(final String value) throws NumberFormatException {
+	protected Byte toNumber(final String value) {
 		return Byte.valueOf(value);
 	}
 

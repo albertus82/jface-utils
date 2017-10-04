@@ -17,7 +17,7 @@ public class IntegerTextValidator extends NumberTextValidator<Integer> {
 	}
 
 	@Override
-	protected Integer toNumber(final String value) throws NumberFormatException {
+	protected Integer toNumber(final String value) {
 		return Integer.valueOf(value);
 	}
 

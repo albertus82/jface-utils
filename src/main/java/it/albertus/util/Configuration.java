@@ -122,7 +122,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value.booleanValue() : defaultValue;
 	}
 
-	public Long getLong(final String key) throws ConfigurationException {
+	public Long getLong(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -152,7 +152,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Integer getInt(final String key) throws ConfigurationException {
+	public Integer getInt(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -182,7 +182,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Short getShort(final String key) throws ConfigurationException {
+	public Short getShort(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -212,7 +212,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Byte getByte(final String key) throws ConfigurationException {
+	public Byte getByte(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -242,7 +242,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Float getFloat(final String key) throws ConfigurationException {
+	public Float getFloat(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -272,7 +272,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Double getDouble(final String key) throws ConfigurationException {
+	public Double getDouble(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -302,7 +302,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public BigDecimal getBigDecimal(final String key) throws ConfigurationException {
+	public BigDecimal getBigDecimal(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -332,7 +332,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public BigInteger getBigInteger(final String key) throws ConfigurationException {
+	public BigInteger getBigInteger(final String key) {
 		final String value = getString(key);
 		if (value == null) {
 			return null;
@@ -362,7 +362,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
-	public Character getChar(final String key) throws ConfigurationException {
+	public Character getChar(final String key) {
 		final String value = getString(key);
 		if (value == null || value.isEmpty()) {
 			return null;
@@ -449,7 +449,7 @@ public class Configuration extends PropertiesConfiguration {
 		return Boolean.parseBoolean(value);
 	}
 
-	public static char parseChar(final String value) throws IllegalArgumentException {
+	public static char parseChar(final String value) {
 		if (value.length() == 1) {
 			return value.charAt(0);
 		}

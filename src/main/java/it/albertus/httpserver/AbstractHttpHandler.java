@@ -176,7 +176,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 	}
 
-	protected void service(final HttpExchange exchange) throws IOException, HttpException {
+	protected void service(final HttpExchange exchange) throws IOException {
 		if (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod())) {
 			doGet(exchange);
 		}
@@ -218,7 +218,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		sendResponse(exchange, e.getStatusCode());
 	}
 
-	protected void doHead(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doHead(final HttpExchange exchange) throws IOException {
 		final OutputStream out = exchange.getResponseBody();
 		final OutputStream dummy = new OutputStream() {
 			@Override
@@ -238,7 +238,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 	}
 
-	protected void doTrace(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doTrace(final HttpExchange exchange) throws IOException {
 		final StringBuilder responseString = new StringBuilder(HttpMethod.TRACE.toUpperCase()).append(' ').append(exchange.getRequestURI()).append(' ').append(exchange.getProtocol());
 		final Iterator<String> reqHeaderIter = exchange.getRequestHeaders().keySet().iterator();
 		while (reqHeaderIter.hasNext()) {
@@ -254,7 +254,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		out.close();
 	}
 
-	protected void doOptions(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doOptions(final HttpExchange exchange) throws IOException {
 		final Set<String> allowedMethods = new TreeSet<String>();
 		allowedMethods.add(HttpMethod.TRACE.toUpperCase());
 		allowedMethods.add(HttpMethod.OPTIONS.toUpperCase());
@@ -286,23 +286,23 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
 	}
 
-	protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doGet(final HttpExchange exchange) throws IOException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
-	protected void doPost(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doPost(final HttpExchange exchange) throws IOException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
-	protected void doPut(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doPut(final HttpExchange exchange) throws IOException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
-	protected void doPatch(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doPatch(final HttpExchange exchange) throws IOException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 
-	protected void doDelete(final HttpExchange exchange) throws IOException, HttpException {
+	protected void doDelete(final HttpExchange exchange) throws IOException {
 		throw new HttpException(HttpURLConnection.HTTP_BAD_METHOD, JFaceMessages.get(MSG_HTTPSERVER_BAD_METHOD));
 	}
 

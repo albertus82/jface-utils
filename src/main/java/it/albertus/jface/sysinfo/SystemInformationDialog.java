@@ -560,7 +560,7 @@ public class SystemInformationDialog extends Dialog {
 	 */
 	protected void export(final Shell shell) {
 		final String fileName = openSaveDialog(shell);
-		if (fileName != null && !fileName.isEmpty()) {
+		if (fileName != null && !fileName.trim().isEmpty()) {
 			try {
 				shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 				final Map<String, Map<String, String>> maps = MapUtils.newLinkedHashMapWithExpectedSize(2);
@@ -585,8 +585,8 @@ public class SystemInformationDialog extends Dialog {
 		}
 	}
 
-	protected String openSaveDialog(final Shell shell) {
-		final FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
+	protected String openSaveDialog(final Shell parent) {
+		final FileDialog saveDialog = new FileDialog(parent, SWT.SAVE);
 		saveDialog.setFilterExtensions(new String[] { "*.TXT;*.txt" });
 		saveDialog.setFileName("sysinfo.txt");
 		saveDialog.setOverwrite(true);

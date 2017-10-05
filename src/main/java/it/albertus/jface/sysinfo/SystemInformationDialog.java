@@ -1,7 +1,9 @@
 package it.albertus.jface.sysinfo;
 
 import java.lang.management.ManagementPermission;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -9,6 +11,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -27,10 +30,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -42,8 +47,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+import it.albertus.jface.EnhancedErrorDialog;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
+import it.albertus.util.MapUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -60,6 +67,10 @@ public class SystemInformationDialog extends Dialog {
 	private static final String LBL_SYSTEM_INFO_TAB_PROPERTIES = "lbl.system.info.tab.properties";
 	private static final String LBL_SYSTEM_INFO_TABLE_KEY = "lbl.system.info.table.key";
 	private static final String LBL_SYSTEM_INFO_TABLE_VALUE = "lbl.system.info.table.value";
+	private static final String LBL_SYSTEM_INFO_EXPORT_ENV = "lbl.system.info.export.env";
+	private static final String LBL_SYSTEM_INFO_EXPORT_JVMARGS = "lbl.system.info.export.jvmArgs";
+	private static final String LBL_SYSTEM_INFO_EXPORT_PROPERTIES = "lbl.system.info.export.properties";
+	private static final String ERR_SYSTEM_INFO_EXPORT = "err.system.info.export";
 
 	private static final float MONITOR_SIZE_DIVISOR = 1.67f;
 
@@ -191,9 +202,41 @@ public class SystemInformationDialog extends Dialog {
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());
 		shell.setImage(shell.getDisplay().getSystemImage(SWT.ICON_INFORMATION));
+		createMenuBar(shell);
 		createContents(shell);
 		constrainShellSize(shell);
 		shell.open();
+	}
+
+	protected void createMenuBar(final Shell shell) {
+		final Menu bar = new Menu(shell, SWT.BAR);
+		shell.setMenuBar(bar);
+
+		final Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
+		MenuItem fileMenuHeader = new MenuItem(bar, SWT.CASCADE);
+		fileMenuHeader.setText(JFaceMessages.get("lbl.menu.item.file"));
+		fileMenuHeader.setMenu(fileMenu);
+
+		final MenuItem exportMenuItem = new MenuItem(fileMenu, SWT.PUSH);
+		exportMenuItem.setText(JFaceMessages.get("lbl.menu.item.export") + SwtUtils.getMod1ShortcutLabel(SwtUtils.KEY_SAVE));
+		exportMenuItem.setAccelerator(SWT.MOD1 | SwtUtils.KEY_SAVE);
+		exportMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				export(shell);
+			}
+		});
+
+		new MenuItem(fileMenu, SWT.SEPARATOR);
+
+		final MenuItem closeMenuItem = new MenuItem(fileMenu, SWT.PUSH);
+		closeMenuItem.setText(JFaceMessages.get("lbl.menu.item.close"));
+		closeMenuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				shell.close();
+			}
+		});
 	}
 
 	protected void constrainShellSize(final Shell shell) {
@@ -453,7 +496,11 @@ public class SystemInformationDialog extends Dialog {
 		return closeButton;
 	}
 
-	/** Copies the current selection to the clipboard. */
+	/**
+	 * Copies the current selection to the clipboard.
+	 * 
+	 * @param table the data source
+	 */
 	protected void copy(final Table table) {
 		if (canCopy(table)) {
 			final StringBuilder data = new StringBuilder();
@@ -476,7 +523,11 @@ public class SystemInformationDialog extends Dialog {
 		}
 	}
 
-	/** Copies the current selection to the clipboard. */
+	/**
+	 * Copies the current selection to the clipboard.
+	 * 
+	 * @param list the data source
+	 */
 	protected void copy(final List list) {
 		if (canCopy(list)) {
 			final StringBuilder data = new StringBuilder();
@@ -500,6 +551,46 @@ public class SystemInformationDialog extends Dialog {
 
 	protected boolean canCopy(final List list) {
 		return !list.isDisposed() && list.getSelectionCount() > 0;
+	}
+
+	/**
+	 * Export system information to file.
+	 * 
+	 * @param shell the parent shell, needed to open the save file dialog
+	 */
+	protected void export(final Shell shell) {
+		final String fileName = openSaveDialog(shell);
+		if (fileName != null && !fileName.isEmpty()) {
+			try {
+				shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+				final Map<String, Map<String, String>> maps = MapUtils.newLinkedHashMapWithExpectedSize(2);
+				maps.put(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_PROPERTIES), properties);
+				maps.put(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_ENV), env);
+				final SystemInformationExporter exporter = new SystemInformationExporter(fileName, maps, Collections.singletonMap(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_JVMARGS), jvmArgs));
+				ModalContext.run(exporter, true, new NullProgressMonitor(), shell.getDisplay());
+			}
+			catch (final InvocationTargetException e) {
+				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
+				logger.log(Level.WARNING, message, e);
+				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_WARNING) });
+			}
+			catch (final Exception e) {
+				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
+				logger.log(Level.SEVERE, message, e);
+				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.ERROR, e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_ERROR) });
+			}
+			finally {
+				shell.setCursor(null);
+			}
+		}
+	}
+
+	protected String openSaveDialog(final Shell shell) {
+		final FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
+		saveDialog.setFilterExtensions(new String[] { "*.TXT;*.txt" });
+		saveDialog.setFileName("sysinfo.txt");
+		saveDialog.setOverwrite(true);
+		return saveDialog.open();
 	}
 
 }

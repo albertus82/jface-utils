@@ -20,6 +20,8 @@ public class SystemInformationExporter implements IRunnableWithProgress {
 
 	private static final String TASK_NAME = "Exporting system information";
 
+	private static final String LBL_SYSTEM_INFO_EXPORT_TITLE = "lbl.system.info.export.title";
+
 	private static final char KEY_VALUE_SEPARATOR = '=';
 
 	private final String fileName;
@@ -42,7 +44,7 @@ public class SystemInformationExporter implements IRunnableWithProgress {
 			fw = new FileWriter(fileName);
 			bw = new BufferedWriter(fw);
 
-			bw.write(JFaceMessages.get("lbl.system.info.export.title", DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, new Locale(JFaceMessages.getLanguage())).format(new Date())));
+			bw.write(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_TITLE, DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, new Locale(JFaceMessages.getLanguage())).format(new Date())));
 			bw.newLine();
 
 			for (final Entry<String, Map<String, String>> e1 : maps.entrySet()) {

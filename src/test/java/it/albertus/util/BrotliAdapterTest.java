@@ -62,9 +62,8 @@ public class BrotliAdapterTest {
 				Assert.assertArrayEquals(thread.original.getBytes(CHARSET_NAME), thread.decompressed);
 				Assert.assertEquals(thread.original, new String(thread.decompressed, CHARSET_NAME));
 			}
-			System.out.print('.');
+			System.out.println('.');
 		}
-		System.out.println();
 	}
 
 	private class CompressDecompressThread extends Thread {

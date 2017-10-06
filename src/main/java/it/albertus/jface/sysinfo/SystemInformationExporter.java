@@ -44,7 +44,7 @@ public class SystemInformationExporter implements IRunnableWithProgress {
 			fw = new FileWriter(fileName);
 			bw = new BufferedWriter(fw);
 
-			bw.write(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_TITLE, DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, new Locale(JFaceMessages.getLanguage())).format(new Date())));
+			bw.write(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_TITLE, DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, new Locale(JFaceMessages.getLanguage())).format(new Date())));
 			bw.newLine();
 
 			for (final Entry<String, Map<String, String>> e1 : maps.entrySet()) {

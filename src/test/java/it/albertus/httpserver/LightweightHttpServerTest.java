@@ -119,8 +119,8 @@ public class LightweightHttpServerTest {
 	private static final String HANDLER_PATH_PARAMS = "/params.txt";
 	private static final String loremSmallTxt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-	private static final String loremSmallMd5 = "db89bb5ceab87f9c0fcc2ab36c189c2c";
-	private static final String loremLargeMd5 = "677560ee0c55b61d73bf47e79835f83a";
+	private static final String loremSmallMd5 = "\"db89bb5ceab87f9c0fcc2ab36c189c2c\"";
+	private static final String loremLargeMd5 = "\"677560ee0c55b61d73bf47e79835f83a\"";
 	private static final Authenticator singleUserAuthenticator = new HttpServerAuthenticator(new SingleUserAuthenticatorDefaultConfig() {
 		@Override
 		public char[] getPassword() {

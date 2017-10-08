@@ -497,7 +497,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		return DatatypeConverter.printHexBinary(md5Digest.get().digest(payload)).toLowerCase();
+		return '"' + DatatypeConverter.printHexBinary(md5Digest.get().digest(payload)).toLowerCase() + '"';
 	}
 
 	protected String generateEtag(final File file) throws IOException {
@@ -519,7 +519,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		finally {
 			IOUtils.closeQuietly(os);
 		}
-		return os.toString();
+		return '"' + os.toString() + '"';
 	}
 
 	protected String generateContentMd5(final byte[] responseBody) {

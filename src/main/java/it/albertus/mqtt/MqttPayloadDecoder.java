@@ -11,65 +11,70 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import it.albertus.util.IOUtils;
-import it.albertus.util.NewLine;
 
 public class MqttPayloadDecoder {
 
-	private static final String HEADER_CONTENT_ENCODING = "Content-Encoding";
-	private static final String HEADER_CONTENT_LENGTH = "Content-Length";
-
-	private static final String CHARSET = "UTF-8";
+	private static final int BUFFER_SIZE = 4096;
 
 	public byte[] decode(final byte[] receivedPayload) throws IOException {
-		final List<byte[]> tokens = split(receivedPayload, NewLine.CRLF.toString().getBytes(CHARSET));
-		final Map<String, String> headers = new HashMap<String, String>();
-		for (int i = 0; i < tokens.size() - 2; i++) {
-			final String headerLine = new String(tokens.get(i), CHARSET);
-			final String key = headerLine.substring(0, headerLine.indexOf(':')).trim().toLowerCase();
-			final String value = headerLine.substring(headerLine.indexOf(':') + 1).trim();
-			headers.put(key, value);
-		}
-		final byte[] buf = tokens.get(tokens.size() - 1);
+		final List<byte[]> tokens = split(receivedPayload);
 
-		if (headers.containsKey(HEADER_CONTENT_LENGTH.toLowerCase())) {
-			final int contentLength = Integer.parseInt(headers.get(HEADER_CONTENT_LENGTH.toLowerCase()));
-			if (contentLength != buf.length) {
-				throw new IOException(HEADER_CONTENT_LENGTH + " header value does not match the actual length (expected: " + contentLength + ", actual: " + buf.length + ").");
+		if (tokens.size() < 2 || tokens.get(tokens.size() - 2).length != 0) {
+			throw new IOException("Missing CRLF between headers and body.");
+		}
+		final byte[] body = tokens.get(tokens.size() - 1);
+
+		final Map<String, String> headers = parseHeaders(tokens);
+
+		if (headers.containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH.toLowerCase())) {
+			final int contentLength = Integer.parseInt(headers.get(MqttUtils.HEADER_KEY_CONTENT_LENGTH.toLowerCase()));
+			if (contentLength != body.length) {
+				throw new IOException(MqttUtils.HEADER_KEY_CONTENT_LENGTH + " header value does not match the actual body length (expected: " + contentLength + ", actual: " + body.length + ").");
 			}
 		}
 
-		if ("gzip".equalsIgnoreCase(headers.get(HEADER_CONTENT_ENCODING.toLowerCase()))) {
-			return decompress(buf);
+		if (MqttUtils.HEADER_VALUE_GZIP.equalsIgnoreCase(headers.get(MqttUtils.HEADER_KEY_CONTENT_ENCODING.toLowerCase()))) {
+			return decompress(body);
 		}
 		else {
-			return buf;
+			return body;
 		}
 	}
 
-	protected List<byte[]> split(final byte[] array, final byte[] delimiter) {
-		final List<byte[]> byteArrays = new LinkedList<byte[]>();
-		if (delimiter.length == 0) {
-			return byteArrays;
-		}
-		int begin = 0;
-
-		outer: for (int i = 0; i < array.length - delimiter.length + 1; i++) {
-			for (int j = 0; j < delimiter.length; j++) {
-				if (array[i + j] != delimiter[j]) {
-					continue outer;
+	protected Map<String, String> parseHeaders(final List<byte[]> tokens) {
+		final Map<String, String> headers = new HashMap<String, String>();
+		for (int i = 0; i < tokens.size() - 2; i++) { // penultimate token should be empty
+			final String headerLine = new String(tokens.get(i), MqttUtils.CHARSET_UTF8);
+			if (headerLine.indexOf(':') != -1) {
+				final String key = headerLine.substring(0, headerLine.indexOf(':')).trim();
+				final String value = headerLine.substring(headerLine.indexOf(':') + 1).trim();
+				if (!key.isEmpty() && !value.isEmpty()) {
+					headers.put(key.toLowerCase(), value);
 				}
 			}
-
-			// If delimiter is at the beginning then there will not be any data.
-			if (begin != i)
-				byteArrays.add(Arrays.copyOfRange(array, begin, i));
-			begin = i + delimiter.length;
 		}
+		return headers;
+	}
 
-		// delimiter at the very end with no data following?
-		if (begin != array.length)
-			byteArrays.add(Arrays.copyOfRange(array, begin, array.length));
-
+	protected List<byte[]> split(final byte[] array) {
+		final LinkedList<byte[]> byteArrays = new LinkedList<byte[]>();
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		for (int i = 0; i < array.length; i++) {
+			if (array.length > i + 3 && array[i] == MqttUtils.CRLF[0] && array[i + 1] == MqttUtils.CRLF[1] && array[i + 2] == MqttUtils.CRLF[0] && array[i + 3] == MqttUtils.CRLF[1]) {
+				byteArrays.add(baos.toByteArray());
+				byteArrays.add(new byte[0]);
+				byteArrays.add(Arrays.copyOfRange(array, i + 4, array.length));
+				break;
+			}
+			else if (array.length > i + 1 && array[i + 1] == MqttUtils.CRLF[1]) {
+				byteArrays.add(baos.toByteArray());
+				i++; // skip LF
+				baos.reset();
+			}
+			else {
+				baos.write(array[i]);
+			}
+		}
 		return byteArrays;
 	}
 
@@ -78,7 +83,7 @@ public class MqttPayloadDecoder {
 		GZIPInputStream gzis = null;
 		try {
 			gzis = new GZIPInputStream(new ByteArrayInputStream(buf));
-			IOUtils.copy(gzis, baos, 8192);
+			IOUtils.copy(gzis, baos, BUFFER_SIZE);
 		}
 		finally {
 			if (gzis != null) {

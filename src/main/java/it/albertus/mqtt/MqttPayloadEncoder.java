@@ -2,7 +2,6 @@ package it.albertus.mqtt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,25 +9,8 @@ import java.util.TreeMap;
 import java.util.zip.GZIPOutputStream;
 
 import it.albertus.httpserver.HttpDateGenerator;
-import it.albertus.util.NewLine;
 
 public class MqttPayloadEncoder {
-
-	private static final String HEADER_CONTENT_ENCODING = "Content-Encoding";
-	private static final String HEADER_CONTENT_LENGTH = "Content-Length";
-	private static final String HEADER_DATE = "Date";
-
-	private static final String CHARSET = "UTF-8";
-	private static final byte[] CRLF;
-
-	static {
-		try {
-			CRLF = NewLine.CRLF.toString().getBytes(CHARSET);
-		}
-		catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e); // UTF-8 must be supported by any JVM
-		}
-	}
 
 	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {
 		@Override
@@ -36,24 +18,6 @@ public class MqttPayloadEncoder {
 			return new HttpDateGenerator();
 		}
 	};
-
-	public byte[] encode(final String str) {
-		try {
-			return encode(str.getBytes(CHARSET));
-		}
-		catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e); // UTF-8 must be supported by any JVM
-		}
-	}
-
-	public byte[] encode(final String str, final boolean compress) throws IOException {
-		try {
-			return encode(str.getBytes(CHARSET), compress);
-		}
-		catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e); // UTF-8 must be supported by any JVM
-		}
-	}
 
 	public byte[] encode(final byte[] payloadToSend) {
 		final Map<String, String> headers = new TreeMap<String, String>();
@@ -66,7 +30,7 @@ public class MqttPayloadEncoder {
 
 		if (compress) {
 			body = compress(payloadToSend);
-			headers.put(HEADER_CONTENT_ENCODING, "gzip");
+			headers.put(MqttUtils.HEADER_KEY_CONTENT_ENCODING, MqttUtils.HEADER_VALUE_GZIP);
 		}
 		else {
 			body = payloadToSend;
@@ -76,16 +40,16 @@ public class MqttPayloadEncoder {
 	}
 
 	protected byte[] buildPayload(final Map<String, String> headers, final byte[] body) {
-		headers.put(HEADER_CONTENT_LENGTH, Integer.toString(body.length));
-		headers.put(HEADER_DATE, httpDateGenerator.get().format(new Date()));
+		headers.put(MqttUtils.HEADER_KEY_CONTENT_LENGTH, Integer.toString(body.length));
+		headers.put(MqttUtils.HEADER_KEY_DATE, httpDateGenerator.get().format(new Date()));
 
 		try {
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			for (final Entry<String, String> header : headers.entrySet()) {
-				baos.write((header.getKey() + ": " + header.getValue()).getBytes(CHARSET));
-				baos.write(CRLF);
+				baos.write((header.getKey() + ": " + header.getValue()).getBytes(MqttUtils.CHARSET_UTF8));
+				baos.write(MqttUtils.CRLF);
 			}
-			baos.write(CRLF);
+			baos.write(MqttUtils.CRLF);
 			baos.write(body);
 			return baos.toByteArray();
 		}

@@ -30,7 +30,7 @@ public class MqttPayloadTest {
 
 	public void log(final byte[] payload) {
 		System.out.println(Thread.currentThread().getStackTrace()[2]);
-		final List<byte[]> split = decoder.split(payload);
+		final List<byte[]> split = MqttPayload.split(payload);
 		System.out.println("tokens: " + split.size());
 
 		for (final byte[] ba : split) {
@@ -61,7 +61,7 @@ public class MqttPayloadTest {
 	public void testDecodeHeadersBody() throws IOException {
 		final StringBuilder payload = new StringBuilder();
 		payload.append("Content-Encoding: identity").append(NewLine.CRLF);
-		payload.append("Content-Length: ").append(text.length()).append(NewLine.CRLF);
+		payload.append("Content-length: ").append(text.length()).append(NewLine.CRLF);
 		payload.append(NewLine.CRLF);
 		payload.append(text);
 

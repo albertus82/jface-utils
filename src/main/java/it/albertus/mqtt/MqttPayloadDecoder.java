@@ -8,14 +8,29 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import it.albertus.util.IOUtils;
+import it.albertus.util.logging.LoggerFactory;
 
 public class MqttPayloadDecoder {
 
+	private static final Logger logger = LoggerFactory.getLogger(MqttPayloadDecoder.class);
+
 	private static final int BUFFER_SIZE = 4096;
 
+	/**
+	 * Decode a MQTT payload based on {@link MqttPayload}.
+	 * 
+	 * @param receivedPayload the payload, as extracted from the received MQTT
+	 *        message.
+	 * @return the effective payload
+	 * @throws IOException in case of malformed payload
+	 * 
+	 * @see MqttPayload
+	 */
 	public byte[] decode(final byte[] receivedPayload) throws IOException {
 		final List<byte[]> tokens = split(receivedPayload);
 
@@ -31,6 +46,9 @@ public class MqttPayloadDecoder {
 			if (contentLength != body.length) {
 				throw new IOException(MqttUtils.HEADER_KEY_CONTENT_LENGTH + " header value does not match the actual body length (expected: " + contentLength + ", actual: " + body.length + ").");
 			}
+		}
+		else {
+			logger.log(Level.FINE, "Missing \"{0}\" header.", MqttUtils.HEADER_KEY_CONTENT_LENGTH);
 		}
 
 		if (MqttUtils.HEADER_VALUE_GZIP.equalsIgnoreCase(headers.get(MqttUtils.HEADER_KEY_CONTENT_ENCODING.toLowerCase()))) {
@@ -56,39 +74,41 @@ public class MqttPayloadDecoder {
 		return headers;
 	}
 
-	protected List<byte[]> split(final byte[] array) {
+	protected List<byte[]> split(final byte[] payload) {
 		final LinkedList<byte[]> byteArrays = new LinkedList<byte[]>();
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		for (int i = 0; i < array.length; i++) {
-			if (array.length > i + 3 && array[i] == MqttUtils.CRLF[0] && array[i + 1] == MqttUtils.CRLF[1] && array[i + 2] == MqttUtils.CRLF[0] && array[i + 3] == MqttUtils.CRLF[1]) {
+		for (int i = 0; i < payload.length; i++) {
+			if (payload.length > i + 3 && payload[i] == MqttUtils.CRLF[0] && payload[i + 1] == MqttUtils.CRLF[1] && payload[i + 2] == MqttUtils.CRLF[0] && payload[i + 3] == MqttUtils.CRLF[1]) {
 				byteArrays.add(baos.toByteArray());
 				byteArrays.add(new byte[0]);
-				byteArrays.add(Arrays.copyOfRange(array, i + 4, array.length));
+				byteArrays.add(Arrays.copyOfRange(payload, i + 4, payload.length));
 				break;
 			}
-			else if (array.length > i + 1 && array[i + 1] == MqttUtils.CRLF[1]) {
+			else if (payload.length > i + 1 && payload[i + 1] == MqttUtils.CRLF[1]) {
 				byteArrays.add(baos.toByteArray());
 				i++; // skip LF
 				baos.reset();
 			}
 			else {
-				baos.write(array[i]);
+				baos.write(payload[i]);
 			}
 		}
 		return byteArrays;
 	}
 
-	protected byte[] decompress(final byte[] buf) throws IOException {
+	protected byte[] decompress(final byte[] compressed) {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		GZIPInputStream gzis = null;
 		try {
-			gzis = new GZIPInputStream(new ByteArrayInputStream(buf));
+			gzis = new GZIPInputStream(new ByteArrayInputStream(compressed));
 			IOUtils.copy(gzis, baos, BUFFER_SIZE);
+			gzis.close();
+		}
+		catch (final IOException e) {
+			throw new IllegalStateException(e); // ByteArrayOutputStream cannot throw IOException
 		}
 		finally {
-			if (gzis != null) {
-				gzis.close();
-			}
+			IOUtils.closeQuietly(gzis);
 		}
 		return baos.toByteArray();
 	}

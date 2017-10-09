@@ -14,12 +14,12 @@ import org.junit.Test;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
-public class MqttPayloadDecoderTest {
+public class MqttPayloadTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(MqttPayloadDecoderTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(MqttPayloadTest.class);
 
-	private static final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium eget ligula vehicula tempus. Proin accumsan varius sem non blandit. Nam consectetur magna eu cursus condimentum. Nunc volutpat tellus velit. Nullam elementum vel nisi at euismod." + NewLine.CRLF
-			+ "Pellentesque et ante nibh. Donec et leo varius, volutpat libero sit amet, vulputate sem. Vivamus tempus mi est, malesuada tincidunt mi consequat id. Nunc neque ligula, interdum ut feugiat eget, imperdiet sed orci." + NewLine.CR;
+	private static final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." + NewLine.CRLF + "Mauris pretium eget ligula vehicula tempus. Proin accumsan varius sem non blandit." + NewLine.LF + "Nam consectetur magna eu cursus condimentum. Nunc volutpat tellus velit. Nullam elementum vel nisi at euismod." + NewLine.CRLF + "Pellentesque et ante nibh. Donec et leo varius, volutpat libero sit amet, vulputate sem." + NewLine.CR
+			+ "Vivamus tempus mi est, malesuada tincidunt mi consequat id. Nunc neque ligula, interdum ut feugiat eget, imperdiet sed orci." + NewLine.CR;
 
 	private static MqttPayloadDecoder decoder;
 
@@ -31,12 +31,17 @@ public class MqttPayloadDecoderTest {
 	public void log(final byte[] payload) {
 		System.out.println(Thread.currentThread().getStackTrace()[2]);
 		final List<byte[]> split = decoder.split(payload);
-		System.out.println("length: " + split.size());
+		System.out.println("tokens: " + split.size());
 
 		for (final byte[] ba : split) {
 			System.out.print(ba.length + ">");
 			System.out.println(new String(ba, Charset.forName("UTF-8")));
 		}
+	}
+
+	@Test
+	public void testEncodeDecodeEmptyPayload() throws IOException {
+		Assert.assertArrayEquals(new byte[] {}, decoder.decode(new MqttPayloadEncoder().encode("".getBytes(), false).toByteArray()));
 	}
 
 	@Test

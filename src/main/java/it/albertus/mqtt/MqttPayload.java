@@ -76,7 +76,7 @@ public class MqttPayload {
 				final String key = entry.getKey().trim();
 				if (!key.isEmpty()) {
 					for (final String value : entry.getValue()) {
-						destination.write((key + ": " + (value != null ? value.trim() : "")).getBytes(MqttUtils.CHARSET_UTF8));
+						destination.write((key + ": " + (value != null ? value.trim() : "")).trim().getBytes(MqttUtils.CHARSET_UTF8));
 						destination.write(CRLF);
 					}
 				}

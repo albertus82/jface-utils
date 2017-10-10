@@ -51,7 +51,7 @@ public class MqttPayload {
 		return body;
 	}
 
-	public byte[] toByteArray() {
+	public byte[] toPayload() {
 		// Ensure there is at least a Content-Length header
 		if (!headers.containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH)) {
 			headers.set(MqttUtils.HEADER_KEY_CONTENT_LENGTH, Integer.toString(body.length));
@@ -97,7 +97,7 @@ public class MqttPayload {
 		}
 	}
 
-	static List<byte[]> split(final byte[] payload) {
+	private static List<byte[]> split(final byte[] payload) {
 		final List<byte[]> byteArrays = new ArrayList<byte[]>();
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		for (int i = 0; i < payload.length; i++) {

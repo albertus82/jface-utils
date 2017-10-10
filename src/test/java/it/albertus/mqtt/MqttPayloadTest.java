@@ -3,7 +3,6 @@ package it.albertus.mqtt;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -38,14 +37,14 @@ public class MqttPayloadTest {
 
 	@Test
 	public void testEncodeDecodeEmptyPayload() throws IOException {
-		Assert.assertArrayEquals("Payloads don't match", new byte[] {}, decoder.decode(encoder.encode("".getBytes(), false).toByteArray()));
-		Assert.assertArrayEquals("Payloads don't match", new byte[] {}, decoder.decode(encoder.encode(new byte[0], true).toByteArray()));
+		Assert.assertArrayEquals("Payloads don't match", new byte[] {}, decoder.decode(encoder.encode("".getBytes(), false).toPayload()));
+		Assert.assertArrayEquals("Payloads don't match", new byte[] {}, decoder.decode(encoder.encode(new byte[0], true).toPayload()));
 
 		final MqttPayload mp1 = new MqttPayload(new byte[0]);
 		mp1.getHeaders().add("X-Custom-Header", "1234567890");
 		mp1.getHeaders().add("qwertyuiop", "asdfghjkl");
 
-		final MqttPayload mp2 = MqttPayload.fromPayload(mp1.toByteArray());
+		final MqttPayload mp2 = MqttPayload.fromPayload(mp1.toPayload());
 		Assert.assertEquals("Invalid headers count", 3, mp2.getHeaders().size()); // MqttPayload.toByteArray adds Content-Length
 		Assert.assertEquals("Invalid header value", "0", mp2.getHeaders().get("content-length").get(0));
 
@@ -79,7 +78,7 @@ public class MqttPayloadTest {
 		final MqttPayload mp1 = new MqttPayload(text.getBytes(CHARSET_UTF8));
 		mp1.getHeaders().add("Content-length", "99999"); // Force invalid Content-Length
 		mp1.getHeaders().add("Content-Encoding", "identity");
-		final byte[] p1 = mp1.toByteArray();
+		final byte[] p1 = mp1.toPayload();
 
 		final MqttPayload mp2 = MqttPayload.fromPayload(p1);
 		Assert.assertEquals("Invalid headers count", 2, mp2.getHeaders().size());
@@ -89,7 +88,7 @@ public class MqttPayloadTest {
 
 		try {
 			decoder.decode(p1); // must throw exception (invalid Content-Length value)
-			Assert.assertTrue(false);
+			Assert.assertTrue("Content-Length check malfunction", false);
 		}
 		catch (final IOException e) {
 			logger.log(Level.INFO, e.toString(), e);
@@ -101,7 +100,7 @@ public class MqttPayloadTest {
 	public void testAutomaticContentLengthHeader() throws IOException {
 		final MqttPayload mp1 = new MqttPayload(text.getBytes(CHARSET_UTF8));
 		mp1.getHeaders().add("Content-Encoding", "identity");
-		final byte[] payload = mp1.toByteArray();
+		final byte[] payload = mp1.toPayload();
 
 		final MqttPayload mp2 = MqttPayload.fromPayload(payload);
 		Assert.assertEquals("Invalid headers count", 2, mp2.getHeaders().size());
@@ -125,7 +124,7 @@ public class MqttPayloadTest {
 			mp1.getHeaders().set(e.getKey(), e.getValue());
 		}
 
-		final byte[] encoded = mp1.toByteArray();
+		final byte[] encoded = mp1.toPayload();
 
 		final MqttPayload mp2 = MqttPayload.fromPayload(encoded);
 
@@ -187,7 +186,7 @@ public class MqttPayloadTest {
 		payload.append(text);
 
 		final byte[] bytes = payload.toString().getBytes(CHARSET_UTF8);
-		Assert.assertArrayEquals(text.getBytes(CHARSET_UTF8), MqttPayload.fromPayload(bytes).getBody());
+		Assert.assertArrayEquals("Payloads don't match", text.getBytes(CHARSET_UTF8), MqttPayload.fromPayload(bytes).getBody());
 	}
 
 	@Test
@@ -201,7 +200,7 @@ public class MqttPayloadTest {
 		final byte[] bytes = payload.toString().getBytes(CHARSET_UTF8);
 		try {
 			decoder.decode(bytes);
-			Assert.assertFalse(true);
+			Assert.assertTrue("Content-Length check malfunction", false);
 		}
 		catch (final IOException e) {
 			logger.log(Level.INFO, e.toString(), e);
@@ -219,7 +218,7 @@ public class MqttPayloadTest {
 		final byte[] bytes = payload.toString().getBytes(CHARSET_UTF8);
 		try {
 			decoder.decode(bytes);
-			Assert.assertFalse(true);
+			Assert.assertTrue("CRLFs check malfunction", false);
 		}
 		catch (final IOException e) {
 			logger.log(Level.INFO, e.toString(), e);
@@ -234,18 +233,18 @@ public class MqttPayloadTest {
 		payload.append(NewLine.CRLF);
 
 		final byte[] bytes = payload.toString().getBytes(Charset.forName("UTF-8"));
-		Assert.assertArrayEquals(new byte[0], decoder.decode(bytes));
+		Assert.assertArrayEquals("Payloads don't match", new byte[0], decoder.decode(bytes));
 	}
 
-	private static void log(final byte[] payload) {
-		System.out.println(Thread.currentThread().getStackTrace()[2]);
-		final List<byte[]> split = MqttPayload.split(payload);
-		System.out.println("tokens: " + split.size());
-
-		for (final byte[] ba : split) {
-			System.out.printf("%4d>%s<", ba.length, new String(ba, CHARSET_UTF8));
-			System.out.println();
-		}
-	}
+	//	private static void log(final byte[] payload) {
+	//		System.out.println(Thread.currentThread().getStackTrace()[2]);
+	//		final List<byte[]> split = MqttPayload.split(payload);
+	//		System.out.println("tokens: " + split.size());
+	//
+	//		for (final byte[] ba : split) {
+	//			System.out.printf("%4d>%s<", ba.length, new String(ba, CHARSET_UTF8));
+	//			System.out.println();
+	//		}
+	//	}
 
 }

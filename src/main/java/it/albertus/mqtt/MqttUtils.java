@@ -2,8 +2,6 @@ package it.albertus.mqtt;
 
 import java.nio.charset.Charset;
 
-import it.albertus.util.NewLine;
-
 public class MqttUtils {
 
 	private MqttUtils() {
@@ -17,7 +15,5 @@ public class MqttUtils {
 	static final String HEADER_KEY_DATE = "Date";
 
 	static final String HEADER_VALUE_GZIP = "gzip";
-
-	static final byte[] CRLF = NewLine.CRLF.toString().getBytes(CHARSET_UTF8);
 
 }

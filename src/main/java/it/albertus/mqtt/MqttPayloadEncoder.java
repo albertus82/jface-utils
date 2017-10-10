@@ -21,12 +21,12 @@ public class MqttPayloadEncoder {
 		final MqttPayload payload;
 		if (compress) {
 			payload = new MqttPayload(compress(payloadToSend));
-			payload.getHeaders().put(MqttUtils.HEADER_KEY_CONTENT_ENCODING, MqttUtils.HEADER_VALUE_GZIP);
+			payload.getHeaders().set(MqttUtils.HEADER_KEY_CONTENT_ENCODING, MqttUtils.HEADER_VALUE_GZIP);
 		}
 		else {
 			payload = new MqttPayload(payloadToSend);
 		}
-		payload.getHeaders().put(MqttUtils.HEADER_KEY_DATE, httpDateGenerator.get().format(new Date()));
+		payload.getHeaders().set(MqttUtils.HEADER_KEY_DATE, httpDateGenerator.get().format(new Date()));
 		return payload;
 	}
 

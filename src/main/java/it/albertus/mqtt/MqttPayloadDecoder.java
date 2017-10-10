@@ -26,14 +26,14 @@ public class MqttPayloadDecoder {
 
 		// Check Content-Length header
 		if (mqttPayload.getHeaders().containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH)) {
-			final int contentLength = Integer.parseInt(mqttPayload.getHeaders().get(MqttUtils.HEADER_KEY_CONTENT_LENGTH));
+			final int contentLength = Integer.parseInt(mqttPayload.getHeaders().getFirst(MqttUtils.HEADER_KEY_CONTENT_LENGTH));
 			if (contentLength != mqttPayload.getBody().length) {
 				throw new IOException(MqttUtils.HEADER_KEY_CONTENT_LENGTH + " header value does not match the actual body length (expected: " + contentLength + ", actual: " + mqttPayload.getBody().length + ").");
 			}
 		}
 
 		// Decompress body if needed
-		if (MqttUtils.HEADER_VALUE_GZIP.equalsIgnoreCase(mqttPayload.getHeaders().get(MqttUtils.HEADER_KEY_CONTENT_ENCODING))) {
+		if (MqttUtils.HEADER_VALUE_GZIP.equalsIgnoreCase(mqttPayload.getHeaders().getFirst(MqttUtils.HEADER_KEY_CONTENT_ENCODING))) {
 			return decompress(mqttPayload.getBody());
 		}
 		else {

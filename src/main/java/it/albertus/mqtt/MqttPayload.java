@@ -2,18 +2,17 @@ package it.albertus.mqtt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
-public class MqttPayload implements Serializable {
+import com.sun.net.httpserver.Headers;
 
-	private static final long serialVersionUID = -5028888118840493965L;
+@SuppressWarnings("restriction")
+public class MqttPayload {
 
-	private final MqttHeaders headers = new MqttHeaders();
+	private final Headers headers = new Headers();
 
 	private final byte[] body;
 
@@ -22,36 +21,6 @@ public class MqttPayload implements Serializable {
 			throw new NullPointerException("body cannot be null");
 		}
 		this.body = body;
-	}
-
-	public MqttHeaders getHeaders() {
-		return headers;
-	}
-
-	public byte[] getBody() {
-		return body;
-	}
-
-	public byte[] toByteArray() {
-		// Ensure there is at least a Content-Length header
-		if (!headers.containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH)) {
-			headers.put(MqttUtils.HEADER_KEY_CONTENT_LENGTH, Integer.toString(body.length));
-		}
-
-		// Build the effective payload
-		try {
-			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			for (final Entry<String, String> header : headers.entrySet()) {
-				baos.write((header.getKey() + ": " + header.getValue()).getBytes(MqttUtils.CHARSET_UTF8));
-				baos.write(MqttUtils.CRLF);
-			}
-			baos.write(MqttUtils.CRLF);
-			baos.write(body);
-			return baos.toByteArray();
-		}
-		catch (final IOException e) {
-			throw new IllegalStateException(e); // ByteArrayOutputStream cannot throw IOException
-		}
 	}
 
 	public static MqttPayload fromPayload(final byte[] payload) throws IOException {
@@ -63,24 +32,64 @@ public class MqttPayload implements Serializable {
 		final byte[] body = tokens.get(tokens.size() - 1);
 
 		final MqttPayload instance = new MqttPayload(body);
-		setHeaders(tokens, instance.headers);
+		parseHeaders(tokens.subList(0, tokens.size() - 2), instance.headers);
 
 		return instance;
 	}
 
-	private static Map<String, String> setHeaders(final List<byte[]> tokens, final MqttHeaders headers) {
-		for (int i = 0; i < tokens.size() - 2; i++) { // penultimate token should be empty
-			final String headerLine = new String(tokens.get(i), MqttUtils.CHARSET_UTF8);
+	public Headers getHeaders() {
+		return headers;
+	}
+
+	public byte[] getBody() {
+		return body;
+	}
+
+	public byte[] toByteArray() {
+		// Ensure there is at least a Content-Length header
+		if (!headers.containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH)) {
+			headers.set(MqttUtils.HEADER_KEY_CONTENT_LENGTH, Integer.toString(body.length));
+		}
+
+		// Build the effective payload
+		try {
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			writeHeaders(headers, baos);
+			baos.write(MqttUtils.CRLF);
+			baos.write(body);
+			return baos.toByteArray();
+		}
+		catch (final IOException e) {
+			throw new IllegalStateException(e); // ByteArrayOutputStream cannot throw IOException
+		}
+	}
+
+	private static void writeHeaders(final Headers source, final ByteArrayOutputStream destination) throws IOException {
+		for (final Entry<String, List<String>> entry : source.entrySet()) {
+			if (entry.getKey() != null) {
+				final String key = entry.getKey().trim();
+				if (!key.isEmpty()) {
+					for (final String value : entry.getValue()) {
+						destination.write((key + ": " + (value != null ? value.trim() : "")).getBytes(MqttUtils.CHARSET_UTF8));
+						destination.write(MqttUtils.CRLF);
+					}
+				}
+			}
+		}
+	}
+
+	private static void parseHeaders(final Iterable<byte[]> source, final Headers destination) {
+		for (final byte[] token : source) {
+			final String headerLine = new String(token, MqttUtils.CHARSET_UTF8);
 			final int indexOfColon = headerLine.indexOf(':');
 			if (indexOfColon != -1) {
 				final String key = headerLine.substring(0, indexOfColon).trim();
 				final String value = headerLine.substring(indexOfColon + 1).trim();
-				if (!key.isEmpty() && !value.isEmpty()) {
-					headers.put(key, value);
+				if (!key.isEmpty()) {
+					destination.add(key, value);
 				}
 			}
 		}
-		return headers;
 	}
 
 	static List<byte[]> split(final byte[] payload) {

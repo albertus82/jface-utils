@@ -21,6 +21,7 @@ public class MqttPayloadDecoder {
 	 * 
 	 * @see MqttPayload
 	 */
+	@SuppressWarnings("restriction")
 	public byte[] decode(final byte[] payload) throws IOException {
 		final MqttPayload mqttPayload = MqttPayload.fromPayload(payload);
 

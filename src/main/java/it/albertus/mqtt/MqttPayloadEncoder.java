@@ -17,6 +17,7 @@ public class MqttPayloadEncoder {
 		}
 	};
 
+	@SuppressWarnings("restriction")
 	public MqttPayload encode(final byte[] payloadToSend, final boolean compress) {
 		final MqttPayload payload;
 		if (compress) {

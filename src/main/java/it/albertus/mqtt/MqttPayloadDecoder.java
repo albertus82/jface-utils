@@ -21,10 +21,12 @@ public class MqttPayloadDecoder {
 	 * 
 	 * @see MqttPayload
 	 */
-	@SuppressWarnings("restriction")
 	public byte[] decode(final byte[] payload) throws IOException {
-		final MqttPayload mqttPayload = MqttPayload.fromPayload(payload);
+		return decode(MqttPayload.fromPayload(payload));
+	}
 
+	@SuppressWarnings("restriction")
+	byte[] decode(final MqttPayload mqttPayload) throws IOException {
 		// Check Content-Length header
 		if (mqttPayload.getHeaders().containsKey(MqttUtils.HEADER_KEY_CONTENT_LENGTH)) {
 			final int contentLength = Integer.parseInt(mqttPayload.getHeaders().getFirst(MqttUtils.HEADER_KEY_CONTENT_LENGTH));
@@ -42,16 +44,13 @@ public class MqttPayloadDecoder {
 		}
 	}
 
-	protected byte[] decompress(final byte[] compressed) {
+	protected byte[] decompress(final byte[] compressed) throws IOException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		GZIPInputStream gzis = null;
 		try {
 			gzis = new GZIPInputStream(new ByteArrayInputStream(compressed));
 			IOUtils.copy(gzis, baos, BUFFER_SIZE);
 			gzis.close();
-		}
-		catch (final IOException e) {
-			throw new IllegalStateException(e); // ByteArrayOutputStream cannot throw IOException
 		}
 		finally {
 			IOUtils.closeQuietly(gzis);

@@ -33,7 +33,7 @@ public class MqttPayload {
 		final List<byte[]> tokens = split(payload);
 
 		if (tokens.size() < 2 || tokens.get(tokens.size() - 2).length != 0) {
-			throw new IOException("Missing CRLF between headers and body.");
+			throw new IOException("Missing empty line (double CRLF) between headers and body.");
 		}
 		final byte[] body = tokens.get(tokens.size() - 1);
 

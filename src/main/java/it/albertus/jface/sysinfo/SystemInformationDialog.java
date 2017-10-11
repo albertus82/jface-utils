@@ -562,7 +562,7 @@ public class SystemInformationDialog extends Dialog {
 		final String fileName = openSaveDialog(shell);
 		if (fileName != null && !fileName.trim().isEmpty()) {
 			try {
-				shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+				SwtUtils.blockShell(shell);
 				final Map<String, Map<String, String>> maps = MapUtils.newLinkedHashMapWithExpectedSize(2);
 				maps.put(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_PROPERTIES), properties);
 				maps.put(JFaceMessages.get(LBL_SYSTEM_INFO_EXPORT_ENV), env);
@@ -572,15 +572,17 @@ public class SystemInformationDialog extends Dialog {
 			catch (final InvocationTargetException e) {
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
 				logger.log(Level.WARNING, message, e);
+				SwtUtils.unblockShell(shell);
 				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_WARNING) });
 			}
 			catch (final Exception e) {
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
 				logger.log(Level.SEVERE, message, e);
+				SwtUtils.unblockShell(shell);
 				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.ERROR, e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_ERROR) });
 			}
 			finally {
-				shell.setCursor(null);
+				SwtUtils.unblockShell(shell);
 			}
 		}
 	}

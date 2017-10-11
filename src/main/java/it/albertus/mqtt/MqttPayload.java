@@ -130,9 +130,11 @@ public class MqttPayload {
 	}
 
 	/**
-	 * Generates the full MQTT message payload to publish. A
-	 * <tt>Content-Length</tt> header will be added if not present, and its
+	 * Generates the full MQTT message payload to publish. <b>A
+	 * <tt>Content-Length</tt> header will be added if not present</b>, and its
 	 * value will be determined by the <em>effective payload</em> length.
+	 * <p>
+	 * This method is idempotent.
 	 * 
 	 * @return the byte array (full MQTT payload) to publish
 	 */

@@ -32,6 +32,7 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	public static final boolean COMPRESSION_ENABLED = true;
 	public static final int RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
 	public static final int STOP_DELAY = 0; // seconds
+	public static final boolean TRACE_METHOD_ENABLED = false;
 
 	@Override
 	public Filter[] getFilters() {
@@ -174,6 +175,11 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	@Override
 	public char[] getKeyPass() {
 		return null;
+	}
+
+	@Override
+	public boolean isTraceMethodEnabled() {
+		return TRACE_METHOD_ENABLED;
 	}
 
 }

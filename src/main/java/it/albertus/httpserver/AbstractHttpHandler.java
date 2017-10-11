@@ -177,28 +177,29 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	}
 
 	protected void service(final HttpExchange exchange) throws IOException {
-		if (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod())) {
+		final String method = exchange.getRequestMethod();
+		if (HttpMethod.GET.equalsIgnoreCase(method)) {
 			doGet(exchange);
 		}
-		else if (HttpMethod.POST.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.POST.equalsIgnoreCase(method)) {
 			doPost(exchange);
 		}
-		else if (HttpMethod.PUT.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.PUT.equalsIgnoreCase(method)) {
 			doPut(exchange);
 		}
-		else if (HttpMethod.PATCH.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.PATCH.equalsIgnoreCase(method)) {
 			doPatch(exchange);
 		}
-		else if (HttpMethod.DELETE.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.DELETE.equalsIgnoreCase(method)) {
 			doDelete(exchange);
 		}
-		else if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.HEAD.equalsIgnoreCase(method)) {
 			doHead(exchange);
 		}
-		else if (HttpMethod.TRACE.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.TRACE.equalsIgnoreCase(method) && httpServerConfig.isTraceMethodEnabled()) {
 			doTrace(exchange);
 		}
-		else if (HttpMethod.OPTIONS.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.OPTIONS.equalsIgnoreCase(method)) {
 			doOptions(exchange);
 		}
 		else {
@@ -256,7 +257,9 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	protected void doOptions(final HttpExchange exchange) throws IOException {
 		final Set<String> allowedMethods = new TreeSet<String>();
-		allowedMethods.add(HttpMethod.TRACE.toUpperCase());
+		if (httpServerConfig.isTraceMethodEnabled()) {
+			allowedMethods.add(HttpMethod.TRACE.toUpperCase());
+		}
 		allowedMethods.add(HttpMethod.OPTIONS.toUpperCase());
 		for (final Method m : getAllDeclaredMethods(this.getClass())) {
 			if ("doGet".equals(m.getName())) {

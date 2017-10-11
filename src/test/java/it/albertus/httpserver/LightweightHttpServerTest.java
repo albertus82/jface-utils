@@ -59,7 +59,7 @@ public class LightweightHttpServerTest {
 		}
 
 		@Override
-		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
+		protected void doGet(final HttpExchange exchange) throws IOException {
 			sendResponse(exchange, loremSmallTxt.getBytes());
 		}
 	}
@@ -71,7 +71,7 @@ public class LightweightHttpServerTest {
 		}
 
 		@Override
-		protected void service(HttpExchange exchange) throws IOException, HttpException {
+		protected void service(HttpExchange exchange) throws IOException {
 			for (final Filter filter : exchange.getHttpContext().getFilters()) {
 				logger.fine(filter.description());
 			}
@@ -79,7 +79,7 @@ public class LightweightHttpServerTest {
 		}
 
 		@Override
-		protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
+		protected void doGet(final HttpExchange exchange) throws IOException {
 			logger.log(Level.INFO, exchange.getRequestHeaders().entrySet().toString());
 			RequestParameterExtractor r = new RequestParameterExtractor(exchange);
 			Assert.assertEquals(4, r.getParameterMap().size());
@@ -92,7 +92,7 @@ public class LightweightHttpServerTest {
 		}
 
 		@Override
-		protected void doPost(final HttpExchange exchange) throws IOException, HttpException {
+		protected void doPost(final HttpExchange exchange) throws IOException {
 			doGet(exchange);
 		}
 

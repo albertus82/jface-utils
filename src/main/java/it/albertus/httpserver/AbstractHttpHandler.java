@@ -161,7 +161,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 			}
 		}
 		catch (final HttpException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			logger.log(Level.INFO, e.toString(), e);
 			sendError(exchange, e);
 		}
 		catch (final IOException e) {

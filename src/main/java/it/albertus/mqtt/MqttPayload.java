@@ -50,8 +50,8 @@ import it.albertus.util.NewLine;
  * the newly created object to manage the headers. Eventually you should call
  * {@link #toPayload()} in order to obtain the complete payload (headers and
  * body) to publish. If you didn't set a <tt>Content-Length</tt> header, the
- * {@link #toPayload()} will compute and add one based on the <em>effective
- * payload</em> length.
+ * {@link #toPayload()} method will compute and add one based on the
+ * <em>effective payload</em> length.
  * <p>
  * <b>If you want to parse a received MQTT message payload</b> that was
  * generated following the aforementioned rules, you can invoke the static

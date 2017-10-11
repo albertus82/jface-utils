@@ -14,6 +14,7 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.util.logging.LoggerFactory;
 
@@ -143,6 +144,20 @@ public class SwtUtils {
 			else { // >= 4.4.0
 				return swtGtk3 == null || !"0".equals(swtGtk3);
 			}
+		}
+	}
+
+	public static void blockShell(@Nullable final Shell shell) {
+		if (shell != null && !shell.isDisposed()) {
+			shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+			shell.setEnabled(false);
+		}
+	}
+
+	public static void unblockShell(@Nullable final Shell shell) {
+		if (shell != null && !shell.isDisposed()) {
+			shell.setEnabled(true);
+			shell.setCursor(null);
 		}
 	}
 

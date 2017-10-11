@@ -45,19 +45,19 @@ import it.albertus.util.NewLine;
  * the compressed length.
  * <p>
  * <b>If you want to build a new MQTT message payload to publish</b>, start by
- * calling the constuctor {@link #MqttPayload(byte[])} providing as argument
- * your <em>effective payload</em>, then you can invoke {@link #getHeaders()} on
- * the newly created object to manage the headers. Eventually you should call
- * {@link #toPayload()} in order to obtain the complete payload (headers and
- * body) to publish. If you didn't set a <tt>Content-Length</tt> header, the
- * {@link #toPayload()} method will compute and add one based on the
- * <em>effective payload</em> length.
+ * calling the constructor {@link #MqttPayload(byte[])} providing your
+ * <em>effective payload</em> as the argument, then you can invoke
+ * {@link #getHeaders()} on the newly created object to manage the headers.
+ * Eventually you should call {@link #toPayload()} in order to obtain the
+ * complete payload (headers and body) to publish. If you didn't set a
+ * <tt>Content-Length</tt> header, the {@link #toPayload()} method will compute
+ * and add one based on the <em>effective payload</em> length.
  * <p>
  * <b>If you want to parse a received MQTT message payload</b> that was
  * generated following the aforementioned rules, you can invoke the static
- * factory method {@link #fromPayload(byte[])} providing as argument the
- * received payload; then you can access headers and body using the getter
- * methods on the returned object as usual.
+ * factory method {@link #fromPayload(byte[])} providing the received payload as
+ * the argument; then you can access headers and body using the getter methods
+ * on the returned object as usual.
  * 
  * @see <a href="http://httpwg.org">HTTP</a>
  */

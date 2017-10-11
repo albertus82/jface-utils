@@ -7,16 +7,24 @@ import java.util.zip.GZIPInputStream;
 
 import it.albertus.util.IOUtils;
 
+/**
+ * MQTT payload decoding utility based on {@link MqttPayload} that also provides
+ * data decompression support.
+ * <p>
+ * This object is thread-safe.
+ * 
+ * @see MqttPayload
+ */
 public class MqttPayloadDecoder {
 
 	private static final int BUFFER_SIZE = 4096;
 
 	/**
-	 * Decode a MQTT payload based on {@link MqttPayload}.
+	 * Decodes a MQTT payload based on {@link MqttPayload}; data decompression
+	 * is performed if needed.
 	 * 
-	 * @param payload the received payload, as extracted from the received MQTT
-	 *        message.
-	 * @return the effective payload
+	 * @param payload the received payload, as extracted from the MQTT message.
+	 * @return the original payload (data decompression is performed if needed).
 	 * @throws IOException in case of malformed payload
 	 * 
 	 * @see MqttPayload

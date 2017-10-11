@@ -192,7 +192,7 @@ public class MqttPayload {
 				byteArrays.add(Arrays.copyOfRange(payload, i + 4, payload.length));
 				break;
 			}
-			else if (payload.length > i + 1 && payload[i + 1] == LF) {
+			else if (payload.length > i + 1 && payload[i] == CR && payload[i + 1] == LF) {
 				byteArrays.add(baos.toByteArray());
 				i++; // skip LF
 				baos.reset();

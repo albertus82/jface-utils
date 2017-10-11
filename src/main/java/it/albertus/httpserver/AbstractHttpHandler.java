@@ -195,7 +195,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		else if (HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod())) {
 			doHead(exchange);
 		}
-		else if (HttpMethod.TRACE.equalsIgnoreCase(exchange.getRequestMethod())) {
+		else if (HttpMethod.TRACE.equalsIgnoreCase(exchange.getRequestMethod()) && httpServerConfig.isTraceMethodEnabled()) {
 			doTrace(exchange);
 		}
 		else if (HttpMethod.OPTIONS.equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -251,12 +251,13 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseString.length());
 		final OutputStream out = exchange.getResponseBody();
 		out.write(responseString.toString().getBytes(getCharset()));
-		out.close();
 	}
 
 	protected void doOptions(final HttpExchange exchange) throws IOException {
 		final Set<String> allowedMethods = new TreeSet<String>();
-		allowedMethods.add(HttpMethod.TRACE.toUpperCase());
+		if (httpServerConfig.isTraceMethodEnabled()) {
+			allowedMethods.add(HttpMethod.TRACE.toUpperCase());
+		}
 		allowedMethods.add(HttpMethod.OPTIONS.toUpperCase());
 		for (final Method m : getAllDeclaredMethods(this.getClass())) {
 			if ("doGet".equals(m.getName())) {
@@ -612,7 +613,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 				exchange.sendResponseHeaders(statusCode, -1);
 			}
 		}
-		exchange.getResponseBody().close();
 	}
 
 	protected Resource getStaticResource(final String resourcePath) {

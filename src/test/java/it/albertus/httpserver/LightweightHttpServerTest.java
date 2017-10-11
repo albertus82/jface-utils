@@ -246,11 +246,6 @@ public class LightweightHttpServerTest {
 			public boolean isSslEnabled() {
 				return sslEnabled;
 			}
-			
-			@Override
-			public boolean isTraceMethodEnabled() {
-				return true;
-			}
 		};
 		server = new LightweightHttpServer(configuration);
 	}

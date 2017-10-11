@@ -80,6 +80,4 @@ public interface IHttpServerConfig {
 
 	String getRequestLoggingLevel();
 
-	boolean isTraceMethodEnabled();
-
 }

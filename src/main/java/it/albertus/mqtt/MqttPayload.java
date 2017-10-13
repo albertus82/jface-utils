@@ -59,6 +59,7 @@ import it.albertus.util.NewLine;
  * the argument; then you can access headers and body using the getter methods
  * on the returned object as usual.
  * 
+ * @see <a href="http://mqtt.org">MQTT</a>
  * @see <a href="http://httpwg.org">HTTP</a>
  */
 @SuppressWarnings("restriction")

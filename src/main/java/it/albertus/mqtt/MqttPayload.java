@@ -2,6 +2,7 @@ package it.albertus.mqtt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,7 +159,7 @@ public class MqttPayload {
 		}
 	}
 
-	private static void writeHeaders(final Headers source, final ByteArrayOutputStream destination) throws IOException {
+	private static void writeHeaders(final Headers source, final OutputStream destination) throws IOException {
 		for (final Entry<String, List<String>> entry : source.entrySet()) {
 			if (entry.getKey() != null) {
 				final String key = entry.getKey().trim();

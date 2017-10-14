@@ -75,7 +75,7 @@ public class EnhancedFileHandler extends FileHandler {
 		try {
 			final Field field = FileHandler.class.getDeclaredField(fieldName);
 			field.setAccessible(true);
-			return field.getInt(this);
+			return (int) field.getLong(this); // limit became "long" since Java 9
 		}
 		catch (final NoSuchFieldException e) {
 			logger.log(Level.WARNING, FIELD_ACCESS_ERROR_MESSAGE + ' ' + fieldName, e);

@@ -33,6 +33,9 @@ public abstract class AnnotationConfigHandler extends Handler {
 		if (!loggable) {
 			return false;
 		}
+		else if (record.getLoggerName() == null) {
+			return true;
+		}
 		else {
 			for (final String exclusion : exclusions) {
 				if (record.getLoggerName().startsWith(exclusion)) {

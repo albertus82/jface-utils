@@ -100,7 +100,7 @@ public class CRC16Test {
 		}
 
 		try {
-			crc.update(null);
+			crc.update((byte[]) null);
 			Assert.assertTrue(false);
 		}
 		catch (final NullPointerException e) {

@@ -328,7 +328,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	 * @see #setContentTypeHeader(HttpExchange, String)
 	 */
 	protected void setContentTypeHeader(final HttpExchange exchange) {
-		setContentTypeHeader(exchange, MimeTypes.getContentType(exchange.getRequestURI().getPath()));
+		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
 	}
 
 	/**

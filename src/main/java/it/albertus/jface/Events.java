@@ -1,6 +1,7 @@
 package it.albertus.jface;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -8,6 +9,7 @@ import javax.annotation.Nullable;
 
 import org.eclipse.swt.widgets.Event;
 
+import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 /**
@@ -23,11 +25,16 @@ public class Events {
 
 	static {
 		eventNames = new Properties();
+		InputStream is = null;
 		try {
-			eventNames.load(Events.class.getResourceAsStream(EVENT_NAMES_RESOURCE_NAME));
+			is = Events.class.getResourceAsStream(EVENT_NAMES_RESOURCE_NAME);
+			eventNames.load(is);
 		}
 		catch (final IOException e) {
 			LoggerFactory.getLogger(Events.class).log(Level.WARNING, "Unable to load resource " + EVENT_NAMES_RESOURCE_NAME, e);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
 		}
 	}
 

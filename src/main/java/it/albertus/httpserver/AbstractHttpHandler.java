@@ -36,6 +36,7 @@ import com.sun.net.httpserver.HttpHandler;
 import it.albertus.httpserver.annotation.Path;
 import it.albertus.httpserver.config.IHttpServerConfig;
 import it.albertus.jface.JFaceMessages;
+import it.albertus.net.MimeTypes;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
@@ -51,8 +52,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
 
 	private static final Map<Integer, String> httpStatusCodes = initHttpStatusCodes();
-
-	private static final Properties contentTypes = initContentTypes();
 
 	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
@@ -116,22 +115,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
 		}
 		return httpStatusCodes;
-	}
-
-	private static Properties initContentTypes() {
-		final Properties contentTypes = new Properties();
-		InputStream is = null;
-		try {
-			is = AbstractHttpHandler.class.getResourceAsStream("mime-types.properties");
-			contentTypes.load(is);
-		}
-		catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			IOUtils.closeQuietly(is);
-		}
-		return contentTypes;
 	}
 
 	private static Collection<Resource> initResources() {
@@ -345,7 +328,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	 * @see #setContentTypeHeader(HttpExchange, String)
 	 */
 	protected void setContentTypeHeader(final HttpExchange exchange) {
-		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
+		setContentTypeHeader(exchange, MimeTypes.getContentType(exchange.getRequestURI().getPath()));
 	}
 
 	/**
@@ -375,15 +358,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	 * @see MimetypesFileTypeMap#getContentType(String)
 	 */
 	protected String getContentType(final String fileName) {
-		final String extension = fileName.indexOf('.') != -1 ? fileName.substring(fileName.lastIndexOf('.') + 1).trim().toLowerCase() : null;
-		String contentType = null;
-		if (extension != null && !extension.isEmpty()) {
-			contentType = getContentTypes().getProperty(extension);
-		}
-		if (contentType == null) {
-			contentType = new MimetypesFileTypeMap().getContentType(fileName);
-		}
-		return contentType.trim();
+		return MimeTypes.getContentType(fileName);
 	}
 
 	/**
@@ -928,10 +903,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	public static Map<Integer, String> getHttpStatusCodes() {
 		return httpStatusCodes;
-	}
-
-	public static Properties getContentTypes() {
-		return contentTypes;
 	}
 
 	public static synchronized Collection<Resource> getResources() {

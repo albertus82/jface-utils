@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import it.albertus.net.MimeTypes;
 import it.albertus.util.IOUtils;
 
 public class AbstractHttpHandlerTest {
@@ -57,22 +58,22 @@ public class AbstractHttpHandlerTest {
 
 	@Test
 	public void getContentTypeTest() {
-		Assert.assertEquals("image/x-icon", handler.getContentType("asdfghjkl.ICO "));
-		Assert.assertEquals("text/css", handler.getContentType("zxcvbnm.css"));
-		Assert.assertEquals("application/javascript", handler.getContentType("qwertyuiop.Js   "));
-		Assert.assertEquals("application/json", handler.getContentType(" qwert-yuiop.json"));
-		Assert.assertEquals("application/xml", handler.getContentType("asdfghjkl.XML"));
-		Assert.assertEquals("application/xhtml+xml", handler.getContentType("zxcvbnm.xHtml"));
-		Assert.assertEquals("application/pdf", handler.getContentType("qwertyuiop.pdf"));
-		Assert.assertEquals("text/html", handler.getContentType("qwertyuiop.HTML"));
-		Assert.assertEquals("text/html", handler.getContentType("asdfg hjkl.htm"));
-		Assert.assertEquals("application/octet-stream", handler.getContentType("zxcvbnm"));
-		Assert.assertEquals("image/jpeg", handler.getContentType("zxcvbnm.jpeg"));
-		Assert.assertEquals("image/jpeg", handler.getContentType("zxcvbnm.jpg"));
-		Assert.assertEquals("image/gif", handler.getContentType("qwertyuiop.gif"));
-		Assert.assertEquals("image/png", handler.getContentType("asdfghjkl.png"));
-		Assert.assertEquals("application/octet-stream", handler.getContentType("asdfghjkl."));
-		Assert.assertEquals("text/x-log", handler.getContentType(".log"));
+		Assert.assertEquals("image/x-icon", MimeTypes.getContentType("asdfghjkl.ICO "));
+		Assert.assertEquals("text/css", MimeTypes.getContentType("zxcvbnm.css"));
+		Assert.assertEquals("application/javascript", MimeTypes.getContentType("qwertyuiop.Js   "));
+		Assert.assertEquals("application/json", MimeTypes.getContentType(" qwert-yuiop.json"));
+		Assert.assertEquals("application/xml", MimeTypes.getContentType("asdfghjkl.XML"));
+		Assert.assertEquals("application/xhtml+xml", MimeTypes.getContentType("zxcvbnm.xHtml"));
+		Assert.assertEquals("application/pdf", MimeTypes.getContentType("qwertyuiop.pdf"));
+		Assert.assertEquals("text/html", MimeTypes.getContentType("qwertyuiop.HTML"));
+		Assert.assertEquals("text/html", MimeTypes.getContentType("asdfg hjkl.htm"));
+		Assert.assertEquals("application/octet-stream", MimeTypes.getContentType("zxcvbnm"));
+		Assert.assertEquals("image/jpeg", MimeTypes.getContentType("zxcvbnm.jpeg"));
+		Assert.assertEquals("image/jpeg", MimeTypes.getContentType("zxcvbnm.jpg"));
+		Assert.assertEquals("image/gif", MimeTypes.getContentType("qwertyuiop.gif"));
+		Assert.assertEquals("image/png", MimeTypes.getContentType("asdfghjkl.png"));
+		Assert.assertEquals("application/octet-stream", MimeTypes.getContentType("asdfghjkl."));
+		Assert.assertEquals("text/x-log", MimeTypes.getContentType(".log"));
 	}
 
 	@AfterClass

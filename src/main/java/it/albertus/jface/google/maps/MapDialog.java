@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import it.albertus.httpserver.html.HtmlUtils;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
+import it.albertus.net.httpserver.html.HtmlUtils;
 import it.albertus.util.IOUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;

@@ -37,9 +37,9 @@ install:
   - cmd: PATH %SystemDrive%\bin\apache-maven-%MVN_VERSION%\bin;%ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
 
 before_build:
-  - cmd: java -Xmx32m -version
-  - cmd: javac -J-Xmx32m -version
-  - cmd: mvn -version
+  - java -Xmx32m -version
+  - javac -J-Xmx32m -version
+  - mvn -version
 
 build_script:
   - mvn clean deploy

@@ -39,7 +39,7 @@ public class MimeTypes {
 	 * Tries to determine the <b>media type</b> (aka <b>content type</b> or
 	 * <b>MIME type</b>) for the provided file name.
 	 * 
-	 * @param fileName the file name
+	 * @param fileName the file name (must not be null)
 	 * @return the computed media type
 	 * @see #getContentTypes()
 	 * @see MimetypesFileTypeMap#getContentType(String)
@@ -54,10 +54,6 @@ public class MimeTypes {
 			contentType = new MimetypesFileTypeMap().getContentType(fileName);
 		}
 		return contentType.trim();
-	}
-
-	public static Properties getContentTypes() {
-		return contentTypes;
 	}
 
 }

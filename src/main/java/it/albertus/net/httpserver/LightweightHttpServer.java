@@ -67,7 +67,6 @@ public class LightweightHttpServer {
 	 * 
 	 * @param daemon determine if the server thread will be configured as a
 	 *        deamon or not.
-	 * 
 	 */
 	public void start(final boolean daemon) {
 		if (!running && httpServerConfiguration.isEnabled()) {
@@ -88,6 +87,7 @@ public class LightweightHttpServer {
 	 * @param delay the maximum time in seconds to wait until exchanges have
 	 *        finished.
 	 * @throws IllegalArgumentException if delay is less than zero.
+	 * @see #stop()
 	 */
 	public void stop(final int delay) {
 		if (server != null) {
@@ -110,12 +110,12 @@ public class LightweightHttpServer {
 	 * current exchange handlers have completed or else when approximately the
 	 * number of seconds returned by {@link IHttpServerConfig#getStopDelay()}
 	 * has elapsed (whichever happens sooner). Then, all open TCP connections
-	 * are closed, the background thread created by start() exits, the thread
-	 * pool is shutdown and the method returns.
+	 * are closed, the background thread created by {@code start()} exits, the
+	 * thread pool is shutdown and the method returns.
 	 * <p>
 	 *
 	 * @throws IllegalArgumentException if delay is less than zero.
-	 * @see LightweightHttpServer#stop(int)
+	 * @see #stop(int)
 	 * @see IHttpServerConfig#getStopDelay()
 	 */
 	public void stop() {

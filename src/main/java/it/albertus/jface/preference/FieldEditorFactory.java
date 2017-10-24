@@ -590,7 +590,7 @@ public class FieldEditorFactory {
 			return new EmailAddressesListEditor(name, label, parent, details.getHorizontalSpan(), details.getIcons());
 		}
 		else {
-			return new EmailAddressesListEditor(name, label, parent, null, null);
+			return new EmailAddressesListEditor(name, label, parent, null);
 		}
 	}
 
@@ -727,8 +727,8 @@ public class FieldEditorFactory {
 				}
 			}
 			catch (final NoSuchAlgorithmException e) {
-				logger.log(Level.FINE, e.getLocalizedMessage(), e);
-				throw new RuntimeException(e);
+				logger.log(Level.FINE, e.toString(), e);
+				throw new IllegalArgumentException(details.getHashAlgorithm(), e);
 			}
 			if (details.getEmptyStringAllowed() != null) {
 				fieldEditor.setEmptyStringAllowed(details.getEmptyStringAllowed());
@@ -859,7 +859,7 @@ public class FieldEditorFactory {
 			return new UriListEditor(name, label, parent, details.getHorizontalSpan(), details.getIcons());
 		}
 		else {
-			return new UriListEditor(name, label, parent, null, null);
+			return new UriListEditor(name, label, parent, null);
 		}
 	}
 

@@ -26,12 +26,9 @@ public class UriListEditor extends EnhancedListEditor {
 	public static final String URI_SPLIT_REGEX = "\\|";
 	public static final char SEPARATOR = '|';
 
-	private static final Pattern asciiPattern = Pattern.compile("^\\p{ASCII}+$");
-	private static final Pattern uriPattern = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
-
 	private final Image[] images;
 
-	public UriListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image[] images) {
+	public UriListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image... images) {
 		super(name, labelText, parent, horizontalSpan);
 		this.images = images;
 	}
@@ -88,36 +85,12 @@ public class UriListEditor extends EnhancedListEditor {
 		}
 	}
 
-	private boolean checkUri(final String uri) {
-		if (uri == null || uri.isEmpty()) {
-			return false;
-		}
-		if (!asciiPattern.matcher(uri).matches()) {
-			return false;
-		}
-		final Matcher urlMatcher = uriPattern.matcher(uri);
-		if (!urlMatcher.matches()) {
-			return false;
-		}
-		if (urlMatcher.group(2) == null) {
-			return false;
-		}
-		if (urlMatcher.group(4) == null) {
-			return false;
-		}
-		if (urlMatcher.group(5) == null) {
-			return false;
-		}
-		return true;
-	}
-
 	protected class UriDialog extends TitleAreaDialog {
 
 		private static final int MAX_LENGTH = 2000;
 
 		private Text textUri;
 		private Button okButton;
-		private Button cancelButton;
 		private String uri;
 
 		public UriDialog(final Shell parentShell) {
@@ -127,7 +100,7 @@ public class UriListEditor extends EnhancedListEditor {
 		@Override
 		protected void configureShell(final Shell newShell) {
 			super.configureShell(newShell);
-			if (images != null) {
+			if (images != null && images.length > 0) {
 				newShell.setImages(images);
 			}
 		}
@@ -166,7 +139,7 @@ public class UriListEditor extends EnhancedListEditor {
 			okButton.setText(JFaceMessages.get("lbl.button.ok"));
 			okButton.setEnabled(false);
 
-			cancelButton = getButton(IDialogConstants.CANCEL_ID);
+			final Button cancelButton = getButton(IDialogConstants.CANCEL_ID);
 			cancelButton.setText(JFaceMessages.get("lbl.button.cancel"));
 		}
 
@@ -186,6 +159,10 @@ public class UriListEditor extends EnhancedListEditor {
 		}
 
 		private class TextModifyListener implements ModifyListener {
+
+			private final Pattern asciiPattern = Pattern.compile("^\\p{ASCII}+$");
+			private final Pattern uriPattern = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+
 			@Override
 			public void modifyText(final ModifyEvent me) {
 				if (!checkUri(textUri.getText().trim())) {
@@ -198,6 +175,29 @@ public class UriListEditor extends EnhancedListEditor {
 						okButton.setEnabled(true);
 					}
 				}
+			}
+
+			private boolean checkUri(final String uri) {
+				if (uri == null || uri.isEmpty()) {
+					return false;
+				}
+				if (!asciiPattern.matcher(uri).matches()) {
+					return false;
+				}
+				final Matcher urlMatcher = uriPattern.matcher(uri);
+				if (!urlMatcher.matches()) {
+					return false;
+				}
+				if (urlMatcher.group(2) == null) {
+					return false;
+				}
+				if (urlMatcher.group(4) == null) {
+					return false;
+				}
+				if (urlMatcher.group(5) == null) {
+					return false;
+				}
+				return true;
 			}
 		}
 	}

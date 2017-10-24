@@ -10,6 +10,7 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import it.albertus.jface.preference.FieldEditorDetails.FieldEditorDetailsBuilder;
 import it.albertus.jface.preference.PreferenceDetails.PreferenceDetailsBuilder;
@@ -85,8 +86,8 @@ public enum MyPreference implements IPreference {
 	FILE(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("file").label("File").build(), new FieldEditorDetailsBuilder(EnhancedFileFieldEditor.class).fileExtensions(new String[] { "*.txt;*.TXT" }).build()),
 	DIRECTORY(new PreferenceDetailsBuilder(MyPageDefinition.VARIOUS).name("directory").label("Directory").build(), new FieldEditorDetailsBuilder(EnhancedDirectoryFieldEditor.class).build()),
 
-	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).build()),
-	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).build()),
+	EMAIL(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("emails").label("Emails").build(), new FieldEditorDetailsBuilder(EmailAddressesListEditor.class).icons(Display.getDefault().getSystemImage(SWT.ICON_WARNING)).build()),
+	URI(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("uris").label("URIs").build(), new FieldEditorDetailsBuilder(UriListEditor.class).icons(Display.getDefault().getSystemImage(SWT.ICON_INFORMATION)).build()),
 	PATH(new PreferenceDetailsBuilder(MyPageDefinition.PAGE).name("path").label("Path").build(), new FieldEditorDetailsBuilder(LocalizedPathEditor.class).build());
 
 	private static final FieldEditorFactory fieldEditorFactory = new FieldEditorFactory();

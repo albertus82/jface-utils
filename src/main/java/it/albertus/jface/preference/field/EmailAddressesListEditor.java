@@ -25,7 +25,7 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 
 	private final Image[] images;
 
-	public EmailAddressesListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image[] images) {
+	public EmailAddressesListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan, final Image... images) {
 		super(name, labelText, parent, horizontalSpan);
 		this.images = images;
 	}
@@ -84,7 +84,6 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 
 	protected class EmailAddressDialog extends TitleAreaDialog {
 
-		private static final String REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 		private static final int MAX_LENGTH = 254;
 
 		private Text textEmailAddress;
@@ -98,7 +97,7 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 		@Override
 		protected void configureShell(final Shell newShell) {
 			super.configureShell(newShell);
-			if (images != null) {
+			if (images != null && images.length > 0) {
 				newShell.setImages(images);
 			}
 		}
@@ -157,6 +156,9 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 		}
 
 		private class TextModifyListener implements ModifyListener {
+
+			private static final String REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+
 			@Override
 			public void modifyText(final ModifyEvent me) {
 				if (textEmailAddress.getText().trim().isEmpty() || !textEmailAddress.getText().trim().toLowerCase().matches(REGEX)) {

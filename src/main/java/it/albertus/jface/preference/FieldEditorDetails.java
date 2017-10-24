@@ -454,7 +454,7 @@ public class FieldEditorDetails {
 			return this;
 		}
 
-		public FieldEditorDetailsBuilder icons(final Image[] icons) {
+		public FieldEditorDetailsBuilder icons(final Image... icons) {
 			this.icons = icons;
 			return this;
 		}

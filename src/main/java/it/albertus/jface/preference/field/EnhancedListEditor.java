@@ -1,5 +1,7 @@
 package it.albertus.jface.preference.field;
 
+import javax.annotation.Nullable;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -25,18 +27,18 @@ public abstract class EnhancedListEditor extends FieldEditor {
 
 	private final boolean container;
 
-	private List list;
-	private Composite buttonBox;
-	private Button addButton;
-	private Button editButton;
-	private Button removeButton;
-	private Button upButton;
-	private Button downButton;
-	private SelectionListener selectionListener;
+	private @Nullable List list;
+	private @Nullable Composite buttonBox;
+	private @Nullable Button addButton;
+	private @Nullable Button editButton;
+	private @Nullable Button removeButton;
+	private @Nullable Button upButton;
+	private @Nullable Button downButton;
+	private @Nullable SelectionListener selectionListener;
 
 	protected class ListEditorSelectionListener extends SelectionAdapter {
 		@Override
-		public void widgetSelected(final SelectionEvent se) {
+		public void widgetSelected(@Nullable final SelectionEvent se) {
 			if (se != null && se.widget != null) {
 				final Widget widget = se.widget;
 				if (widget == addButton) {
@@ -136,9 +138,9 @@ public abstract class EnhancedListEditor extends FieldEditor {
 
 	protected abstract String createList(String[] items);
 
-	protected Button createPushButton(final Composite parent, final String key) {
+	protected Button createPushButton(final Composite parent, final String text) {
 		final Button button = new Button(parent, SWT.PUSH);
-		button.setText(JFaceMessages.get(key));
+		button.setText(text);
 		button.setFont(parent.getFont());
 		final GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		final int widthHint = convertHorizontalDLUsToPixels(button, IDialogConstants.BUTTON_WIDTH);
@@ -211,23 +213,23 @@ public abstract class EnhancedListEditor extends FieldEditor {
 	}
 
 	protected void createAddButton(final Composite box) {
-		addButton = createPushButton(box, "lbl.preferences.list.button.add");
+		addButton = createPushButton(box, JFaceMessages.get("lbl.preferences.list.button.add"));
 	}
 
 	protected void createEditButton(final Composite box) {
-		editButton = createPushButton(box, "lbl.preferences.list.button.edit");
+		editButton = createPushButton(box, JFaceMessages.get("lbl.preferences.list.button.edit"));
 	}
 
 	protected void createRemoveButton(final Composite box) {
-		removeButton = createPushButton(box, "lbl.preferences.list.button.remove");
+		removeButton = createPushButton(box, JFaceMessages.get("lbl.preferences.list.button.remove"));
 	}
 
 	protected void createUpButton(final Composite box) {
-		upButton = createPushButton(box, "lbl.preferences.list.button.up");
+		upButton = createPushButton(box, JFaceMessages.get("lbl.preferences.list.button.up"));
 	}
 
 	protected void createDownButton(final Composite box) {
-		downButton = createPushButton(box, "lbl.preferences.list.button.down");
+		downButton = createPushButton(box, JFaceMessages.get("lbl.preferences.list.button.down"));
 	}
 
 	public Composite getButtonBoxControl(final Composite parent) {

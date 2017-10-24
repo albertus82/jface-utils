@@ -38,22 +38,21 @@ public class EnhancedErrorDialog extends ErrorDialog {
 
 	private final Image[] images;
 
-	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final IStatus status, final Image[] images, final int displayMask) {
+	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final IStatus status, final int displayMask, final Image... images) {
 		super(parent, title, message, status, displayMask);
 		this.message = message == null ? status.getMessage() : JFaceMessages.get("lbl.error.dialog.reason", message, status.getMessage());
 		this.images = images;
 	}
 
-	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final Image[] images) {
-		return openError(parent, title, message, status, images, IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR);
+	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final Image... images) {
+		return openError(parent, title, message, status, IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR, images);
 	}
 
-	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final Image[] images, final int displayMask) {
-		final EnhancedErrorDialog dialog = new EnhancedErrorDialog(parent, title, message, status, images, displayMask);
-		return dialog.open();
+	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final int displayMask, final Image... images) {
+		return new EnhancedErrorDialog(parent, title, message, status, displayMask, images).open();
 	}
 
-	public static int openError(final Shell parent, final String title, final String message, final int severity, final Throwable e, final Image[] images) {
+	public static int openError(final Shell parent, final String title, final String message, final int severity, final Throwable e, final Image... images) {
 		final MultiStatus status = EnhancedErrorDialog.createMultiStatus(severity, e);
 		return openError(parent, title, message, status, images);
 	}

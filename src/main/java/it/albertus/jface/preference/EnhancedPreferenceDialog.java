@@ -40,7 +40,7 @@ public class EnhancedPreferenceDialog extends PreferenceDialog {
 	private final String title;
 	private final Image[] images;
 
-	public EnhancedPreferenceDialog(final Shell parentShell, final PreferenceManager manager, final String title, final Image[] images) {
+	public EnhancedPreferenceDialog(final Shell parentShell, final PreferenceManager manager, final String title, final Image... images) {
 		super(parentShell, manager);
 		this.title = title;
 		this.images = images;
@@ -52,7 +52,7 @@ public class EnhancedPreferenceDialog extends PreferenceDialog {
 		if (title != null) {
 			newShell.setText(title);
 		}
-		if (images != null) {
+		if (images != null && images.length > 0) {
 			newShell.setImages(images);
 		}
 	}

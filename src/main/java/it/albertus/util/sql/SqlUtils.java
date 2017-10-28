@@ -50,4 +50,12 @@ public class SqlUtils {
 		}
 	}
 
+	public static String sanitizeName(final String str) {
+		return str.replaceAll("[^A-Za-z0-9_]+", "");
+	}
+
+	public static String sanitizeType(final String str) {
+		return str.replaceAll("[^A-Za-z0-9_,() ]+", "");
+	}
+
 }

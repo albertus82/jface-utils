@@ -30,7 +30,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -573,13 +572,13 @@ public class SystemInformationDialog extends Dialog {
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
 				logger.log(Level.WARNING, message, e);
 				SwtUtils.unblockShell(shell);
-				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_WARNING) });
+				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, shell.getDisplay().getSystemImage(SWT.ICON_WARNING));
 			}
 			catch (final Exception e) {
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
 				logger.log(Level.SEVERE, message, e);
 				SwtUtils.unblockShell(shell);
-				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.ERROR, e, new Image[] { shell.getDisplay().getSystemImage(SWT.ICON_ERROR) });
+				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.ERROR, e, shell.getDisplay().getSystemImage(SWT.ICON_ERROR));
 			}
 			finally {
 				SwtUtils.unblockShell(shell);

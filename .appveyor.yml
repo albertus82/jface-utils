@@ -3,7 +3,7 @@ version: '{build}'
 clone_depth: 50
 
 environment:
-  MVN_VERSION: 3.5.0
+  MVN_VERSION: 3.5.2
   VT_API_URL: https://www.virustotal.com/vtapi/v2/file/scan
   VT_API_DELAY: 15
   VT_API_KEY:

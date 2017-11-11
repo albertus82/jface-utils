@@ -11,7 +11,7 @@ import it.albertus.util.IOUtils;
  * MQTT payload decoding utility based on {@link MqttPayload} that also provides
  * data decompression support.
  * <p>
- * This object is thread-safe.
+ * This class is thread-safe.
  * 
  * @see MqttPayload
  */

@@ -12,7 +12,7 @@ import it.albertus.util.IOUtils;
  * MQTT payload encoding utility based on {@link MqttPayload} that also provides
  * data compression support.
  * <p>
- * This object is thread-safe.
+ * This class is thread-safe.
  * 
  * @see MqttPayload
  */

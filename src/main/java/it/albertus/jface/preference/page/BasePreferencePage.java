@@ -235,29 +235,46 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 	}
 
 	public void updateCrossChildrenStatus() {
-		for (final IPreference preference : fieldEditorMap.keySet()) {
-			if (preference.getParent() != null && !fieldEditorMap.containsKey(preference.getParent())) {
-				final FieldEditorWrapper fieldEditorWrapper = universe.get(preference.getParent());
-				if (fieldEditorWrapper == null) {
-					boolean parentEnabled = getBooleanFromStore(preference.getParent());
-					updateChildrenStatus(preference, parentEnabled);
+		for (final IPreference preference : fieldEditorMap.keySet()) { // iterate over all the preferences on the current page
+			final IPreference parentPreference = preference.getParent();
+			if (parentPreference != null && !fieldEditorMap.containsKey(parentPreference)) { // if the parent is on another page
+				final Map<IPreference, FieldEditorWrapper> parents = new HashMap<IPreference, FieldEditorWrapper>();
+
+				IPreference currPref = preference;
+				while (currPref.getParent() != null) {
+					parents.put(currPref.getParent(), universe.get(currPref.getParent()));
+					currPref = currPref.getParent();
 				}
-				else {
-					final FieldEditor fieldEditor = fieldEditorWrapper.getFieldEditor();
-					if (fieldEditor instanceof BooleanFieldEditor) {
-						boolean parentEnabled;
-						try {
-							parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
-						}
-						catch (final NullPointerException e) {
-							logger.log(Level.FINE, e.toString(), e);
-							parentEnabled = getPreferenceStore().getBoolean(preference.getParent().getName());
-						}
-						updateChildrenStatus(preference, parentEnabled);
+
+				final boolean parentsEnabled = checkParentsEnabled(parents);
+				updateChildrenStatus(preference, parentsEnabled);
+			}
+		}
+	}
+
+	protected boolean checkParentsEnabled(final Map<IPreference, FieldEditorWrapper> parents) {
+		boolean parentEnabled = true;
+		for (final Entry<IPreference, FieldEditorWrapper> entry : parents.entrySet()) {
+			if (entry.getValue() == null) {
+				parentEnabled = getBooleanFromStore(entry.getKey());
+			}
+			else {
+				final FieldEditor fieldEditor = entry.getValue().getFieldEditor();
+				if (fieldEditor instanceof BooleanFieldEditor) {
+					try {
+						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
+					}
+					catch (final NullPointerException e) {
+						logger.log(Level.FINE, e.toString(), e);
+						parentEnabled = getBooleanFromStore(entry.getKey());
 					}
 				}
 			}
+			if (!parentEnabled) {
+				break; // don't waste time
+			}
 		}
+		return parentEnabled;
 	}
 
 	protected boolean getBooleanFromStore(final IPreference preference) {

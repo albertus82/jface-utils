@@ -18,8 +18,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -40,7 +38,6 @@ import it.albertus.net.httpserver.config.IHttpServerConfig;
 import it.albertus.util.ClasspathResourceUtils;
 import it.albertus.util.DigestOutputStream;
 import it.albertus.util.IOUtils;
-import it.albertus.util.MapUtils;
 import it.albertus.util.NewLine;
 import it.albertus.util.Resource;
 import it.albertus.util.StringUtils;
@@ -50,8 +47,6 @@ import it.albertus.util.logging.LoggerFactory;
 public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
-
-	private static final Map<Integer, String> httpStatusCodes = initHttpStatusCodes();
 
 	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
@@ -96,26 +91,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	private boolean enabled = true;
 
 	private String path;
-
-	private static Map<Integer, String> initHttpStatusCodes() {
-		final Properties properties = new Properties();
-		InputStream is = null;
-		try {
-			is = AbstractHttpHandler.class.getResourceAsStream("http-codes.properties");
-			properties.load(is);
-		}
-		catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			IOUtils.closeQuietly(is);
-		}
-		final Map<Integer, String> httpStatusCodes = MapUtils.<Integer, String> newHashMapWithExpectedSize(properties.size());
-		for (final Entry<?, ?> entry : properties.entrySet()) {
-			httpStatusCodes.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
-		}
-		return httpStatusCodes;
-	}
 
 	private static Collection<Resource> initResources() {
 		final Collection<Resource> resources = ClasspathResourceUtils.getResourceList(Pattern.compile(".*(?<!\\.class)$"));
@@ -547,7 +522,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	}
 
 	protected void setStatusHeader(final HttpExchange exchange, final int statusCode) {
-		final String description = getHttpStatusCodes().get(statusCode);
+		final String description = HttpStatusCodes.getMap().get(statusCode);
 		if (description != null) {
 			exchange.getResponseHeaders().set("Status", statusCode + " " + description);
 		}
@@ -901,8 +876,19 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		lastRequestInfo = requestInfo;
 	}
 
+	/**
+	 * Returns the map containing all the known HTTP status codes with their
+	 * names.
+	 * 
+	 * @return the map containing the HTTP status codes
+	 * 
+	 * @see HttpStatusCodes
+	 * 
+	 * @deprecated since v11.1.0. Use {@link HttpStatusCodes} instead.
+	 */
+	@Deprecated
 	public static Map<Integer, String> getHttpStatusCodes() {
-		return httpStatusCodes;
+		return HttpStatusCodes.getMap();
 	}
 
 	public static synchronized Collection<Resource> getResources() {

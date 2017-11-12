@@ -41,14 +41,6 @@ import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
-import it.albertus.net.httpserver.AbstractHttpHandler;
-import it.albertus.net.httpserver.FilesHandler;
-import it.albertus.net.httpserver.HttpException;
-import it.albertus.net.httpserver.HttpMethod;
-import it.albertus.net.httpserver.HttpServerAuthenticator;
-import it.albertus.net.httpserver.LightweightHttpServer;
-import it.albertus.net.httpserver.RequestParameterExtractor;
-import it.albertus.net.httpserver.ResourcesHandler;
 import it.albertus.net.httpserver.annotation.Path;
 import it.albertus.net.httpserver.config.HttpServerDefaultConfig;
 import it.albertus.net.httpserver.config.IHttpServerConfig;
@@ -311,7 +303,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 			Assert.assertNotNull(connection.getHeaderField("Etag"));
@@ -358,7 +350,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Content-Length", Integer.toString(queryString.length() - 1));
 			connection.getOutputStream().write(queryString.getBytes());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 			Assert.assertNull(connection.getHeaderField("Etag"));
@@ -418,7 +410,7 @@ public class LightweightHttpServerTest {
 			connection.getOutputStream().write(compressedQueryString);
 			logger.log(Level.INFO, "Compressed bytes POSTed: ===>{0}<=== ({1})", new String[] { new String(compressedQueryString), DatatypeConverter.printHexBinary(compressedQueryString) });
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
 			Assert.assertNull(connection.getHeaderField("Etag"));
@@ -455,7 +447,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -491,7 +483,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -540,7 +532,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -593,7 +585,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -632,7 +624,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("ETAG"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -669,7 +661,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentLength() > 0);
 			Assert.assertNotNull(connection.getHeaderField("Etag"));
@@ -707,7 +699,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertTrue(connection.getContentLength() > 0);
 			Assert.assertNotNull(connection.getHeaderField("Etag"));
@@ -744,7 +736,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertTrue(connection.getContentLength() > 0);
@@ -784,7 +776,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertTrue(connection.getContentLength() > 0);
@@ -823,7 +815,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -860,7 +852,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -908,7 +900,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -946,7 +938,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("ETAG"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -983,7 +975,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("ETAG"));
 			Assert.assertTrue(connection.getContentType().startsWith("text/plain"));
@@ -1020,7 +1012,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("If-None-Match", "1qaz2wsx3edc"); // invalid Etag
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -1059,7 +1051,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("If-None-Match", "1qaz2wsx3edc"); // invalid Etag
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -1098,7 +1090,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("If-None-Match", loremSmallMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(0, connection.getContentLength());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
@@ -1148,7 +1140,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Accept-Encoding", "gzip");
 			connection.addRequestProperty("If-None-Match", loremLargeMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			Assert.assertEquals(0, connection.getContentLength());
@@ -1202,7 +1194,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("If-None-Match", loremLargeMd5);
 			connection.setRequestMethod(HttpMethod.HEAD.toUpperCase());
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			Assert.assertNull(connection.getHeaderField("Content-Disposition"));
@@ -1241,7 +1233,7 @@ public class LightweightHttpServerTest {
 			connection.setRequestProperty("Accept-Encoding", "gzip");
 			connection.addRequestProperty("If-None-Match", loremLargeMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("ETAG"));
 			Assert.assertNull(connection.getContentType());
@@ -1279,7 +1271,7 @@ public class LightweightHttpServerTest {
 			final String etag = new AbstractHttpHandler(null) {}.generateEtag(certificate);
 			connection.addRequestProperty("If-None-Match", etag);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(0, connection.getContentLength());
 			Assert.assertEquals(etag, connection.getHeaderField("Etag"));
@@ -1316,7 +1308,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("If-None-Match", loremSmallMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertNull(connection.getContentType());
@@ -1374,7 +1366,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(403, connection.getResponseCode());
-			Assert.assertEquals("403 " + AbstractHttpHandler.getHttpStatusCodes().get(403), connection.getHeaderField("Status"));
+			Assert.assertEquals("403 " + HttpStatusCodes.getMap().get(403), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			connection.disconnect();
 		}
@@ -1443,7 +1435,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -1486,7 +1478,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -1529,7 +1521,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 			connection.addRequestProperty("If-None-Match", loremSmallMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(0, connection.getContentLength());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
@@ -1572,7 +1564,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Authorization", "Basic " + CREDENTIALS_BASE64);
 			connection.addRequestProperty("If-None-Match", loremSmallMd5);
 			Assert.assertEquals(304, connection.getResponseCode());
-			Assert.assertEquals("304 " + AbstractHttpHandler.getHttpStatusCodes().get(304), connection.getHeaderField("Status"));
+			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertEquals(0, connection.getContentLength());
@@ -1607,7 +1599,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.setRequestMethod(HttpMethod.OPTIONS.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			//		Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			//		Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			final String allow = connection.getHeaderField("Allow").toLowerCase();
 			Assert.assertTrue(allow.contains(HttpMethod.GET) && allow.contains(HttpMethod.HEAD) && allow.contains(HttpMethod.POST) && allow.contains(HttpMethod.TRACE) && allow.contains(HttpMethod.OPTIONS));
@@ -1642,7 +1634,7 @@ public class LightweightHttpServerTest {
 			connection.setReadTimeout(20000);
 			connection.setRequestMethod(HttpMethod.TRACE.toUpperCase());
 			Assert.assertEquals(200, connection.getResponseCode());
-			// Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			// Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			InputStream is = null;
 			final ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1701,7 +1693,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(200, connection.getResponseCode());
-			Assert.assertEquals("200 " + AbstractHttpHandler.getHttpStatusCodes().get(200), connection.getHeaderField("Status"));
+			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("ETAG"));
 			Assert.assertEquals(loremSmallTxt.length(), connection.getContentLength());
@@ -1723,7 +1715,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(404, connection.getResponseCode());
-			Assert.assertEquals("404 " + AbstractHttpHandler.getHttpStatusCodes().get(404), connection.getHeaderField("Status"));
+			Assert.assertEquals("404 " + HttpStatusCodes.getMap().get(404), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			is = null;
 			os = new ByteArrayOutputStream();
@@ -1744,7 +1736,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(404, connection.getResponseCode());
-			Assert.assertEquals("404 " + AbstractHttpHandler.getHttpStatusCodes().get(404), connection.getHeaderField("Status"));
+			Assert.assertEquals("404 " + HttpStatusCodes.getMap().get(404), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			is = null;
 			os = new ByteArrayOutputStream();

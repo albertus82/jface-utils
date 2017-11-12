@@ -236,14 +236,13 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 	public void updateCrossChildrenStatus() {
 		for (final IPreference preference : fieldEditorMap.keySet()) { // iterate over all the preferences on the current page
-			final IPreference parentPreference = preference.getParent();
+			IPreference parentPreference = preference.getParent();
 			if (parentPreference != null && !fieldEditorMap.containsKey(parentPreference)) { // if the parent is on another page
 				final Map<IPreference, FieldEditorWrapper> parents = new HashMap<IPreference, FieldEditorWrapper>();
 
-				IPreference currPref = preference;
-				while (currPref.getParent() != null) {
-					parents.put(currPref.getParent(), universe.get(currPref.getParent()));
-					currPref = currPref.getParent();
+				while (parentPreference != null) {
+					parents.put(parentPreference, universe.get(parentPreference));
+					parentPreference = parentPreference.getParent();
 				}
 
 				final boolean parentsEnabled = checkParentsEnabled(parents);

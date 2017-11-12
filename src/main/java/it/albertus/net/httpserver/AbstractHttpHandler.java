@@ -811,7 +811,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 			final Object[] requestInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() };
 			if (!Arrays.equals(requestInfo, getLastRequestInfo())) {
 				setLastRequestInfo(requestInfo);
-				logger.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() });
+				logger.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() });
 			}
 		}
 	}

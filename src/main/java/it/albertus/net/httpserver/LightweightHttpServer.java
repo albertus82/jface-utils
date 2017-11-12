@@ -288,7 +288,7 @@ public class LightweightHttpServer {
 
 					server.start();
 					running = true;
-					logger.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", port));
+					logger.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", httpServerConfiguration.isSslEnabled() ? "HTTPS" : "HTTP", port));
 				}
 			}
 			catch (final BindException e) {

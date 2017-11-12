@@ -2,8 +2,10 @@ package it.albertus.jface.preference.page;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -238,10 +240,10 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		for (final IPreference preference : fieldEditorMap.keySet()) { // iterate over all the preferences on the current page
 			IPreference parentPreference = preference.getParent();
 			if (parentPreference != null && !fieldEditorMap.containsKey(parentPreference)) { // if the parent is on another page
-				final Map<IPreference, FieldEditorWrapper> parents = new HashMap<IPreference, FieldEditorWrapper>();
+				final Set<IPreference> parents = new HashSet<IPreference>();
 
 				while (parentPreference != null) {
-					parents.put(parentPreference, universe.get(parentPreference));
+					parents.add(parentPreference);
 					parentPreference = parentPreference.getParent();
 				}
 
@@ -251,21 +253,22 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		}
 	}
 
-	protected boolean checkParentsEnabled(final Map<IPreference, FieldEditorWrapper> parents) {
+	protected boolean checkParentsEnabled(final Set<IPreference> parents) {
 		boolean parentEnabled = true;
-		for (final Entry<IPreference, FieldEditorWrapper> entry : parents.entrySet()) {
-			if (entry.getValue() == null) {
-				parentEnabled = getBooleanFromStore(entry.getKey());
+		for (final IPreference preference : parents) {
+			final FieldEditorWrapper fieldEditorWrapper = universe.get(preference);
+			if (fieldEditorWrapper == null) {
+				parentEnabled = getBooleanFromStore(preference);
 			}
 			else {
-				final FieldEditor fieldEditor = entry.getValue().getFieldEditor();
+				final FieldEditor fieldEditor = fieldEditorWrapper.getFieldEditor();
 				if (fieldEditor instanceof BooleanFieldEditor) {
 					try {
 						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
 					}
 					catch (final NullPointerException e) {
 						logger.log(Level.FINE, e.toString(), e);
-						parentEnabled = getBooleanFromStore(entry.getKey());
+						parentEnabled = getBooleanFromStore(preference);
 					}
 				}
 			}

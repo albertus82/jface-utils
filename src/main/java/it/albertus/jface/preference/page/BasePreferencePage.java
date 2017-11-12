@@ -19,7 +19,6 @@ import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -102,7 +101,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		catch (final IOException ioe) {
 			final String message = JFaceMessages.get("err.preferences.save");
 			logger.log(Level.SEVERE, message, ioe);
-			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.ERROR, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_ERROR) });
+			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.ERROR, ioe, Display.getCurrent().getSystemImage(SWT.ICON_ERROR));
 		}
 
 		// Reload RouterLogger configuration...
@@ -112,7 +111,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		catch (final IOException ioe) {
 			final String message = JFaceMessages.get("err.preferences.reload");
 			logger.log(Level.WARNING, message, ioe);
-			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.WARNING, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_WARNING) });
+			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.WARNING, ioe, Display.getCurrent().getSystemImage(SWT.ICON_WARNING));
 		}
 	}
 

@@ -34,7 +34,7 @@ public class HttpStatusCodes {
 		finally {
 			IOUtils.closeQuietly(is);
 		}
-		map = MapUtils.<Integer, String> newHashMapWithExpectedSize(properties.size());
+		map = MapUtils.<Integer, String>newHashMapWithExpectedSize(properties.size());
 		for (final Entry<?, ?> entry : properties.entrySet()) {
 			map.put(Integer.valueOf(entry.getKey().toString()), entry.getValue().toString());
 		}
@@ -42,12 +42,24 @@ public class HttpStatusCodes {
 
 	/**
 	 * Returns the map containing all the known HTTP status codes with their
-	 * names.
+	 * descriptions.
 	 * 
 	 * @return the map containing the HTTP status codes
 	 */
 	public static Map<Integer, String> getMap() {
 		return map;
+	}
+
+	/**
+	 * Returns the textual description of a HTTP status code.
+	 * 
+	 * @param code the HTTP status code
+	 * 
+	 * @return the description of the provided status code, or null if the
+	 *         description is not available.
+	 */
+	public static String getDescription(final int code) {
+		return map.get(code);
 	}
 
 }

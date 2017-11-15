@@ -28,7 +28,8 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	public static final String SSL_TMF_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
 	public static final long MAX_REQ_TIME = 60L; // seconds
 	public static final long MAX_RSP_TIME = 60L * 60 * 24; // seconds
-	public static final String REQUEST_LOGGING_LEVEL = Level.INFO.getName();
+	public static final String REQUEST_LOGGING_LEVEL = Level.FINE.getName();
+	public static final String RESPONSE_LOGGING_LEVEL = Level.INFO.getName();
 	public static final boolean COMPRESSION_ENABLED = true;
 	public static final int RESPONSE_BUFFER_LIMIT = 512 * 1024; // 512 KiB
 	public static final int STOP_DELAY = 0; // seconds
@@ -145,6 +146,11 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	@Override
 	public String getRequestLoggingLevel() {
 		return REQUEST_LOGGING_LEVEL;
+	}
+
+	@Override
+	public String getResponseLoggingLevel() {
+		return RESPONSE_LOGGING_LEVEL;
 	}
 
 	@Override

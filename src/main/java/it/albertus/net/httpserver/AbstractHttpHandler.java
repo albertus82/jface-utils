@@ -66,6 +66,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	private static final String MSG_HTTPSERVER_BAD_METHOD = "msg.httpserver.bad.method";
 
 	private static Object[] lastRequestInfo;
+	private static Object[] lastResponseInfo;
 
 	private static final ThreadLocal<MessageDigest> md5Digest = new ThreadLocal<MessageDigest>() {
 		@Override
@@ -109,7 +110,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	@Override
 	public void handle(final HttpExchange exchange) throws IOException {
-		log(exchange);
+		logRequest(exchange);
 		try {
 			if (httpServerConfig.isEnabled() && isEnabled(exchange)) {
 				service(exchange);
@@ -131,6 +132,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		}
 		finally {
 			exchange.close();
+			logResponse(exchange);
 		}
 	}
 
@@ -795,7 +797,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		sendResponse(exchange, payload, HttpURLConnection.HTTP_OK);
 	}
 
-	protected void log(final HttpExchange exchange) {
+	protected void logRequest(final HttpExchange exchange) {
 		Level level = Level.OFF;
 		try {
 			level = Level.parse(httpServerConfig.getRequestLoggingLevel());
@@ -803,15 +805,37 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		catch (final RuntimeException e) {
 			logger.log(Level.WARNING, e.toString(), e);
 		}
-		doLog(exchange, level);
+		doLogRequest(exchange, level);
 	}
 
-	protected void doLog(final HttpExchange exchange, final Level level) {
+	protected void doLogRequest(final HttpExchange exchange, final Level level) {
 		if (logger.isLoggable(level) && !Level.OFF.equals(level)) {
 			final Object[] requestInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() };
 			if (!Arrays.equals(requestInfo, getLastRequestInfo())) {
 				setLastRequestInfo(requestInfo);
-				logger.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() });
+				logger.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol() });
+			}
+		}
+	}
+
+	protected void logResponse(final HttpExchange exchange) {
+		Level level = Level.OFF;
+		try {
+			level = Level.parse(httpServerConfig.getResponseLoggingLevel());
+		}
+		catch (final RuntimeException e) {
+			logger.log(Level.WARNING, e.toString(), e);
+		}
+		doLogResponse(exchange, level);
+	}
+
+	protected void doLogResponse(final HttpExchange exchange, final Level level) {
+		if (logger.isLoggable(level) && !Level.OFF.equals(level)) {
+			final Object[] responseInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode() };
+			if (!Arrays.equals(responseInfo, getLastResponseInfo())) {
+				setLastResponseInfo(responseInfo);
+				final String textStatus = HttpStatusCodes.getDescription(exchange.getResponseCode());
+				logger.log(level, JFaceMessages.get("msg.httpserver.log.response"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode(), textStatus != null ? ' ' + textStatus : "" });
 			}
 		}
 	}
@@ -874,6 +898,14 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 
 	protected static void setLastRequestInfo(final Object[] requestInfo) {
 		lastRequestInfo = requestInfo;
+	}
+
+	protected static Object[] getLastResponseInfo() {
+		return lastResponseInfo;
+	}
+
+	protected static void setLastResponseInfo(final Object[] responseInfo) {
+		lastResponseInfo = responseInfo;
 	}
 
 	/**

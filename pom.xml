@@ -14,7 +14,7 @@
 	</licenses>
 
 	<properties>
-		<version.date>2017-11-15</version.date>
+		<version.date>2017-11-24</version.date>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>

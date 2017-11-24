@@ -80,26 +80,29 @@ public class Formatter {
 	}
 
 	private int computeWidth(final Control control, final int multiplier, final int weight, final String string) {
-		int widthHint = SWT.DEFAULT;
 		if (control != null && !control.isDisposed()) {
 			final Font font = control.getFont(); // Backup initial font.
-			if (weight == SWT.BOLD) {
-				setBoldFontStyle(control);
-			}
-			else {
-				setNormalFontStyle(control);
-			}
-			final GC gc = new GC(control);
+			GC gc = null;
 			try {
+				if (weight == SWT.BOLD) {
+					setBoldFontStyle(control);
+				}
+				else {
+					setNormalFontStyle(control);
+				}
+				gc = new GC(control);
+				gc.setFont(control.getFont());
 				final Point extent = gc.textExtent(string);
-				widthHint = (int) (multiplier * extent.x * 1.1);
+				return (int) (multiplier * extent.x * 1.1);
 			}
 			finally {
-				gc.dispose();
+				if (gc != null) {
+					gc.dispose();
+				}
+				control.setFont(font); // Restore initial font.
 			}
-			control.setFont(font); // Restore initial font.
 		}
-		return widthHint;
+		return SWT.DEFAULT;
 	}
 
 	private void registerFont(final Control control) {

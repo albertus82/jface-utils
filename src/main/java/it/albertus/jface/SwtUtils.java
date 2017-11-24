@@ -69,12 +69,18 @@ public class SwtUtils {
 	public static boolean checkClipboard(final Transfer transfer) {
 		final Display display = Display.getCurrent();
 		if (display != null) {
-			final Clipboard clipboard = new Clipboard(display);
-			final TransferData[] clipboardAvailableTypes = clipboard.getAvailableTypes();
-			clipboard.dispose();
-			for (final TransferData clipboardType : clipboardAvailableTypes) {
-				if (transfer.isSupportedType(clipboardType)) {
-					return true;
+			Clipboard clipboard = null;
+			try {
+				clipboard = new Clipboard(display);
+				for (final TransferData clipboardType : clipboard.getAvailableTypes()) {
+					if (transfer.isSupportedType(clipboardType)) {
+						return true;
+					}
+				}
+			}
+			finally {
+				if (clipboard != null) {
+					clipboard.dispose();
 				}
 			}
 		}
@@ -82,11 +88,17 @@ public class SwtUtils {
 	}
 
 	public static int convertHorizontalDLUsToPixels(final Control control, final int dlus) {
-		final GC gc = new GC(control);
-		gc.setFont(control.getFont());
-		final int widthInPixel = Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
-		gc.dispose();
-		return widthInPixel;
+		GC gc = null;
+		try {
+			gc = new GC(control);
+			gc.setFont(control.getFont());
+			return Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
+		}
+		finally {
+			if (gc != null) {
+				gc.dispose();
+			}
+		}
 	}
 
 	/**
@@ -126,7 +138,6 @@ public class SwtUtils {
 	// Q: Which GTK version is being used by SWT?
 	// A: Since Mars (4.5), SWT sets the org.eclipse.swt.internal.gtk.version system property to the version being used. To display this value in Eclipse, go to Help > Installation Details > Configuration.
 	// Look for the line: org.eclipse.swt.internal.gtk.version=3.14.12, where 3.14.12 corresponds to the GTK version currently used by Eclipse.
-	@Nullable
 	static boolean isGtk3(final boolean isGtk, final int swtVersion, @Nullable final String gtkVersion, @Nullable final String swtGtk3) {
 		if (!isGtk) { // Windows, macOS, etc.
 			return false;

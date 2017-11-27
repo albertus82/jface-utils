@@ -7,6 +7,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.net.httpserver.HttpDateGenerator;
 
+/**
+ * This filter adds a HTTP {@code Date} response header to every HTTP response.
+ */
 @SuppressWarnings("restriction")
 public class DateResponseFilter extends Filter {
 

@@ -2,6 +2,8 @@ package it.albertus.net.httpserver.filter;
 
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -55,17 +57,7 @@ public class HSTSResponseFilter extends Filter {
 			public Integer get() {
 				return maxAge;
 			}
-		}, new ISupplier<Boolean>() {
-			@Override
-			public Boolean get() {
-				return includeSubDomains;
-			}
-		}, new ISupplier<Boolean>() {
-			@Override
-			public Boolean get() {
-				return preload;
-			}
-		});
+		}, toSupplier(includeSubDomains), toSupplier(preload));
 	}
 
 	/**
@@ -73,9 +65,12 @@ public class HSTSResponseFilter extends Filter {
 	 * {@code Strict-Transport-Security} header.
 	 * 
 	 * @param headerValue the value that will be used for the
-	 *        {@code Strict-Transport-Security} header.
+	 *        {@code Strict-Transport-Security} header (cannot be null).
 	 */
-	public HSTSResponseFilter(final String headerValue) {
+	public HSTSResponseFilter(@Nullable final String headerValue) {
+		if (headerValue == null) {
+			throw new NullPointerException("The argument cannot be null.");
+		}
 		this.headerValue = headerValue;
 	}
 
@@ -104,6 +99,15 @@ public class HSTSResponseFilter extends Filter {
 	@Override
 	public String description() {
 		return getClass().getSimpleName();
+	}
+
+	private static ISupplier<Boolean> toSupplier(final boolean value) {
+		return new ISupplier<Boolean>() {
+			@Override
+			public Boolean get() {
+				return value;
+			}
+		};
 	}
 
 }

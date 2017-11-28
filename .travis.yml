@@ -28,7 +28,7 @@ after_success: |
     #git pull https://github.com/Albertus82/JFaceUtils gh-maven
     git add .
     git -c user.name='travis' -c user.email='travis@travis.ci' commit -m 'Maven [skip ci]'
-    git fetch origin gh-maven
+    git fetch https://github.com/Albertus82/JFaceUtils gh-maven
     git merge -s recursive -X theirs origin/gh-maven
     git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven >/dev/null
     cd ..

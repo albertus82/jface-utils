@@ -18,11 +18,19 @@ env:
     - secure: "QbrAaCSM5ToNJBFXFQG6+T9BzOcWVbqfxyr19K6sZY1g/x+TW4YCjon30A4qYE5rH2BvpQL79tVx6D+C8U3IBCJazUlM1W0BDAtckxOlJmmGxTzDOOFbR+tQqolSy6KaFnYV4Q3rH3Wn9KhBEeoDZjYMXf3A1otnqWOQX3CncejdgXSKXX2LxQ11pFOVpbCo4g7k+5NFv99DDOnIoNO9BTwdhTSmkkKVTVhYFJJAFR42rpzYw6qI2q2qZi/WxIUL9ZmkePiz95kSS9ZFLpTv9/lW9do68bJshsQIhgCNS+dLI0HvEfaRAYFbx0X0S+Qz83iGji2YPvVJmWLGASHPCdcwegAUh+Fo3NBM5PUOCUEAH87pJ3VxmyY+kRGZV6xs+TdwOYdy+tGM/uyGODLeGM2vU1zSyUqLifrdUbNP3nInqeD9Myiqt2GjQQTIpS8kwu6GD2t0EUzy1QHwYetbL1WdGNwPlqhswXGXVr6eQ3PqbBnitHeBeWmwIId6fZxl7Xq0GZ0Gv8K8FmKku5VfaV1Esww2qAMBhRp2TkxNcaca/ojQYyvZtttFHbT8CgxJWqO01kltEvEHaweZvPY6Uss6sjn3Jv3mKMbv1g2L33H47k1Z5v5iLo51yiiDrgdLCImjzEAS0m0itJGVkd824+aWkJxzTJptQo6B697bzLs="
 
 script:
-  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar; else mvn deploy; fi;
+  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar; else mvn deploy; fi;
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  on:
-    branch: gh-maven
+
+after_success: |
+  if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then
+    cd mvn-repo
+    git init
+    git checkout -b gh-maven
+    git add .
+    git -c user.name='travis' -c user.email='travis' commit -m init
+    # Make sure to make the output quiet, or else the API token will leak!
+    # This works because the API key can replace your password.
+    tree -D
+    #git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven &2>/dev/null
+    cd ..
+  fi

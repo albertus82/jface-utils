@@ -23,8 +23,9 @@ script:
 after_success: |
   if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then 
     cd mvn-repo
-    #git init
-    git checkout gh-maven
+    git init
+    git checkout -b gh-maven
+    git pull
     git add .
     git -c user.name='travis' -c user.email='travis@travis.ci' commit -m init
     git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven >/dev/null

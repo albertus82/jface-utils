@@ -28,6 +28,6 @@ after_success: |
     git checkout -b gh-maven
     git add .
     git -c user.name='travis' -c user.email='travis@travis.ci' commit -m init
-    git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven &2>/dev/null
+    git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven >/dev/null
     cd ..
   fi

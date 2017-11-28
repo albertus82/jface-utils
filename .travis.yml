@@ -20,9 +20,8 @@ env:
 script:
   - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar; else mvn deploy; fi;
 
-
 after_success: |
-  if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then
+  if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then 
     cd mvn-repo
     git init
     git checkout -b gh-maven

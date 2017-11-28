@@ -25,7 +25,7 @@ after_success: |
     cd mvn-repo
     git init
     git checkout -b gh-maven
-    git pull
+    git pull https://github.com/Albertus82/JFaceUtils gh-maven
     git add .
     git -c user.name='travis' -c user.email='travis@travis.ci' commit -m init
     git push -f -q https://Albertus82:$GITHUB_TOKEN@github.com/Albertus82/JFaceUtils gh-maven >/dev/null

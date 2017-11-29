@@ -88,11 +88,22 @@ public class SwtUtils {
 	}
 
 	public static int convertHorizontalDLUsToPixels(final Control control, final int dlus) {
+		return convertDLUsToPixels(control, dlus, SWT.HORIZONTAL);
+	}
+
+	public static int convertVerticalDLUsToPixels(final Control control, final int dlus) {
+		return convertDLUsToPixels(control, dlus, SWT.VERTICAL);
+	}
+
+	private static int convertDLUsToPixels(final Control control, final int dlus, final int orientation) {
+		if (orientation != SWT.HORIZONTAL && orientation != SWT.VERTICAL) {
+			throw new IllegalArgumentException("orientation can be only SWT.HORIZONTAL or SWT.VERTICAL");
+		}
 		GC gc = null;
 		try {
 			gc = new GC(control);
 			gc.setFont(control.getFont());
-			return Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
+			return orientation == SWT.VERTICAL ? Dialog.convertVerticalDLUsToPixels(gc.getFontMetrics(), dlus) : Dialog.convertHorizontalDLUsToPixels(gc.getFontMetrics(), dlus);
 		}
 		finally {
 			if (gc != null) {

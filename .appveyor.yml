@@ -48,7 +48,7 @@ build_script:
 
 after_build:
   - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.jar' }
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF "%JAVA_HOME%" == "%ProgramFiles%\Java\jdk1.8.0" FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF DEFINED VT_API_KEY FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
 
 artifacts:
   - path: $(ARTIFACTS_PATH)

@@ -6,11 +6,16 @@ matrix:
       jdk: oraclejdk8
     - os: linux
       jdk: openjdk7
+    - os: linux
+      jdk: openjdk6
     - os: osx
 
 addons:
   sonarcloud:
     organization: "albertus82-github"
+  apt:
+    packages:
+      - openjdk-6-jdk
 
 env:
   global:

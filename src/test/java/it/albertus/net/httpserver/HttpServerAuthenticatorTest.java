@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.albertus.net.httpserver.AbstractHttpHandler;
+import it.albertus.net.httpserver.BaseHttpHandler;
 import it.albertus.net.httpserver.HttpServerAuthenticator;
 import it.albertus.net.httpserver.config.HttpServerDefaultConfig;
 import it.albertus.net.httpserver.config.SingleUserAuthenticatorDefaultConfig;
@@ -21,7 +21,7 @@ public class HttpServerAuthenticatorTest {
 		private String realm;
 
 		@Override
-		public AbstractHttpHandler[] getHandlers() {
+		public BaseHttpHandler[] getHandlers() {
 			return null;
 		}
 

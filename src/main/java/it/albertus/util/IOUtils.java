@@ -24,14 +24,18 @@ public class IOUtils {
 
 	public static void closeQuietly(final Closeable... closeables) {
 		for (final Closeable closeable : closeables) {
-			try {
-				if (closeable != null) {
-					closeable.close();
-				}
+			closeQuietly(closeable);
+		}
+	}
+
+	public static void closeQuietly(final Closeable closeable) {
+		try {
+			if (closeable != null) {
+				closeable.close();
 			}
-			catch (final IOException e) {
-				logger.log(Level.FINE, e.toString(), e);
-			}
+		}
+		catch (final IOException e) {
+			logger.log(Level.FINE, e.toString(), e);
 		}
 	}
 

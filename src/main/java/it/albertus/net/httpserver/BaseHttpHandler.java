@@ -25,14 +25,13 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPOutputStream;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.xml.bind.DatatypeConverter;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.net.MimeTypes;
+import it.albertus.net.MimeTypesMap;
 import it.albertus.net.httpserver.annotation.Path;
 import it.albertus.net.httpserver.config.IHttpServerConfig;
 import it.albertus.util.ClasspathResourceUtils;
@@ -44,9 +43,9 @@ import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractHttpHandler implements HttpPathHandler {
+public abstract class BaseHttpHandler implements HttpPathHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseHttpHandler.class);
 
 	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
@@ -104,7 +103,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		return resources;
 	}
 
-	public AbstractHttpHandler(final IHttpServerConfig config) {
+	public BaseHttpHandler(final IHttpServerConfig config) {
 		this.httpServerConfig = config;
 	}
 
@@ -270,7 +269,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	}
 
 	private Method[] getAllDeclaredMethods(final Class<?> c) {
-		if (c.equals(AbstractHttpHandler.class)) {
+		if (c.equals(BaseHttpHandler.class)) {
 			return new Method[] {};
 		}
 
@@ -305,7 +304,7 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 	 * @see #setContentTypeHeader(HttpExchange, String)
 	 */
 	protected void setContentTypeHeader(final HttpExchange exchange) {
-		setContentTypeHeader(exchange, getContentType(exchange.getRequestURI().getPath()));
+		setContentTypeHeader(exchange, MimeTypesMap.getInstance().getContentType(exchange.getRequestURI().getPath()));
 	}
 
 	/**
@@ -323,19 +322,6 @@ public abstract class AbstractHttpHandler implements HttpPathHandler {
 		else {
 			exchange.getResponseHeaders().remove("Content-Type");
 		}
-	}
-
-	/**
-	 * Tries to determine the <b>media type</b> (aka <b>content type</b> or
-	 * <b>MIME type</b>) for the provided file name.
-	 * 
-	 * @param fileName the file name
-	 * @return the computed media type
-	 * @see #getContentTypes()
-	 * @see MimetypesFileTypeMap#getContentType(String)
-	 */
-	protected String getContentType(final String fileName) {
-		return MimeTypes.getContentType(fileName);
 	}
 
 	/**

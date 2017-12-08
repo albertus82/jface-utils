@@ -53,7 +53,7 @@ import it.albertus.util.logging.LoggingSupport;
 public class LightweightHttpServerTest {
 
 	@Path(HANDLER_PATH_DISABLED)
-	private static class DisabledHandler extends AbstractHttpHandler {
+	private static class DisabledHandler extends BaseHttpHandler {
 		public DisabledHandler(final IHttpServerConfig config) {
 			super(config);
 		}
@@ -65,7 +65,7 @@ public class LightweightHttpServerTest {
 	}
 
 	@Path(HANDLER_PATH_PARAMS)
-	private static class RequestParameterHandler extends AbstractHttpHandler {
+	private static class RequestParameterHandler extends BaseHttpHandler {
 		public RequestParameterHandler(final IHttpServerConfig config) {
 			super(config);
 		}
@@ -194,8 +194,8 @@ public class LightweightHttpServerTest {
 			}
 
 			@Override
-			public AbstractHttpHandler[] getHandlers() {
-				final AbstractHttpHandler h1 = new AbstractHttpHandler(this) {
+			public BaseHttpHandler[] getHandlers() {
+				final BaseHttpHandler h1 = new BaseHttpHandler(this) {
 					@Override
 					protected void doGet(final HttpExchange exchange) throws IOException, HttpException {
 						sendResponse(exchange, loremSmallTxt.getBytes());
@@ -203,10 +203,10 @@ public class LightweightHttpServerTest {
 				};
 				h1.setPath(HANDLER_PATH_TXT);
 
-				final AbstractHttpHandler h2 = new DisabledHandler(this);
+				final BaseHttpHandler h2 = new DisabledHandler(this);
 				h2.setEnabled(false);
 
-				final AbstractHttpHandler h3 = new RequestParameterHandler(this);
+				final BaseHttpHandler h3 = new RequestParameterHandler(this);
 
 				final FilesHandler h4 = new FilesHandler(this, certificate.getParentFile().getPath(), "/files/");
 				h4.setAttachment(true);
@@ -219,7 +219,7 @@ public class LightweightHttpServerTest {
 
 				final FilesHandler h7 = new FilesHandler(this, certificate.getParentFile().getPath() + "/backtracking", "/backtracking/");
 
-				return new AbstractHttpHandler[] { h1, h2, h3, h4, h5, h6, h7 };
+				return new BaseHttpHandler[] { h1, h2, h3, h4, h5, h6, h7 };
 			}
 
 			@Override
@@ -1268,7 +1268,7 @@ public class LightweightHttpServerTest {
 			final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
-			final String etag = new AbstractHttpHandler(null) {}.generateEtag(certificate);
+			final String etag = new BaseHttpHandler(null) {}.generateEtag(certificate);
 			connection.addRequestProperty("If-None-Match", etag);
 			Assert.assertEquals(304, connection.getResponseCode());
 			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));

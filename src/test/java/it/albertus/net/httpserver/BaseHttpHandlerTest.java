@@ -11,11 +11,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import it.albertus.net.MimeTypes;
-import it.albertus.net.httpserver.AbstractHttpHandler;
+import it.albertus.net.MimeTypesMap;
 import it.albertus.util.IOUtils;
 
-public class AbstractHttpHandlerTest {
+public class BaseHttpHandlerTest {
 
 	private static final String CHARSET = "UTF-8";
 
@@ -25,12 +24,14 @@ public class AbstractHttpHandlerTest {
 	private static final String expectedEtag = "\"db89bb5ceab87f9c0fcc2ab36c189c2c\"";
 	private static final String expectedContentMd5 = "24m7XOq4f5wPzCqzbBicLA=="; // DatatypeConverter.printBase64Binary(new byte[] { (byte) 0xDB, (byte) 0x89, (byte) 0xBB, 0x5C, (byte) 0xEA, (byte) 0xB8, 0x7F, (byte) 0x9C, 0x0F, (byte) 0xCC, 0x2A, (byte) 0xB3, 0x6C, 0x18, (byte) 0x9C, 0x2C }); // "db89bb5ceab87f9c0fcc2ab36c189c2c";
 
-	private static AbstractHttpHandler handler;
+	private static BaseHttpHandler handler;
+
+	private final MimeTypesMap mimeTypesMap = MimeTypesMap.getInstance();
 
 	@BeforeClass
 	public static void init() throws IOException {
-		handler = new AbstractHttpHandler(null) {};
-		originalFile = File.createTempFile(AbstractHttpHandlerTest.class.getSimpleName() + '-', null);
+		handler = new BaseHttpHandler(null) {};
+		originalFile = File.createTempFile(BaseHttpHandlerTest.class.getSimpleName() + '-', null);
 		FileWriter fw = null;
 		BufferedWriter bw = null;
 		try {
@@ -59,22 +60,22 @@ public class AbstractHttpHandlerTest {
 
 	@Test
 	public void getContentTypeTest() {
-		Assert.assertEquals("image/x-icon", MimeTypes.getContentType("asdfghjkl.ICO "));
-		Assert.assertEquals("text/css", MimeTypes.getContentType("zxcvbnm.css"));
-		Assert.assertEquals("application/javascript", MimeTypes.getContentType("qwertyuiop.Js   "));
-		Assert.assertEquals("application/json", MimeTypes.getContentType(" qwert-yuiop.json"));
-		Assert.assertEquals("application/xml", MimeTypes.getContentType("asdfghjkl.XML"));
-		Assert.assertEquals("application/xhtml+xml", MimeTypes.getContentType("zxcvbnm.xHtml"));
-		Assert.assertEquals("application/pdf", MimeTypes.getContentType("qwertyuiop.pdf"));
-		Assert.assertEquals("text/html", MimeTypes.getContentType("qwertyuiop.HTML"));
-		Assert.assertEquals("text/html", MimeTypes.getContentType("asdfg hjkl.htm"));
-		Assert.assertEquals("application/octet-stream", MimeTypes.getContentType("zxcvbnm"));
-		Assert.assertEquals("image/jpeg", MimeTypes.getContentType("zxcvbnm.jpeg"));
-		Assert.assertEquals("image/jpeg", MimeTypes.getContentType("zxcvbnm.jpg"));
-		Assert.assertEquals("image/gif", MimeTypes.getContentType("qwertyuiop.gif"));
-		Assert.assertEquals("image/png", MimeTypes.getContentType("asdfghjkl.png"));
-		Assert.assertEquals("application/octet-stream", MimeTypes.getContentType("asdfghjkl."));
-		Assert.assertEquals("text/x-log", MimeTypes.getContentType(".log"));
+		Assert.assertEquals("image/x-icon", mimeTypesMap.getContentType("asdfghjkl.ICO "));
+		Assert.assertEquals("text/css", mimeTypesMap.getContentType("zxcvbnm.css"));
+		Assert.assertEquals("application/javascript", mimeTypesMap.getContentType("qwertyuiop.Js   "));
+		Assert.assertEquals("application/json", mimeTypesMap.getContentType(" qwert-yuiop.json"));
+		Assert.assertEquals("application/xml", mimeTypesMap.getContentType("asdfghjkl.XML"));
+		Assert.assertEquals("application/xhtml+xml", mimeTypesMap.getContentType("zxcvbnm.xHtml"));
+		Assert.assertEquals("application/pdf", mimeTypesMap.getContentType("qwertyuiop.pdf"));
+		Assert.assertEquals("text/html", mimeTypesMap.getContentType("qwertyuiop.HTML"));
+		Assert.assertEquals("text/html", mimeTypesMap.getContentType("asdfg hjkl.htm"));
+		Assert.assertEquals("application/octet-stream", mimeTypesMap.getContentType("zxcvbnm"));
+		Assert.assertEquals("image/jpeg", mimeTypesMap.getContentType("zxcvbnm.jpeg"));
+		Assert.assertEquals("image/jpeg", mimeTypesMap.getContentType("zxcvbnm.jpg"));
+		Assert.assertEquals("image/gif", mimeTypesMap.getContentType("qwertyuiop.gif"));
+		Assert.assertEquals("image/png", mimeTypesMap.getContentType("asdfghjkl.png"));
+		Assert.assertEquals("application/octet-stream", mimeTypesMap.getContentType("asdfghjkl."));
+		Assert.assertEquals("text/x-log", mimeTypesMap.getContentType(".log"));
 	}
 
 	@AfterClass

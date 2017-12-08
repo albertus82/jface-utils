@@ -2,7 +2,7 @@ package it.albertus.net.httpserver;
 
 import it.albertus.net.httpserver.config.IHttpServerConfig;
 
-public abstract class AbstractStaticHandler extends AbstractHttpHandler {
+public abstract class AbstractStaticHandler extends BaseHttpHandler {
 
 	private String basePath;
 	private String cacheControl;

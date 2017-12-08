@@ -46,10 +46,10 @@ public class RequestParameterExtractor {
 	}
 
 	public RequestParameterExtractor(final HttpExchange exchange) throws IOException {
-		this(exchange, initCharset());
+		this(exchange, getDefaultCharset());
 	}
 
-	private static Charset initCharset() {
+	private static Charset getDefaultCharset() {
 		try {
 			return Charset.forName(PREFERRED_CHARSET);
 		}

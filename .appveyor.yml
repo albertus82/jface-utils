@@ -34,7 +34,7 @@ environment:
       VT_API_KEY:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
-        secure: e2W1D6xj/QKDEQlTbaiEuqjV6LAfJggRZ1MHl9D79dBWftuPFrMeAlOtC6Gx4/zV
+        secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
 
 cache:
   - $(ChocolateyInstall)\lib -> .appveyor.yml

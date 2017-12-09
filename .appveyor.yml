@@ -48,7 +48,7 @@ before_build:
   - mvn -version
 
 build_script:
-  - mvn clean deploy
+  - mvn clean install
 
 after_build:
   - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.jar' }

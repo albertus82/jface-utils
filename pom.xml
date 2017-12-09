@@ -246,7 +246,7 @@
 				<version>0.12</version>
 				<configuration>
 					<userName>albertus82</userName>
-					<password>${env.GITHUB_MVNREPO_TOKEN}</password>
+					<password>${env.GITHUB_SITE_MAVEN_PLUGIN_TOKEN}</password>
 					<repositoryOwner>Albertus82</repositoryOwner>
 					<message>Maven artifacts for ${project.version}</message>
 					<outputDirectory>${project.build.directory}/${maven.branch}</outputDirectory>

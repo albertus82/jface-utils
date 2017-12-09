@@ -32,6 +32,8 @@ environment:
       VT_API_DELAY: 15
       VT_API_KEY:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
+      GH_MVNREPO_TOKEN:
+        secure: e2W1D6xj/QKDEQlTbaiEuqjV6LAfJggRZ1MHl9D79dBWftuPFrMeAlOtC6Gx4/zV
 
 cache:
   - $(ChocolateyInstall)\lib -> .appveyor.yml
@@ -51,6 +53,7 @@ build_script:
   - mvn clean install
 
 after_build:
+  - cmd: IF DEFINED GH_MVNREPO_TOKEN mvn deploy
   - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.jar' }
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF DEFINED VT_API_KEY FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
 

@@ -28,6 +28,7 @@ environment:
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
       MVN_VERSION: 3.5.2
+      ARTIFACTS_PATH: target\*.jar
       VT_API_URL: https://www.virustotal.com/vtapi/v2/file/scan
       VT_API_DELAY: 15
       VT_API_KEY:
@@ -54,7 +55,6 @@ build_script:
 
 after_build:
   - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests
-  - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.jar' }
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF DEFINED VT_API_KEY FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
 
 artifacts:

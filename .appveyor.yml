@@ -53,7 +53,7 @@ build_script:
   - mvn clean install
 
 after_build:
-  - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy
+  - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests
   - ps: If ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:JAVA_HOME -eq ($env:ProgramFiles + '\Java\jdk1.8.0')) { $env:ARTIFACTS_PATH = 'target\*.jar' }
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF DEFINED VT_API_KEY FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
 

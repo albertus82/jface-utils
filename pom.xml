@@ -271,8 +271,8 @@
 
 	<repositories>
 		<repository>
-			<id>local-maven-repo</id>
-			<url>file:${project.basedir}/mvn-repo</url>
+			<id>jface-utils-repo</id>
+			<url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/mvn-repo</url>
 		</repository>
 		<repository>
 			<id>maven-eclipse-repo</id>

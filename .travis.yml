@@ -1,9 +1,5 @@
 language: java
 
-branches:
-  except:
-  - mvn-repo
-
 matrix:
   include:
     - os: linux

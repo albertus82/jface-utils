@@ -19,7 +19,7 @@ Add the following elements to your project's `pom.xml` file:
 <repositories>
     <repository>
         <id>jface-utils-repo</id>
-        <url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/mvn-repo</url>
+        <url>https://raw.githubusercontent.com/albertus82/maven/master</url>
     </repository>
 </repositories>
 

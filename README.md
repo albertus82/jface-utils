@@ -18,8 +18,8 @@ Add the following elements to your project's `pom.xml` file:
 ```xml
 <repositories>
     <repository>
-        <id>jface-utils-repo</id>
-        <url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/mvn-repo</url>
+        <id>albertus82-github</id>
+        <url>https://albertus82.github.io/maven</url>
     </repository>
 </repositories>
 

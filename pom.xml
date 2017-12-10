@@ -18,7 +18,8 @@
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>
-		<maven.repo>maven</maven.repo>
+		<maven.repo.owner>albertus82</maven.repo.owner>
+		<maven.repo.name>maven</maven.repo.name>
 		<maven.branch>master</maven.branch>
 	</properties>
 
@@ -141,7 +142,7 @@
 		<repository>
 			<id>internal</id>
 			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/${maven.repo}/${maven.branch}</url>
+			<url>file://${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</url>
 		</repository>
 	</distributionManagement>
 
@@ -237,7 +238,7 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.2</version>
 				<configuration>
-					<altDeploymentRepository>internal::default::file://${project.build.directory}/${maven.repo}/${maven.branch}</altDeploymentRepository>
+					<altDeploymentRepository>internal::default::file://${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</altDeploymentRepository>
 				</configuration>
 			</plugin>
 
@@ -248,10 +249,10 @@
 				<configuration>
 					<userName>albertus82</userName>
 					<password>${env.GITHUB_SITE_MAVEN_PLUGIN_TOKEN}</password>
-					<repositoryOwner>Albertus82</repositoryOwner>
-					<repositoryName>${maven.repo}</repositoryName>
+					<repositoryOwner>${maven.repo.owner}</repositoryOwner>
+					<repositoryName>${maven.repo.name}</repositoryName>
 					<branch>refs/heads/${maven.branch}</branch>
-					<outputDirectory>${project.build.directory}/${maven.repo}/${maven.branch}</outputDirectory>
+					<outputDirectory>${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</outputDirectory>
 					<message>Maven artifacts for ${project.version}</message>
 					<merge>true</merge>
 					<includes>
@@ -274,7 +275,7 @@
 	<repositories>
 		<repository>
 			<id>albertus82-github</id>
-			<url>https://raw.githubusercontent.com/albertus82/${maven.repo}/${maven.branch}</url>
+			<url>https://albertus82.github.io/maven</url>
 		</repository>
 		<repository>
 			<id>maven-eclipse-github</id>

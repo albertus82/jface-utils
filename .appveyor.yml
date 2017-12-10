@@ -2,10 +2,6 @@ version: '{build}'
 
 clone_depth: 50
 
-branches:
-  except:
-    - mvn-repo
-
 environment:
   matrix:
     - platform: x86

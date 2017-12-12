@@ -27,15 +27,15 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	private final IAuthenticatorConfig configuration;
 	private Charset charset;
 
-	private final ThreadLocal<String[]> wrongCredentials = new ThreadLocal<String[]>();
+	private final ThreadLocal<HttpExchange> exchanges = new ThreadLocal<HttpExchange>();
 
 	public HttpServerAuthenticator(final IAuthenticatorConfig configuration) {
 		super(configuration.getRealm());
 		this.configuration = configuration;
 		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
-			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
-			this.messageDigests = new ThreadLocal<MessageDigest>() {
+			charset = Charset.forName(DEFAULT_CHARSET_NAME);
+			messageDigests = new ThreadLocal<MessageDigest>() {
 				@Override
 				protected MessageDigest initialValue() {
 					try {
@@ -61,15 +61,13 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	@Override
 	public Result authenticate(final HttpExchange exchange) {
-		final Result result = super.authenticate(exchange);
-		if (result instanceof Failure) {
-			final String[] threadLocalArray = wrongCredentials.get();
-			if (threadLocalArray != null && threadLocalArray.length > 1) {
-				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new Object[] { threadLocalArray[0], threadLocalArray[1], exchange.getRemoteAddress() });
-				wrongCredentials.remove();
-			}
+		try {
+			exchanges.set(exchange); // used in checkCredentials(...)
+			return super.authenticate(exchange);
 		}
-		return result;
+		finally {
+			exchanges.remove();
+		}
 	}
 
 	@Override
@@ -84,7 +82,8 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return true;
 			}
 			else {
-				wrongCredentials.set(new String[] { specifiedUsername, specifiedPassword });
+				final HttpExchange exchange = exchanges.get();
+				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new Object[] { specifiedUsername, specifiedPassword, exchange != null ? exchange.getRemoteAddress() : null });
 				return fail();
 			}
 		}

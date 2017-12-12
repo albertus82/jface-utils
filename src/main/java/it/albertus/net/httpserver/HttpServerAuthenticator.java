@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
 import com.sun.net.httpserver.BasicAuthenticator;
+import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.net.httpserver.config.IAuthenticatorConfig;
@@ -25,6 +26,8 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	private final ThreadLocal<MessageDigest> messageDigests;
 	private final IAuthenticatorConfig configuration;
 	private Charset charset;
+
+	private final ThreadLocal<String[]> wrongCredentials = new ThreadLocal<String[]>();
 
 	public HttpServerAuthenticator(final IAuthenticatorConfig configuration) {
 		super(configuration.getRealm());
@@ -57,6 +60,19 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	}
 
 	@Override
+	public Result authenticate(final HttpExchange exchange) {
+		final Result result = super.authenticate(exchange);
+		if (result instanceof Failure) {
+			final String[] threadLocalArray = wrongCredentials.get();
+			if (threadLocalArray != null && threadLocalArray.length > 1) {
+				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new Object[] { threadLocalArray[0], threadLocalArray[1], exchange.getRemoteAddress() });
+				wrongCredentials.remove();
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public boolean checkCredentials(final String specifiedUsername, final String specifiedPassword) {
 		try {
 			if (specifiedUsername == null || specifiedUsername.isEmpty() || specifiedPassword == null || specifiedPassword.isEmpty()) {
@@ -68,7 +84,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 				return true;
 			}
 			else {
-				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new String[] { specifiedUsername, specifiedPassword });
+				wrongCredentials.set(new String[] { specifiedUsername, specifiedPassword });
 				return fail();
 			}
 		}

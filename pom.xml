@@ -14,7 +14,7 @@
 	</licenses>
 
 	<properties>
-		<version.date>2017-12-12</version.date>
+		<version.date>2017-12-17</version.date>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>
@@ -253,7 +253,7 @@
 					<repositoryName>${maven.repo.name}</repositoryName>
 					<branch>refs/heads/${maven.branch}</branch>
 					<outputDirectory>${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</outputDirectory>
-					<message>Maven artifacts for ${project.version}</message>
+					<message>Artifacts for ${project.groupId}:${project.artifactId}-${project.version}</message>
 					<merge>true</merge>
 					<includes>
 						<include>**/*</include>

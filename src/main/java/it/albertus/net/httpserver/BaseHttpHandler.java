@@ -18,7 +18,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +29,7 @@ import java.util.zip.GZIPOutputStream;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -44,6 +47,8 @@ import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
 public abstract class BaseHttpHandler implements HttpPathHandler {
+
+	private static final String[] maskedHeaderKeys = { "authorization", "password", "session", "token" };
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseHttpHandler.class);
 
@@ -119,20 +124,40 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			}
 		}
 		catch (final HttpException e) {
-			logger.log(Level.INFO, e.toString(), e);
+			logger.log(Level.INFO, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
 			sendError(exchange, e);
 		}
 		catch (final IOException e) {
 			logger.log(Level.FINE, e.toString(), e); // often caused by the client that interrupts the stream.
 		}
 		catch (final Exception e) {
-			logger.log(Level.SEVERE, e.toString(), e);
+			logger.log(Level.SEVERE, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
 			sendInternalError(exchange);
 		}
 		finally {
 			exchange.close();
 			logResponse(exchange);
 		}
+	}
+
+	protected Map<String, Object> buildSafeHeadersMap(final Headers headers) {
+		final Map<String, Object> headersToLog = new TreeMap<String, Object>();
+		for (final Entry<String, List<String>> entry : headers.entrySet()) {
+			final String key = entry.getKey();
+			if (key != null) {
+				final String lowerCaseKey = key.toLowerCase();
+				for (final String maskedHeaderKey : maskedHeaderKeys) {
+					if (lowerCaseKey.contains(maskedHeaderKey)) {
+						headersToLog.put(key, "****");
+						break;
+					}
+				}
+				if (!headersToLog.containsKey(key)) {
+					headersToLog.put(key, entry.getValue());
+				}
+			}
+		}
+		return headersToLog;
 	}
 
 	protected void service(final HttpExchange exchange) throws IOException {

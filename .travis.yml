@@ -13,18 +13,6 @@ matrix:
         - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - os: linux
       jdk: openjdk7
-    - os: linux
-      jdk: openjdk6
-      addons:
-        apt:
-          packages:
-            - openjdk-6-jdk
-      before_install:
-        - wget https://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip
-        - unzip -qq apache-maven-3.2.5-bin.zip
-        - rm apache-maven-3.2.5-bin.zip
-        - export M2_HOME=$PWD/apache-maven-3.2.5
-        - export PATH=$M2_HOME/bin:$PATH
     - os: osx
 
 script:

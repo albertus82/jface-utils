@@ -19,6 +19,29 @@ public class MqttPayloadDecoder {
 
 	private static final int BUFFER_SIZE = 4096;
 
+	private final int bufferSize;
+
+	/**
+	 * Creates a MQTT Payload Decoder that uses a default-sized buffer.
+	 */
+	public MqttPayloadDecoder() {
+		this(BUFFER_SIZE);
+	}
+
+	/**
+	 * Creates a MQTT Payload Decoder that uses a buffer of the specified size.
+	 *
+	 * @param bufferSize buffer size
+	 *
+	 * @exception IllegalArgumentException If bufferSize is <= 0
+	 */
+	public MqttPayloadDecoder(final int bufferSize) {
+		if (bufferSize <= 0) {
+			throw new IllegalArgumentException("Buffer size <= 0");
+		}
+		this.bufferSize = bufferSize;
+	}
+
 	/**
 	 * Decodes a MQTT payload based on {@link MqttPayload}; data decompression
 	 * is performed if needed.
@@ -57,7 +80,7 @@ public class MqttPayloadDecoder {
 		GZIPInputStream gzis = null;
 		try {
 			gzis = new GZIPInputStream(new ByteArrayInputStream(compressed));
-			IOUtils.copy(gzis, baos, BUFFER_SIZE);
+			IOUtils.copy(gzis, baos, bufferSize);
 			gzis.close();
 		}
 		finally {

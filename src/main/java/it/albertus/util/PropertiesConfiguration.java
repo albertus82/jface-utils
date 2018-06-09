@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import it.albertus.jface.preference.PreferencesCallback;
 
-public class PropertiesConfiguration extends PreferencesCallback {
+public class PropertiesConfiguration extends PreferencesCallback implements IPropertiesConfiguration {
 
 	private final Properties properties;
 
@@ -25,6 +25,7 @@ public class PropertiesConfiguration extends PreferencesCallback {
 		load();
 	}
 
+	@Override
 	public Properties getProperties() {
 		return properties;
 	}
@@ -46,6 +47,7 @@ public class PropertiesConfiguration extends PreferencesCallback {
 		}
 	}
 
+	@Override
 	public void save() throws IOException {
 		final File file = new File(getFileName());
 		file.getParentFile().mkdirs();

@@ -14,7 +14,7 @@ import javax.swing.filechooser.FileSystemView;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
-public class Configuration extends PropertiesConfiguration {
+public class Configuration extends PropertiesConfiguration implements IConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
@@ -83,18 +83,22 @@ public class Configuration extends PropertiesConfiguration {
 		return osSpecificDocumentsDir;
 	}
 
+	@Override
 	public String getString(final String key) {
 		return getProperties().getProperty(key);
 	}
 
+	@Override
 	public String getString(final String key, final String defaultValue) {
 		return getProperties().getProperty(key, defaultValue);
 	}
 
+	@Override
 	public String getString(final String key, final boolean emptyIfNull) {
 		return emptyIfNull ? getString(key, "") : getString(key);
 	}
 
+	@Override
 	public char[] getCharArray(final String key) {
 		final String value = getProperties().getProperty(key);
 		if (value != null) {
@@ -105,6 +109,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public Boolean getBoolean(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -117,11 +122,13 @@ public class Configuration extends PropertiesConfiguration {
 		return parseBoolean(trimmedValue);
 	}
 
+	@Override
 	public boolean getBoolean(final String key, final boolean defaultValue) {
 		final Boolean value = getBoolean(key);
 		return value != null ? value.booleanValue() : defaultValue;
 	}
 
+	@Override
 	public Long getLong(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -139,6 +146,12 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.albertus.util.IConfiguration#getLong(java.lang.String, long)
+	 */
+	@Override
 	public long getLong(final String key, final long defaultValue) {
 		Long value;
 		try {
@@ -152,6 +165,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Integer getInt(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -169,6 +183,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public int getInt(final String key, final int defaultValue) {
 		Integer value;
 		try {
@@ -182,6 +197,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Short getShort(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -199,6 +215,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public short getShort(final String key, final short defaultValue) {
 		Short value;
 		try {
@@ -212,6 +229,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Byte getByte(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -229,6 +247,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public byte getByte(final String key, final byte defaultValue) {
 		Byte value;
 		try {
@@ -242,6 +261,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Float getFloat(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -259,6 +279,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public float getFloat(final String key, final float defaultValue) {
 		Float value;
 		try {
@@ -272,6 +293,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Double getDouble(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -289,6 +311,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public double getDouble(final String key, final double defaultValue) {
 		Double value;
 		try {
@@ -302,6 +325,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public BigDecimal getBigDecimal(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -319,6 +343,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
 		BigDecimal value;
 		try {
@@ -332,6 +357,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public BigInteger getBigInteger(final String key) {
 		final String value = getString(key);
 		if (value == null) {
@@ -349,6 +375,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public BigInteger getBigInteger(final String key, final BigInteger defaultValue) {
 		BigInteger value;
 		try {
@@ -362,6 +389,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public Character getChar(final String key) {
 		final String value = getString(key);
 		if (value == null || value.isEmpty()) {
@@ -375,6 +403,7 @@ public class Configuration extends PropertiesConfiguration {
 		}
 	}
 
+	@Override
 	public char getChar(final String key, final char defaultValue) {
 		Character value;
 		try {
@@ -388,6 +417,7 @@ public class Configuration extends PropertiesConfiguration {
 		return value != null ? value : defaultValue;
 	}
 
+	@Override
 	public boolean contains(final String key) {
 		return getProperties().containsKey(key);
 	}

@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.util.config;
 
 import java.io.File;
 import java.io.IOException;

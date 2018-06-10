@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.util.config;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,16 +8,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.albertus.jface.JFaceMessages;
-import it.albertus.jface.preference.IPreferencesCallback;
+import it.albertus.util.ConfigurationException;
 import it.albertus.util.logging.LoggerFactory;
 
-public class Configuration implements IConfiguration, IPropertiesConfiguration, IPreferencesCallback {
+/* Decorator */
+public class Configuration implements IConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-	private final PropertiesConfiguration propertiesConfiguration;
+	private final IPropertiesConfiguration propertiesConfiguration;
 
-	public Configuration(final PropertiesConfiguration propertiesConfiguration) {
+	public Configuration(final IPropertiesConfiguration propertiesConfiguration) {
 		this.propertiesConfiguration = propertiesConfiguration;
 	}
 
@@ -412,6 +413,7 @@ public class Configuration implements IConfiguration, IPropertiesConfiguration, 
 		}
 	}
 
+	// Pass-through methods follows...
 	@Override
 	public String getFileName() {
 		return propertiesConfiguration.getFileName();

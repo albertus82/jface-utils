@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.EnhancedErrorDialog;
-import it.albertus.util.PropertiesConfiguration;
+import it.albertus.util.config.PropertiesConfiguration;
 
 public class PreferencesExample {
 

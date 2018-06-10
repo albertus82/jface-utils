@@ -3,7 +3,9 @@ package it.albertus.jface.preference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public interface IPreferencesConfiguration {
+import it.albertus.util.config.IConfiguration;
+
+public interface IPreferencesConfiguration extends IConfiguration {
 
 	String getString(IPreference preference);
 

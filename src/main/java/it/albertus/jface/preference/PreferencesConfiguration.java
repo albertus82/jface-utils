@@ -5,15 +5,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Properties;
 
-import it.albertus.util.Configuration;
-import it.albertus.util.IConfiguration;
-import it.albertus.util.IPropertiesConfiguration;
+import it.albertus.util.config.IConfiguration;
 
-public class PreferencesConfiguration implements IPreferencesConfiguration, IConfiguration, IPropertiesConfiguration, IPreferencesCallback {
+/* Decorator */
+public class PreferencesConfiguration implements IPreferencesConfiguration {
 
-	private final Configuration configuration;
+	private final IConfiguration configuration;
 
-	public PreferencesConfiguration(final Configuration configuration) {
+	public PreferencesConfiguration(final IConfiguration configuration) {
 		this.configuration = configuration;
 	}
 

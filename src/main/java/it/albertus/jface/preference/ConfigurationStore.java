@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.eclipse.jface.preference.PreferenceStore;
 
-import it.albertus.util.Configuration;
+import it.albertus.util.config.Configuration;
 
 public class ConfigurationStore extends PreferenceStore {
 

@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.util.config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,9 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import it.albertus.jface.preference.IPreferencesCallback;
+import it.albertus.util.IOUtils;
+import it.albertus.util.SystemUtils;
 
-public class PropertiesConfiguration implements IPropertiesConfiguration, IPreferencesCallback {
+public class PropertiesConfiguration implements IPropertiesConfiguration {
 
 	static final String PASSWORD_PLACEHOLDER = "********";
 

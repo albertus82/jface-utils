@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.util.config;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +16,10 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import it.albertus.util.ConfigurationException;
+import it.albertus.util.IOUtils;
+import it.albertus.util.SystemUtils;
 
 public class ConfigurationTest {
 

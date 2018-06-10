@@ -1,9 +1,9 @@
-package it.albertus.util;
+package it.albertus.util.config;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public interface IConfiguration {
+public interface IConfiguration extends IPropertiesConfiguration {
 
 	String getString(String key);
 

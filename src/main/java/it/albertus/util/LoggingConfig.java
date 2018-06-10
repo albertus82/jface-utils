@@ -24,7 +24,7 @@ public abstract class LoggingConfig extends Configuration {
 	private EnhancedFileHandler fileHandler;
 
 	public LoggingConfig(final String cfgFileName, final boolean prependOsSpecificConfigurationDir) throws IOException {
-		super(cfgFileName, prependOsSpecificConfigurationDir);
+		super(new PropertiesConfiguration(cfgFileName, prependOsSpecificConfigurationDir));
 	}
 
 	protected void init() {

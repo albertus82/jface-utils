@@ -9,7 +9,7 @@ import it.albertus.util.Configuration;
 import it.albertus.util.IConfiguration;
 import it.albertus.util.IPropertiesConfiguration;
 
-public class PreferencesConfiguration implements IConfiguration, IPropertiesConfiguration, IPreferencesConfiguration, IPreferencesCallback {
+public class PreferencesConfiguration implements IPreferencesConfiguration, IConfiguration, IPropertiesConfiguration, IPreferencesCallback {
 
 	private final Configuration configuration;
 
@@ -142,6 +142,7 @@ public class PreferencesConfiguration implements IConfiguration, IPropertiesConf
 		return contains(preference.getName());
 	}
 
+	// Pass-through methods follows...
 	@Override
 	public String getString(String key) {
 		return configuration.getString(key);

@@ -6,11 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import it.albertus.jface.preference.IPreferencesCallback;
 
 public class PropertiesConfiguration implements IPropertiesConfiguration, IPreferencesCallback {
+
+	static final String PASSWORD_PLACEHOLDER = "********";
 
 	private final String fileName;
 	private final Properties properties = new Properties();
@@ -18,6 +22,10 @@ public class PropertiesConfiguration implements IPropertiesConfiguration, IPrefe
 	public PropertiesConfiguration(final String propertiesFileName) throws IOException {
 		this.fileName = propertiesFileName;
 		load();
+	}
+
+	public PropertiesConfiguration(final String propertiesFileName, final boolean prependOsSpecificConfigurationDir) throws IOException {
+		this(prependOsSpecificConfigurationDir ? SystemUtils.getOsSpecificConfigurationDir() + File.separator + propertiesFileName : propertiesFileName);
 	}
 
 	@Override
@@ -64,6 +72,15 @@ public class PropertiesConfiguration implements IPropertiesConfiguration, IPrefe
 				IOUtils.closeQuietly(inputStream);
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		final Map<String, String> props = new TreeMap<String, String>();
+		for (final Object key : getProperties().keySet()) {
+			props.put(key.toString(), key.toString().toLowerCase().contains("password") ? PASSWORD_PLACEHOLDER : getProperties().getProperty(key.toString()));
+		}
+		return props.toString();
 	}
 
 }

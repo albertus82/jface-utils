@@ -1,86 +1,24 @@
 package it.albertus.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.filechooser.FileSystemView;
-
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.preference.IPreferencesCallback;
 import it.albertus.util.logging.LoggerFactory;
 
-public class Configuration extends PropertiesConfiguration implements IConfiguration {
+public class Configuration implements IConfiguration, IPropertiesConfiguration, IPreferencesCallback {
 
 	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-	private static final String USER_HOME = "user.home";
-	private static final String OS_NAME = "os.name";
+	private final PropertiesConfiguration propertiesConfiguration;
 
-	private static String osSpecificDocumentsDir; // Cache
-	private static String osSpecificConfigurationDir; // Cache
-	private static String osSpecificLocalAppDataDir; // Cache
-
-	static final String PASSWORD_PLACEHOLDER = "********";
-
-	public Configuration(final String fileName) throws IOException {
-		super(fileName);
-	}
-
-	public Configuration(final String fileName, final boolean prependOsSpecificConfigurationDir) throws IOException {
-		super(prependOsSpecificConfigurationDir ? getOsSpecificConfigurationDir() + File.separator + fileName : fileName);
-	}
-
-	public static synchronized String getOsSpecificConfigurationDir() {
-		if (osSpecificConfigurationDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
-			if (os.contains("win") && System.getenv("APPDATA") != null) {
-				osSpecificConfigurationDir = System.getenv("APPDATA");
-			}
-			else if (os.contains("mac")) {
-				osSpecificConfigurationDir = System.getProperty(USER_HOME) + File.separator + "Library" + File.separator + "Preferences";
-			}
-			else {
-				osSpecificConfigurationDir = System.getProperty(USER_HOME);
-			}
-		}
-		return osSpecificConfigurationDir;
-	}
-
-	public static synchronized String getOsSpecificLocalAppDataDir() {
-		if (osSpecificLocalAppDataDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
-			if (os.contains("win") && System.getenv("LOCALAPPDATA") != null) {
-				osSpecificLocalAppDataDir = System.getenv("LOCALAPPDATA");
-			}
-			else if (os.contains("mac")) {
-				osSpecificLocalAppDataDir = System.getProperty(USER_HOME) + File.separator + "Library";
-			}
-			else {
-				osSpecificLocalAppDataDir = System.getProperty(USER_HOME);
-			}
-		}
-		return osSpecificLocalAppDataDir;
-	}
-
-	public static synchronized String getOsSpecificDocumentsDir() {
-		if (osSpecificDocumentsDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
-			if (os.contains("win")) {
-				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // slow and not thread-safe!
-			}
-			else if (os.contains("mac")) {
-				osSpecificDocumentsDir = System.getProperty(USER_HOME) + File.separator + "Documents";
-			}
-			else {
-				osSpecificDocumentsDir = System.getProperty(USER_HOME);
-			}
-		}
-		return osSpecificDocumentsDir;
+	public Configuration(final PropertiesConfiguration propertiesConfiguration) {
+		this.propertiesConfiguration = propertiesConfiguration;
 	}
 
 	@Override
@@ -146,11 +84,6 @@ public class Configuration extends PropertiesConfiguration implements IConfigura
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see it.albertus.util.IConfiguration#getLong(java.lang.String, long)
-	 */
 	@Override
 	public long getLong(final String key, final long defaultValue) {
 		Long value;
@@ -422,15 +355,6 @@ public class Configuration extends PropertiesConfiguration implements IConfigura
 		return getProperties().containsKey(key);
 	}
 
-	@Override
-	public String toString() {
-		final Map<String, String> properties = new TreeMap<String, String>();
-		for (final Object key : getProperties().keySet()) {
-			properties.put(key.toString(), key.toString().toLowerCase().contains("password") ? PASSWORD_PLACEHOLDER : getProperties().getProperty(key.toString()));
-		}
-		return properties.toString();
-	}
-
 	private String getInvalidCharacterErrorMessage(final String key) {
 		return getInvalidCharacterErrorMessage(key, null);
 	}
@@ -486,6 +410,30 @@ public class Configuration extends PropertiesConfiguration implements IConfigura
 		else {
 			throw new IllegalArgumentException("value length != 1");
 		}
+	}
+
+	@Override
+	public String getFileName() {
+		return propertiesConfiguration.getFileName();
+	}
+
+	public Properties getProperties() {
+		return propertiesConfiguration.getProperties();
+	}
+
+	@Override
+	public void save() throws IOException {
+		propertiesConfiguration.save();
+	}
+
+	@Override
+	public void reload() throws IOException {
+		propertiesConfiguration.reload();
+	}
+
+	@Override
+	public String toString() {
+		return propertiesConfiguration.toString();
 	}
 
 }

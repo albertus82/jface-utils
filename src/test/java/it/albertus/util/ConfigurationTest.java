@@ -162,14 +162,14 @@ public class ConfigurationTest {
 		}
 		System.out.println("----------------------------------------------");
 
-		configuration = new Configuration(propertiesFile.getPath());
+		configuration = new Configuration(new PropertiesConfiguration(propertiesFile.getPath()));
 		System.out.println(configuration.getClass().getName() + ' ' + configuration);
 	}
 
 	@Test
 	public void testConstructors() throws IOException {
-		Assert.assertNotNull(new Configuration(propertiesFile.getPath(), true));
-		Assert.assertNotNull(new Configuration(propertiesFile.getPath(), false));
+		Assert.assertNotNull(new Configuration(new PropertiesConfiguration(propertiesFile.getPath(), true)));
+		Assert.assertNotNull(new Configuration(new PropertiesConfiguration(propertiesFile.getPath(), false)));
 	}
 
 	@Test
@@ -178,24 +178,24 @@ public class ConfigurationTest {
 		Assert.assertNotNull(string);
 		Assert.assertNotEquals("", string);
 		Assert.assertFalse(string.contains("TestPassword12345"));
-		Assert.assertTrue(string.contains("test.password=" + Configuration.PASSWORD_PLACEHOLDER));
+		Assert.assertTrue(string.contains("test.password=" + PropertiesConfiguration.PASSWORD_PLACEHOLDER));
 	}
 
 	@Test
 	public void testStaticMethods() {
-		String str = Configuration.getOsSpecificConfigurationDir();
+		String str = SystemUtils.getOsSpecificConfigurationDir();
 		Assert.assertNotNull(str);
 		File file = new File(str);
 		Assert.assertNotNull(file);
 		System.out.println(file);
 
-		str = Configuration.getOsSpecificDocumentsDir();
+		str = SystemUtils.getOsSpecificDocumentsDir();
 		Assert.assertNotNull(str);
 		file = new File(str);
 		Assert.assertNotNull(file);
 		System.out.println(file);
 
-		str = Configuration.getOsSpecificLocalAppDataDir();
+		str = SystemUtils.getOsSpecificLocalAppDataDir();
 		Assert.assertNotNull(str);
 		file = new File(str);
 		Assert.assertNotNull(file);

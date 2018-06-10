@@ -419,6 +419,7 @@ public class Configuration implements IConfiguration {
 		return propertiesConfiguration.getFileName();
 	}
 
+	@Override
 	public Properties getProperties() {
 		return propertiesConfiguration.getProperties();
 	}

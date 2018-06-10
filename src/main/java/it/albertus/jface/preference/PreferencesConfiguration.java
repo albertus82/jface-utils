@@ -138,6 +138,11 @@ public class PreferencesConfiguration implements IConfiguration, IPropertiesConf
 	}
 
 	@Override
+	public boolean contains(IPreference preference) {
+		return contains(preference.getName());
+	}
+
+	@Override
 	public String getString(String key) {
 		return configuration.getString(key);
 	}
@@ -280,6 +285,11 @@ public class PreferencesConfiguration implements IConfiguration, IPropertiesConf
 	@Override
 	public void save() throws IOException {
 		configuration.save();
+	}
+
+	@Override
+	public String toString() {
+		return configuration.toString();
 	}
 
 }

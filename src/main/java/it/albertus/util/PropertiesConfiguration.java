@@ -8,16 +8,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import it.albertus.jface.preference.PreferencesCallback;
+import it.albertus.jface.preference.IPreferencesCallback;
 
-public class PropertiesConfiguration extends PreferencesCallback implements IPropertiesConfiguration {
+public class PropertiesConfiguration implements IPropertiesConfiguration, IPreferencesCallback {
 
-	private final Properties properties;
+	private final String fileName;
+	private final Properties properties = new Properties();
 
 	public PropertiesConfiguration(final String propertiesFileName) throws IOException {
-		super(propertiesFileName);
-		this.properties = new Properties();
+		this.fileName = propertiesFileName;
 		load();
+	}
+
+	@Override
+	public String getFileName() {
+		return fileName;
 	}
 
 	@Override
@@ -28,6 +33,20 @@ public class PropertiesConfiguration extends PreferencesCallback implements IPro
 	@Override
 	public Properties getProperties() {
 		return properties;
+	}
+
+	@Override
+	public void save() throws IOException {
+		final File file = new File(getFileName());
+		file.getParentFile().mkdirs();
+		OutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(file);
+			properties.store(outputStream, null);
+		}
+		finally {
+			IOUtils.closeQuietly(outputStream);
+		}
 	}
 
 	protected void load() throws IOException {
@@ -44,20 +63,6 @@ public class PropertiesConfiguration extends PreferencesCallback implements IPro
 			finally {
 				IOUtils.closeQuietly(inputStream);
 			}
-		}
-	}
-
-	@Override
-	public void save() throws IOException {
-		final File file = new File(getFileName());
-		file.getParentFile().mkdirs();
-		OutputStream outputStream = null;
-		try {
-			outputStream = new FileOutputStream(file);
-			properties.store(outputStream, null);
-		}
-		finally {
-			IOUtils.closeQuietly(outputStream);
 		}
 	}
 

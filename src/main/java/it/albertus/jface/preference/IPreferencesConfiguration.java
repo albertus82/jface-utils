@@ -53,4 +53,6 @@ public interface IPreferencesConfiguration {
 
 	char getChar(IPreference preference, char defaultValue);
 
+	boolean contains(IPreference preference);
+
 }

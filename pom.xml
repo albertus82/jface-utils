@@ -279,7 +279,7 @@
 		</repository>
 		<repository>
 			<id>maven-eclipse-github</id>
-			<url>http://maven-eclipse.github.io/maven</url>
+			<url>https://maven-eclipse.github.io/maven</url>
 		</repository>
 	</repositories>
 

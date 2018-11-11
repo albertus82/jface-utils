@@ -45,15 +45,9 @@ public class GoogleMapOptions extends MapOptions {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(getCenterLat());
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(getCenterLng());
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		int result = super.hashCode();
 		result = prime * result + controls.hashCode();
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + getZoom();
 		return result;
 	}
 
@@ -62,31 +56,17 @@ public class GoogleMapOptions extends MapOptions {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof GoogleMapOptions)) {
 			return false;
 		}
 		GoogleMapOptions other = (GoogleMapOptions) obj;
-		if (Double.doubleToLongBits(getCenterLat()) != Double.doubleToLongBits(other.getCenterLat())) {
-			return false;
-		}
-		if (Double.doubleToLongBits(getCenterLng()) != Double.doubleToLongBits(other.getCenterLng())) {
-			return false;
-		}
-		if (controls == null) {
-			if (other.controls != null) {
-				return false;
-			}
-		}
-		else if (!controls.equals(other.controls)) {
+		if (!controls.equals(other.controls)) {
 			return false;
 		}
 		if (type != other.type) {
-			return false;
-		}
-		if (getZoom() != other.getZoom()) {
 			return false;
 		}
 		return true;

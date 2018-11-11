@@ -1,5 +1,8 @@
 package it.albertus.jface.maps.google;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import it.albertus.jface.maps.MapOptions;
 
 public class GoogleMapOptions extends MapOptions {
@@ -9,6 +12,8 @@ public class GoogleMapOptions extends MapOptions {
 	public static final GoogleMapType DEFAULT_TYPE = GoogleMapType.ROADMAP;
 
 	private GoogleMapType type = DEFAULT_TYPE;
+
+	private final Map<GoogleMapControl, Boolean> controls = new EnumMap<GoogleMapControl, Boolean>(GoogleMapControl.class);
 
 	public GoogleMapOptions() {/* Default constructor */}
 
@@ -28,6 +33,10 @@ public class GoogleMapOptions extends MapOptions {
 		this.type = type;
 	}
 
+	public Map<GoogleMapControl, Boolean> getControls() {
+		return controls;
+	}
+
 	@Override
 	public String toString() {
 		return "GoogleMapOptions [centerLat=" + getCenterLat() + ", centerLng=" + getCenterLng() + ", zoom=" + getZoom() + ", type=" + type + ", controls=" + getControls() + "]";
@@ -42,7 +51,7 @@ public class GoogleMapOptions extends MapOptions {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(getCenterLng());
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((getControls() == null) ? 0 : getControls().hashCode());
+		result = prime * result + controls.hashCode();
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + getZoom();
 		return result;
@@ -66,12 +75,12 @@ public class GoogleMapOptions extends MapOptions {
 		if (Double.doubleToLongBits(getCenterLng()) != Double.doubleToLongBits(other.getCenterLng())) {
 			return false;
 		}
-		if (getControls() == null) {
-			if (other.getControls() != null) {
+		if (controls == null) {
+			if (other.controls != null) {
 				return false;
 			}
 		}
-		else if (!getControls().equals(other.getControls())) {
+		else if (!controls.equals(other.controls)) {
 			return false;
 		}
 		if (type != other.type) {

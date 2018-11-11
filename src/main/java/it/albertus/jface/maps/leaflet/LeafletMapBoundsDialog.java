@@ -20,9 +20,10 @@ import org.eclipse.swt.widgets.Shell;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
 import it.albertus.jface.maps.MapBounds;
+import it.albertus.jface.maps.MapBoundsDialog;
 import it.albertus.util.logging.LoggerFactory;
 
-public class LeafletMapBoundsDialog extends LeafletMapDialog {
+public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(LeafletMapBoundsDialog.class);
 
@@ -93,17 +94,20 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog {
 		return GridLayoutFactory.swtDefaults().create();
 	}
 
+	@Override
 	public MapBounds getBounds() {
 		return bounds;
 	}
 
-	protected void setOptionValues(final Browser browser) {
+	@Override
+	public void setOptionValues(final Browser browser) {
 		getOptions().setZoom(((Number) browser.evaluate("return map.getZoom();")).intValue());
 		getOptions().setCenterLat((Double) browser.evaluate("return map.getCenter().lat;"));
 		getOptions().setCenterLng((Double) browser.evaluate("return map.getCenter().lng;"));
 	}
 
-	protected void setBoundValues(final Browser browser) {
+	@Override
+	public void setBoundValues(final Browser browser) {
 		getBounds().setNorthEastLat((Double) browser.evaluate("return map.getBounds().getNorthEast().lat;"));
 		getBounds().setSouthWestLat((Double) browser.evaluate("return map.getBounds().getSouthWest().lat;"));
 		getBounds().setNorthEastLng((Double) browser.evaluate("return map.getBounds().getNorthEast().lng;"));

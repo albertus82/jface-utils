@@ -1,4 +1,4 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps.google;
 
 /**
  * <p>
@@ -71,7 +71,7 @@ package it.albertus.jface.google.maps;
  * >See documentation online</a>.
  * </p>
  */
-public enum MapControl {
+public enum GoogleMapControl {
 
 	/**
 	 * Enables/disables the Zoom control. By default, this control is visible
@@ -117,7 +117,7 @@ public enum MapControl {
 
 	private final String fieldName;
 
-	MapControl(final String fieldName) {
+	GoogleMapControl(final String fieldName) {
 		this.fieldName = fieldName;
 	}
 

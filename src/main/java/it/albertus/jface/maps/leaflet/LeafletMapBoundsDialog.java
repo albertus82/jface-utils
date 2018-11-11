@@ -1,4 +1,4 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps.leaflet;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,21 +19,22 @@ import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
+import it.albertus.jface.maps.MapBounds;
 import it.albertus.util.logging.LoggerFactory;
 
-public class MapBoundsDialog extends MapDialog {
+public class LeafletMapBoundsDialog extends LeafletMapDialog {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialog.class);
+	private static final Logger logger = LoggerFactory.getLogger(LeafletMapBoundsDialog.class);
 
 	private static final int SHELL_SIZE_FACTOR = 3;
 
 	private final MapBounds bounds = new MapBounds();
 
-	public MapBoundsDialog(final Shell parent) {
+	public LeafletMapBoundsDialog(final Shell parent) {
 		super(parent);
 	}
 
-	public MapBoundsDialog(final Shell parent, final int style) {
+	public LeafletMapBoundsDialog(final Shell parent, final int style) {
 		super(parent, style);
 	}
 
@@ -50,13 +51,8 @@ public class MapBoundsDialog extends MapDialog {
 			@Override
 			public void widgetSelected(final SelectionEvent event) {
 				try {
-					getOptions().setZoom(((Number) browser.evaluate("return map.getZoom();")).intValue());
-					getOptions().setCenterLat((Double) browser.evaluate("return map.getCenter().lat();"));
-					getOptions().setCenterLng((Double) browser.evaluate("return map.getCenter().lng();"));
-					bounds.setNorthEastLat((Double) browser.evaluate("return map.getBounds().getNorthEast().lat();"));
-					bounds.setSouthWestLat((Double) browser.evaluate("return map.getBounds().getSouthWest().lat();"));
-					bounds.setNorthEastLng((Double) browser.evaluate("return map.getBounds().getNorthEast().lng();"));
-					bounds.setSouthWestLng((Double) browser.evaluate("return map.getBounds().getSouthWest().lng();"));
+					setOptionValues(browser);
+					setBoundValues(browser);
 					setReturnCode(SWT.OK);
 				}
 				catch (final SWTException se) {
@@ -99,6 +95,19 @@ public class MapBoundsDialog extends MapDialog {
 
 	public MapBounds getBounds() {
 		return bounds;
+	}
+
+	protected void setOptionValues(final Browser browser) {
+		getOptions().setZoom(((Number) browser.evaluate("return map.getZoom();")).intValue());
+		getOptions().setCenterLat((Double) browser.evaluate("return map.getCenter().lat;"));
+		getOptions().setCenterLng((Double) browser.evaluate("return map.getCenter().lng;"));
+	}
+
+	protected void setBoundValues(final Browser browser) {
+		getBounds().setNorthEastLat((Double) browser.evaluate("return map.getBounds().getNorthEast().lat;"));
+		getBounds().setSouthWestLat((Double) browser.evaluate("return map.getBounds().getSouthWest().lat;"));
+		getBounds().setNorthEastLng((Double) browser.evaluate("return map.getBounds().getNorthEast().lng;"));
+		getBounds().setSouthWestLng((Double) browser.evaluate("return map.getBounds().getSouthWest().lng;"));
 	}
 
 }

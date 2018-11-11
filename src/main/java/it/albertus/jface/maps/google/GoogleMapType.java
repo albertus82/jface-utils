@@ -1,6 +1,6 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps.google;
 
-public enum MapType {
+public enum GoogleMapType {
 
 	/** Displays the default road map view. This is the default map type. */
 	ROADMAP,

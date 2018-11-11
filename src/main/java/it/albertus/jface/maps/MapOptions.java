@@ -1,29 +1,28 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps;
 
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 
+import it.albertus.jface.maps.google.GoogleMapControl;
+
 public class MapOptions implements Serializable {
 
 	private static final long serialVersionUID = 8324663629284543572L;
 
-	public static final MapType DEFAULT_TYPE = MapType.ROADMAP;
 	public static final int DEFAULT_ZOOM = 1;
 
 	private double centerLat;
 	private double centerLng;
 	private int zoom = DEFAULT_ZOOM;
-	private MapType type = DEFAULT_TYPE;
-	private final Map<MapControl, Boolean> controls = new EnumMap<MapControl, Boolean>(MapControl.class);
+	private final Map<GoogleMapControl, Boolean> controls = new EnumMap<GoogleMapControl, Boolean>(GoogleMapControl.class);
 
 	public MapOptions() {/* Default constructor */}
 
-	public MapOptions(final double centerLat, final double centerLng, final int zoom, final MapType type) {
+	public MapOptions(final double centerLat, final double centerLng, final int zoom) {
 		this.centerLat = centerLat;
 		this.centerLng = centerLng;
 		this.zoom = zoom;
-		this.type = type;
 	}
 
 	public double getCenterLat() {
@@ -50,24 +49,13 @@ public class MapOptions implements Serializable {
 		this.zoom = zoom;
 	}
 
-	public MapType getType() {
-		return type;
-	}
-
-	public void setType(final MapType type) {
-		if (type == null) {
-			throw new IllegalArgumentException(String.valueOf(type));
-		}
-		this.type = type;
-	}
-
-	public Map<MapControl, Boolean> getControls() {
+	public Map<GoogleMapControl, Boolean> getControls() {
 		return controls;
 	}
 
 	@Override
 	public String toString() {
-		return "MapOptions [centerLat=" + centerLat + ", centerLng=" + centerLng + ", zoom=" + zoom + ", type=" + type + ", controls=" + controls + "]";
+		return "MapOptions [centerLat=" + centerLat + ", centerLng=" + centerLng + ", zoom=" + zoom + ", controls=" + controls + "]";
 	}
 
 	@Override
@@ -80,7 +68,6 @@ public class MapOptions implements Serializable {
 		temp = Double.doubleToLongBits(centerLng);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((controls == null) ? 0 : controls.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + zoom;
 		return result;
 	}
@@ -109,9 +96,6 @@ public class MapOptions implements Serializable {
 			}
 		}
 		else if (!controls.equals(other.controls)) {
-			return false;
-		}
-		if (type != other.type) {
 			return false;
 		}
 		if (zoom != other.zoom) {

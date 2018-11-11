@@ -1,4 +1,4 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps;
 
 import java.io.Serializable;
 

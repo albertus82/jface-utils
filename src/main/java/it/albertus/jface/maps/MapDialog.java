@@ -1,4 +1,4 @@
-package it.albertus.jface.google.maps;
+package it.albertus.jface.maps;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,23 +31,18 @@ import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
-import it.albertus.net.httpserver.html.HtmlUtils;
 import it.albertus.util.IOUtils;
-import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
-public class MapDialog extends Dialog {
+public abstract class MapDialog extends Dialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapDialog.class);
 
-	public static final String DEFAULT_URL = "http://maps.googleapis.com/maps/api/js";
-	public static final String OPTIONS_PLACEHOLDER = "/* Options */";
-	public static final String MARKERS_PLACEHOLDER = "/* Markers */";
+	public static final String OPTIONS_PLACEHOLDER = "/*[[OPTIONS]]*/";
+	public static final String MARKERS_PLACEHOLDER = "/*[[MARKERS]]*/";
 
 	protected static final String HTML_FILE_NAME = "map.html";
 
-	private String url = DEFAULT_URL;
-	private final MapOptions options = new MapOptions();
 	private final Set<MapMarker> markers = new HashSet<MapMarker>();
 
 	private volatile int returnCode = SWT.CANCEL;
@@ -142,43 +136,7 @@ public class MapDialog extends Dialog {
 			writer = new BufferedWriter(new FileWriter(tempFile));
 			String line;
 			while ((line = reader.readLine()) != null) {
-				// Language
-				if (line.contains(DEFAULT_URL) && !JFaceMessages.getLanguage().isEmpty()) {
-					line = line.replace(DEFAULT_URL, url + "?language=" + JFaceMessages.getLanguage());
-				}
-				// Options
-				else if (line.contains(OPTIONS_PLACEHOLDER)) {
-					final StringBuilder optionsBlock = new StringBuilder();
-					optionsBlock.append('\t').append("center: new google.maps.LatLng(").append(options.getCenterLat()).append(", ").append(options.getCenterLng()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
-					optionsBlock.append('\t').append("zoom: ").append(options.getZoom()).append(',').append(NewLine.SYSTEM_LINE_SEPARATOR);
-					optionsBlock.append('\t').append("mapTypeId: google.maps.MapTypeId.").append(options.getType().name());
-					for (final Entry<MapControl, Boolean> control : options.getControls().entrySet()) {
-						if (control.getKey() != null && control.getValue() != null) {
-							optionsBlock.append(',').append(NewLine.SYSTEM_LINE_SEPARATOR);
-							optionsBlock.append('\t').append(control.getKey().getFieldName()).append(": ").append(control.getValue().toString());
-						}
-					}
-					line = optionsBlock.toString();
-				}
-				// Markers
-				else if (line.contains(MARKERS_PLACEHOLDER)) {
-					if (markers.isEmpty()) {
-						line = null;
-					}
-					else {
-						int index = 1;
-						final StringBuilder markersBlock = new StringBuilder();
-						for (final MapMarker marker : markers) {
-							markersBlock.append("var marker").append(index).append(" = new google.maps.Marker({").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							markersBlock.append('\t').append("position: new google.maps.LatLng(").append(marker.getLatitude()).append(", ").append(marker.getLongitude()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							markersBlock.append('\t').append("map: map,").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							markersBlock.append('\t').append("title: '").append(HtmlUtils.escapeEcmaScript(marker.getTitle())).append("'").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							markersBlock.append("});").append(NewLine.SYSTEM_LINE_SEPARATOR);
-							index++;
-						}
-						line = markersBlock.toString().trim();
-					}
-				}
+				line = parseLine(line);
 				if (line != null) {
 					writer.write(line);
 					writer.newLine();
@@ -212,6 +170,8 @@ public class MapDialog extends Dialog {
 		return pageUrl;
 	}
 
+	protected abstract String parseLine(String line);
+
 	public int getReturnCode() {
 		return returnCode;
 	}
@@ -228,20 +188,10 @@ public class MapDialog extends Dialog {
 		this.images = images;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(final String url) {
-		this.url = url;
-	}
-
-	public MapOptions getOptions() {
-		return options;
-	}
-
 	public Set<MapMarker> getMarkers() {
 		return markers;
 	}
+
+	public abstract MapOptions getOptions();
 
 }

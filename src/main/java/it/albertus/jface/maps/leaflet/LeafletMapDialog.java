@@ -32,10 +32,9 @@ public class LeafletMapDialog extends MapDialog {
 				return null;
 			}
 			else {
-				final String mask = "L.marker([%s, %s]).addTo(map).bindPopup('%s');";
 				final StringBuilder markersBlock = new StringBuilder();
 				for (final MapMarker marker : getMarkers()) {
-					markersBlock.append(String.format(mask, marker.getLatitude(), marker.getLongitude(), HtmlUtils.escapeEcmaScript(marker.getTitle().replace(NewLine.SYSTEM_LINE_SEPARATOR, "<br />"))));
+					markersBlock.append(String.format("L.marker([%s, %s]).addTo(map).bindPopup('%s');", marker.getLatitude(), marker.getLongitude(), HtmlUtils.escapeEcmaScript(marker.getTitle().replace(NewLine.SYSTEM_LINE_SEPARATOR, "<br />"))));
 					markersBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
 				}
 				return markersBlock.toString().trim();

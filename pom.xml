@@ -14,13 +14,14 @@
 	</licenses>
 
 	<properties>
-		<version.date>2018-11-12</version.date>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>
 		<maven.repo.owner>albertus82</maven.repo.owner>
 		<maven.repo.name>maven</maven.repo.name>
 		<maven.branch>master</maven.branch>
+		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
+		<version.date>${maven.build.timestamp}</version.date>
 	</properties>
 
 	<profiles>

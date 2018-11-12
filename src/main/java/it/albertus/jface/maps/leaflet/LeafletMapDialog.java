@@ -27,11 +27,9 @@ public class LeafletMapDialog extends MapDialog {
 		if (line.contains(OPTIONS_PLACEHOLDER)) {
 			final StringBuilder optionsBlock = new StringBuilder();
 			optionsBlock.append(String.format("map.setView([%s, %s], %d);", getOptions().getCenterLat(), getOptions().getCenterLng(), getOptions().getZoom()));
-			for (final Entry<LeafletMapControl, Boolean> control : options.getControls().entrySet()) {
-				if (control.getValue()) {
-					optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
-					optionsBlock.append(String.format("map.addControl(L.control.%s());", control.getKey().getName()));
-				}
+			for (final Entry<LeafletMapControl, String> control : options.getControls().entrySet()) {
+				optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
+				optionsBlock.append(String.format("map.addControl(L.control.%s(%s));", control.getKey().getConstructor(), control.getValue() != null ? control.getValue() : ""));
 			}
 			return optionsBlock.toString().trim();
 		}

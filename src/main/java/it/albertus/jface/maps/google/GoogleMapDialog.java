@@ -58,7 +58,7 @@ public class GoogleMapDialog extends MapDialog {
 					markersBlock.append("var marker").append(index).append(" = new google.maps.Marker({").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					markersBlock.append('\t').append("position: new google.maps.LatLng(").append(marker.getLatitude()).append(", ").append(marker.getLongitude()).append("),").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					markersBlock.append('\t').append("map: map,").append(NewLine.SYSTEM_LINE_SEPARATOR);
-					markersBlock.append('\t').append("title: '").append(HtmlUtils.escapeEcmaScript(marker.getTitle())).append("'").append(NewLine.SYSTEM_LINE_SEPARATOR);
+					markersBlock.append('\t').append("title: '").append(marker.getTitle() == null ? "" : HtmlUtils.escapeEcmaScript(marker.getTitle().trim())).append("'").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					markersBlock.append("});").append(NewLine.SYSTEM_LINE_SEPARATOR);
 					index++;
 				}

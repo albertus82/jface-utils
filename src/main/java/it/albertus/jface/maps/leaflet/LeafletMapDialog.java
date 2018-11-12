@@ -29,7 +29,7 @@ public class LeafletMapDialog extends MapDialog {
 			optionsBlock.append(String.format("map.setView([%s, %s], %d);", getOptions().getCenterLat(), getOptions().getCenterLng(), getOptions().getZoom()));
 			for (final Entry<LeafletMapControl, String> control : options.getControls().entrySet()) {
 				optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
-				optionsBlock.append(String.format("map.addControl(L.control.%s(%s));", control.getKey().getConstructor(), control.getValue() != null ? control.getValue() : ""));
+				optionsBlock.append(String.format("map.addControl(L.control.%s(%s));", control.getKey().getConstructor(), control.getValue() == null ? "" : control.getValue().trim()));
 			}
 			return optionsBlock.toString().trim();
 		}
@@ -41,7 +41,7 @@ public class LeafletMapDialog extends MapDialog {
 			else {
 				final StringBuilder markersBlock = new StringBuilder();
 				for (final MapMarker marker : getMarkers()) {
-					markersBlock.append(String.format("L.marker([%s, %s]).addTo(map).bindPopup('%s');", marker.getLatitude(), marker.getLongitude(), HtmlUtils.escapeEcmaScript(marker.getTitle().replace(NewLine.SYSTEM_LINE_SEPARATOR, "<br />"))));
+					markersBlock.append(String.format("L.marker([%s, %s]).addTo(map).bindPopup('%s');", marker.getLatitude(), marker.getLongitude(), marker.getTitle() == null ? "" : HtmlUtils.escapeEcmaScript(marker.getTitle().replace(NewLine.SYSTEM_LINE_SEPARATOR, "<br />").trim())));
 					markersBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
 				}
 				return markersBlock.toString().trim();

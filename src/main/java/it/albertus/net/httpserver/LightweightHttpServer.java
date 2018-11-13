@@ -43,9 +43,9 @@ public class LightweightHttpServer {
 
 	protected final IHttpServerConfig httpServerConfiguration;
 
-	private volatile HttpServer server;
+	private HttpServer server;
 	protected volatile boolean running = false;
-	protected volatile ThreadPoolExecutor threadPool;
+	protected ThreadPoolExecutor threadPool;
 
 	private Collection<HttpContext> contexts;
 

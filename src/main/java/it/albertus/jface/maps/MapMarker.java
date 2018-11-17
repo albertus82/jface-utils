@@ -34,7 +34,7 @@ public class MapMarker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MapMarker [latitude=" + latitude + ", longitude=" + longitude + ", " + (title != null && !title.trim().isEmpty() ? "title=" + title : "") + "]";
+		return "MapMarker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + "]";
 	}
 
 	@Override

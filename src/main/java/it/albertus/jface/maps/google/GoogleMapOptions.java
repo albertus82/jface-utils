@@ -39,7 +39,7 @@ public class GoogleMapOptions extends MapOptions {
 
 	@Override
 	public String toString() {
-		return "GoogleMapOptions [centerLat=" + getCenterLat() + ", centerLng=" + getCenterLng() + ", zoom=" + getZoom() + ", type=" + type + ", controls=" + getControls() + "]";
+		return "GoogleMapOptions [centerLat=" + getCenterLat() + ", centerLng=" + getCenterLng() + ", zoom=" + getZoom() + ", type=" + type + ", controls=" + controls + "]";
 	}
 
 	@Override

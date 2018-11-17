@@ -17,7 +17,7 @@ public class LeafletMapOptions extends MapOptions {
 
 	@Override
 	public String toString() {
-		return "LeafletMapOptions [centerLat=" + getCenterLat() + ", centerLng=" + getCenterLng() + ", zoom=" + getZoom() + ", controls=" + getControls() + "]";
+		return "LeafletMapOptions [centerLat=" + getCenterLat() + ", centerLng=" + getCenterLng() + ", zoom=" + getZoom() + ", controls=" + controls + "]";
 	}
 
 	@Override

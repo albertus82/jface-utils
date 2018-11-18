@@ -132,7 +132,7 @@ public abstract class MapDialog extends Dialog {
 		BufferedWriter writer = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(HTML_FILE_NAME)));
-			tempFile = File.createTempFile("map", ".html");
+			tempFile = File.createTempFile("map-", ".html");
 			writer = new BufferedWriter(new FileWriter(tempFile));
 			String line;
 			while ((line = reader.readLine()) != null) {

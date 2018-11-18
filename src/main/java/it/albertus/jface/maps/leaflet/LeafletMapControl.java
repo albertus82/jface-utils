@@ -19,7 +19,19 @@ public enum LeafletMapControl {
 
 	/**
 	 * The layers control gives users the ability to switch between different base
-	 * layers and switch overlays on/off.
+	 * layers and switch overlays on/off. This control requires a value, e.g.:
+	 * <pre>
+	 * {
+	 *   &quot;OpenStreetMap&quot;: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	 *     maxZoom: 19,
+	 *     attribution: '&amp;copy; &lt;a href=&quot;http://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt;'
+	 *   }).addTo(map),
+	 *   &quot;OpenTopoMap&quot;: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	 *     maxZoom: 17,
+	 *     attribution: 'Map data: &amp;copy; &lt;a href=&quot;http://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt;, &lt;a href=&quot;http://viewfinderpanoramas.org&quot;&gt;SRTM&lt;/a&gt; | Map style: &amp;copy; &lt;a href=&quot;https://opentopomap.org&quot;&gt;OpenTopoMap&lt;/a&gt; (&lt;a href=&quot;https://creativecommons.org/licenses/by-sa/3.0/&quot;&gt;CC-BY-SA&lt;/a&gt;)'
+	 *   })
+	 * }
+	 * </pre>
 	 */
 	LAYERS("layers");
 

@@ -5,29 +5,15 @@ clone_depth: 50
 environment:
   matrix:
     - platform: x86
-      JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.6.0
-      MVN_VERSION: 3.2.5
-      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
-    - platform: x64
-      JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-      MVN_VERSION: 3.2.5
-      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
-    - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
-      MVN_VERSION: 3.6.0
       MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
-      MVN_VERSION: 3.6.0
       MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
-      MVN_VERSION: 3.6.0
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
-      MVN_VERSION: 3.6.0
       ARTIFACTS_PATH: target\*.jar
       VT_API_URL: https://www.virustotal.com/vtapi/v2/file/scan
       VT_API_DELAY: 15
@@ -35,15 +21,6 @@ environment:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
         secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
-
-cache:
-  - $(ChocolateyInstall)\lib -> .appveyor.yml
-  - $(ChocolateyInstall)\bin -> .appveyor.yml
-  - $(SystemDrive)\bin -> .appveyor.yml
-
-install:
-  - ps: cinst maven -i --version $env:MVN_VERSION --allow-empty-checksums
-  - cmd: PATH %SystemDrive%\bin\apache-maven-%MVN_VERSION%\bin;%ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
 
 before_build:
   - java -Xmx32m -version

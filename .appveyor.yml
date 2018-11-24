@@ -5,11 +5,17 @@ clone_depth: 50
 environment:
   matrix:
     - platform: x86
+      JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
+      MVN_VERSION: 3.6.0
+    - platform: x64
+      JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
+      MVN_VERSION: 3.6.0
+    - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
-      MVN_VERSION: 3.5.2
+      MVN_VERSION: 3.6.0
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
-      MVN_VERSION: 3.5.2
+      MVN_VERSION: 3.6.0
       ARTIFACTS_PATH: target\*.jar
       VT_API_URL: https://www.virustotal.com/vtapi/v2/file/scan
       VT_API_DELAY: 15

@@ -5,6 +5,14 @@ clone_depth: 50
 environment:
   matrix:
     - platform: x86
+      JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.6.0
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
+      MVN_VERSION: 3.2.5
+    - platform: x64
+      JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
+      MVN_VERSION: 3.2.5
+    - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
       MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
       MVN_VERSION: 3.6.0

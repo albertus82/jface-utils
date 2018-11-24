@@ -6,20 +6,22 @@ environment:
   matrix:
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.6.0
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
       MVN_VERSION: 3.2.5
+      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.6.0
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
       MVN_VERSION: 3.2.5
+      M2_HOME: $(SystemDrive)\bin\apache-maven-$(MVN_VERSION)
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.7.0
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
       MVN_VERSION: 3.6.0
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.7.0
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
       MVN_VERSION: 3.6.0
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1.2
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
       MVN_VERSION: 3.6.0

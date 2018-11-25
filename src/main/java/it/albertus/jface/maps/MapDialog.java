@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -117,15 +118,15 @@ public abstract class MapDialog extends Dialog {
 		createButtonBox(shell, browser);
 	}
 
-	protected Browser createBrowser(final Shell shell) {
-		final Browser browser = new Browser(shell, SWT.NONE);
+	protected Browser createBrowser(final Composite parent) {
+		final Browser browser = new Browser(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
-		final URL pageUrl = getMapPage(shell);
+		final URL pageUrl = getMapPage(parent);
 		browser.setUrl(pageUrl != null ? pageUrl.toString() : "");
 		return browser;
 	}
 
-	protected URL getMapPage(final Shell shell) {
+	protected URL getMapPage(final Control control) {
 		URL pageUrl = null;
 		File tempFile = null;
 		BufferedReader reader = null;
@@ -153,7 +154,7 @@ public abstract class MapDialog extends Dialog {
 
 		if (tempFile != null) {
 			final File fileToDelete = tempFile;
-			shell.addListener(SWT.Close, new Listener() {
+			control.addListener(SWT.Close, new Listener() {
 				@Override
 				public void handleEvent(final Event event) {
 					try {

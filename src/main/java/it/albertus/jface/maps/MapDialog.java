@@ -100,7 +100,7 @@ public abstract class MapDialog extends Dialog {
 
 	protected Point getSize(final Shell shell) {
 		final Point normalShellSize = shell.getSize();
-		int size = (int) (Math.min(normalShellSize.x, normalShellSize.y) / 1.25);
+		final int size = Math.min(normalShellSize.x, normalShellSize.y);
 		return new Point(size, size);
 	}
 
@@ -109,7 +109,7 @@ public abstract class MapDialog extends Dialog {
 	}
 
 	protected Layout getLayout() {
-		return GridLayoutFactory.fillDefaults().extendedMargins(0, 0, 0, 5).create();
+		return GridLayoutFactory.swtDefaults().create();
 	}
 
 	protected void createContents(final Shell shell) {
@@ -177,7 +177,7 @@ public abstract class MapDialog extends Dialog {
 		return returnCode;
 	}
 
-	protected void setReturnCode(final int returnCode) {
+	public void setReturnCode(final int returnCode) {
 		this.returnCode = returnCode;
 	}
 

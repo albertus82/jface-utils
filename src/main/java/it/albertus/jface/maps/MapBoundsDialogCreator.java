@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
@@ -58,7 +59,7 @@ public class MapBoundsDialogCreator {
 				try {
 					dialog.setOptionValues(browser);
 					dialog.setBoundValues(browser);
-					dialog.setReturnCode(SWT.OK);
+					dialog.setReturnCode(Window.OK);
 				}
 				catch (final SWTException se) {
 					logger.log(Level.FINE, se.toString(), se);

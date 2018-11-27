@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,7 +47,7 @@ public abstract class MapDialog extends Dialog {
 
 	private final Set<MapMarker> markers = new HashSet<MapMarker>();
 
-	private volatile int returnCode = SWT.CANCEL;
+	private volatile int returnCode = Window.CANCEL;
 
 	private Image[] images;
 
@@ -95,7 +96,7 @@ public abstract class MapDialog extends Dialog {
 				display.sleep();
 			}
 		}
-		return returnCode;
+		return getReturnCode();
 	}
 
 	protected Point getSize(final Shell shell) {

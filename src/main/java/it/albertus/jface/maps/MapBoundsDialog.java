@@ -12,6 +12,6 @@ public interface MapBoundsDialog {
 
 	void setOptionValues(Browser browser);
 
-	void setReturnCode(int returnCode);
+	void setReturnCode(int code);
 
 }

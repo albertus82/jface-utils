@@ -6,13 +6,13 @@ import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.maps.MapBounds;
 import it.albertus.jface.maps.MapBoundsDialog;
-import it.albertus.jface.maps.MapBoundsDialogCreator;
+import it.albertus.jface.maps.MapBoundsDialogCreationHelper;
 
 public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
 	private final MapBounds bounds = new MapBounds();
 
-	private final MapBoundsDialogCreator creator = new MapBoundsDialogCreator(this);
+	private final MapBoundsDialogCreationHelper helper = new MapBoundsDialogCreationHelper(this);
 
 	public LeafletMapBoundsDialog(final Shell parent) {
 		super(parent);
@@ -24,12 +24,12 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	@Override
 	protected Browser createBrowser(final Composite parent) {
-		return creator.createBrowser(parent, getMapPage(parent));
+		return helper.createBrowser(parent, getMapPage(parent));
 	}
 
 	@Override
 	public Composite createButtonBox(final Shell shell, final Browser browser) {
-		return creator.createButtonBox(shell, browser);
+		return helper.createButtonBox(shell, browser);
 	}
 
 	@Override

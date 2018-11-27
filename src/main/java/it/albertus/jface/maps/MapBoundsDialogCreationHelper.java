@@ -21,15 +21,15 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public class MapBoundsDialogCreator {
+public class MapBoundsDialogCreationHelper {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCreator.class);
+	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCreationHelper.class);
 
 	public static final byte BORDER_THICKNESS_DLUS = 2;
 
 	private final MapBoundsDialog dialog;
 
-	public MapBoundsDialogCreator(final MapBoundsDialog dialog) {
+	public MapBoundsDialogCreationHelper(final MapBoundsDialog dialog) {
 		this.dialog = dialog;
 	}
 

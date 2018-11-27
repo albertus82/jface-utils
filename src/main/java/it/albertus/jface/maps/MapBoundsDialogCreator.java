@@ -20,17 +20,19 @@ import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.SwtUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public class MapBoundsDialogCommon {
+public class MapBoundsDialogCreator {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCommon.class);
+	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCreator.class);
 
 	public static final byte BORDER_THICKNESS_DLUS = 2;
 
-	private MapBoundsDialogCommon() {
-		throw new IllegalAccessError();
+	private final MapBoundsDialog dialog;
+
+	public MapBoundsDialogCreator(final MapBoundsDialog dialog) {
+		this.dialog = dialog;
 	}
 
-	public static Browser createBrowser(final Composite parent, final URL url) {
+	public Browser createBrowser(final Composite parent, final URL url) {
 		final Composite borderComposite = new Composite(parent, SWT.NONE);
 		borderComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(borderComposite);
@@ -42,7 +44,7 @@ public class MapBoundsDialogCommon {
 		return browser;
 	}
 
-	public static Composite createButtonBox(final Shell shell, final Browser browser, final MapBoundsDialog dialog) {
+	public Composite createButtonBox(final Shell shell, final Browser browser) {
 		final Composite buttonComposite = new Composite(shell, SWT.NONE);
 		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(buttonComposite);
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).grab(true, false).applyTo(buttonComposite);

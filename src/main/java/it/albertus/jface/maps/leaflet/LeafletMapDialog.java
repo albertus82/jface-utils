@@ -29,7 +29,7 @@ public class LeafletMapDialog extends MapDialog {
 			optionsBlock.append(String.format("map.setView([%s, %s], %d);", getOptions().getCenterLat(), getOptions().getCenterLng(), getOptions().getZoom()));
 			if (!options.getControls().containsKey(LeafletMapControl.LAYERS)) {
 				optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
-				optionsBlock.append(String.format("L.tileLayer('%s', { maxZoom: %d, attribution: '%s' }).addTo(map);", HtmlUtils.escapeEcmaScript("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"), 19, HtmlUtils.escapeEcmaScript("&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>")));
+				optionsBlock.append(String.format("L.tileLayer('%s', { maxZoom: %d, attribution: '%s' }).addTo(map);", HtmlUtils.escapeEcmaScript("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"), 19, HtmlUtils.escapeEcmaScript("&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>")));
 			}
 			for (final Entry<LeafletMapControl, String> control : options.getControls().entrySet()) {
 				optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);

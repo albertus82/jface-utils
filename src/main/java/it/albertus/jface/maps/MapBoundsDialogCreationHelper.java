@@ -49,7 +49,8 @@ public class MapBoundsDialogCreationHelper {
 		return browser;
 	}
 
-	public Composite createButtonBox(final Shell shell, final Browser browser) {
+	public Composite createButtonBox(final Browser browser) {
+		final Shell shell = browser.getShell();
 		final Composite buttonComposite = new Composite(shell, SWT.NONE);
 		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(buttonComposite);
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).grab(true, false).applyTo(buttonComposite);
@@ -57,38 +58,49 @@ public class MapBoundsDialogCreationHelper {
 		final Button confirmButton = new Button(buttonComposite, SWT.PUSH);
 		confirmButton.setText(JFaceMessages.get("lbl.button.confirm"));
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(SwtUtils.convertHorizontalDLUsToPixels(confirmButton, IDialogConstants.BUTTON_WIDTH), SWT.DEFAULT).applyTo(confirmButton);
-		confirmButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent event) {
-				try {
-					dialog.setOptionValues(browser);
-					dialog.setBoundValues(browser);
-					dialog.setReturnCode(Window.OK);
-				}
-				catch (final SWTException se) {
-					logger.log(Level.FINE, se.toString(), se);
-				}
-				catch (final Exception e) {
-					logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
-				}
-				finally {
-					shell.close();
-				}
-			}
-		});
+		confirmButton.addSelectionListener(new ButtonListener(Window.OK, browser));
 
 		final Button cancelButton = new Button(buttonComposite, SWT.PUSH);
 		cancelButton.setText(JFaceMessages.get("lbl.button.cancel"));
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.FILL).grab(true, false).minSize(SwtUtils.convertHorizontalDLUsToPixels(cancelButton, IDialogConstants.BUTTON_WIDTH), SWT.DEFAULT).applyTo(cancelButton);
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent se) {
-				shell.close();
-			}
-		});
+		cancelButton.addSelectionListener(new ButtonListener(Window.CANCEL, browser));
 
 		shell.setDefaultButton(confirmButton);
 		return buttonComposite;
+	}
+
+	private class ButtonListener extends SelectionAdapter {
+
+		private final int buttonCode;
+		private final Browser browser;
+
+		private ButtonListener(final int buttonCode, final Browser browser) {
+			this.buttonCode = buttonCode;
+			this.browser = browser;
+		}
+
+		@Override
+		public void widgetSelected(final SelectionEvent event) {
+			try {
+				if (buttonCode == Window.OK) {
+					dialog.setOptionValues(browser);
+					dialog.setBoundValues(browser);
+				}
+				dialog.setReturnCode(buttonCode);
+			}
+			catch (final SWTException e) {
+				logger.log(Level.FINE, e.toString(), e);
+			}
+			catch (final Exception e) {
+				logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
+			}
+			finally {
+				final Shell shell = browser.getShell();
+				if (shell != null && !shell.isDisposed()) {
+					shell.close();
+				}
+			}
+		}
 	}
 
 }

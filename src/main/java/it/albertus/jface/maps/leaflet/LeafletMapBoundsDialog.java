@@ -34,8 +34,8 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 	}
 
 	@Override
-	public Composite createButtonBox(final Shell shell, final Browser browser) {
-		return helper.createButtonBox(shell, browser);
+	public Composite createButtonBox(final Browser browser) {
+		return helper.createButtonBox(browser);
 	}
 
 	@Override

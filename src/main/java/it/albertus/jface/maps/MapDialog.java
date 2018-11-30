@@ -59,7 +59,8 @@ public abstract class MapDialog extends Dialog {
 		super(parent, style);
 	}
 
-	public Composite createButtonBox(final Shell shell, final Browser browser) {
+	public Composite createButtonBox(final Browser browser) {
+		final Shell shell = browser.getShell();
 		final Composite buttonComposite = new Composite(shell, SWT.NONE);
 		GridLayoutFactory.swtDefaults().applyTo(buttonComposite);
 		GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).grab(true, false).applyTo(buttonComposite);
@@ -70,6 +71,7 @@ public abstract class MapDialog extends Dialog {
 		closeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent se) {
+				setReturnCode(Window.CANCEL);
 				shell.close();
 			}
 		});
@@ -79,6 +81,7 @@ public abstract class MapDialog extends Dialog {
 	}
 
 	public int open() {
+		setReturnCode(Window.CANCEL);
 		final Shell shell = new Shell(getParent(), getStyle());
 		shell.setText(getText());
 		final Image[] icons = getImages();
@@ -116,7 +119,7 @@ public abstract class MapDialog extends Dialog {
 	protected void createContents(final Shell shell) {
 		shell.setLayout(getLayout());
 		final Browser browser = createBrowser(shell);
-		createButtonBox(shell, browser);
+		createButtonBox(browser);
 	}
 
 	protected Browser createBrowser(final Composite parent) {

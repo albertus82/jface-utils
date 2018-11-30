@@ -2,6 +2,7 @@ package it.albertus.jface.maps.leaflet;
 
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.maps.MapBounds;
@@ -20,6 +21,11 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	public LeafletMapBoundsDialog(final Shell parent, final int style) {
 		super(parent, style);
+	}
+
+	@Override
+	protected Layout getLayout() {
+		return helper.getLayout();
 	}
 
 	@Override

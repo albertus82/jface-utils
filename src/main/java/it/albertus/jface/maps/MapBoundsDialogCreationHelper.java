@@ -13,8 +13,10 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.jface.JFaceMessages;
@@ -25,20 +27,22 @@ public class MapBoundsDialogCreationHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCreationHelper.class);
 
-	public static final byte BORDER_THICKNESS_DLUS = 2;
-
 	private final MapBoundsDialog dialog;
 
 	public MapBoundsDialogCreationHelper(final MapBoundsDialog dialog) {
 		this.dialog = dialog;
 	}
 
+	public Layout getLayout() {
+		final int defaultMargin = new GridLayout().marginHeight;
+		return GridLayoutFactory.swtDefaults().margins(0, 0).extendedMargins(0, 0, 0, defaultMargin).create();
+	}
+
 	public Browser createBrowser(final Composite parent, final URL url) {
 		final Composite borderComposite = new Composite(parent, SWT.NONE);
 		borderComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(borderComposite);
-		final int pixels = SwtUtils.convertHorizontalDLUsToPixels(borderComposite, BORDER_THICKNESS_DLUS);
-		GridLayoutFactory.swtDefaults().margins(pixels, pixels).applyTo(borderComposite);
+		GridLayoutFactory.swtDefaults().applyTo(borderComposite);
 		final Browser browser = new Browser(borderComposite, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
 		browser.setUrl(url != null ? url.toString() : "");

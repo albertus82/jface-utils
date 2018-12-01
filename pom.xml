@@ -1,5 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.albertus</groupId>
 	<artifactId>jface-utils</artifactId>
@@ -307,16 +309,16 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github</groupId>
-			<artifactId>brotli-haxe</artifactId>
-			<version>20170316-1902</version>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github</groupId>
+			<artifactId>brotli-haxe</artifactId>
+			<version>20170316-1902</version>
 			<optional>true</optional>
 		</dependency>
 

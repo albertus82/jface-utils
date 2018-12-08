@@ -49,6 +49,19 @@ public class JFaceMessages {
 		}
 	}
 
+	public static String get(final String key) {
+		String message;
+		try {
+			message = resources.getString(key);
+			message = message != null ? message.trim() : "";
+		}
+		catch (final MissingResourceException e) {
+			logger.log(Level.WARNING, e.getMessage(), e);
+			message = key;
+		}
+		return message;
+	}
+
 	public static String get(final String key, final Object... params) {
 		final List<String> stringParams = new ArrayList<String>(params.length);
 		for (final Object param : params) {

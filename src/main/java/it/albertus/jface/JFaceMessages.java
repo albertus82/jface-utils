@@ -53,7 +53,7 @@ public class JFaceMessages {
 		String message;
 		try {
 			message = resources.getString(key);
-			message = message != null ? message.trim() : "";
+			message = message != null ? message.replace("''", "'").trim() : "";
 		}
 		catch (final MissingResourceException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);

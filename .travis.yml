@@ -9,8 +9,9 @@ matrix:
           organization: "albertus82-github"
           token:
             secure: "KLJ+cs0Dnw4wolofFGlW6cGC+0iENJCKILLbElpO7o73SgEFmgEgkzA7CRHWwSt/glh8PVukpCQLe3VT9/tdhGBGnXn0BhKvV05xq7kW4S23phQX4NXTGj3cH2mJEp+ccdBODm7ZTFYH7QpqjiSYm1zedbp7yxbCCQm6DTTZVa48TOjvbj+C9vERAMytFhsY4PjFABKWrjRchMgilu+fFu85KLhnHZbz5p+kKSHfgD9N0fBzjVgC2cMayrNM2Qk0jZ3GWOXGkvNLD8fTc6zVxTW7WX+FrVnUPCplgvb1dRMPK9ALwJ983gwqWTzdzYiiibos9iP0IQXVdvmf1NcW8RIX04paTqugZgcNn+FmjxLVUp8FIRTJ1BO8MSHmhQS3wiU3u278zhMSY2CTDyohk/jYHBzO4hp8RmUJJK3rMSbiDK9BEwBN5XIEKbyLZU0TPzIEpWx+8o0pWYo85OLfL5uho/fVpAfawxfOu4dwpn3f/8u1g1HzAJXC2fqrMkdCzj3fr/sF8+LMdpGfEYW+x5c3kA/0+xKG3VaUHTQI6Ev1eo4V8lLq/RPJIXNzude8brc4F/jy/rqQgKoNSMjZCZoILSq8bVTMJwsso1TJst3rO8bO3WAniYFcftOZkA47Omoj9Gk9QXnybXVhwYiHSba9Y3OQzrs+sUXeXJSyluU="
-      script:
+      before_script:
         - git fetch --unshallow
+      script:
         - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - os: linux
       jdk: openjdk7

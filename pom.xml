@@ -3,6 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>it.albertus</groupId>
 	<artifactId>jface-utils</artifactId>
 	<version>14.0.1-SNAPSHOT</version>
@@ -193,10 +194,9 @@
 				<configuration>
 					<signature>
 						<groupId>org.codehaus.mojo.signature</groupId>
-						<artifactId>java16</artifactId>
-						<version>1.1</version>
+						<artifactId>java16-sun</artifactId>
+						<version>1.10</version>
 					</signature>
-					<ignores>com.sun.net.httpserver.*</ignores>
 				</configuration>
 			</plugin>
 

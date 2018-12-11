@@ -61,10 +61,23 @@ public class Version {
 	}
 
 	private void load() throws IOException {
-		final InputStream inputStream = getClass().getResourceAsStream('/' + fileName);
-		if (inputStream != null) {
-			properties.load(inputStream);
-			inputStream.close();
+		InputStream in = null;
+		try {
+			in = getClass().getResourceAsStream('/' + fileName);
+			if (in != null) {
+				properties.load(in);
+			}
+			else {
+				in = getClass().getResourceAsStream("/META-INF/" + fileName);
+				if (in != null) {
+					properties.load(in);
+				}
+			}
+		}
+		finally {
+			if (in != null) {
+				in.close();
+			}
 		}
 	}
 

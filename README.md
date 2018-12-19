@@ -1,9 +1,9 @@
 JFaceUtils
 ==========
 
-[![Latest release](https://img.shields.io/github/release/Albertus82/JFaceUtils.svg)](https://github.com/Albertus82/JFaceUtils/releases/latest)
-[![Build status](https://travis-ci.org/Albertus82/JFaceUtils.svg?branch=master)](https://travis-ci.org/Albertus82/JFaceUtils)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/Albertus82/JFaceUtils?branch=master&svg=true)](https://ci.appveyor.com/project/Albertus82/JFaceUtils)
+[![Latest release](https://img.shields.io/github/release/albertus82/jface-utils.svg)](https://github.com/albertus82/jface-utils/releases/latest)
+[![Build status](https://travis-ci.org/albertus82/jface-utils.svg?branch=master)](https://travis-ci.org/albertus82/jface-utils)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/albertus82/jface-utils?branch=master&svg=true)](https://ci.appveyor.com/project/albertus82/jface-utils)
 
 ### Java SWT/JFace Utility Library including a Preferences Framework
 

@@ -22,16 +22,8 @@ environment:
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
         secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
 
-install:
-  - cmd: PATH %JAVA_HOME%\bin;%PATH%
-
-before_build:
-  - java -Xmx32m -version
-  - javac -J-Xmx32m -version
-  - mvn -version
-
 build_script:
-  - mvn clean install
+  - mvn clean install -V
 
 after_build:
   - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests

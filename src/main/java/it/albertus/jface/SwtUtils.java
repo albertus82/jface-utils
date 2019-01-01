@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -169,15 +170,35 @@ public class SwtUtils {
 		}
 	}
 
+	public static void setWaitCursor(@Nullable final Shell shell) {
+		final int modalLevel = ModalContext.getModalLevel();
+		logger.log(Level.FINE, "setWaitCursor() - ModalContext.getModalLevel() = {0}.", modalLevel);
+		if (modalLevel == 0 && shell != null && !shell.isDisposed()) {
+			shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+		}
+	}
+
+	public static void setDefaultCursor(@Nullable final Shell shell) {
+		final int modalLevel = ModalContext.getModalLevel();
+		logger.log(Level.FINE, "setDefaultCursor() - ModalContext.getModalLevel() = {0}.", modalLevel);
+		if (modalLevel == 0 && shell != null && !shell.isDisposed()) {
+			shell.setCursor(null);
+		}
+	}
+
 	public static void blockShell(@Nullable final Shell shell) {
-		if (shell != null && !shell.isDisposed()) {
+		final int modalLevel = ModalContext.getModalLevel();
+		logger.log(Level.FINE, "blockShell() - ModalContext.getModalLevel() = {0}.", modalLevel);
+		if (modalLevel == 0 && shell != null && !shell.isDisposed()) {
 			shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 			shell.setEnabled(false);
 		}
 	}
 
 	public static void unblockShell(@Nullable final Shell shell) {
-		if (shell != null && !shell.isDisposed()) {
+		final int modalLevel = ModalContext.getModalLevel();
+		logger.log(Level.FINE, "unblockShell() - ModalContext.getModalLevel() = {0}.", modalLevel);
+		if (modalLevel == 0 && shell != null && !shell.isDisposed()) {
 			shell.setEnabled(true);
 			shell.setCursor(null);
 		}

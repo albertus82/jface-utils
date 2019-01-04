@@ -43,6 +43,7 @@ public class TrayRestoreListener implements SelectionListener, ShellListener {
 	public void widgetSelected(@Nullable final SelectionEvent e) {
 		if (!shell.isDisposed()) {
 			shell.setVisible(true);
+			shell.forceActive();
 		}
 		hideTrayIcon();
 	}

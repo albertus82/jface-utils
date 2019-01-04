@@ -170,6 +170,14 @@ public class SwtUtils {
 		}
 	}
 
+	public static void setAppStartingCursor(Shell shell) {
+		final int modalLevel = ModalContext.getModalLevel();
+		logger.log(Level.FINE, "setAppStartingCursor() - ModalContext.getModalLevel() = {0}.", modalLevel);
+		if (modalLevel == 0 && shell != null && !shell.isDisposed()) {
+			shell.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_APPSTARTING));
+		}
+	}
+
 	public static void setWaitCursor(@Nullable final Shell shell) {
 		final int modalLevel = ModalContext.getModalLevel();
 		logger.log(Level.FINE, "setWaitCursor() - ModalContext.getModalLevel() = {0}.", modalLevel);

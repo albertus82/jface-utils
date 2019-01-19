@@ -1,5 +1,7 @@
 package it.albertus.jface.console;
 
+import static it.albertus.jface.DisplayThreadExecutor.Mode.ASYNC;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -108,7 +110,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 		final int capacity = getLimit();
 
 		// Actual print... (async avoids deadlocks)
-		new DisplayThreadExecutor(scrollable, true) {
+		new DisplayThreadExecutor(scrollable, ASYNC) {
 			@Override
 			protected void onError(final Exception exception) {
 				failSafePrint(toPrint);

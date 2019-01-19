@@ -15,8 +15,6 @@ environment:
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
       ARTIFACTS_PATH: target\*.jar
-      VT_API_URL: https://www.virustotal.com/vtapi/v2/file/scan
-      VT_API_DELAY: 15
       VT_API_KEY:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
@@ -27,7 +25,7 @@ build_script:
 
 after_build:
   - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" IF DEFINED VT_API_KEY FOR /R target %%i IN (*.jar) DO ECHO %%i & curl -v -F "file=@%%i" -F apikey=%VT_API_KEY% %VT_API_URL% & TIMEOUT %VT_API_DELAY% /NOBREAK
+  - cmd: IF DEFINED VT_API_KEY FOR /R target %%f IN (*.jar) DO ECHO Submitting file "%%f" to VirusTotal... & curl -v -F "file=@%%f" -F apikey=%VT_API_KEY% https://www.virustotal.com/vtapi/v2/file/scan & ECHO File "%%f" submitted to VirusTotal. & TIMEOUT 15 /NOBREAK
 
 artifacts:
   - path: $(ARTIFACTS_PATH)

@@ -44,17 +44,24 @@ public class EnhancedErrorDialog extends ErrorDialog {
 		this.images = images;
 	}
 
-	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final Image... images) {
-		return openError(parent, title, message, status, IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR, images);
-	}
-
 	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final int displayMask, final Image... images) {
 		return new EnhancedErrorDialog(parent, title, message, status, displayMask, images).open();
 	}
 
-	public static int openError(final Shell parent, final String title, final String message, final int severity, final Throwable e, final Image... images) {
-		final MultiStatus status = EnhancedErrorDialog.createMultiStatus(severity, e);
-		return openError(parent, title, message, status, images);
+	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final int severity, final Throwable throwable, final Image... images) {
+		this(parent, title, message, createMultiStatus(severity, throwable), images);
+	}
+
+	public static int openError(final Shell parent, final String title, final String message, final int severity, final Throwable throwable, final Image... images) {
+		return new EnhancedErrorDialog(parent, title, message, severity, throwable, images).open();
+	}
+
+	public EnhancedErrorDialog(final Shell parent, final String title, final String message, final IStatus status, final Image... images) {
+		this(parent, title, message, status, IStatus.INFO | IStatus.WARNING | IStatus.ERROR, images);
+	}
+
+	public static int openError(final Shell parent, final String title, final String message, final IStatus status, final Image... images) {
+		return new EnhancedErrorDialog(parent, title, message, status, images).open();
 	}
 
 	@Override

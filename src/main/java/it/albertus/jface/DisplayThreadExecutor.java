@@ -28,10 +28,10 @@ public class DisplayThreadExecutor implements Executor {
 
 	public DisplayThreadExecutor(final Widget widget, final Mode mode) {
 		if (widget == null) {
-			throw new IllegalArgumentException("widget cannot be null");
+			throw new NullPointerException("widget cannot be null");
 		}
 		if (mode == null) {
-			throw new IllegalArgumentException("mode cannot be null");
+			throw new NullPointerException("mode cannot be null");
 		}
 		this.widget = widget;
 		this.mode = mode;

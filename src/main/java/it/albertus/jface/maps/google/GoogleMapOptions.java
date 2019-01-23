@@ -28,7 +28,7 @@ public class GoogleMapOptions extends MapOptions {
 
 	public void setType(final GoogleMapType type) {
 		if (type == null) {
-			throw new IllegalArgumentException(String.valueOf(type));
+			throw new NullPointerException("type cannot be null");
 		}
 		this.type = type;
 	}

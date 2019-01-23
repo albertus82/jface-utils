@@ -292,7 +292,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	protected void checkPattern(final String pattern) {
 		if (pattern == null) {
-			throw new IllegalArgumentException("Missing date pattern");
+			throw new NullPointerException("pattern cannot be null");
 		}
 	}
 

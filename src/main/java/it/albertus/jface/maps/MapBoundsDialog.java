@@ -14,4 +14,6 @@ public interface MapBoundsDialog {
 
 	void setReturnCode(int code);
 
+	int open();
+
 }

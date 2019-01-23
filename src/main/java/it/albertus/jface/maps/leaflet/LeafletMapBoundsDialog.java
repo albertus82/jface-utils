@@ -11,7 +11,7 @@ import it.albertus.jface.maps.MapBoundsDialogCreationHelper;
 
 public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
-	private final MapBounds bounds = new MapBounds();
+	private MapBounds bounds = new MapBounds();
 
 	private final MapBoundsDialogCreationHelper helper = new MapBoundsDialogCreationHelper(this);
 
@@ -52,10 +52,11 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	@Override
 	public void setBoundValues(final Browser browser) {
-		getBounds().setNorthEastLat((Double) browser.evaluate("return map.getBounds().getNorthEast().lat;"));
-		getBounds().setSouthWestLat((Double) browser.evaluate("return map.getBounds().getSouthWest().lat;"));
-		getBounds().setNorthEastLng((Double) browser.evaluate("return map.getBounds().getNorthEast().lng;"));
-		getBounds().setSouthWestLng((Double) browser.evaluate("return map.getBounds().getSouthWest().lng;"));
+		final Double northEastLat = (Double) browser.evaluate("return map.getBounds().getNorthEast().lat;");
+		final Double southWestLat = (Double) browser.evaluate("return map.getBounds().getSouthWest().lat;");
+		final Double northEastLng = (Double) browser.evaluate("return map.getBounds().getNorthEast().lng;");
+		final Double southWestLng = (Double) browser.evaluate("return map.getBounds().getSouthWest().lng;");
+		bounds = new MapBounds(northEastLat, southWestLat, northEastLng, southWestLng);
 	}
 
 }

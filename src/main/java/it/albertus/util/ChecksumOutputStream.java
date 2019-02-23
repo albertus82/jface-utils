@@ -78,7 +78,7 @@ public abstract class ChecksumOutputStream<T extends Checksum> extends OutputStr
 	 */
 	@Override
 	public String toString() {
-		return String.format("%0" + bits / 4 + "x", checksum.getValue());
+		return String.format("%0" + bits / 4 + "x", checksum.getValue()); // NOSONAR
 	}
 
 }

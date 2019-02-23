@@ -89,42 +89,42 @@ public class TimeBasedRollingFileHandler extends Handler {
 	}
 
 	@Override
-	public void setFormatter(final Formatter newFormatter) {
+	public synchronized void setFormatter(final Formatter newFormatter) {
 		underlyingFileHandler.setFormatter(newFormatter);
 	}
 
 	@Override
-	public Formatter getFormatter() {
+	public synchronized Formatter getFormatter() {
 		return underlyingFileHandler.getFormatter();
 	}
 
 	@Override
-	public void setEncoding(final String encoding) throws UnsupportedEncodingException {
+	public synchronized void setEncoding(final String encoding) throws UnsupportedEncodingException {
 		underlyingFileHandler.setEncoding(encoding);
 	}
 
 	@Override
-	public String getEncoding() {
+	public synchronized String getEncoding() {
 		return underlyingFileHandler.getEncoding();
 	}
 
 	@Override
-	public void setFilter(final Filter newFilter) {
+	public synchronized void setFilter(final Filter newFilter) {
 		underlyingFileHandler.setFilter(newFilter);
 	}
 
 	@Override
-	public Filter getFilter() {
+	public synchronized Filter getFilter() {
 		return underlyingFileHandler.getFilter();
 	}
 
 	@Override
-	public void setErrorManager(final ErrorManager em) {
+	public synchronized void setErrorManager(final ErrorManager em) {
 		underlyingFileHandler.setErrorManager(em);
 	}
 
 	@Override
-	public ErrorManager getErrorManager() {
+	public synchronized ErrorManager getErrorManager() {
 		return underlyingFileHandler.getErrorManager();
 	}
 

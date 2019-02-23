@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 public abstract class AuthenticatorDefaultConfig implements IAuthenticatorConfig {
 
-	public static final String PASSWORD_HASH_ALGORITHM = "SHA-256";
+	public static final String PASSWORD_HASH_ALGORITHM = "SHA-256"; // NOSONAR
 	public static final int FAIL_DELAY_MILLIS = 3000;
 	public static final String FAILURE_LOGGING_LEVEL = Level.FINE.getName();
 

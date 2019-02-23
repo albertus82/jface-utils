@@ -6,7 +6,7 @@
 
 	<groupId>it.albertus</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>15.0.0-SNAPSHOT</version>
+	<version>15.0.0</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 

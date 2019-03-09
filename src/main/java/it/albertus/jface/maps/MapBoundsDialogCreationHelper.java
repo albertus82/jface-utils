@@ -1,6 +1,6 @@
 package it.albertus.jface.maps;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,14 +38,14 @@ public class MapBoundsDialogCreationHelper {
 		return GridLayoutFactory.swtDefaults().margins(0, 0).extendedMargins(0, 0, 0, defaultMargin).create();
 	}
 
-	public Browser createBrowser(final Composite parent, final URL url) {
+	public Browser createBrowser(final Composite parent, final URI uri) {
 		final Composite borderComposite = new Composite(parent, SWT.NONE);
 		borderComposite.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(borderComposite);
 		GridLayoutFactory.swtDefaults().applyTo(borderComposite);
 		final Browser browser = new Browser(borderComposite, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
-		browser.setUrl(url != null ? url.toString() : "");
+		browser.setUrl(uri != null ? uri.toString() : "");
 		return browser;
 	}
 

@@ -1,5 +1,6 @@
 package it.albertus.jface.maps.leaflet;
 
+import java.util.Collection;
 import java.util.Map.Entry;
 
 import org.eclipse.swt.widgets.Shell;
@@ -21,12 +22,11 @@ public class LeafletMapDialog extends MapDialog {
 		super(parent, style);
 	}
 
-	@Override
-	protected String parseLine(final String line) {
+	public static String parseLine(final String line, final LeafletMapOptions options, final Collection<MapMarker> markers, final String other) {
 		// Options
 		if (line.contains(OPTIONS_PLACEHOLDER)) {
 			final StringBuilder optionsBlock = new StringBuilder();
-			optionsBlock.append(String.format("map.setView([%s, %s], %d);", getOptions().getCenterLat(), getOptions().getCenterLng(), getOptions().getZoom()));
+			optionsBlock.append(String.format("map.setView([%s, %s], %d);", options.getCenterLat(), options.getCenterLng(), options.getZoom()));
 			if (!options.getControls().containsKey(LeafletMapControl.LAYERS)) {
 				optionsBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
 				optionsBlock.append(String.format("L.tileLayer('%s', { maxZoom: %d, attribution: '%s' }).addTo(map);", HtmlUtils.escapeEcmaScript("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"), 19, HtmlUtils.escapeEcmaScript("&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>")));
@@ -39,21 +39,34 @@ public class LeafletMapDialog extends MapDialog {
 		}
 		// Markers
 		else if (line.contains(MARKERS_PLACEHOLDER)) {
-			if (getMarkers().isEmpty()) {
+			if (markers.isEmpty()) {
 				return null;
 			}
 			else {
 				final StringBuilder markersBlock = new StringBuilder();
-				for (final MapMarker marker : getMarkers()) {
+				for (final MapMarker marker : markers) {
 					markersBlock.append(String.format("L.marker([%s, %s]).addTo(map).bindPopup('%s');", marker.getLatitude(), marker.getLongitude(), marker.getTitle() == null ? "" : HtmlUtils.escapeEcmaScript(marker.getTitle().replace(NewLine.SYSTEM_LINE_SEPARATOR, "<br />").trim())));
 					markersBlock.append(NewLine.SYSTEM_LINE_SEPARATOR);
 				}
 				return markersBlock.toString().trim();
 			}
 		}
+		else if (line.contains(OTHER_PLACEHOLDER)) {
+			if (other == null || other.isEmpty()) {
+				return null;
+			}
+			else {
+				return other;
+			}
+		}
 		else {
 			return line;
 		}
+	}
+
+	@Override
+	public String parseLine(final String line) {
+		return parseLine(line, getOptions(), getMarkers(), null);
 	}
 
 	@Override

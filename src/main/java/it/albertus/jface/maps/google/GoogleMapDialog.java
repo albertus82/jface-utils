@@ -27,7 +27,7 @@ public class GoogleMapDialog extends MapDialog {
 	}
 
 	@Override
-	protected String parseLine(final String line) {
+	public String parseLine(final String line) {
 		// Language
 		if (line.contains(DEFAULT_URL) && !JFaceMessages.getLanguage().isEmpty()) {
 			return line.replace(DEFAULT_URL, url + "?language=" + JFaceMessages.getLanguage());

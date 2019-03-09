@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -36,12 +37,13 @@ import it.albertus.jface.SwtUtils;
 import it.albertus.util.IOUtils;
 import it.albertus.util.logging.LoggerFactory;
 
-public abstract class MapDialog extends Dialog {
+public abstract class MapDialog extends Dialog implements LineParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapDialog.class);
 
 	public static final String OPTIONS_PLACEHOLDER = "/*[[OPTIONS]]*/";
 	public static final String MARKERS_PLACEHOLDER = "/*[[MARKERS]]*/";
+	public static final String OTHER_PLACEHOLDER = "/*[[OTHER]]*/";
 
 	protected static final String HTML_FILE_NAME = "map.html";
 
@@ -125,35 +127,39 @@ public abstract class MapDialog extends Dialog {
 	protected Browser createBrowser(final Composite parent) {
 		final Browser browser = new Browser(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
-		final URL pageUrl = getMapPage(parent);
-		browser.setUrl(pageUrl != null ? pageUrl.toString() : "");
+		final URI pageUri = getMapPage(parent);
+		browser.setUrl(pageUri != null ? pageUri.toString() : "");
 		return browser;
 	}
 
-	protected URL getMapPage(final Control control) {
-		URL pageUrl = null;
+	public static URI getMapPage(final Control control, final InputStream is, final LineParser lineParser) {
+		URI pageUrl = null;
 		File tempFile = null;
-		BufferedReader reader = null;
-		BufferedWriter writer = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(HTML_FILE_NAME)));
+			isr = new InputStreamReader(is, "UTF-8");
+			br = new BufferedReader(isr);
 			tempFile = File.createTempFile("map-", ".html");
-			writer = new BufferedWriter(new FileWriter(tempFile));
+			fw = new FileWriter(tempFile);
+			bw = new BufferedWriter(fw);
 			String line;
-			while ((line = reader.readLine()) != null) {
-				line = parseLine(line);
+			while ((line = br.readLine()) != null) {
+				line = lineParser.parseLine(line);
 				if (line != null) {
-					writer.write(line);
-					writer.newLine();
+					bw.write(line);
+					bw.newLine();
 				}
 			}
-			pageUrl = tempFile.toURI().toURL();
+			pageUrl = tempFile.toURI();
 		}
 		catch (final Exception e) {
 			logger.log(Level.SEVERE, JFaceMessages.get("err.map.open"), e);
 		}
 		finally {
-			IOUtils.closeQuietly(writer, reader);
+			IOUtils.closeQuietly(bw, fw, br, isr);
 		}
 
 		if (tempFile != null) {
@@ -175,7 +181,16 @@ public abstract class MapDialog extends Dialog {
 		return pageUrl;
 	}
 
-	protected abstract String parseLine(String line);
+	protected URI getMapPage(final Control control) {
+		InputStream is = null;
+		try {
+			is = getClass().getResourceAsStream(HTML_FILE_NAME);
+			return getMapPage(control, is, this);
+		}
+		finally {
+			IOUtils.closeQuietly(is);
+		}
+	}
 
 	public int getReturnCode() {
 		return returnCode;

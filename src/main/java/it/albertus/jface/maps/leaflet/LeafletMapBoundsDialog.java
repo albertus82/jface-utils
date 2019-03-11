@@ -136,7 +136,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	@Override
 	public String parseLine(final String line) {
-		return parseLine(line, getOptions(), getMarkers(), String.format("map.on('resize', %s); map.on('move', %s); map.on('zoomend', %s); document.onload(%s());", JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME));
+		return parseLine(line, getOptions(), getMarkers(), String.format("map.on('resize', %s); map.on('move', %s); map.on('zoomend', %s); document.onload = %s();", JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME));
 	}
 
 	@Override

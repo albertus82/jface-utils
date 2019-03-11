@@ -90,6 +90,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(northEastLngText);
 
 		final Browser browser = createBrowser(shell);
+
 		final BrowserFunction function = new BrowserFunction(browser, JS_FUNCTION_NAME) {
 			@Override
 			public Object function(final Object[] arguments) {
@@ -112,6 +113,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 				function.dispose();
 			}
 		});
+
 		createButtonBox(browser);
 
 		browser.setFocus();

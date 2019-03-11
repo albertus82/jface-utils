@@ -24,7 +24,7 @@ import it.albertus.jface.maps.MapBoundsDialogCreationHelper;
 
 public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
-	private static final String JS_FUNCTION_NAME = "onMapEvent";
+	private static final String MAP_ONEVENTS_FN = "mapOnEvents";
 
 	private MapBounds bounds = new MapBounds();
 
@@ -91,7 +91,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 		final Browser browser = createBrowser(shell);
 
-		final BrowserFunction function = new BrowserFunction(browser, JS_FUNCTION_NAME) {
+		final BrowserFunction function = new BrowserFunction(browser, MAP_ONEVENTS_FN) {
 			@Override
 			public Object function(final Object[] arguments) {
 				final MapBounds mb = MapBounds.normalize(getBoundValues(browser));
@@ -136,7 +136,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	@Override
 	public String parseLine(final String line) {
-		return parseLine(line, getOptions(), getMarkers(), String.format("map.on('resize', %s); map.on('move', %s); map.on('zoomend', %s); document.onload = %s();", JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME, JS_FUNCTION_NAME));
+		return parseLine(line, getOptions(), getMarkers(), String.format("map.on('resize', %s); map.on('move', %s); map.on('zoomend', %s); document.onload = %s();", MAP_ONEVENTS_FN, MAP_ONEVENTS_FN, MAP_ONEVENTS_FN, MAP_ONEVENTS_FN));
 	}
 
 	@Override

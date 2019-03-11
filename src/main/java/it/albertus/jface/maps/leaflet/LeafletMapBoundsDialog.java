@@ -1,6 +1,6 @@
 package it.albertus.jface.maps.leaflet;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -17,10 +17,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.jface.maps.CoordinateUtils;
 import it.albertus.jface.maps.MapBounds;
 import it.albertus.jface.maps.MapBoundsDialog;
 import it.albertus.jface.maps.MapBoundsDialogCreationHelper;
-import it.albertus.jface.maps.MapUtils;
 
 public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
@@ -94,15 +94,15 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 		final BrowserFunction function = new BrowserFunction(browser, JS_FUNCTION_NAME) {
 			@Override
 			public Object function(final Object[] arguments) {
-				final MapBounds mb = adjustBoundValues(getRawBoundValues(browser));
-				final DecimalFormat coordinateFormat = MapUtils.getCoordinateFormat();
+				final MapBounds mb = MapBounds.normalize(getBoundValues(browser));
+				final NumberFormat formatter = CoordinateUtils.getFormatter();
 				if (mb.getSouthWestLat() != null && mb.getNorthEastLat() != null) {
-					southWestLatText.setText(coordinateFormat.format(mb.getSouthWestLat()));
-					northEastLatText.setText(coordinateFormat.format(mb.getNorthEastLat()));
+					southWestLatText.setText(formatter.format(mb.getSouthWestLat()));
+					northEastLatText.setText(formatter.format(mb.getNorthEastLat()));
 				}
 				if (mb.getSouthWestLng() != null && mb.getNorthEastLng() != null) {
-					southWestLngText.setText(coordinateFormat.format(mb.getSouthWestLng()));
-					northEastLngText.setText(coordinateFormat.format(mb.getNorthEastLng()));
+					southWestLngText.setText(formatter.format(mb.getSouthWestLng()));
+					northEastLngText.setText(formatter.format(mb.getNorthEastLng()));
 				}
 				return null;
 			}
@@ -148,45 +148,14 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 	@Override
 	public void setBoundValues(final Browser browser) {
-		bounds = adjustBoundValues(getRawBoundValues(browser));
+		bounds = MapBounds.normalize(getBoundValues(browser));
 	}
 
-	private static MapBounds getRawBoundValues(final Browser browser) {
+	private static MapBounds getBoundValues(final Browser browser) {
 		final Double northEastLat = (Double) browser.evaluate("return map.getBounds().getNorthEast().lat;");
 		final Double southWestLat = (Double) browser.evaluate("return map.getBounds().getSouthWest().lat;");
 		final Double northEastLng = (Double) browser.evaluate("return map.getBounds().getNorthEast().lng;");
 		final Double southWestLng = (Double) browser.evaluate("return map.getBounds().getSouthWest().lng;");
-		return new MapBounds(northEastLat, southWestLat, northEastLng, southWestLng);
-	}
-
-	private static MapBounds adjustBoundValues(final MapBounds raw) {
-		Double southWestLat = null;
-		Double northEastLat = null;
-		Double southWestLng = null;
-		Double northEastLng = null;
-
-		if (raw.getSouthWestLat() != null && raw.getNorthEastLat() != null) {
-			southWestLat = Math.max(MapBounds.LATITUDE_MIN_VALUE, raw.getSouthWestLat());
-			northEastLat = Math.min(MapBounds.LATITUDE_MAX_VALUE, raw.getNorthEastLat());
-		}
-		if (raw.getSouthWestLng() != null && raw.getNorthEastLng() != null) {
-			if (Math.abs(raw.getSouthWestLng() - raw.getNorthEastLng()) >= MapBounds.LONGITUDE_MAX_VALUE * 2) {
-				southWestLng = Double.valueOf(MapBounds.LONGITUDE_MIN_VALUE);
-				northEastLng = Double.valueOf(MapBounds.LONGITUDE_MAX_VALUE);
-			}
-			else {
-				double swl = raw.getSouthWestLng();
-				while (Math.abs(swl) > MapBounds.LONGITUDE_MAX_VALUE) {
-					swl -= Math.signum(swl) * MapBounds.LONGITUDE_MAX_VALUE * 2;
-				}
-				double nel = raw.getNorthEastLng();
-				while (Math.abs(nel) > MapBounds.LONGITUDE_MAX_VALUE) {
-					nel -= Math.signum(nel) * MapBounds.LONGITUDE_MAX_VALUE * 2;
-				}
-				southWestLng = Math.max(MapBounds.LONGITUDE_MIN_VALUE, swl);
-				northEastLng = Math.min(MapBounds.LONGITUDE_MAX_VALUE, nel);
-			}
-		}
 		return new MapBounds(northEastLat, southWestLat, northEastLng, southWestLng);
 	}
 

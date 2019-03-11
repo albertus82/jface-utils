@@ -106,4 +106,40 @@ public class MapBounds implements Serializable {
 		return true;
 	}
 
+	public static MapBounds normalize(final MapBounds bounds) {
+		Double southWestLat = null;
+		Double northEastLat = null;
+		Double southWestLng = null;
+		Double northEastLng = null;
+
+		// Latitude
+		if (bounds.getSouthWestLat() != null && bounds.getNorthEastLat() != null) {
+			southWestLat = Math.max(MapBounds.LATITUDE_MIN_VALUE, bounds.getSouthWestLat());
+			northEastLat = Math.min(MapBounds.LATITUDE_MAX_VALUE, bounds.getNorthEastLat());
+		}
+
+		// Longitude
+		if (bounds.getSouthWestLng() != null && bounds.getNorthEastLng() != null) {
+			if (Math.abs(bounds.getSouthWestLng() - bounds.getNorthEastLng()) >= MapBounds.LONGITUDE_MAX_VALUE * 2) {
+				southWestLng = Double.valueOf(MapBounds.LONGITUDE_MIN_VALUE);
+				northEastLng = Double.valueOf(MapBounds.LONGITUDE_MAX_VALUE);
+			}
+			else {
+				double sw = bounds.getSouthWestLng();
+				while (Math.abs(sw) > MapBounds.LONGITUDE_MAX_VALUE) {
+					sw -= Math.signum(sw) * MapBounds.LONGITUDE_MAX_VALUE * 2;
+				}
+				southWestLng = Math.max(MapBounds.LONGITUDE_MIN_VALUE, sw);
+
+				double ne = bounds.getNorthEastLng();
+				while (Math.abs(ne) > MapBounds.LONGITUDE_MAX_VALUE) {
+					ne -= Math.signum(ne) * MapBounds.LONGITUDE_MAX_VALUE * 2;
+				}
+				northEastLng = Math.min(MapBounds.LONGITUDE_MAX_VALUE, ne);
+			}
+		}
+
+		return new MapBounds(northEastLat, southWestLat, northEastLng, southWestLng);
+	}
+
 }

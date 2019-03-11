@@ -4,7 +4,12 @@ import java.io.Serializable;
 
 public class MapBounds implements Serializable {
 
-	private static final long serialVersionUID = 8379255527593727314L;
+	private static final long serialVersionUID = -3330484387877221810L;
+
+	public static final int LATITUDE_MIN_VALUE = -90;
+	public static final int LATITUDE_MAX_VALUE = 90;
+	public static final int LONGITUDE_MIN_VALUE = -180;
+	public static final int LONGITUDE_MAX_VALUE = 180;
 
 	private final Double northEastLat;
 	private final Double southWestLat;

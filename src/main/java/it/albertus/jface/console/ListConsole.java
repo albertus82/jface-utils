@@ -201,9 +201,17 @@ public class ListConsole extends ScrollableConsole<List> {
 					text.append(newLine);
 				}
 			}
-			final Clipboard clipboard = new Clipboard(list.getDisplay());
-			clipboard.setContents(new String[] { text.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
-			clipboard.dispose();
+
+			Clipboard clipboard = null;
+			try {
+				clipboard = new Clipboard(list.getDisplay());
+				clipboard.setContents(new String[] { text.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
+			}
+			finally {
+				if (clipboard != null) {
+					clipboard.dispose();
+				}
+			}
 		}
 	}
 

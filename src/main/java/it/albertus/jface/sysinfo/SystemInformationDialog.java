@@ -516,9 +516,16 @@ public class SystemInformationDialog extends Dialog {
 				}
 			}
 
-			final Clipboard clipboard = new Clipboard(table.getDisplay());
-			clipboard.setContents(new String[] { data.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
-			clipboard.dispose();
+			Clipboard clipboard = null;
+			try {
+				clipboard = new Clipboard(table.getDisplay());
+				clipboard.setContents(new String[] { data.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
+			}
+			finally {
+				if (clipboard != null) {
+					clipboard.dispose();
+				}
+			}
 		}
 	}
 
@@ -538,9 +545,16 @@ public class SystemInformationDialog extends Dialog {
 				}
 			}
 
-			final Clipboard clipboard = new Clipboard(list.getDisplay());
-			clipboard.setContents(new String[] { data.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
-			clipboard.dispose();
+			Clipboard clipboard = null;
+			try {
+				clipboard = new Clipboard(list.getDisplay());
+				clipboard.setContents(new String[] { data.toString() }, new TextTransfer[] { TextTransfer.getInstance() });
+			}
+			finally {
+				if (clipboard != null) {
+					clipboard.dispose();
+				}
+			}
 		}
 	}
 

@@ -1,5 +1,6 @@
 package it.albertus.util.logging;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -84,38 +85,13 @@ public class LoggingSupport {
 
 	public static Entry<String, String> getInitialConfigurationProperty() {
 		if (System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS) != null) {
-			return new Property(SYSTEM_PROPERTY_CONFIG_CLASS, System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS));
+			return new SimpleEntry<String, String>(SYSTEM_PROPERTY_CONFIG_CLASS, System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS));
 		}
 		else if (System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE) != null) {
-			return new Property(SYSTEM_PROPERTY_CONFIG_FILE, System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE));
+			return new SimpleEntry<String, String>(SYSTEM_PROPERTY_CONFIG_FILE, System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE));
 		}
 		else {
 			return null;
-		}
-	}
-
-	private static class Property implements Entry<String, String> {
-		private final String key;
-		private final String value;
-
-		private Property(final String key, final String value) {
-			this.key = key;
-			this.value = value;
-		}
-
-		@Override
-		public String getKey() {
-			return key;
-		}
-
-		@Override
-		public String getValue() {
-			return value;
-		}
-
-		@Override
-		public String setValue(final String value) {
-			throw new UnsupportedOperationException();
 		}
 	}
 

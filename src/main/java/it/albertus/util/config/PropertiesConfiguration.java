@@ -15,7 +15,7 @@ import it.albertus.util.SystemUtils;
 
 public class PropertiesConfiguration implements IPropertiesConfiguration {
 
-	static final String PASSWORD_PLACEHOLDER = "********";
+	static final String PASSWORD_PLACEHOLDER = "********"; // NOSONAR
 
 	private final String fileName;
 	private final Properties properties = new Properties();

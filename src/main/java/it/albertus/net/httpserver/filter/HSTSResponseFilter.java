@@ -29,11 +29,10 @@ public class HSTSResponseFilter extends Filter {
 	 * {@code Strict-Transport-Security} header value.
 	 * 
 	 * @param maxAge the supplier of the {@code max-age} directive value
-	 * @param includeSubDomains the supplier of the {@code includeSubDomains}
-	 *        option switch (the option is omitted when the supplier returns
-	 *        {@code false})
-	 * @param preload the supplier of the {@code preload} option switch (the
-	 *        option is omitted when the supplier returns {@code false})
+	 * @param includeSubDomains the supplier of the {@code includeSubDomains} option
+	 *        switch (the option is omitted when the supplier returns {@code false})
+	 * @param preload the supplier of the {@code preload} option switch (the option
+	 *        is omitted when the supplier returns {@code false})
 	 */
 	public HSTSResponseFilter(final ISupplier<Integer> maxAge, final ISupplier<Boolean> includeSubDomains, final ISupplier<Boolean> preload) {
 		this.maxAge = maxAge;
@@ -48,8 +47,8 @@ public class HSTSResponseFilter extends Filter {
 	 * @param maxAge the {@code max-age} directive value
 	 * @param includeSubDomains the {@code includeSubDomains} option switch (the
 	 *        option is omitted when the supplier returns {@code false})
-	 * @param preload the {@code preload} option switch (the option is omitted
-	 *        when the supplier returns {@code false})
+	 * @param preload the {@code preload} option switch (the option is omitted when
+	 *        the supplier returns {@code false})
 	 */
 	public HSTSResponseFilter(final int maxAge, final boolean includeSubDomains, final boolean preload) {
 		this(new ISupplier<Integer>() {
@@ -86,10 +85,10 @@ public class HSTSResponseFilter extends Filter {
 		}
 		else {
 			final StringBuilder value = new StringBuilder("max-age=").append(maxAge.get().intValue());
-			if (includeSubDomains.get()) {
+			if (Boolean.TRUE.equals(includeSubDomains.get())) {
 				value.append("; includeSubDomains");
 			}
-			if (preload.get()) {
+			if (Boolean.TRUE.equals(preload.get())) {
 				value.append("; preload");
 			}
 			return value.toString();

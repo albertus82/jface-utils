@@ -22,7 +22,7 @@ abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractN
 				return true;
 			}
 			catch (final NumberFormatException nfe) {
-				if (allowNegatives.get() && "-".equals(string)) {
+				if (Boolean.TRUE.equals(allowNegatives.get()) && "-".equals(string)) {
 					return true;
 				}
 			}

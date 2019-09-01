@@ -6,7 +6,6 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
@@ -28,7 +27,7 @@ public class HqImageResizer {
 	 * @param scale scale factor (<1 = downscaling, >1 = upscaling)
 	 * @return scaled image
 	 */
-	public static Image resize(final Image image, final float scale) {
+	public static org.eclipse.swt.graphics.Image resize(final org.eclipse.swt.graphics.Image image, final float scale) {
 		final int w = image.getBounds().width;
 		final int h = image.getBounds().height;
 
@@ -40,7 +39,7 @@ public class HqImageResizer {
 		final int newHeight = Math.round(scale * h);
 
 		// Determine scaling mode for best result: if downsizing, use area averaging, if upsizing, use smooth scaling (usually bilinear).
-		final int mode = scale < 1 ? BufferedImage.SCALE_AREA_AVERAGING : BufferedImage.SCALE_SMOOTH;
+		final int mode = scale < 1 ? java.awt.Image.SCALE_AREA_AVERAGING : java.awt.Image.SCALE_SMOOTH;
 		final java.awt.Image scaledImage = img.getScaledInstance(newWidth, newHeight, mode);
 
 		// Convert the scaled image back to a buffered image
@@ -49,7 +48,7 @@ public class HqImageResizer {
 
 		// Reconstruct SWT image
 		final ImageData imageData = convertToSWT(img);
-		return new Image(Display.getDefault(), imageData);
+		return new org.eclipse.swt.graphics.Image(Display.getDefault(), imageData);
 	}
 
 	public static BufferedImage convertToAWT(final ImageData data) {

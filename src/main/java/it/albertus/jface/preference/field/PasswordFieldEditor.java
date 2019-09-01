@@ -181,7 +181,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	 */
 	@Override
 	@Deprecated
-	public String getStringValue() {
+	public String getStringValue() { // NOSONAR
 		if (textField != null) {
 			return String.valueOf(value);
 		}
@@ -194,7 +194,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	 */
 	@Override
 	@Deprecated
-	public void setStringValue(final String value) {
+	public void setStringValue(final String value) { // NOSONAR
 		setCharArrayValue(value.toCharArray());
 	}
 

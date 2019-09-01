@@ -65,6 +65,7 @@ public class ZipUtilsTest {
 		temp.delete();
 		destination = new File(temp.getPath());
 		ZipUtils.zip(destination, source);
+		Assert.assertTrue(true);
 	}
 
 	@Test

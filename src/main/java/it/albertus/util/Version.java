@@ -85,7 +85,7 @@ public class Version {
 		return properties.getProperty(KEY_VERSION_NUMBER);
 	}
 
-	public Date getDate() throws IllegalArgumentException {
+	public Date getDate() {
 		try {
 			return dateFormat.get().parse(properties.getProperty(KEY_VERSION_DATE));
 		}

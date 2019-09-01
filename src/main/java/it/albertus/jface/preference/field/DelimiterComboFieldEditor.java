@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
-
 import org.eclipse.swt.widgets.Composite;
 
 public class DelimiterComboFieldEditor extends ValidatedComboFieldEditor {

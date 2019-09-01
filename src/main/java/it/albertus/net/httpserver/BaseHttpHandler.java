@@ -48,6 +48,8 @@ import it.albertus.util.logging.LoggerFactory;
 @SuppressWarnings("restriction")
 public abstract class BaseHttpHandler implements HttpPathHandler {
 
+	private static final String HEADER_KEY_IF_NONE_MATCH = "If-None-Match";
+
 	private static final String[] maskedHeaderKeys = { "authorization", "password", "session", "token" };
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseHttpHandler.class);
@@ -322,8 +324,8 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Set the <tt>Content-Type</tt> response header. The value is determined by
-	 * the URI path extension. This method can be overriden by subclasses.
+	 * Set the <tt>Content-Type</tt> response header. The value is determined by the
+	 * URI path extension. This method can be overriden by subclasses.
 	 * 
 	 * @param exchange the HTTP exchange.
 	 * @see #setContentTypeHeader(HttpExchange, String)
@@ -350,8 +352,8 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Hook for subclasses to set the <tt>Content-Language</tt> response header
-	 * as needed. The default implementation does nothing.
+	 * Hook for subclasses to set the <tt>Content-Language</tt> response header as
+	 * needed. The default implementation does nothing.
 	 * 
 	 * @param exchange the HTTP exchange
 	 * @see #setContentLanguageHeader(HttpExchange, String)
@@ -359,8 +361,8 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	protected void setContentLanguageHeader(final HttpExchange exchange) {}
 
 	/**
-	 * Set the <tt>Content-Language</tt> response header with the provided
-	 * value, or remove the header if the value argument is null.
+	 * Set the <tt>Content-Language</tt> response header with the provided value, or
+	 * remove the header if the value argument is null.
 	 * 
 	 * @param exchange the HTTP exchange
 	 * @param value the value to be set or null if the header should be removed
@@ -493,11 +495,11 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/*
-	 * The MD5 digest is computed based on the content of the entity-body,
-	 * including any content-coding that has been applied, but not including any
+	 * The MD5 digest is computed based on the content of the entity-body, including
+	 * any content-coding that has been applied, but not including any
 	 * transfer-encoding applied to the message-body. If the message is received
-	 * with a transfer-encoding, that encoding MUST be removed prior to checking
-	 * the Content-MD5 value against the received entity.
+	 * with a transfer-encoding, that encoding MUST be removed prior to checking the
+	 * Content-MD5 value against the received entity.
 	 */
 	protected String generateContentMd5(final File file) throws IOException {
 		InputStream is = null;
@@ -553,7 +555,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		}
 
 		// If-None-Match...
-		final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
+		final String ifNoneMatch = exchange.getRequestHeaders().getFirst(HEADER_KEY_IF_NONE_MATCH);
 		if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 			setStatusHeader(exchange, HttpURLConnection.HTTP_NOT_MODIFIED);
 			setContentDispositionHeader(exchange, null);
@@ -638,7 +640,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 				}
 
 				// If-None-Match...
-				final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
+				final String ifNoneMatch = exchange.getRequestHeaders().getFirst(HEADER_KEY_IF_NONE_MATCH);
 				if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 					sendStaticNotModifiedResponse(exchange, cacheControl);
 				}
@@ -735,7 +737,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 				}
 
 				// If-None-Match...
-				final String ifNoneMatch = exchange.getRequestHeaders().getFirst("If-None-Match");
+				final String ifNoneMatch = exchange.getRequestHeaders().getFirst(HEADER_KEY_IF_NONE_MATCH);
 				if (ifNoneMatch != null && currentEtag != null && currentEtag.equals(ifNoneMatch)) {
 					sendStaticNotModifiedResponse(exchange, cacheControl);
 				}
@@ -856,11 +858,11 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Returns if this handler is enabled. <b>Handlers are enabled by
-	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
-	 * Status-Code 403: Forbidden.</b> Calling this method is equivalent to
-	 * invoke the overloaded version without arguments: {@code isEnabled()}. You
-	 * are allowed to override this method to take any other kind of decision.
+	 * Returns if this handler is enabled. <b>Handlers are enabled by default.</b>
+	 * Requests to disabled handlers will be bounced with <b>HTTP Status-Code 403:
+	 * Forbidden.</b> Calling this method is equivalent to invoke the overloaded
+	 * version without arguments: {@code isEnabled()}. You are allowed to override
+	 * this method to take any other kind of decision.
 	 * 
 	 * @param exchange the current {@link HttpExchange} object.
 	 * 
@@ -871,9 +873,9 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Returns if this handler is enabled. <b>Handlers are enabled by
-	 * default.</b> Requests to disabled handlers will be bounced with <b>HTTP
-	 * Status-Code 403: Forbidden.</b>
+	 * Returns if this handler is enabled. <b>Handlers are enabled by default.</b>
+	 * Requests to disabled handlers will be bounced with <b>HTTP Status-Code 403:
+	 * Forbidden.</b>
 	 * 
 	 * @return {@code true} if this handler is enabled, otherwise {@code false}.
 	 */
@@ -917,21 +919,6 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	protected static void setLastResponseInfo(final Object[] responseInfo) {
 		lastResponseInfo = responseInfo;
-	}
-
-	/**
-	 * Returns the map containing all the known HTTP status codes with their
-	 * names.
-	 * 
-	 * @return the map containing the HTTP status codes
-	 * 
-	 * @see HttpStatusCodes
-	 * 
-	 * @deprecated since v11.1.0. Use {@link HttpStatusCodes} instead.
-	 */
-	@Deprecated
-	public static Map<Integer, String> getHttpStatusCodes() {
-		return HttpStatusCodes.getMap();
 	}
 
 	public static synchronized Collection<Resource> getResources() {

@@ -32,7 +32,7 @@ public class Preferences {
 
 	private final IPreferencesCallback preferencesCallback;
 	private final IPageDefinition[] pageDefinitions;
-	private final IPreference[] preferences;
+	private final IPreference[] preferenceItems;
 	private final Image[] images;
 
 	private final PreferenceManager preferenceManager;
@@ -45,10 +45,10 @@ public class Preferences {
 		this(pageDefinitions, preferences, preferencesCallback, null);
 	}
 
-	public Preferences(final IPageDefinition[] pageDefinitions, final IPreference[] preferences, final IPreferencesCallback preferencesCallback, final Image[] images) {
+	public Preferences(final IPageDefinition[] pageDefinitions, final IPreference[] preferenceItems, final IPreferencesCallback preferencesCallback, final Image[] images) {
 		this.preferencesCallback = preferencesCallback;
 		this.pageDefinitions = pageDefinitions;
-		this.preferences = preferences;
+		this.preferenceItems = preferenceItems;
 		this.images = images;
 		this.preferenceManager = createPreferenceManager();
 		this.preferenceStore = createPreferenceStore();
@@ -74,7 +74,7 @@ public class Preferences {
 		}
 
 		final Map<String, String> configurationBackup = new HashMap<String, String>();
-		for (final IPreference preference : preferences) {
+		for (final IPreference preference : preferenceItems) {
 			if (preference.isRestartRequired()) {
 				configurationBackup.put(preference.getName(), preferenceStore.getString(preference.getName()));
 			}
@@ -91,7 +91,7 @@ public class Preferences {
 			catch (final IOException ioe) {
 				final String message = JFaceMessages.get("err.preferences.reload");
 				logger.log(Level.WARNING, message, ioe);
-				EnhancedErrorDialog.openError(parentShell, dialogTitle, message, IStatus.WARNING, ioe, new Image[] { Display.getCurrent().getSystemImage(SWT.ICON_WARNING) });
+				EnhancedErrorDialog.openError(parentShell, dialogTitle, message, IStatus.WARNING, ioe, Display.getCurrent().getSystemImage(SWT.ICON_WARNING));
 			}
 		}
 
@@ -123,7 +123,7 @@ public class Preferences {
 		final PreferenceStore store = new ConfigurationStore(fileName);
 
 		// Set default values...
-		for (final IPreference preference : preferences) {
+		for (final IPreference preference : preferenceItems) {
 			if (preference.getDefaultValue() != null) {
 				store.setDefault(preference.getName(), preference.getDefaultValue());
 			}
@@ -138,7 +138,7 @@ public class Preferences {
 		// Pages creation...
 		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
 		for (final IPageDefinition page : pageDefinitions) {
-			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferences, preferencesCallback);
+			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferenceItems, preferencesCallback);
 			if (page.getParent() != null) {
 				preferenceNodes.get(page.getParent()).add(preferenceNode);
 			}
@@ -166,27 +166,27 @@ public class Preferences {
 		this.restartRequired = restartRequired;
 	}
 
-	public IPreferencesCallback getPreferencesCallback() {
+	protected IPreferencesCallback getPreferencesCallback() {
 		return preferencesCallback;
 	}
 
-	public IPageDefinition[] getPageDefinitions() {
+	protected IPageDefinition[] getPageDefinitions() {
 		return pageDefinitions;
 	}
 
-	public IPreference[] getPreferences() {
-		return preferences;
+	protected IPreference[] getPreferences() {
+		return preferenceItems;
 	}
 
-	public Image[] getImages() {
+	protected Image[] getImages() {
 		return images;
 	}
 
-	public PreferenceManager getPreferenceManager() {
+	protected PreferenceManager getPreferenceManager() {
 		return preferenceManager;
 	}
 
-	public PreferenceStore getPreferenceStore() {
+	protected PreferenceStore getPreferenceStore() {
 		return preferenceStore;
 	}
 

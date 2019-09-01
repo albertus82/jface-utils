@@ -3,8 +3,6 @@ package it.albertus.jface.preference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
@@ -56,11 +54,8 @@ import it.albertus.jface.preference.field.ShortFieldEditor;
 import it.albertus.jface.preference.field.UriListEditor;
 import it.albertus.jface.preference.field.ValidatedComboFieldEditor;
 import it.albertus.jface.preference.field.WrapStringFieldEditor;
-import it.albertus.util.logging.LoggerFactory;
 
 public class FieldEditorFactory {
-
-	private static final Logger logger = LoggerFactory.getLogger(FieldEditorFactory.class);
 
 	private boolean boldCustomValues = true;
 
@@ -727,7 +722,6 @@ public class FieldEditorFactory {
 				}
 			}
 			catch (final NoSuchAlgorithmException e) {
-				logger.log(Level.FINE, e.toString(), e);
 				throw new IllegalArgumentException(details.getHashAlgorithm(), e);
 			}
 			if (details.getEmptyStringAllowed() != null) {

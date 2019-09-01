@@ -17,9 +17,8 @@ public class LoggingManager implements ILoggingManager {
 	 * Create a new LoggingManager.
 	 * 
 	 * @param loggingConfig the logging configuration to use
-	 * @param initialize    when {@code true}, the manager will be initialized on
-	 *                      creation, otherwise a call to {@link #initializeLogging()} is
-	 *                      needed
+	 * @param initialize when {@code true}, the manager will be initialized on
+	 *        creation, otherwise a call to {@link #initializeLogging()} is needed
 	 */
 	public LoggingManager(final ILoggingConfig loggingConfig, final boolean initialize) {
 		this.loggingConfig = loggingConfig;

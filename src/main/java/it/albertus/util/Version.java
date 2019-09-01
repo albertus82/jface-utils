@@ -2,7 +2,6 @@ package it.albertus.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,13 +21,6 @@ public class Version {
 	private static final String VERSION_FILE_NAME = "version.properties";
 	private static final String KEY_VERSION_NUMBER = "version.number";
 	private static final String KEY_VERSION_DATE = "version.date";
-
-	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
-		@Override
-		protected DateFormat initialValue() {
-			return new SimpleDateFormat(ISO_8601_PATTERN);
-		}
-	};
 
 	private final Properties properties = new Properties();
 	private final String fileName;
@@ -87,7 +79,7 @@ public class Version {
 
 	public Date getDate() {
 		try {
-			return dateFormat.get().parse(properties.getProperty(KEY_VERSION_DATE));
+			return new SimpleDateFormat(ISO_8601_PATTERN).parse(properties.getProperty(KEY_VERSION_DATE));
 		}
 		catch (final ParseException pe) {
 			throw new IllegalArgumentException(pe);

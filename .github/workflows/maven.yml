@@ -6,8 +6,8 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ '6', '7', '8' ]
-        platform: [ 'windows-latest', 'ubuntu-latest' ]
+        java: [ '7', '8' ]
+        platform: [ 'windows-latest', 'ubuntu-latest', 'macOS-latest' ]
     runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v1

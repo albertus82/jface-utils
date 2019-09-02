@@ -13,6 +13,8 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -315,6 +317,12 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		layout.horizontalSpacing = HORIZONTAL_GAP;
 		parent.setLayout(layout);
 		doFillIntoGrid(parent, layout.numColumns);
+		getTextControl().addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(final DisposeEvent e) {
+				dateFormat.remove();
+			}
+		});
 	}
 
 	protected void addDecoration() {

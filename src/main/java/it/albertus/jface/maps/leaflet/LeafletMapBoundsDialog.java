@@ -92,10 +92,11 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 		final Browser browser = createBrowser(shell);
 
 		final BrowserFunction function = new BrowserFunction(browser, MAP_ONEVENTS_FN) {
+			private final NumberFormat formatter = CoordinateUtils.newFormatter();
+
 			@Override
 			public Object function(final Object[] arguments) {
 				final MapBounds mb = MapBounds.normalize(getBoundValues(browser));
-				final NumberFormat formatter = CoordinateUtils.getFormatter();
 				if (mb.getSouthWestLat() != null && mb.getNorthEastLat() != null) {
 					southWestLatText.setText(formatter.format(mb.getSouthWestLat()));
 					northEastLatText.setText(formatter.format(mb.getNorthEastLat()));

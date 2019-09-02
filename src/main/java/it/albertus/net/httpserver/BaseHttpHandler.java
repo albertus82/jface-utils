@@ -58,13 +58,6 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	private static final Charset charset = initCharset();
 
-	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {
-		@Override
-		protected HttpDateGenerator initialValue() {
-			return new HttpDateGenerator();
-		}
-	};
-
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
 	protected static final int BUFFER_SIZE = 8192; // 8 KiB
@@ -73,25 +66,6 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	private static Object[] lastRequestInfo;
 	private static Object[] lastResponseInfo;
-
-	private static final ThreadLocal<MessageDigest> md5Digest = new ThreadLocal<MessageDigest>() {
-		@Override
-		protected MessageDigest initialValue() {
-			try {
-				return MessageDigest.getInstance("MD5");
-			}
-			catch (final NoSuchAlgorithmException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
-		@Override
-		public MessageDigest get() {
-			final MessageDigest md = super.get();
-			md.reset();
-			return md;
-		}
-	};
 
 	private final IHttpServerConfig httpServerConfig;
 
@@ -398,7 +372,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	protected void setLastModifiedHeader(final HttpExchange exchange, final Date lastModified) {
 		if (lastModified != null && (HttpMethod.GET.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.HEAD.equalsIgnoreCase(exchange.getRequestMethod()))) {
-			exchange.getResponseHeaders().set("Last-Modified", getHttpDateGenerator().format(lastModified));
+			exchange.getResponseHeaders().set("Last-Modified", new HttpDateGenerator().format(lastModified));
 		}
 		else {
 			exchange.getResponseHeaders().remove("Last-Modified");
@@ -465,7 +439,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		return '"' + DatatypeConverter.printHexBinary(md5Digest.get().digest(payload)).toLowerCase() + '"';
+		return '"' + DatatypeConverter.printHexBinary(newMd5Digest().digest(payload)).toLowerCase() + '"';
 	}
 
 	protected String generateEtag(final File file) throws IOException {
@@ -480,7 +454,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected String generateEtag(final InputStream inputStream) throws IOException {
-		final OutputStream os = new DigestOutputStream(md5Digest.get());
+		final OutputStream os = new DigestOutputStream(newMd5Digest());
 		try {
 			IOUtils.copy(inputStream, os, BUFFER_SIZE);
 		}
@@ -491,7 +465,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected String generateContentMd5(final byte[] responseBody) {
-		return DatatypeConverter.printBase64Binary(md5Digest.get().digest(responseBody));
+		return DatatypeConverter.printBase64Binary(newMd5Digest().digest(responseBody));
 	}
 
 	/*
@@ -503,7 +477,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	 */
 	protected String generateContentMd5(final File file) throws IOException {
 		InputStream is = null;
-		final DigestOutputStream os = new DigestOutputStream(md5Digest.get());
+		final DigestOutputStream os = new DigestOutputStream(newMd5Digest());
 		try {
 			is = new FileInputStream(file);
 			IOUtils.copy(is, os, BUFFER_SIZE);
@@ -928,8 +902,13 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		return resources;
 	}
 
-	public static HttpDateGenerator getHttpDateGenerator() {
-		return httpDateGenerator.get();
+	private static MessageDigest newMd5Digest() {
+		try {
+			return MessageDigest.getInstance("MD5");
+		}
+		catch (final NoSuchAlgorithmException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

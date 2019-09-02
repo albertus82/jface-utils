@@ -18,26 +18,19 @@ import it.albertus.util.IOUtils;
  */
 public class MqttPayloadEncoder {
 
-	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {
-		@Override
-		protected HttpDateGenerator initialValue() {
-			return new HttpDateGenerator();
-		}
-	};
-
 	/**
 	 * Encodes the provided payload using the {@link MqttPayload} format; data
 	 * compression is applied if specified.
 	 * <p>
-	 * Caller can add other custom headers invoking
-	 * {@link MqttPayload#getHeaders()} on the returned object, and eventually
-	 * must call {@link MqttPayload#toPayload()} in order to obtain the full
-	 * payload (byte array) to send as MQTT message.
+	 * Caller can add other custom headers invoking {@link MqttPayload#getHeaders()}
+	 * on the returned object, and eventually must call
+	 * {@link MqttPayload#toPayload()} in order to obtain the full payload (byte
+	 * array) to send as MQTT message.
 	 * 
 	 * @param payloadToSend the payload to send
 	 * @param compress specified if data compression must be performed
-	 * @return a {@link MqttPayload} object representing the MQTT message
-	 *         payload to send.
+	 * @return a {@link MqttPayload} object representing the MQTT message payload to
+	 *         send.
 	 */
 	@SuppressWarnings("restriction")
 	public MqttPayload encode(final byte[] payloadToSend, final boolean compress) {
@@ -49,7 +42,7 @@ public class MqttPayloadEncoder {
 		else {
 			payload = new MqttPayload(payloadToSend);
 		}
-		payload.getHeaders().set(MqttUtils.HEADER_KEY_DATE, httpDateGenerator.get().format(new Date()));
+		payload.getHeaders().set(MqttUtils.HEADER_KEY_DATE, new HttpDateGenerator().format(new Date()));
 		return payload;
 	}
 

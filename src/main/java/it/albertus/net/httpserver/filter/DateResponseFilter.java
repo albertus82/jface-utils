@@ -13,16 +13,9 @@ import it.albertus.net.httpserver.HttpDateGenerator;
 @SuppressWarnings("restriction")
 public class DateResponseFilter extends Filter {
 
-	private static final ThreadLocal<HttpDateGenerator> httpDateGenerator = new ThreadLocal<HttpDateGenerator>() {
-		@Override
-		protected HttpDateGenerator initialValue() {
-			return new HttpDateGenerator();
-		}
-	};
-
 	@Override
 	public void doFilter(final HttpExchange exchange, final Chain chain) throws IOException {
-		exchange.getResponseHeaders().set("Date", httpDateGenerator.get().getCurrentDate());
+		exchange.getResponseHeaders().set("Date", new HttpDateGenerator().getCurrentDate());
 		chain.doFilter(exchange);
 	}
 

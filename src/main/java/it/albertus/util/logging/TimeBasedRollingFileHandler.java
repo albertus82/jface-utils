@@ -14,7 +14,7 @@ import java.util.logging.LogRecord;
 
 public class TimeBasedRollingFileHandler extends Handler {
 
-	private final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+	private final ThreadLocal<DateFormat> dateFormats = new ThreadLocal<DateFormat>() {
 		@Override
 		protected DateFormat initialValue() {
 			return new SimpleDateFormat(datePattern);
@@ -30,7 +30,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 		fileNamePattern = config.getFileNamePattern();
 		datePattern = config.getDatePattern();
 
-		final FileHandlerConfig underlyingFileHandlerConfig = new FileHandlerConfig(config.getLevel(), config.getFilter(), config.getFormatter(), config.getEncoding(), config.getLimit(), config.getCount(), config.isAppend(), generateFileHandlerPattern(config.getFileNamePattern(), dateFormat.get()));
+		final FileHandlerConfig underlyingFileHandlerConfig = new FileHandlerConfig(config.getLevel(), config.getFilter(), config.getFormatter(), config.getEncoding(), config.getLimit(), config.getCount(), config.isAppend(), generateFileHandlerPattern(config.getFileNamePattern(), dateFormats.get()));
 		underlyingFileHandler = new EnhancedFileHandler(underlyingFileHandlerConfig);
 	}
 
@@ -40,7 +40,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 			return;
 		}
 
-		final String fileHandlerPattern = generateFileHandlerPattern(fileNamePattern, dateFormat.get());
+		final String fileHandlerPattern = generateFileHandlerPattern(fileNamePattern, dateFormats.get());
 		if (!fileHandlerPattern.equals(underlyingFileHandler.getPattern())) { // check if date has changed
 			try {
 				final EnhancedFileHandler oldFileHandler = underlyingFileHandler; // must be closed at the end!
@@ -78,6 +78,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 	@Override
 	public void close() {
 		underlyingFileHandler.close();
+		dateFormats.remove(); // Not a solution but better than nothing
 	}
 
 	public String getDatePattern() {

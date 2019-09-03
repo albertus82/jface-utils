@@ -3,7 +3,7 @@ package it.albertus.util.logging;
 public interface ILoggingManager {
 
 	/**
-	 * Initialize the logging mechanism.
+	 * Initialize the logging engine.
 	 */
 	void initializeLogging();
 

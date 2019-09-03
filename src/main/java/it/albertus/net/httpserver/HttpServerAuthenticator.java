@@ -14,6 +14,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import it.albertus.jface.JFaceMessages;
 import it.albertus.net.httpserver.config.IAuthenticatorConfig;
+import it.albertus.util.StringUtils;
 import it.albertus.util.logging.LoggerFactory;
 
 @SuppressWarnings("restriction")
@@ -23,40 +24,14 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-	private final ThreadLocal<MessageDigest> messageDigests;
 	private final IAuthenticatorConfig configuration;
-	private Charset charset;
+	private Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
 
 	private final ThreadLocal<HttpExchange> exchanges = new ThreadLocal<HttpExchange>();
 
 	public HttpServerAuthenticator(final IAuthenticatorConfig configuration) {
 		super(configuration.getRealm());
 		this.configuration = configuration;
-		final String hashAlgorithm = configuration.getPasswordHashAlgorithm();
-		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
-			charset = Charset.forName(DEFAULT_CHARSET_NAME);
-			messageDigests = new ThreadLocal<MessageDigest>() {
-				@Override
-				protected MessageDigest initialValue() {
-					try {
-						return MessageDigest.getInstance(hashAlgorithm);
-					}
-					catch (final NoSuchAlgorithmException e) {
-						throw new IllegalArgumentException(hashAlgorithm, e);
-					}
-				}
-
-				@Override
-				public MessageDigest get() {
-					final MessageDigest md = super.get();
-					md.reset();
-					return md;
-				}
-			};
-		}
-		else {
-			this.messageDigests = null;
-		}
 	}
 
 	@Override
@@ -95,8 +70,8 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	protected boolean checkPassword(final String provided, final char[] expected) {
 		final char[] computed;
-		if (messageDigests != null) {
-			computed = DatatypeConverter.printHexBinary(messageDigests.get().digest(provided.getBytes(charset))).toLowerCase().toCharArray();
+		if (StringUtils.isNotBlank(configuration.getPasswordHashAlgorithm())) {
+			computed = DatatypeConverter.printHexBinary(newMessageDigest(configuration.getPasswordHashAlgorithm().trim()).digest(provided.getBytes(charset))).toLowerCase().toCharArray();
 		}
 		else {
 			computed = provided.toCharArray();
@@ -133,12 +108,17 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 		this.charset = charset;
 	}
 
-	protected ThreadLocal<MessageDigest> getMessageDigests() {
-		return messageDigests;
-	}
-
 	protected IAuthenticatorConfig getConfiguration() {
 		return configuration;
+	}
+
+	private static MessageDigest newMessageDigest(final String algorithm) {
+		try {
+			return MessageDigest.getInstance(algorithm);
+		}
+		catch (final NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException(algorithm, e);
+		}
 	}
 
 }

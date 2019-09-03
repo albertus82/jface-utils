@@ -274,7 +274,7 @@ public abstract class EnhancedListEditor extends FieldEditor {
 
 	protected abstract String getNewInputObject();
 
-	protected String getModifiedInputObject(final String value) {
+	protected String getModifiedInputObject(final String value) { // NOSONAR Hook
 		return null;
 	}
 

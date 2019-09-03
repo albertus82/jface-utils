@@ -33,8 +33,8 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 
 	private static final Logger logger = LoggerFactory.getLogger(ScrollableConsole.class);
 
-	protected static final PrintStream defaultSysOut = System.out;
-	protected static final PrintStream defaultSysErr = System.err;
+	protected static final PrintStream defaultSysOut = System.out; // NOSONAR
+	protected static final PrintStream defaultSysErr = System.err; // NOSONAR
 	protected static final String newLine = NewLine.SYSTEM_LINE_SEPARATOR;
 
 	protected final boolean redirectSystemStream;

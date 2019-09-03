@@ -138,7 +138,7 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	 *         invalid.
 	 */
 	@Override
-	protected boolean doCheckState() {
+	protected boolean doCheckState() { // NOSONAR Javadoc
 		return super.doCheckState();
 	}
 

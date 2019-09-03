@@ -33,7 +33,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDateFieldEditor.class);
 
-	protected final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+	protected final ThreadLocal<DateFormat> dateFormats = new ThreadLocal<DateFormat>() {
 		@Override
 		protected DateFormat initialValue() {
 			final DateFormat df = new SimpleDateFormat(pattern);
@@ -89,7 +89,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				fireStateChanged(IS_VALID, oldState, isValid());
 			}
 			try {
-				final String newValue = dateFormat.get().format(getDateValue());
+				final String newValue = dateFormats.get().format(getDateValue());
 				if (!newValue.equals(oldValue)) {
 					fireValueChanged(VALUE, oldValue, newValue);
 					oldValue = newValue;
@@ -220,7 +220,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			if (textField != null) {
 				String value = getPreferenceStore().getString(getPreferenceName());
 				try { // Format
-					final DateFormat df = dateFormat.get();
+					final DateFormat df = dateFormats.get();
 					value = df.format(df.parse(value));
 				}
 				catch (final ParseException pe) {/* Ignore */}
@@ -232,7 +232,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			final String value = getPreferenceStore().getString(getPreferenceName());
 			final Calendar calendar = Calendar.getInstance();
 			try {
-				calendar.setTime(dateFormat.get().parse(value));
+				calendar.setTime(dateFormats.get().parse(value));
 			}
 			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
@@ -250,7 +250,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			final String value = getPreferenceStore().getDefaultString(getPreferenceName());
 			final Calendar calendar = Calendar.getInstance();
 			try {
-				calendar.setTime(dateFormat.get().parse(value));
+				calendar.setTime(dateFormats.get().parse(value));
 			}
 			catch (final ParseException pe) {/* Ignore */}
 			setDateTimeValue(calendar);
@@ -266,7 +266,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		else {
 			try {
 				final Date date = getDateValue();
-				final String dateString = dateFormat.get().format(date);
+				final String dateString = dateFormats.get().format(date);
 				getPreferenceStore().setValue(getPreferenceName(), dateString);
 			}
 			catch (final ParseException pe) {
@@ -320,7 +320,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		getTextControl().addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(final DisposeEvent e) {
-				dateFormat.remove();
+				dateFormats.remove();
 			}
 		});
 	}
@@ -363,7 +363,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	public Date getDateValue() throws ParseException {
 		if (dateTime == null) {
-			return dateFormat.get().parse(getTextControl().getText());
+			return dateFormats.get().parse(getTextControl().getText());
 		}
 		else {
 			final Calendar calendar = Calendar.getInstance();
@@ -407,7 +407,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 			setErrorMessage(JFaceMessages.get("err.preferences.date", pattern));
 		}
 		else {
-			final DateFormat df = dateFormat.get();
+			final DateFormat df = dateFormats.get();
 			if (getMinValidValue() != null && getMaxValidValue() == null) {
 				setErrorMessage(JFaceMessages.get("err.preferences.date.from", df.format(getMinValidValue())));
 			}

@@ -85,7 +85,7 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 				else if (getDateTimeControl() != null) {
 					try {
 						final Date date = getDateValue();
-						formatter.updateFontStyle(getDateTimeControl(), defaultValue, dateFormat.get().format(date));
+						formatter.updateFontStyle(getDateTimeControl(), defaultValue, dateFormats.get().format(date));
 					}
 					catch (final ParseException pe) {
 						logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
@@ -102,7 +102,7 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 				final Text text = (Text) fe.widget;
 				final String oldText = text.getText();
 				try {
-					final DateFormat df = dateFormat.get();
+					final DateFormat df = dateFormats.get();
 					final String newText = df.format(df.parse(getTextControl().getText()));
 					if (!oldText.equals(newText)) {
 						text.setText(newText);

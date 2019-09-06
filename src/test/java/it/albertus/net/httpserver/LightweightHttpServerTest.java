@@ -259,7 +259,7 @@ public class LightweightHttpServerTest {
 		server.start();
 
 		final int retryPeriod = 100; // ms
-		final int timeout = 10000; // ms
+		final int timeout = 3000; // ms
 		int time = 0;
 		do {
 			try {

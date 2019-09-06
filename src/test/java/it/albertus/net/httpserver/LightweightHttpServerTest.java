@@ -144,7 +144,7 @@ public class LightweightHttpServerTest {
 	});
 
 	private static boolean sslEnabled = false;
-	private static int port = 8880;
+	private static int port = 49000;
 	private static Authenticator authenticator;
 
 	private static LightweightHttpServer server;
@@ -259,7 +259,7 @@ public class LightweightHttpServerTest {
 		server.start();
 
 		final int retryPeriod = 100; // ms
-		final int timeout = 3000; // ms
+		final int timeout = 3500; // ms
 		int time = 0;
 		do {
 			try {

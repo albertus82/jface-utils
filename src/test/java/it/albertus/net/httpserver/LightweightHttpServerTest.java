@@ -144,7 +144,7 @@ public class LightweightHttpServerTest {
 	});
 
 	private static boolean sslEnabled = false;
-	private static int port = 49000;
+	private static int port = 10000;
 	private static Authenticator authenticator;
 
 	private static LightweightHttpServer server;
@@ -258,7 +258,7 @@ public class LightweightHttpServerTest {
 	private static void startServer() throws InterruptedException {
 		server.start();
 
-		final int retryPeriod = 250; // ms
+		final int retryPeriod = 100; // ms
 		final int timeout = 3500; // ms
 		int time = 0;
 		do {

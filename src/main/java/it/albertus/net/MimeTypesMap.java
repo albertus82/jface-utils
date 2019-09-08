@@ -36,7 +36,7 @@ public class MimeTypesMap {
 	private MimeTypesMap() {
 		InputStream is = null;
 		try {
-			is = MimeTypesMap.class.getResourceAsStream(MIME_TYPES_RESOURCE_NAME);
+			is = getClass().getResourceAsStream(MIME_TYPES_RESOURCE_NAME);
 			map = is != null ? new MimetypesFileTypeMap(is) : new MimetypesFileTypeMap();
 		}
 		finally {
@@ -56,8 +56,8 @@ public class MimeTypesMap {
 	}
 
 	/**
-	 * Return the MIME type based on the specified file name. If no entry is
-	 * found, the type "application/octet-stream" is returned.
+	 * Return the MIME type based on the specified file name. If no entry is found,
+	 * the type "application/octet-stream" is returned.
 	 *
 	 * @param filename the file name
 	 * @return the file's MIME type

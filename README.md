@@ -284,7 +284,7 @@ Now, if you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` o
 
 ### Example
 
-#### Without `Closeable` wrapper - **not recommended**:
+#### Without `Closeable` wrapper - *not recommended*:
 
 ```java
 GC gc = null;

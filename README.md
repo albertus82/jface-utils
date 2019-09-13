@@ -275,3 +275,18 @@ if (Util.isCocoa()) {
 ```
 
 The `hookApplicationMenu` method is overloaded in order to accept **SWT Listeners** or **JFace Actions** for **About** and **Preferences** functions. When one argument is `null`, then the respective menu item will be disabled; so, for instance, if your application does not have a preferences management, you can pass `null` in place of `preferencesListener` or `preferencesAction` and the **Preferences...** menu item will be grayed out.
+
+## SWT Closeable Resources
+
+SWT uses operating system resources to deliver its native graphics and widget functionality. Allocating and freeing operating system resources is traditionally an area of programming that is error prone.
+
+If you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` or `Clipboard` object and you want to make sure that you free its resources after use, you can use the `Closeable` wrappers available in the package `it.albertus.jface.closeable` with a *try-for-resources* statement. The wrapped object will be disposed automatically after the `try` block like any other *closeable* resource:
+
+```java
+try (CloseableResource<GC> cr = new CloseableResource<>(new GC(canvas))) {
+	GC gc = cr.getResource();
+	gc.setBackground(getBackgroundColor());
+	Rectangle canvasBounds = canvas.getBounds();
+	gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
+}
+```

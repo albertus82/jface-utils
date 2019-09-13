@@ -278,15 +278,35 @@ The `hookApplicationMenu` method is overloaded in order to accept **SWT Listener
 
 ## SWT Closeable Resources
 
-SWT uses operating system resources to deliver its native graphics and widget functionality. Allocating and freeing operating system resources is traditionally an area of programming that is error prone.
+SWT uses operating system resources to deliver its native graphics and widget functionality. These resources should be freed when no longer needed, and the traditional way to do it is calling the `dispose()` method on the objects that represent the resources, however this approach may be error prone.
 
-If you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` or `Clipboard` object and you want to make sure that you free its resources after use, you can use the `Closeable` wrappers available in the package `it.albertus.jface.closeable` with a *try-for-resources* statement. The wrapped object will be disposed automatically after the `try` block like any other *closeable* resource:
+Now, if you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` or `Clipboard` and you want to make sure that its resources will be released after use, you can use the `Closeable` wrappers available in the `it.albertus.jface.closeable` package with a *try-for-resources* statement. The wrapped object will be disposed automatically after the `try` block like any other *closeable* resource, so that you will not need to invoke its `dispose()` method.
+
+### Example
+
+#### Without `Closeable` wrapper (not recommended)
+
+```java
+GC gc = null;
+try {
+    gc = new GC(canvas);
+    gc.setBackground(getBackgroundColor());
+    Rectangle canvasBounds = canvas.getBounds();
+    gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
+}
+finally {
+    if (gc != null)
+        gc.dispose()
+}
+```
+
+#### *try-for-resources* with `Closeable` wrapper
 
 ```java
 try (CloseableResource<GC> cr = new CloseableResource<>(new GC(canvas))) {
-	GC gc = cr.getResource();
-	gc.setBackground(getBackgroundColor());
-	Rectangle canvasBounds = canvas.getBounds();
-	gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
+    GC gc = cr.getResource();
+    gc.setBackground(getBackgroundColor());
+    Rectangle canvasBounds = canvas.getBounds();
+    gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
 }
 ```

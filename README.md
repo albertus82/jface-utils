@@ -296,7 +296,7 @@ try {
 }
 finally {
     if (gc != null)
-        gc.dispose()
+        gc.dispose();
 }
 ```
 

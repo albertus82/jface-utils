@@ -15,7 +15,7 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
     - run: mvn clean verify -V
-    - if: os == 'ubuntu-latest' && java == '11'
+    - if: matrix.os == 'ubuntu-latest' && matrix.java == '11'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mvn deploy -Dregistry=https://maven.pkg.github.com/albertus82 -Dtoken=GITHUB_TOKEN

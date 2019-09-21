@@ -29,7 +29,7 @@ Add the following elements to your project's `pom.xml` file:
     <dependency>
         <groupId>it.albertus</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>15.1.0</version>
+        <version>16.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -303,8 +303,8 @@ finally {
 #### *try-for-resources* with `Closeable` wrapper:
 
 ```java
-try (CloseableResource<GC> cr = new CloseableResource<>(new GC(canvas))) {
-    GC gc = cr.getResource();
+try (CloseableResource<GC> wrapper = new CloseableResource<>(new GC(canvas))) {
+    GC gc = wrapper.getResource();
     gc.setBackground(getBackgroundColor());
     Rectangle canvasBounds = canvas.getBounds();
     gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);

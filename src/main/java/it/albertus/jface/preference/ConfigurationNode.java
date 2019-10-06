@@ -1,9 +1,11 @@
 package it.albertus.jface.preference;
 
-import it.albertus.jface.preference.page.BasePreferencePage;
-import it.albertus.jface.preference.page.IPageDefinition;
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.jface.preference.PreferenceNode;
+
+import it.albertus.jface.preference.page.BasePreferencePage;
+import it.albertus.jface.preference.page.IPageDefinition;
 
 public class ConfigurationNode extends PreferenceNode {
 
@@ -24,13 +26,19 @@ public class ConfigurationNode extends PreferenceNode {
 		final Class<? extends BasePreferencePage> pageClass = pageDefinition.getPageClass();
 		if (pageClass != null) {
 			try {
-				page = pageClass.newInstance();
+				page = pageClass.getDeclaredConstructor().newInstance();
 			}
-			catch (final InstantiationException ie) {
-				throw new IllegalStateException(ie);
+			catch (final InstantiationException e) {
+				throw new IllegalStateException(e);
 			}
-			catch (final IllegalAccessException iae) {
-				throw new IllegalStateException(iae);
+			catch (final IllegalAccessException e) {
+				throw new IllegalStateException(e);
+			}
+			catch (final InvocationTargetException e) {
+				throw new IllegalStateException(e);
+			}
+			catch (final NoSuchMethodException e) {
+				throw new IllegalStateException(e);
 			}
 		}
 		else {

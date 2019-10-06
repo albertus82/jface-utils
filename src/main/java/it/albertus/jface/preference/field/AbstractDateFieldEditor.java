@@ -317,7 +317,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		layout.horizontalSpacing = HORIZONTAL_GAP;
 		parent.setLayout(layout);
 		doFillIntoGrid(parent, layout.numColumns);
-		getTextControl().addDisposeListener(new DisposeListener() {
+		getLabelControl().addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				dateFormats.remove();

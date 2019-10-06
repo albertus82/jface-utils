@@ -17,6 +17,7 @@
 	</licenses>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<swt.version>4.3.2</swt.version>
 		<compile.source.jdk>1.6</compile.source.jdk>
 		<compile.target.jdk>1.6</compile.target.jdk>
@@ -202,7 +203,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
 					<source>${compile.source.jdk}</source>
 					<target>${compile.target.jdk}</target>
 				</configuration>

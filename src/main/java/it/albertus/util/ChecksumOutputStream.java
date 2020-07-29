@@ -15,7 +15,7 @@ import java.util.zip.Checksum;
  * 
  * @see Checksum
  */
-public abstract class ChecksumOutputStream<T extends Checksum> extends OutputStream {
+public class ChecksumOutputStream<T extends Checksum> extends OutputStream {
 
 	protected final T checksum;
 	protected final int bits;

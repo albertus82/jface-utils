@@ -6,7 +6,7 @@
 
 	<groupId>it.albertus</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>16.0.1</version>
+	<version>16.0.2</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 
@@ -25,7 +25,8 @@
 		<maven.repo.name>maven</maven.repo.name>
 		<maven.branch>master</maven.branch>
 		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
-		<version.date>${maven.build.timestamp}</version.date>
+		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
+		<version.date>${project.build.outputTimestamp}</version.date>
 	</properties>
 
 	<profiles>
@@ -170,9 +171,26 @@
 
 		<plugins>
 			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.0.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M2</version>
+				<version>3.0.0-M3</version>
 				<executions>
 					<execution>
 						<id>enforce-bytecode-version</id>
@@ -193,7 +211,7 @@
 					<dependency>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>extra-enforcer-rules</artifactId>
-						<version>1.0-beta-9</version>
+						<version>1.2</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -211,7 +229,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>animal-sniffer-maven-plugin</artifactId>
-				<version>1.16</version>
+				<version>1.18</version>
 				<executions>
 					<execution>
 						<phase>process-classes</phase>
@@ -245,7 +263,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>3.2.0</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -262,7 +280,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -277,7 +295,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.4</version>
+				<version>0.8.5</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -393,7 +411,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

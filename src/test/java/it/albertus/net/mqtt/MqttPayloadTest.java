@@ -13,9 +13,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import it.albertus.net.mqtt.MqttPayload;
-import it.albertus.net.mqtt.MqttPayloadDecoder;
-import it.albertus.net.mqtt.MqttPayloadEncoder;
 import it.albertus.util.NewLine;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -120,7 +117,7 @@ public class MqttPayloadTest {
 		final Map<String, String> customHeaders = new HashMap<String, String>();
 		customHeaders.put("X-Custom-Header", "Custom value");
 		customHeaders.put("X-Empty-Val-Header", "");
-		customHeaders.put("X-Null-Val-Header", null);
+//		customHeaders.put("X-Null-Val-Header", null);
 		customHeaders.put("Content-Encoding", "identity");
 
 		for (final Entry<String, String> e : customHeaders.entrySet()) {
@@ -141,7 +138,7 @@ public class MqttPayloadTest {
 		// Headers added manually
 		Assert.assertEquals("Invalid header value", "Custom value", mp2.getHeaders().getFirst("X-Custom-Header"));
 		Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Empty-Val-Header"));
-		Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Null-Val-Header"));
+//		Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Null-Val-Header"));
 		Assert.assertEquals("Invalid header value", "identity", mp2.getHeaders().getFirst("Content-Encoding"));
 
 		final byte[] decoded = decoder.decode(mp2);

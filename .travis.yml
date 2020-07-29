@@ -3,4 +3,4 @@ language: java
 matrix:
   include:
     - os: linux
-      jdk: oraclejdk8
+      jdk: oraclejdk11

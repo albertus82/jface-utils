@@ -24,7 +24,7 @@
 		<maven.repo.owner>albertus82</maven.repo.owner>
 		<maven.repo.name>maven</maven.repo.name>
 		<maven.branch>master</maven.branch>
-		<version.date>${git.commit.time}</version.date>
+		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 	</properties>
 
 	<profiles>
@@ -181,8 +181,28 @@
 					</execution>
 				</executions>
 				<configuration>
-					<dateFormat>yyyy-MM-dd</dateFormat>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<version>2.1.1</version>
+				<executions>
+					<execution>
+		          	<?m2e ignore?>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source>
+								project.properties['version.date'] = "${git.commit.time}".substring(0, 10)
+							</source>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -338,7 +358,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 

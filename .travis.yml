@@ -1,6 +1,0 @@
-language: java
-
-matrix:
-  include:
-    - os: linux
-      jdk: oraclejdk11

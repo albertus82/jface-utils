@@ -99,34 +99,31 @@ public class SystemInformationDialog extends Dialog {
 	 */
 	public static boolean isAvailable() {
 		final SecurityManager sm = System.getSecurityManager();
-		if (sm != null) {
-			int count = 3;
-			try {
-				sm.checkPropertiesAccess(); // system properties
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			try {
-				sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables 
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			try {
-				sm.checkPermission(new ManagementPermission("monitor")); // jvm args 
-			}
-			catch (final SecurityException e) {
-				logger.log(Level.FINE, e.toString(), e);
-				count--;
-			}
-			if (count == 0) {
-				return false;
-			}
+		if (sm == null) {
+			return true;
 		}
-		return true;
+		try {
+			sm.checkPropertiesAccess(); // system properties
+			return true;
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+		try {
+			sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables
+			return true;
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+		try {
+			sm.checkPermission(new ManagementPermission("monitor")); // jvm args
+			return true;
+		}
+		catch (final SecurityException e) {
+			logger.log(Level.FINE, e.toString(), e);
+		}
+		return false;
 	}
 
 	/**

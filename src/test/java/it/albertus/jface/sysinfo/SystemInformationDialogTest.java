@@ -5,7 +5,9 @@ import java.security.Permission;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import it.albertus.util.logging.LoggerFactory;
@@ -14,10 +16,26 @@ public class SystemInformationDialogTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialogTest.class);
 
+	private static boolean skip = false;
+
+	@BeforeClass
+	public static void beforeAll() {
+		if (System.getSecurityManager() != null) {
+			logger.log(Level.WARNING, "SecurityManager detected, ignoring test {0}.", SystemInformationDialogTest.class);
+			skip = true;
+		}
+	}
+
+	@AfterClass
+	public static void afterAll() {
+		if (!skip) {
+			System.setSecurityManager(null);
+		}
+	}
+
 	@Test
 	public void testIsAvailable() {
-		if (System.getSecurityManager() != null) {
-			logger.log(Level.WARNING, "SecurityManager detected, ignoring test {0}.", getClass());
+		if (skip) {
 			return;
 		}
 

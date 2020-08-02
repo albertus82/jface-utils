@@ -29,7 +29,7 @@ Add the following elements to your project's `pom.xml` file:
     <dependency>
         <groupId>it.albertus</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>16.0.2</version>
+        <version>16.0.3</version>
     </dependency>
 </dependencies>
 ```

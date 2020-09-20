@@ -31,6 +31,18 @@ Add the following elements to your project's `pom.xml` file:
         <artifactId>jface-utils</artifactId>
         <version>17.0.0</version>
     </dependency>
+
+    <!-- The following dependencies are optional; add them only if you want to use the BrotliAdapter class -->
+    <dependency>
+        <groupId>org.brotli</groupId>
+        <artifactId>dec</artifactId>
+        <version>0.1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github</groupId>
+        <artifactId>brotli-haxe</artifactId>
+        <version>20170316-1902</version>
+    </dependency>
 </dependencies>
 ```
 ### Manual download

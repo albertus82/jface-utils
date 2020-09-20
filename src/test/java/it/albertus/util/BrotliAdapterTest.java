@@ -85,9 +85,13 @@ public class BrotliAdapterTest {
 		public void run() {
 			try {
 				final long t0 = System.nanoTime();
-				decompressed = instance.decompress(instance.compress(original.getBytes(CHARSET_NAME), 2));
+				final byte[] compressed = instance.compress(original.getBytes(CHARSET_NAME), 2);
 				final long t1 = System.nanoTime();
-				logger.log(Level.INFO, "Brotli decompressed in {0} ms.", TimeUnit.NANOSECONDS.toMillis(t1 - t0));
+				logger.log(Level.INFO, "Brotli compressed in {0,number,#} ms.", TimeUnit.NANOSECONDS.toMillis(t1 - t0));
+				final long t2 = System.nanoTime();
+				decompressed = instance.decompress(compressed);
+				final long t3 = System.nanoTime();
+				logger.log(Level.INFO, "Brotli decompressed in {0} ms.", Double.toString(TimeUnit.NANOSECONDS.toMicros(t3 - t2) / 1000d));
 			}
 			catch (final Exception e) {
 				throw new RuntimeException(e);

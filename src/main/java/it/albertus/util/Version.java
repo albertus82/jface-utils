@@ -9,6 +9,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
@@ -65,6 +67,7 @@ public class Version {
 	 * 
 	 * @return the version number as {@link String}.
 	 */
+	@Nullable
 	public static String getNumber() {
 		return properties.getProperty(KEY_VERSION_NUMBER);
 	}
@@ -77,6 +80,7 @@ public class Version {
 	 * @throws ParseException if the {@value #KEY_VERSION_DATE} property is not a
 	 *                        date in the {@value #ISO_8601_PATTERN} format.
 	 */
+	@Nullable
 	public static Date getDate() throws ParseException {
 		final String property = properties.getProperty(KEY_VERSION_DATE);
 		if (property != null) {

@@ -1,16 +1,22 @@
 package it.albertus.util;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import it.albertus.util.logging.LoggerFactory;
+
 public class BrotliAdapterTest {
+
+	private static final Logger logger = LoggerFactory.getLogger(BrotliAdapterTest.class);
 
 	private static final int JOBS_COUNT = 50;
 	private static final int CONCURRENT_THREADS = 4;
@@ -78,9 +84,12 @@ public class BrotliAdapterTest {
 		@Override
 		public void run() {
 			try {
+				final long t0 = System.nanoTime();
 				decompressed = instance.decompress(instance.compress(original.getBytes(CHARSET_NAME), 2));
+				final long t1 = System.nanoTime();
+				logger.log(Level.INFO, "Brotli decompressed in {0} ms.", TimeUnit.NANOSECONDS.toMillis(t1 - t0));
 			}
-			catch (final UnsupportedEncodingException e) {
+			catch (final Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

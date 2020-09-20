@@ -12,6 +12,11 @@ import java.util.logging.Logger;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.util.logging.LoggerFactory;
 
+/**
+ * Reads the {@value Version#VERSION_FILE_NAME} file from the class path root or
+ * the {@code META-INF} directory. The read values can be retrieved using
+ * {@link #getNumber()} and {@link #getDate()}.
+ */
 public class Version {
 
 	private static final Logger logger = LoggerFactory.getLogger(Version.class);
@@ -22,73 +27,68 @@ public class Version {
 	private static final String KEY_VERSION_NUMBER = "version.number";
 	private static final String KEY_VERSION_DATE = "version.date";
 
-	private final Properties properties = new Properties();
-	private final String fileName;
+	private static final Properties properties = new Properties();
 
-	protected Version() {
-		this(VERSION_FILE_NAME);
-	}
-
-	protected Version(final String fileName) {
-		this.fileName = fileName;
-		try {
-			load();
-		}
-		catch (final IOException e) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.load.file", fileName), e);
-		}
-	}
-
-	// Lazy initialization...
-	private static class Singleton {
-		private static final Version instance = new Version();
-
-		private Singleton() {
-			throw new IllegalAccessError();
-		}
-	}
-
-	public static Version getInstance() {
-		return Singleton.instance;
-	}
-
-	private void load() throws IOException {
+	static {
 		InputStream in = null;
+		String resourceName = '/' + VERSION_FILE_NAME;
 		try {
-			in = getClass().getResourceAsStream('/' + fileName);
+			in = Version.class.getResourceAsStream(resourceName);
 			if (in != null) {
 				properties.load(in);
 			}
 			else {
-				in = getClass().getResourceAsStream("/META-INF/" + fileName);
+				resourceName = "/META-INF/" + VERSION_FILE_NAME;
+				in = Version.class.getResourceAsStream(resourceName);
 				if (in != null) {
 					properties.load(in);
 				}
 			}
 		}
+		catch (final IOException e) {
+			logger.log(Level.WARNING, JFaceMessages.get("err.load.file", resourceName), e);
+		}
 		finally {
 			if (in != null) {
-				in.close();
+				try {
+					in.close();
+				}
+				catch (final IOException e) {
+					logger.log(Level.FINE, "Cannot close resource \"" + resourceName + "\".", e);
+				}
 			}
 		}
 	}
 
-	public String getNumber() {
+	/**
+	 * Return the version number or {@code null} if not present.
+	 * 
+	 * @return the version number as {@link String}.
+	 */
+	public static String getNumber() {
 		return properties.getProperty(KEY_VERSION_NUMBER);
 	}
 
-	public Date getDate() {
-		try {
-			return new SimpleDateFormat(ISO_8601_PATTERN).parse(properties.getProperty(KEY_VERSION_DATE));
+	/**
+	 * Return the version date or {@code null} if not present.
+	 * 
+	 * @return the version date.
+	 * 
+	 * @throws ParseException if the {@value #KEY_VERSION_DATE} property is not a
+	 *                        date in the {@value #ISO_8601_PATTERN} format.
+	 */
+	public static Date getDate() throws ParseException {
+		final String property = properties.getProperty(KEY_VERSION_DATE);
+		if (property != null) {
+			return new SimpleDateFormat(ISO_8601_PATTERN).parse(property);
 		}
-		catch (final ParseException pe) {
-			throw new IllegalArgumentException(pe);
+		else {
+			return null;
 		}
 	}
 
-	@Override
-	public String toString() {
-		return properties.toString();
+	private Version() {
+		throw new IllegalAccessError();
 	}
 
 }

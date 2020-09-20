@@ -78,18 +78,18 @@ public class BrotliAdapter {
 	 * 
 	 * @param compressed the compressed byte array
 	 * 
-	 * @return the decompressed byte array
+	 * @return the decompressed byte array.
 	 * 
-	 * @throws IOException in case of corrupted data or source stream problems
+	 * @throws IOException in case of corrupted data.
 	 */
 	public byte[] decompress(final byte[] compressed) throws IOException {
 		ByteArrayInputStream bais = null;
-		ByteArrayOutputStream baos = null;
 		BrotliInputStream bis = null;
+		ByteArrayOutputStream baos = null;
 		try {
 			bais = new ByteArrayInputStream(compressed);
-			baos = new ByteArrayOutputStream();
 			bis = new BrotliInputStream(bais, BrotliInputStream.DEFAULT_INTERNAL_BUFFER_SIZE, customDictionary);
+			baos = new ByteArrayOutputStream();
 			IOUtils.copy(bis, baos, 8192);
 		}
 		finally {

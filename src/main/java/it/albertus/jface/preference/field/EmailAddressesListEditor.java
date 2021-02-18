@@ -157,11 +157,9 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 
 		private class TextModifyListener implements ModifyListener {
 
-			private static final String REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-
 			@Override
 			public void modifyText(final ModifyEvent me) {
-				if (textEmailAddress.getText().trim().isEmpty() || !textEmailAddress.getText().trim().toLowerCase().matches(REGEX)) {
+				if (!validateEmailAddress(textEmailAddress.getText())) {
 					if (okButton.isEnabled()) {
 						okButton.setEnabled(false);
 					}
@@ -173,6 +171,19 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 				}
 			}
 		}
+	}
+
+	static boolean validateEmailAddress(String text) {
+		text = text.trim();
+		if (text.indexOf('@') == -1 || text.length() < 3) {
+			return false;
+		}
+		final String local = text.substring(0, text.indexOf('@'));
+		if (local.trim().isEmpty()) {
+			return false;
+		}
+		final String domain = text.substring(text.indexOf('@') + 1);
+		return domain.indexOf('.') != -1 && !domain.startsWith(".") && !domain.endsWith(".");
 	}
 
 }

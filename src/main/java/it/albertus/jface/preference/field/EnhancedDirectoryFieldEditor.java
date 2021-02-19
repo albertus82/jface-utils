@@ -7,8 +7,10 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Text;
 
@@ -38,6 +40,17 @@ public class EnhancedDirectoryFieldEditor extends DirectoryFieldEditor implement
 		setErrorMessage(JFaceMessages.get("err.preferences.directory"));
 		setTextLimit(MAX_PATH);
 		addDecoration();
+	}
+
+	@Override
+	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
+		super.doFillIntoGrid(parent, numColumns);
+		final Control control = getTextControl();
+		if (control != null && !control.isDisposed() && control.getLayoutData() instanceof GridData) {
+			final GridData gd = (GridData) control.getLayoutData();
+			gd.widthHint = control.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+			gd.grabExcessHorizontalSpace = false;
+		}
 	}
 
 	@Override

@@ -7,8 +7,10 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import it.albertus.jface.Formatter;
 import it.albertus.jface.JFaceMessages;
@@ -42,6 +44,17 @@ public class EnhancedFileFieldEditor extends FileFieldEditor implements FieldEdi
 		super(name, labelText, enforceAbsolute, parent);
 		this.enforceAbsolute = enforceAbsolute;
 		init();
+	}
+
+	@Override
+	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
+		super.doFillIntoGrid(parent, numColumns);
+		final Control control = getTextControl();
+		if (control != null && !control.isDisposed() && control.getLayoutData() instanceof GridData) {
+			final GridData gd = (GridData) control.getLayoutData();
+			gd.widthHint = control.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+			gd.grabExcessHorizontalSpace = false;
+		}
 	}
 
 	@Override

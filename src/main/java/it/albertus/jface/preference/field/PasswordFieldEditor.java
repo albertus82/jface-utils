@@ -16,7 +16,9 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
@@ -59,6 +61,17 @@ public class PasswordFieldEditor extends StringFieldEditor {
 			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
 		}
 		init();
+	}
+
+	@Override
+	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
+		super.doFillIntoGrid(parent, numColumns);
+		final Control control = getTextControl();
+		if (control != null && !control.isDisposed() && control.getLayoutData() instanceof GridData) {
+			final GridData gd = (GridData) control.getLayoutData();
+			gd.widthHint = control.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+			gd.grabExcessHorizontalSpace = false;
+		}
 	}
 
 	@Override

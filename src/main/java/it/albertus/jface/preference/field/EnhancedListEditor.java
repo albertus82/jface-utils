@@ -165,7 +165,8 @@ public abstract class EnhancedListEditor extends FieldEditor {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.verticalAlignment = GridData.FILL;
 		gd.horizontalSpan = numColumns - 1;
-		gd.grabExcessHorizontalSpace = true;
+		gd.widthHint = list.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+		gd.grabExcessHorizontalSpace = false;
 		list.setLayoutData(gd);
 
 		buttonBox = getButtonBoxControl(parent);

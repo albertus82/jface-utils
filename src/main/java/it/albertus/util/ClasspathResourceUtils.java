@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import it.albertus.util.logging.LoggerFactory;
 
 /**
  * List resources available from the classpath.
@@ -18,6 +22,8 @@ import java.util.zip.ZipFile;
  *      resources from classpath directory - Stack Overflow</a>
  */
 public class ClasspathResourceUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(ClasspathResourceUtils.class);
 
 	private ClasspathResourceUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -54,27 +60,39 @@ public class ClasspathResourceUtils {
 
 	private static List<Resource> getResourcesFromJarFile(final File file, final Pattern pattern) {
 		final List<Resource> retval = new ArrayList<Resource>();
-		ZipFile zf;
+		ZipFile zf = null;
 		try {
 			zf = new ZipFile(file);
+			final String currentPath = new File("").getCanonicalPath();
+			logger.log(Level.FINER, "currentPath: {0}", currentPath);
+			final Enumeration<? extends ZipEntry> e = zf.entries();
+			while (e.hasMoreElements()) {
+				final ZipEntry ze = e.nextElement();
+				final String fileName = ze.getName();
+				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
+				logger.log(Level.FINER, "entryPath: {0}", entryPath);
+				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
+					logger.log(Level.WARNING, "Ignoring ZipEntry {0} not within target directory!", ze);
+					continue;
+				}
+				final boolean accept = pattern.matcher(fileName).matches();
+				if (accept && !ze.isDirectory()) {
+					retval.add(new Resource(fileName, ze.getSize(), ze.getTime()));
+				}
+			}
 		}
 		catch (final IOException e) {
 			throw new IOError(e);
 		}
-		final Enumeration<? extends ZipEntry> e = zf.entries();
-		while (e.hasMoreElements()) {
-			final ZipEntry ze = e.nextElement();
-			final String fileName = ze.getName();
-			final boolean accept = pattern.matcher(fileName).matches();
-			if (accept && !ze.isDirectory()) {
-				retval.add(new Resource(fileName, ze.getSize(), ze.getTime()));
+		finally {
+			if (zf != null) {
+				try {
+					zf.close();
+				}
+				catch (final IOException e) {
+					logger.log(Level.WARNING, "Exception closing " + zf, e);
+				}
 			}
-		}
-		try {
-			zf.close();
-		}
-		catch (final IOException ex) {
-			throw new IOError(ex);
 		}
 		return retval;
 	}
@@ -100,8 +118,8 @@ public class ClasspathResourceUtils {
 	/**
 	 * List the resources that match args[0].
 	 * 
-	 * @param args args[0] is the pattern to match, or list all resources if
-	 *        there are no args.
+	 * @param args args[0] is the pattern to match, or list all resources if there
+	 *             are no args.
 	 */
 	public static void main(final String[] args) {
 		final Pattern pattern;

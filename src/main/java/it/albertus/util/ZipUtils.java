@@ -76,7 +76,7 @@ public class ZipUtils {
 
 	public static void test(final File zipFile) throws IOException {
 		final String currentPath = new File("").getCanonicalPath();
-		logger.log(Level.FINE, "currentPath: {0}", currentPath);
+		logger.log(Level.FINER, "currentPath: {0}", currentPath);
 		ZipFile zf = null;
 		try {
 			zf = new ZipFile(zipFile);
@@ -89,7 +89,7 @@ public class ZipUtils {
 				final long expectedCrc = ze.getCrc();
 				final String fileName = ze.getName();
 				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
-				logger.log(Level.FINE, "entryPath: {0}", entryPath);
+				logger.log(Level.FINER, "entryPath: {0}", entryPath);
 				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
 					throw new SecurityException("ZipEntry not within target directory!");
 				}

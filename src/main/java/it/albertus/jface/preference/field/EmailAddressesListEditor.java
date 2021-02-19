@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import it.albertus.jface.JFaceMessages;
+import it.albertus.util.EmailUtils;
 
 public class EmailAddressesListEditor extends EnhancedListEditor {
 
@@ -159,7 +160,7 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 
 			@Override
 			public void modifyText(final ModifyEvent me) {
-				if (!validateEmailAddress(textEmailAddress.getText())) {
+				if (!EmailUtils.validateAddress(textEmailAddress.getText().trim())) {
 					if (okButton.isEnabled()) {
 						okButton.setEnabled(false);
 					}
@@ -171,19 +172,6 @@ public class EmailAddressesListEditor extends EnhancedListEditor {
 				}
 			}
 		}
-	}
-
-	static boolean validateEmailAddress(String text) {
-		text = text.trim();
-		if (text.indexOf('@') == -1 || text.length() < 3) {
-			return false;
-		}
-		final String local = text.substring(0, text.indexOf('@'));
-		if (local.trim().isEmpty()) {
-			return false;
-		}
-		final String domain = text.substring(text.indexOf('@') + 1);
-		return domain.indexOf('.') != -1 && !domain.startsWith(".") && !domain.endsWith(".");
 	}
 
 }

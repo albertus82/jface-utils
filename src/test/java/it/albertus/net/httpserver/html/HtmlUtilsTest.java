@@ -3,8 +3,6 @@ package it.albertus.net.httpserver.html;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.albertus.net.httpserver.html.HtmlUtils;
-
 public class HtmlUtilsTest {
 
 	private static final String petrarca = "e 'l viso di pietosi color farsi,\r\nnon so se vero o falso, mi parea:\r\ni' che l'esca amorosa al petto avea,\r\nqual meraviglia se di subito arsi?";

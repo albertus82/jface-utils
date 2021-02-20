@@ -5,8 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.albertus.net.httpserver.BaseHttpHandler;
-import it.albertus.net.httpserver.HttpServerAuthenticator;
 import it.albertus.net.httpserver.config.HttpServerDefaultConfig;
 import it.albertus.net.httpserver.config.SingleUserAuthenticatorDefaultConfig;
 import it.albertus.util.NewLine;

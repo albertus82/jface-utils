@@ -54,7 +54,7 @@ abstract class ComboFieldEditor extends FieldEditor {
 	 * arranged as: { {name1, value1}, {name2, value2}, ...}
 	 * @param parent the parent composite
 	 */
-	public ComboFieldEditor(String name, String labelText, String[][] entryNamesAndValues, Composite parent) {
+	protected ComboFieldEditor(String name, String labelText, String[][] entryNamesAndValues, Composite parent) {
 		init(name, labelText);
 		Assert.isTrue(checkArray(entryNamesAndValues));
 		fEntryNamesAndValues = entryNamesAndValues;

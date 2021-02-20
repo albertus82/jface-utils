@@ -30,7 +30,7 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 		GridDataFactory.swtDefaults().applyTo(label);
 
 		final Combo combo = getComboBoxControl(parent);
-		GridDataFactory.swtDefaults().span(comboColumns, 1).align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(combo);
+		GridDataFactory.swtDefaults().span(comboColumns, 1).align(SWT.FILL, SWT.CENTER).hint(combo.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT).grab(true, false).applyTo(combo);
 		combo.setFont(parent.getFont());
 	}
 

@@ -80,6 +80,12 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 		return name; // Value not present in the array.
 	}
 
+	@Override
+	public void store() {
+		getComboBoxControl().notifyListeners(SWT.FocusOut, null); // Fix for macOS.
+		super.store();
+	}
+
 	protected String getNameForValue(final String value) {
 		for (final String[] entry : getEntryNamesAndValues()) {
 			if (value.equals(entry[1])) {

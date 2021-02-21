@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 import it.albertus.jface.Formatter;
@@ -115,10 +116,13 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 
 	/** Trims combo text and tries to associate it with an existing entry. */
 	protected void cleanComboText() {
-		final String oldText = getComboBoxControl().getText();
-		final String newText = getNameForValue(oldText.trim());
-		if (!newText.equals(oldText)) {
-			getComboBoxControl().setText(newText);
+		final Combo combo = getComboBoxControl();
+		if (combo != null && !combo.isDisposed()) {
+			final String oldText = combo.getText();
+			final String newText = getNameForValue(oldText.trim());
+			if (!newText.equals(oldText)) {
+				combo.setText(newText);
+			}
 		}
 	}
 

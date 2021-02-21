@@ -82,10 +82,7 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 
 	@Override
 	public void store() {
-		final Combo combo = getComboBoxControl();
-		if (combo != null && !combo.isDisposed()) {
-			combo.notifyListeners(SWT.FocusOut, null); // Fix for macOS.
-		}
+		updateValue(); // Fix for macOS.
 		super.store();
 	}
 
@@ -99,11 +96,14 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 	}
 
 	protected void updateValue() {
-		final String oldValue = getValue();
-		final String name = getComboBoxControl().getText();
-		setValue(getValueForName(name));
-		setPresentsDefaultValue(false);
-		fireValueChanged(VALUE, oldValue, getValue());
+		final Combo combo = getComboBoxControl();
+		if (combo != null && !combo.isDisposed()) {
+			final String oldValue = getValue();
+			final String name = combo.getText();
+			setValue(getValueForName(name));
+			setPresentsDefaultValue(false);
+			fireValueChanged(VALUE, oldValue, getValue());
+		}
 	}
 
 	public void setTextLimit(final int limit) {

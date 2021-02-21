@@ -141,7 +141,7 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 *         invalid.
 	 */
 	protected boolean checkState() {
-		if (getValue() == null || getValue().isEmpty()) {
+		if (getValue() == null || getValue().trim().isEmpty()) {
 			return isEmptyStringAllowed();
 		}
 		else {

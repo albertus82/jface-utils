@@ -82,7 +82,10 @@ public class EditableComboFieldEditor extends ComboFieldEditor {
 
 	@Override
 	public void store() {
-		getComboBoxControl().notifyListeners(SWT.FocusOut, null); // Fix for macOS.
+		final Combo combo = getComboBoxControl();
+		if (combo != null && !combo.isDisposed()) {
+			combo.notifyListeners(SWT.FocusOut, null); // Fix for macOS.
+		}
 		super.store();
 	}
 

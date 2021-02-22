@@ -24,6 +24,7 @@ import it.albertus.jface.preference.field.DateFieldEditor;
 import it.albertus.jface.preference.field.DefaultBooleanFieldEditor;
 import it.albertus.jface.preference.field.DefaultComboFieldEditor;
 import it.albertus.jface.preference.field.DefaultRadioGroupFieldEditor;
+import it.albertus.jface.preference.field.DelimiterComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleComboFieldEditor;
 import it.albertus.jface.preference.field.DoubleFieldEditor;
 import it.albertus.jface.preference.field.EditableComboFieldEditor;
@@ -66,6 +67,7 @@ public enum MyPreference implements IPreference {
 	COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("combo").label("Combo").defaultValue("value 1").build(), new FieldEditorDetailsBuilder(DefaultComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 1", "value 1").put("Label 2", "value 2")).build()),
 	EDITABLE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("editableCombo").label("Editable Combo").build(), new FieldEditorDetailsBuilder(EditableComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 3", "value 3").put("Label 4", "value 4")).emptyStringAllowed(true).build()),
 	VALIDATED_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("validatedCombo").label("Validated Combo").defaultValue("value 5").build(), new FieldEditorDetailsBuilder(ValidatedComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Label 5", "value 5")).emptyStringAllowed(false).build()),
+	DELIMITER_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO).name("delimiterCombo").label("Delimiter Combo").defaultValue(" ").build(), new FieldEditorDetailsBuilder(DelimiterComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("Whitespace", " ").put("Tab", "\t").put("Comma", ",").put("Semicolon", ";")).emptyStringAllowed(false).build()),
 
 	BYTE_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("byteCombo").label("Byte Combo").defaultValue(123).build(), new FieldEditorDetailsBuilder(ByteComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 123", 123)).emptyStringAllowed(true).build()),
 	SHORT_COMBO(new PreferenceDetailsBuilder(MyPageDefinition.COMBO_NUMERIC).name("shortCombo").label("Short Combo").defaultValue(1234).build(), new FieldEditorDetailsBuilder(ShortComboFieldEditor.class).labelsAndValues(new StaticLabelsAndValues("label for 321", 321)).numberMaximum(2000).build()),

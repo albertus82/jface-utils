@@ -5,3 +5,4 @@
 /.classpath
 /sonar-project.properties
 /configuration.properties
+hs_err_pid*.log

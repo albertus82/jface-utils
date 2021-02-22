@@ -1,5 +1,7 @@
 package it.albertus.jface.preference.field;
 
+import javax.annotation.Nullable;
+
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
@@ -109,12 +111,12 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 		fireValueChanged(IS_VALID, oldValue, valid);
 	}
 
-	/** Trims value (from configuration file) to empty. */
-	protected String cleanValue(final String value) {
+	/** Trim value (from configuration file) to empty. */
+	protected String cleanValue(@Nullable final String value) {
 		return value != null ? value.trim() : "";
 	}
 
-	/** Trims combo text and tries to associate it with an existing entry. */
+	/** Trim combo text and try to associate it with an existing entry. */
 	protected void cleanComboText() {
 		final Combo combo = getComboBoxControl();
 		if (combo != null && !combo.isDisposed()) {

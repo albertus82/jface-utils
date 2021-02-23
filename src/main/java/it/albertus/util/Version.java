@@ -16,7 +16,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 /**
  * Reads the {@value Version#VERSION_FILE_NAME} file from the class path root or
- * the {@code META-INF} directory. The read values can be retrieved using
+ * the {@code META-INF} directory. The values read can be retrieved using
  * {@link #getNumber()} and {@link #getDate()}.
  */
 public class Version {

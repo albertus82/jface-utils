@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,11 +54,11 @@ public abstract class MapDialog extends Dialog implements LineParser {
 
 	private Image[] images;
 
-	public MapDialog(final Shell parent) {
+	protected MapDialog(final Shell parent) {
 		this(parent, SWT.SHEET | SWT.RESIZE | SWT.MAX);
 	}
 
-	public MapDialog(final Shell parent, final int style) {
+	protected MapDialog(final Shell parent, final int style) {
 		super(parent, style);
 	}
 
@@ -142,7 +143,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 		try {
 			isr = new InputStreamReader(is, "UTF-8");
 			br = new BufferedReader(isr);
-			tempFile = File.createTempFile("map-", ".html");
+			tempFile = File.createTempFile(UUID.randomUUID().toString().replace("-", ""), ".html");
 			fw = new FileWriter(tempFile);
 			bw = new BufferedWriter(fw);
 			String line;

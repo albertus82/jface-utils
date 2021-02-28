@@ -68,9 +68,9 @@ public class ClasspathResourceUtils {
 			final String currentPath = new File("").getCanonicalPath();
 			logger.log(Level.FINER, "currentPath: {0}", currentPath);
 			final Enumeration<? extends ZipEntry> e = zf.entries();
-			int totalEntryArchive = 0;
+			int entryCount = 0;
 			while (e.hasMoreElements()) {
-				if (++totalEntryArchive > THRESHOLD_ENTRIES) {
+				if (++entryCount > THRESHOLD_ENTRIES) {
 					logger.log(Level.WARNING, "Too many ZIP entries!");
 					break;
 				}

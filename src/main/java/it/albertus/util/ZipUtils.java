@@ -86,9 +86,9 @@ public class ZipUtils {
 			if (!e.hasMoreElements()) {
 				throw new IOException("No ZIP entries found");
 			}
-			int totalEntryArchive = 0;
+			int entryCount = 0;
 			while (e.hasMoreElements()) {
-				if (++totalEntryArchive > THRESHOLD_ENTRIES) {
+				if (++entryCount > THRESHOLD_ENTRIES) {
 					throw new SecurityException("Too many ZIP entries");
 				}
 				final ZipEntry ze = e.nextElement();

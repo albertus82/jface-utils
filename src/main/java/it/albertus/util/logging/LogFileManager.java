@@ -22,7 +22,7 @@ public class LogFileManager implements ILogFileManager {
 	private FilenameFilter logFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
-			return name != null && name.toLowerCase(Locale.ROOT).contains(getLogFileExtension()) && !name.endsWith(getLockFileExtension());
+			return name != null && (name.toLowerCase().contains(getLogFileExtension()) || name.toLowerCase(Locale.ROOT).contains(getLogFileExtension())) && !name.endsWith(getLockFileExtension());
 		}
 	};
 	private FilenameFilter lockFilenameFilter = new FilenameFilter() {

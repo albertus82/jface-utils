@@ -80,7 +80,7 @@ public class PropertiesConfiguration implements IPropertiesConfiguration {
 	public String toString() {
 		final Map<String, String> props = new TreeMap<String, String>();
 		for (final Object key : getProperties().keySet()) {
-			props.put(key.toString(), key.toString().toLowerCase(Locale.ROOT).contains("password") ? PASSWORD_PLACEHOLDER : getProperties().getProperty(key.toString()));
+			props.put(key.toString(), (key.toString().toLowerCase().contains("password") || key.toString().toLowerCase(Locale.ROOT).contains("password")) ? PASSWORD_PLACEHOLDER : getProperties().getProperty(key.toString()));
 		}
 		return props.toString();
 	}

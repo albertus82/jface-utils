@@ -18,9 +18,11 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ZipUtils {
 
+	public static final String ZIP_FILE_EXTENSION = ".zip";
+
 	private static final Logger logger = LoggerFactory.getLogger(ZipUtils.class);
 
-	public static final String ZIP_FILE_EXTENSION = ".zip";
+	private static final int THRESHOLD_ENTRIES = 0xFFFF;
 
 	private ZipUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -82,16 +84,20 @@ public class ZipUtils {
 			zf = new ZipFile(zipFile);
 			final Enumeration<? extends ZipEntry> e = zf.entries();
 			if (!e.hasMoreElements()) {
-				throw new IOException("No zip entries found");
+				throw new IOException("No ZIP entries found");
 			}
+			int totalEntryArchive = 0;
 			while (e.hasMoreElements()) {
+				if (++totalEntryArchive > THRESHOLD_ENTRIES) {
+					throw new SecurityException("Too many ZIP entries");
+				}
 				final ZipEntry ze = e.nextElement();
 				final long expectedCrc = ze.getCrc();
 				final String fileName = ze.getName();
 				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
 				logger.log(Level.FINER, "entryPath: {0}", entryPath);
 				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
-					throw new SecurityException("ZipEntry not within target directory!");
+					throw new SecurityException("ZIP entry not within target directory");
 				}
 				InputStream is = null;
 				CRC32OutputStream cos = null;
@@ -105,7 +111,7 @@ public class ZipUtils {
 				}
 				final long actualCrc = cos.getValue();
 				if (expectedCrc != actualCrc) {
-					throw new IOException(String.format("Invalid CRC value for file \"%s\", expected 0x%08X, actual 0x%08X.", fileName, expectedCrc, actualCrc));
+					throw new IOException(String.format("Invalid CRC value for file \"%s\", expected 0x%08X, actual 0x%08X", fileName, expectedCrc, actualCrc));
 				}
 			}
 		}

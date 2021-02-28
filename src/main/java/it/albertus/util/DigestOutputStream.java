@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -117,7 +118,7 @@ public class DigestOutputStream extends OutputStream {
 	public String toString() {
 		final byte[] value = getValue();
 		if (value != null) {
-			return DatatypeConverter.printHexBinary(value).toLowerCase();
+			return DatatypeConverter.printHexBinary(value).toLowerCase(Locale.ROOT);
 		}
 		else {
 			return "";

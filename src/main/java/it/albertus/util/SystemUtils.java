@@ -1,6 +1,7 @@
 package it.albertus.util;
 
 import java.io.File;
+import java.util.Locale;
 
 import javax.swing.filechooser.FileSystemView;
 
@@ -19,7 +20,7 @@ public class SystemUtils {
 
 	public static synchronized String getOsSpecificConfigurationDir() {
 		if (osSpecificConfigurationDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase(Locale.ROOT);
 			if (os.contains("win") && System.getenv("APPDATA") != null) {
 				osSpecificConfigurationDir = System.getenv("APPDATA");
 			}
@@ -35,7 +36,7 @@ public class SystemUtils {
 
 	public static synchronized String getOsSpecificLocalAppDataDir() {
 		if (osSpecificLocalAppDataDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase(Locale.ROOT);
 			if (os.contains("win") && System.getenv("LOCALAPPDATA") != null) {
 				osSpecificLocalAppDataDir = System.getenv("LOCALAPPDATA");
 			}
@@ -51,7 +52,7 @@ public class SystemUtils {
 
 	public static synchronized String getOsSpecificDocumentsDir() {
 		if (osSpecificDocumentsDir == null) {
-			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase();
+			final String os = StringUtils.trimToEmpty(System.getProperty(OS_NAME)).toLowerCase(Locale.ROOT);
 			if (os.contains("win")) {
 				osSpecificDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath(); // slow and not thread-safe!
 			}

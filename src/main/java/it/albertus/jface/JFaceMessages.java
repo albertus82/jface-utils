@@ -15,7 +15,7 @@ public class JFaceMessages {
 
 	private static final Logger logger = LoggerFactory.getLogger(JFaceMessages.class);
 
-	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase();
+	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase(Locale.ROOT);
 
 	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
 

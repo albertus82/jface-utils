@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.xml.bind.DatatypeConverter;
@@ -145,7 +146,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		}
 		else {
 			messageDigest.reset();
-			value = DatatypeConverter.printHexBinary(messageDigest.digest(textField.getText().getBytes(charset))).toLowerCase().toCharArray();
+			value = DatatypeConverter.printHexBinary(messageDigest.digest(textField.getText().getBytes(charset))).toLowerCase(Locale.ROOT).toCharArray();
 		}
 		setPresentsDefaultValue(false);
 		boolean oldState = isValid();

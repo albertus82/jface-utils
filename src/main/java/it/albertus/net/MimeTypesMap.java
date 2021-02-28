@@ -2,6 +2,7 @@ package it.albertus.net;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Locale;
 
 import javax.activation.FileTypeMap;
 import javax.activation.MimetypesFileTypeMap;
@@ -63,7 +64,7 @@ public class MimeTypesMap {
 	 * @return the file's MIME type
 	 */
 	public String getContentType(final String filename) {
-		return map.getContentType(filename.trim().toLowerCase());
+		return map.getContentType(filename.trim().toLowerCase(Locale.ROOT));
 	}
 
 }

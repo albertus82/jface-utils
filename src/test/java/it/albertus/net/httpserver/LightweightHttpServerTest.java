@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -1613,7 +1614,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(200, connection.getResponseCode());
 			//		Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
-			final String allow = connection.getHeaderField("Allow").toLowerCase();
+			final String allow = connection.getHeaderField("Allow").toLowerCase(Locale.ROOT);
 			Assert.assertTrue(allow.contains(HttpMethod.GET) && allow.contains(HttpMethod.HEAD) && allow.contains(HttpMethod.POST) && allow.contains(HttpMethod.TRACE) && allow.contains(HttpMethod.OPTIONS));
 			InputStream is = null;
 			final ByteArrayOutputStream os = new ByteArrayOutputStream();

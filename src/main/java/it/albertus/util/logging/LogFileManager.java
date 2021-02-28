@@ -3,6 +3,7 @@ package it.albertus.util.logging;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import it.albertus.util.ISupplier;
@@ -21,7 +22,7 @@ public class LogFileManager implements ILogFileManager {
 	private FilenameFilter logFilenameFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(final File dir, final String name) {
-			return name != null && name.toLowerCase().contains(getLogFileExtension()) && !name.endsWith(getLockFileExtension());
+			return name != null && name.toLowerCase(Locale.ROOT).contains(getLogFileExtension()) && !name.endsWith(getLockFileExtension());
 		}
 	};
 	private FilenameFilter lockFilenameFilter = new FilenameFilter() {

@@ -3,6 +3,7 @@ package it.albertus.net.httpserver;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,7 +72,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 	protected boolean checkPassword(final String provided, final char[] expected) {
 		final char[] computed;
 		if (StringUtils.isNotBlank(configuration.getPasswordHashAlgorithm())) {
-			computed = DatatypeConverter.printHexBinary(newMessageDigest(configuration.getPasswordHashAlgorithm().trim()).digest(provided.getBytes(charset))).toLowerCase().toCharArray();
+			computed = DatatypeConverter.printHexBinary(newMessageDigest(configuration.getPasswordHashAlgorithm().trim()).digest(provided.getBytes(charset))).toLowerCase(Locale.ROOT).toCharArray();
 		}
 		else {
 			computed = provided.toCharArray();

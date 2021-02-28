@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -143,7 +144,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 		try {
 			isr = new InputStreamReader(is, "UTF-8");
 			br = new BufferedReader(isr);
-			tempFile = File.createTempFile(UUID.randomUUID().toString().replace("-", ""), ".html");
+			tempFile = File.createTempFile(UUID.randomUUID().toString().replace("-", "").toLowerCase(Locale.ROOT), ".html");
 			fw = new FileWriter(tempFile);
 			bw = new BufferedWriter(fw);
 			String line;

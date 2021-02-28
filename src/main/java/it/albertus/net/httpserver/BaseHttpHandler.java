@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -121,7 +122,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		for (final Entry<String, List<String>> entry : headers.entrySet()) {
 			final String key = entry.getKey();
 			if (key != null) {
-				final String lowerCaseKey = key.toLowerCase();
+				final String lowerCaseKey = key.toLowerCase(Locale.ROOT);
 				for (final String maskedHeaderKey : maskedHeaderKeys) {
 					if (lowerCaseKey.contains(maskedHeaderKey)) {
 						headersToLog.put(key, "****");
@@ -439,7 +440,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected String generateEtag(final byte[] payload) {
-		return '"' + DatatypeConverter.printHexBinary(newMd5Digest().digest(payload)).toLowerCase() + '"';
+		return '"' + DatatypeConverter.printHexBinary(newMd5Digest().digest(payload)).toLowerCase(Locale.ROOT) + '"';
 	}
 
 	protected String generateEtag(final File file) throws IOException {

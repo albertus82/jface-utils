@@ -59,7 +59,7 @@ public class ImageUtils {
 
 		// Reconstruct SWT image
 		final ImageData imageData = convertToSWT(img);
-		return new org.eclipse.swt.graphics.Image(Display.getDefault(), imageData);
+		return new Image(Display.getDefault(), imageData);
 	}
 
 	public static BufferedImage convertToAWT(final ImageData data) {

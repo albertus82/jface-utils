@@ -9,6 +9,7 @@ environment:
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
       ARTIFACTS_PATH: target\*.jar
+      CHECKSUMS_PATH: target\checksums.md
       VT_API_KEY:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
@@ -24,7 +25,7 @@ after_build:
 artifacts:
   - path: $(ARTIFACTS_PATH)
     type: file
-  - path: target\checksums.md
+  - path: $(CHECKSUMS_PATH)
     type: file
 
 deploy:

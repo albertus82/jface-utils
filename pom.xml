@@ -276,8 +276,8 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<X-Compile-Source-JDK>${compile.source.jdk}</X-Compile-Source-JDK>
-							<X-Compile-Target-JDK>${compile.target.jdk}</X-Compile-Target-JDK>
+							<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
+							<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>

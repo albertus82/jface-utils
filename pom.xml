@@ -29,6 +29,24 @@
 
 	<profiles>
 		<profile>
+			<id>cocoa-macosx-x86_64</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.swt</groupId>
+					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+					<version>${swt.version}</version>
+					<classifier>debug</classifier>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
 			<id>gtk-linux-armhf</id>
 			<activation>
 				<os>
@@ -46,19 +64,18 @@
 		</profile>
 
 		<profile>
-			<id>cocoa-macosx-x86_64</id>
+			<id>gtk-linux-aarch64</id>
 			<activation>
 				<os>
-					<family>mac</family>
+					<arch>aarch64</arch>
 				</os>
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
-					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
+				    <groupId>org.eclipse.platform</groupId>
+				    <artifactId>org.eclipse.swt.gtk.linux.aarch64</artifactId>
+				    <version>3.115.100</version>
+				    <scope>provided</scope>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Display;
 
 import it.albertus.util.IOUtils;
 
-/* https://stackoverflow.com/questions/4752748/swt-how-to-do-high-quality-image-resize */
 public class ImageUtils {
 
 	private ImageUtils() {
@@ -37,6 +36,9 @@ public class ImageUtils {
 	 * @param image source image
 	 * @param scale scale factor (<1 = downscaling, >1 = upscaling)
 	 * @return scaled image
+	 * 
+	 * @see <a href="https://stackoverflow.com/q/4752748/3260495">SWT: How to do
+	 *      High Quality Image Resize</a>
 	 */
 	public static Image resize(final Image image, final float scale) {
 		final int w = image.getBounds().width;

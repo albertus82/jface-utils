@@ -12,7 +12,7 @@ public class LoggingSupport {
 
 	public static final String ROOT_LOGGER_NAME = "";
 
-	public static final String DEFAULT_FORMAT = "%1$td/%1$tm/%1$tY %1$tH:%1$tM:%1$tS.%tL %4$s %3$s - %5$s%6$s%n";
+	public static final String DEFAULT_FORMAT = "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%tL %4$s %3$s - %5$s%6$s%n";
 
 	private static final String SYSTEM_PROPERTY_FORMAT = "java.util.logging.SimpleFormatter.format";
 	private static final String SYSTEM_PROPERTY_CONFIG_CLASS = "java.util.logging.config.class";

@@ -422,4 +422,12 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		}
 	}
 
+	@Override
+	public void setEnabled(final boolean enabled, final Composite parent) {
+		super.setEnabled(enabled, parent);
+		if (dateTime != null && !dateTime.isDisposed()) {
+			dateTime.setEnabled(enabled);
+		}
+	}
+
 }

@@ -208,13 +208,14 @@ public class FieldEditorFactory {
 			throw new IllegalStateException("Unsupported FieldEditor: " + type);
 		}
 
-		postConstruct(fieldEditor, details);
+		postConstruct(fieldEditor, details, parent);
 
 		return fieldEditor;
 	}
 
-	protected void postConstruct(final FieldEditor fieldEditor, final FieldEditorDetails details) {
-		if (details != null && fieldEditor instanceof FieldEditorDefault) {
+	protected void postConstruct(final FieldEditor fieldEditor, final FieldEditorDetails details, final Composite parent) {
+		if (details != null) {
+			if (fieldEditor instanceof FieldEditorDefault) {
 			final FieldEditorDefault fieldEditorDefault = (FieldEditorDefault) fieldEditor;
 			if (details.getDefaultToolTip() != null) {
 				fieldEditorDefault.setDefaultToolTip(details.getDefaultToolTip());
@@ -224,6 +225,10 @@ public class FieldEditorFactory {
 			}
 			else if (details.getBoldCustomValues() != null) {
 				fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
+			}
+			}
+			if (!details.isEnabled()) {
+				fieldEditor.setEnabled(false, parent);
 			}
 		}
 	}

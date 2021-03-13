@@ -31,7 +31,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractDateFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractDateFieldEditor.class);
 
 	protected final ThreadLocal<DateFormat> dateFormats = new ThreadLocal<DateFormat>() {
 		@Override
@@ -57,17 +57,44 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	private ControlDecoration controlDecorator;
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final Composite parent) {
+	/**
+	 * Creates a date field editor of unlimited width with
+	 * {@link StringFieldEditor#VALIDATE_ON_KEY_STROKE} strategy.
+	 * 
+	 * @see #AbstractDateFieldEditor(String, String, String, int, int, int,
+	 *      Composite)
+	 */
+	protected AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final Composite parent) {
 		super(name, labelText, parent);
 		init(pattern, style, VALIDATE_ON_KEY_STROKE, parent);
 	}
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final Composite parent) {
+	/**
+	 * Creates a date field editor with
+	 * {@link StringFieldEditor#VALIDATE_ON_KEY_STROKE} strategy.
+	 * 
+	 * @see #AbstractDateFieldEditor(String, String, String, int, int, int,
+	 *      Composite)
+	 */
+	protected AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final Composite parent) {
 		super(name, labelText, width, parent);
 		init(pattern, style, VALIDATE_ON_KEY_STROKE, parent);
 	}
 
-	public AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
+	/**
+	 * Creates a date field editor.
+	 * 
+	 * @param name      the name of the preference this field editor works on
+	 * @param labelText the label text of the field editor
+	 * @param pattern   the date pattern expected
+	 * @param style     the style of the control, can be {@link SWT#NONE} or
+	 *                  {@link SWT#DROP_DOWN}
+	 * @param width     the width of the text input field in characters, or
+	 *                  <code>UNLIMITED</code> for no limit
+	 * @param strategy  the strategy for validating the text
+	 * @param parent    the parent of the field editor's control
+	 */
+	protected AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);
 		init(pattern, style, strategy, parent);
 	}
@@ -96,7 +123,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				}
 			}
 			catch (final ParseException pe) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
+				log.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 			}
 		}
 	}
@@ -109,7 +136,9 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		}
 		else {
 			getLabelControl(parent);
-			dateTime = getDateTimeControl(parent);
+			if (dateTime == null) {
+				dateTime = getDateTimeControl(parent);
+			}
 			final GridData gd = new GridData();
 			gd.horizontalSpan = numColumns - 1;
 			gd.horizontalAlignment = GridData.FILL;
@@ -118,7 +147,21 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		}
 	}
 
-	protected DateTime getDateTimeControl(final Composite parent) {
+	@Override
+	public Text getTextControl(final Composite parent) {
+		if (style == SWT.NONE) {
+			return super.getTextControl(parent);
+		}
+		throw new IllegalStateException("style is " + style);
+	}
+
+	public DateTime getDateTimeControl(final Composite parent) {
+		if (dateTime != null) {
+			return dateTime;
+		}
+		if (style == SWT.NONE) {
+			throw new IllegalStateException("style is " + style);
+		}
 		final DateTime dt = new DateTime(parent, style);
 		switch (validateStrategy) {
 		case VALIDATE_ON_KEY_STROKE:
@@ -164,15 +207,18 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	@Override
 	protected void adjustForNumColumns(final int numColumns) {
 		final GridData gd;
-		if (getTextControl() != null) {
+		if (style == SWT.NONE) {
 			gd = (GridData) getTextControl().getLayoutData();
 		}
 		else {
-			gd = (GridData) dateTime.getLayoutData();
+			gd = (GridData) getDateTimeControl().getLayoutData();
 		}
 		if (gd != null) {
 			gd.horizontalSpan = numColumns - 1;
 			gd.grabExcessHorizontalSpace = gd.horizontalSpan == 1;
+		}
+		else {
+			log.warning("layoutData is null");
 		}
 	}
 
@@ -272,7 +318,7 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 				getPreferenceStore().setValue(getPreferenceName(), dateString);
 			}
 			catch (final ParseException pe) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
+				log.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 			}
 		}
 	}
@@ -424,9 +470,12 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 
 	@Override
 	public void setEnabled(final boolean enabled, final Composite parent) {
-		super.setEnabled(enabled, parent);
-		if (dateTime != null && !dateTime.isDisposed()) {
-			dateTime.setEnabled(enabled);
+		if (style == SWT.NONE) {
+			super.setEnabled(enabled, parent);
+		}
+		else {
+			getLabelControl(parent).setEnabled(enabled);
+			getDateTimeControl(parent).setEnabled(enabled);
 		}
 	}
 

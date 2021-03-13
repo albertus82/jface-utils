@@ -15,7 +15,7 @@ public class FieldEditorDetails {
 	private Class<? extends FieldEditor> fieldEditorClass;
 
 	// Generic
-	private boolean enabled = true;
+	private boolean disabled;
 	private Boolean emptyStringAllowed;
 	private Integer horizontalSpan;
 	private Image[] icons;
@@ -71,8 +71,8 @@ public class FieldEditorDetails {
 
 	private FieldEditorDetails(final FieldEditorDetailsBuilder builder) {
 		this.fieldEditorClass = builder.fieldEditorClass;
+		this.disabled = builder.disabled;
 		this.emptyStringAllowed = builder.emptyStringAllowed;
-		this.enabled = builder.enabled;
 		this.horizontalSpan = builder.horizontalSpan;
 		this.icons = builder.icons;
 		this.style = builder.style;
@@ -111,20 +111,20 @@ public class FieldEditorDetails {
 		this.fieldEditorClass = fieldEditorClass;
 	}
 
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(final boolean disabled) {
+		this.disabled = disabled;
+	}
+
 	public Boolean getEmptyStringAllowed() {
 		return emptyStringAllowed;
 	}
 
 	public void setEmptyStringAllowed(final Boolean emptyStringAllowed) {
 		this.emptyStringAllowed = emptyStringAllowed;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(final boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	public Integer getHorizontalSpan() {
@@ -356,8 +356,8 @@ public class FieldEditorDetails {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("FieldEditorDetails [fieldEditorClass=");
 		builder.append(fieldEditorClass);
-		builder.append(", enabled=");
-		builder.append(enabled);
+		builder.append(", disabled=");
+		builder.append(disabled);
 		builder.append(", emptyStringAllowed=");
 		builder.append(emptyStringAllowed);
 		builder.append(", horizontalSpan=");
@@ -423,7 +423,7 @@ public class FieldEditorDetails {
 	public static class FieldEditorDetailsBuilder {
 		private final Class<? extends FieldEditor> fieldEditorClass;
 		private Boolean emptyStringAllowed;
-		private boolean enabled = true;
+		private boolean disabled;
 		private Integer horizontalSpan;
 		private Image[] icons;
 		private Integer style;
@@ -461,9 +461,9 @@ public class FieldEditorDetails {
 			this.emptyStringAllowed = emptyStringAllowed;
 			return this;
 		}
-		
-		public FieldEditorDetailsBuilder enabled(final boolean enabled) {
-			this.enabled = enabled;
+
+		public FieldEditorDetailsBuilder disabled(final boolean disabled) {
+			this.disabled = disabled;
 			return this;
 		}
 

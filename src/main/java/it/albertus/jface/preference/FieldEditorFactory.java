@@ -216,18 +216,18 @@ public class FieldEditorFactory {
 	protected void postConstruct(final FieldEditor fieldEditor, final FieldEditorDetails details, final Composite parent) {
 		if (details != null) {
 			if (fieldEditor instanceof FieldEditorDefault) {
-			final FieldEditorDefault fieldEditorDefault = (FieldEditorDefault) fieldEditor;
-			if (details.getDefaultToolTip() != null) {
-				fieldEditorDefault.setDefaultToolTip(details.getDefaultToolTip());
+				final FieldEditorDefault fieldEditorDefault = (FieldEditorDefault) fieldEditor;
+				if (details.getDefaultToolTip() != null) {
+					fieldEditorDefault.setDefaultToolTip(details.getDefaultToolTip());
+				}
+				if (!isBoldCustomValues()) {
+					fieldEditorDefault.setBoldCustomValues(false);
+				}
+				else if (details.getBoldCustomValues() != null) {
+					fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
+				}
 			}
-			if (!isBoldCustomValues()) {
-				fieldEditorDefault.setBoldCustomValues(false);
-			}
-			else if (details.getBoldCustomValues() != null) {
-				fieldEditorDefault.setBoldCustomValues(details.getBoldCustomValues());
-			}
-			}
-			if (!details.isEnabled()) {
+			if (details.isDisabled()) {
 				fieldEditor.setEnabled(false, parent);
 			}
 		}

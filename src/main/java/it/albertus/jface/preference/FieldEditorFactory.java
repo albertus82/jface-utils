@@ -205,7 +205,7 @@ public class FieldEditorFactory {
 			fieldEditor = createWrapStringFieldEditor(name, label, parent, details);
 		}
 		else {
-			throw new IllegalStateException("Unsupported FieldEditor: " + type);
+			throw new IllegalArgumentException("Unsupported FieldEditor: " + type);
 		}
 
 		postConstruct(fieldEditor, details, parent);

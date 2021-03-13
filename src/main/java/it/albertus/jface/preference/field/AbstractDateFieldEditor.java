@@ -170,8 +170,10 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 		else {
 			gd = (GridData) dateTime.getLayoutData();
 		}
-		gd.horizontalSpan = numColumns - 1;
-		gd.grabExcessHorizontalSpace = gd.horizontalSpan == 1;
+		if (gd != null) {
+			gd.horizontalSpan = numColumns - 1;
+			gd.grabExcessHorizontalSpace = gd.horizontalSpan == 1;
+		}
 	}
 
 	@Override

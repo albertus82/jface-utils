@@ -29,7 +29,7 @@ Add the following elements to your project's `pom.xml` file:
     <dependency>
         <groupId>it.albertus</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>17.2.0</version>
+        <version>17.3.0</version>
     </dependency>
 
     <!-- The following dependencies are optional; add them only if you want to use the BrotliAdapter class -->

@@ -50,6 +50,7 @@
 			<id>gtk-linux-armhf</id>
 			<activation>
 				<os>
+					<name>linux</name>
 					<arch>arm</arch>
 				</os>
 			</activation>
@@ -67,6 +68,7 @@
 			<id>gtk-linux-aarch64</id>
 			<activation>
 				<os>
+					<name>linux</name>
 					<arch>aarch64</arch>
 				</os>
 			</activation>
@@ -90,9 +92,8 @@
 			<id>gtk-linux-x86</id>
 			<activation>
 				<os>
-					<family>unix</family>
+					<name>linux</name>
 					<arch>i386</arch>
-					<name>!mac os x</name>
 				</os>
 			</activation>
 			<dependencies>
@@ -110,9 +111,8 @@
 			<id>gtk-linux-x86_64</id>
 			<activation>
 				<os>
-					<family>unix</family>
+					<name>linux</name>
 					<arch>amd64</arch>
-					<name>!mac os x</name>
 				</os>
 			</activation>
 			<dependencies>
@@ -194,7 +194,7 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
-				<version>4.0.3</version>
+				<version>4.0.4</version>
 				<executions>
 					<execution>
 						<goals>
@@ -421,6 +421,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

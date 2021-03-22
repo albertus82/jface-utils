@@ -1,10 +1,10 @@
+image: Visual Studio 2019
+
 version: '{build}'
 
 clone_depth: 50
 
 environment:
-  MAVEN_VERSION: 3.6.3
-
   matrix:
     - platform: x86
       JAVA_HOME: ${ProgramFiles(x86)}\Java\jdk1.8.0
@@ -16,10 +16,6 @@ environment:
         secure: 3sqJDjLAS708tR/LiAqKLZTnLLrhGJuWVzzI4nCjLbUUsZB+PPRG3y0BWWnMo14CDhBT4v6yjHTA23RdopoHDWJlBcGhKELKZOLhHsnJLU8=
       GITHUB_SITE_MAVEN_PLUGIN_TOKEN:
         secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
-
-install:
-  - cinst maven -i -y --version %MAVEN_VERSION%
-  - PATH C:\ProgramData\chocolatey\lib\maven\apache-maven-%MAVEN_VERSION%\bin;%PATH%
 
 build_script:
   - mvn clean install -B -V

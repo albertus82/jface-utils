@@ -4,7 +4,6 @@ JFaceUtils
 [![Latest release](https://img.shields.io/github/release/albertus82/jface-utils.svg)](https://github.com/albertus82/jface-utils/releases/latest)
 [![Build status](https://github.com/albertus82/jface-utils/workflows/build/badge.svg)](https://github.com/albertus82/jface-utils/actions)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/albertus82/jface-utils?branch=master&svg=true)](https://ci.appveyor.com/project/albertus82/jface-utils)
-[![Build status](https://dev.azure.com/albertus82/jface-utils/_apis/build/status/master)](https://dev.azure.com/albertus82/jface-utils/_build/latest)
 [![Known Vulnerabilities](https://snyk.io/test/github/albertus82/jface-utils/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/albertus82/jface-utils?targetFile=pom.xml)
 
 ### Java SWT/JFace Utility Library including a Preferences Framework

@@ -203,20 +203,19 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>groovy-maven-plugin</artifactId>
-				<version>2.1.1</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
-		          	<?m2e ignore?>
-						<phase>generate-resources</phase>
+						<phase>initialize</phase>
 						<goals>
-							<goal>execute</goal>
+							<goal>regex-property</goal>
 						</goals>
 						<configuration>
-							<source>
-								project.properties['version.date'] = "${git.commit.time}".substring(0, 10)
-							</source>
+							<value>${git.commit.time}</value> <!-- yyyy-MM-dd'T'HH:mm:ssXXX -->
+							<regex>T.*$</regex>
+							<name>version.date</name> <!-- yyyy-MM-dd -->
 						</configuration>
 					</execution>
 				</executions>

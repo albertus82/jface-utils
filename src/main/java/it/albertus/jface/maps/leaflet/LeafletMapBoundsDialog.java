@@ -127,17 +127,10 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 		browser.setFocus();
 
-		final Thread updateBoundsThread = new Thread(new Runnable() {
+		final Thread updateBoundsThread = new Thread() {
 			@Override
 			public void run() {
 				while (!browser.isDisposed()) {
-					new DisplayThreadExecutor(browser, Mode.SYNC).execute(new Runnable() {
-						@Override
-						public void run() {
-							log.log(Level.FINE, "Updating bound fields from browser");
-							function.function(null);
-						}
-					});
 					try {
 						TimeUnit.SECONDS.sleep(1);
 					}
@@ -145,10 +138,24 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 						Thread.currentThread().interrupt();
 						log.log(Level.FINE, "Interrupted:", e);
 					}
+					new DisplayThreadExecutor(browser, Mode.SYNC).execute(new Runnable() {
+						@Override
+						public void run() {
+							log.log(Level.FINE, "Updating bound fields from map");
+							if (!browser.isDisposed()) {
+								try {
+									function.function(null);
+								}
+								catch (final RuntimeException e) {
+									log.log(Level.FINE, "Cannot update bound fields from map:", e);
+								}
+							}
+						}
+					});
 				}
-				log.log(Level.FINE, "Browser closed -> Terminating thread");
+				log.log(Level.FINE, "Browser disposed -> Terminating {0}", this);
 			}
-		});
+		};
 		updateBoundsThread.setDaemon(true);
 		updateBoundsThread.setPriority(Thread.MIN_PRIORITY);
 		updateBoundsThread.start();

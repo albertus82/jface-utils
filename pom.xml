@@ -362,7 +362,7 @@
 									<fileset dir="${checksums.directory}" />
 								</concat>
 								<loadfile property="checksums.file.contents" srcFile="${checksums.file}" />
-								<echo message="${checksums.file.contents}" />
+								<echo level="info" message="${checksums.file.contents}" />
 							</target>
 						</configuration>
 						<goals>

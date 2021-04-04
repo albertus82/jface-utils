@@ -153,6 +153,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 				if (line != null) {
 					bw.write(line);
 					bw.newLine();
+					logger.log(Level.FINE, line);
 				}
 			}
 			pageUrl = tempFile.toURI();

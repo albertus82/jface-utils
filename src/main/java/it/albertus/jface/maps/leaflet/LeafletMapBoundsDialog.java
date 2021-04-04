@@ -1,6 +1,9 @@
 package it.albertus.jface.maps.leaflet;
 
 import java.text.NumberFormat;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -16,15 +19,20 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import it.albertus.jface.DisplayThreadExecutor;
+import it.albertus.jface.DisplayThreadExecutor.Mode;
 import it.albertus.jface.JFaceMessages;
 import it.albertus.jface.maps.CoordinateUtils;
 import it.albertus.jface.maps.MapBounds;
 import it.albertus.jface.maps.MapBoundsDialog;
 import it.albertus.jface.maps.MapBoundsDialogCreationHelper;
+import it.albertus.util.logging.LoggerFactory;
 
 public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBoundsDialog {
 
 	private static final String MAP_ONEVENTS_FN = "mapOnEvents";
+
+	private static final Logger log = LoggerFactory.getLogger(LeafletMapBoundsDialog.class);
 
 	private MapBounds bounds = new MapBounds();
 
@@ -118,6 +126,32 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 		createButtonBox(browser);
 
 		browser.setFocus();
+
+		final Thread updateBoundsThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (!browser.isDisposed()) {
+					new DisplayThreadExecutor(browser, Mode.SYNC).execute(new Runnable() {
+						@Override
+						public void run() {
+							log.log(Level.FINE, "Updating bound fields from browser");
+							function.function(null);
+						}
+					});
+					try {
+						TimeUnit.SECONDS.sleep(1);
+					}
+					catch (final InterruptedException e) {
+						Thread.currentThread().interrupt();
+						log.log(Level.FINE, "Interrupted:", e);
+					}
+				}
+				log.log(Level.FINE, "Browser closed -> Terminating thread");
+			}
+		});
+		updateBoundsThread.setDaemon(true);
+		updateBoundsThread.setPriority(Thread.MIN_PRIORITY);
+		updateBoundsThread.start();
 	}
 
 	@Override

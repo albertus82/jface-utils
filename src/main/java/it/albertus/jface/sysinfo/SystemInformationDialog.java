@@ -149,7 +149,7 @@ public class SystemInformationDialog extends Dialog {
 				box.open();
 			}
 		}
-		catch (final Exception e) {
+		catch (final Exception e) { // NOSONAR Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here. "InterruptedException" should not be ignored (java:S2142)
 			throw new IllegalStateException(e);
 		}
 		finally {
@@ -585,7 +585,7 @@ public class SystemInformationDialog extends Dialog {
 				SwtUtils.unblockShell(shell);
 				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, shell.getDisplay().getSystemImage(SWT.ICON_WARNING));
 			}
-			catch (final Exception e) {
+			catch (final Exception e) { // NOSONAR Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here. "InterruptedException" should not be ignored (java:S2142)
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
 				logger.log(Level.SEVERE, message, e);
 				SwtUtils.unblockShell(shell);

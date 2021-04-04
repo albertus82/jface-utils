@@ -43,9 +43,9 @@ public abstract class MapDialog extends Dialog implements LineParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapDialog.class);
 
-	public static final String OPTIONS_PLACEHOLDER = "/*[[OPTIONS]]*/";
-	public static final String MARKERS_PLACEHOLDER = "/*[[MARKERS]]*/";
-	public static final String OTHER_PLACEHOLDER = "/*[[OTHER]]*/";
+	public static final String OPTIONS_PLACEHOLDER = "/* {{options}} */";
+	public static final String MARKERS_PLACEHOLDER = "/* {{markers}} */";
+	public static final String OTHER_PLACEHOLDER = "/* {{other}} */";
 
 	protected static final String HTML_FILE_NAME = "map.html";
 
@@ -151,9 +151,10 @@ public abstract class MapDialog extends Dialog implements LineParser {
 			while ((line = br.readLine()) != null) {
 				line = lineParser.parseLine(line);
 				if (line != null) {
+					line = line.trim();
+					logger.log(Level.FINE, line);
 					bw.write(line);
 					bw.newLine();
-					logger.log(Level.FINE, line);
 				}
 			}
 			pageUrl = tempFile.toURI();

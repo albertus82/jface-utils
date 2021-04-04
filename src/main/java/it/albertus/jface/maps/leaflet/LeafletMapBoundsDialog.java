@@ -127,7 +127,7 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 
 		browser.setFocus();
 
-		final Thread updateBoundsThread = new Thread() { // useful if the browser is not fully functional
+		final Thread updateBoundsThread = new Thread() { // useful if the Browser is not fully functional
 			@Override
 			public void run() {
 				while (!browser.isDisposed()) {
@@ -141,8 +141,8 @@ public class LeafletMapBoundsDialog extends LeafletMapDialog implements MapBound
 					new DisplayThreadExecutor(browser, Mode.SYNC).execute(new Runnable() {
 						@Override
 						public void run() {
-							log.log(Level.FINE, "Updating bound fields from map...");
 							if (!browser.isDisposed()) {
+								log.log(Level.FINE, "Updating bound fields from map...");
 								try {
 									function.function(null);
 									log.log(Level.FINE, "Bound fields updated successfully.");

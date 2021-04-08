@@ -18,10 +18,10 @@ environment:
         secure: iZF8b6d29Wk2VAubvw8tEwOMt0kB0Krq2e0Ie0Up15EfEfEBnvgs05/LbjhIODWi
 
 build_script:
-  - mvn clean install -e -B -V
+  - mvn clean install -B -V -e -ntp
 
 after_build:
-  - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests -e -B -V
+  - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests -B -V -e
   - cmd: IF DEFINED VT_API_KEY FOR %%f IN (%ARTIFACTS_PATH%) DO ECHO Submitting file "%%f" to VirusTotal... & curl -v -F "file=@%%f" -F apikey=%VT_API_KEY% https://www.virustotal.com/vtapi/v2/file/scan & ECHO File "%%f" submitted to VirusTotal. & TIMEOUT 15 /NOBREAK
 
 artifacts:

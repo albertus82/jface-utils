@@ -14,9 +14,9 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: ${{ matrix.java }}
-    - run: mvn clean install -e -B -V
+    - run: mvn clean install -B -V -e -ntp
     - if: matrix.os == 'ubuntu-latest' && matrix.java == '11'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: git fetch --unshallow && mvn install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=albertus82-github -e -B -V
+      run: git fetch --unshallow && mvn install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=albertus82-github -B -V -e -ntp

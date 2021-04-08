@@ -9,6 +9,8 @@ jobs:
         java: [ '8', '9', '10', '11' ]
         os: [ 'windows-latest', 'ubuntu-latest', 'macOS-latest' ]
     runs-on: ${{ matrix.os }}
+    env:
+      MAVEN_OPTS: -Dhttp.keepAlive=false
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1

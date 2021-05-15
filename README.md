@@ -33,6 +33,16 @@ Add the following elements to your project's `pom.xml` file:
 
     <!-- Required -->
     <dependency>
+        <groupId>org.eclipse.swt</groupId>
+        <artifactId>org.eclipse.swt.${osgi.platform}</artifactId> <!-- platform dependent -->
+        <version>4.3.2</version> <!-- or newer -->
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.jface</artifactId>
+        <version>3.10.2</version> <!-- or newer -->
+    </dependency>
+    <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.core.commands</artifactId>
         <version>3.6.100</version> <!-- or newer -->

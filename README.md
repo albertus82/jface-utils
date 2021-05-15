@@ -31,6 +31,7 @@ Add the following elements to your project's `pom.xml` file:
         <version>17.3.0</version>
     </dependency>
 
+    <!-- Required -->
     <dependency>
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.core.commands</artifactId>

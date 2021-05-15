@@ -31,11 +31,22 @@ Add the following elements to your project's `pom.xml` file:
         <version>17.3.0</version>
     </dependency>
 
-    <!-- The following dependencies are optional; add them only if you want to use the BrotliAdapter class -->
+    <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.commands</artifactId>
+        <version>3.6.100</version> <!-- or newer -->
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.equinox.common</artifactId>
+        <version>3.6.200</version> <!-- or newer -->
+    </dependency>
+
+    <!-- Optional, only needed if the BrotliAdapter class is used -->
     <dependency>
         <groupId>org.brotli</groupId>
         <artifactId>dec</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.2</version> <!-- or newer -->
     </dependency>
     <dependency>
         <groupId>com.github</groupId>
@@ -44,6 +55,7 @@ Add the following elements to your project's `pom.xml` file:
     </dependency>
 </dependencies>
 ```
+
 ### Manual download
 
 You can download the JARs from the [releases page](https://github.com/Albertus82/JFaceUtils/releases/latest).

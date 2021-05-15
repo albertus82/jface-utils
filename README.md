@@ -14,7 +14,7 @@ This library is meant to support the development of small footprint Java desktop
 
 ### Maven
 
-Add the following elements to your project's `pom.xml` file (to check for new versions of the required Eclipse libraries, please check on [Maven Central](https://mvnrepository.com/artifact/org.eclipse.platform)):
+Add the following elements to your project's `pom.xml` file (please check [Maven Central](https://mvnrepository.com/artifact/org.eclipse.platform) for new versions of the required Eclipse libraries):
 
 ```xml
 <repositories>

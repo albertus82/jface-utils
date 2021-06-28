@@ -18,8 +18,8 @@ public class EnhancedFileHandler extends FileHandler {
 	 *
 	 * @param config the object containing handler configuration
 	 * @exception IOException if there are IO problems opening the files.
-	 * @exception SecurityException if a security manager exists and if the
-	 *            caller does not have <tt>LoggingPermission("control")</tt>.
+	 * @exception SecurityException if a security manager exists and if the caller
+	 *            does not have <tt>LoggingPermission("control")</tt>.
 	 * @exception IllegalArgumentException if limit < 0, or count < 1.
 	 * @exception IllegalArgumentException if pattern is an empty string
 	 *

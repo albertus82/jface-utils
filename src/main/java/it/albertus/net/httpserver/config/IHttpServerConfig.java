@@ -28,14 +28,10 @@ public interface IHttpServerConfig {
 
 	int getResponseBufferLimit();
 
-	/**
-	 * @return the maximum time a request is allowed to take, in seconds.
-	 */
+	/** @return the maximum time a request is allowed to take, in seconds. */
 	long getMaxReqTime();
 
-	/**
-	 * @return the maximum time a response is allowed to take, in seconds.
-	 */
+	/** @return the maximum time a response is allowed to take, in seconds. */
 	long getMaxRspTime();
 
 	boolean isSslEnabled();
@@ -56,14 +52,10 @@ public interface IHttpServerConfig {
 
 	SSLParameters getSslParameters(SSLContext context);
 
-	/**
-	 * @return the maximum number of threads to allow in the pool.
-	 */
+	/** @return the maximum number of threads to allow in the pool. */
 	int getMaxThreadCount();
 
-	/**
-	 * @return the number of threads to keep in the pool, even if they are idle.
-	 */
+	/** @return the number of threads to keep in the pool, even if they are idle. */
 	int getMinThreadCount();
 
 	/**
@@ -73,8 +65,7 @@ public interface IHttpServerConfig {
 	long getThreadKeepAliveTime();
 
 	/**
-	 * @return the maximum time in seconds to wait until exchanges have
-	 *         finished.
+	 * @return the maximum time in seconds to wait until exchanges have finished.
 	 */
 	int getStopDelay();
 

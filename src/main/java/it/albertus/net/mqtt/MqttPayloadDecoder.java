@@ -43,8 +43,8 @@ public class MqttPayloadDecoder {
 	}
 
 	/**
-	 * Decodes a MQTT payload based on {@link MqttPayload}; data decompression
-	 * is performed if needed.
+	 * Decodes a MQTT payload based on {@link MqttPayload}; data decompression is
+	 * performed if needed.
 	 * 
 	 * @param payload the received payload, as extracted from the MQTT message.
 	 * @return the original payload (data decompression is performed if needed).

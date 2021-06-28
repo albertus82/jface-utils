@@ -60,8 +60,8 @@ public class BrotliAdapter {
 	 * Compress a byte array using <b>Brotli</b> compression format.
 	 * 
 	 * @param uncompressed the byte array to compress
-	 * @param quality      the compression quality, valid range is
-	 *                     {@value #MIN_QUALITY} to {@value #MAX_QUALITY}
+	 * @param quality the compression quality, valid range is {@value #MIN_QUALITY}
+	 *        to {@value #MAX_QUALITY}
 	 * 
 	 * @return the compressed byte array.
 	 */

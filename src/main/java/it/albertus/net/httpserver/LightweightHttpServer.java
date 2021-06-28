@@ -65,8 +65,8 @@ public class LightweightHttpServer {
 	/**
 	 * Starts this server.
 	 * 
-	 * @param daemon determine if the server thread will be configured as a
-	 *        deamon or not.
+	 * @param daemon determine if the server thread will be configured as a deamon
+	 *        or not.
 	 */
 	public void start(final boolean daemon) {
 		if (!running && httpServerConfiguration.isEnabled()) {
@@ -76,12 +76,11 @@ public class LightweightHttpServer {
 
 	/**
 	 * Stops this server by closing the listening socket and disallowing any new
-	 * exchanges from being processed. The method will then block until all
-	 * current exchange handlers have completed or else when approximately
-	 * <i>delay</i> seconds have elapsed (whichever happens sooner). Then, all
-	 * open TCP connections are closed, the background thread created by
-	 * {@code start()} exits, the thread pool is shutdown and the method
-	 * returns.
+	 * exchanges from being processed. The method will then block until all current
+	 * exchange handlers have completed or else when approximately <i>delay</i>
+	 * seconds have elapsed (whichever happens sooner). Then, all open TCP
+	 * connections are closed, the background thread created by {@code start()}
+	 * exits, the thread pool is shutdown and the method returns.
 	 * <p>
 	 *
 	 * @param delay the maximum time in seconds to wait until exchanges have
@@ -106,12 +105,12 @@ public class LightweightHttpServer {
 
 	/**
 	 * Stops this server by closing the listening socket and disallowing any new
-	 * exchanges from being processed. The method will then block until all
-	 * current exchange handlers have completed or else when approximately the
-	 * number of seconds returned by {@link IHttpServerConfig#getStopDelay()}
-	 * has elapsed (whichever happens sooner). Then, all open TCP connections
-	 * are closed, the background thread created by {@code start()} exits, the
-	 * thread pool is shutdown and the method returns.
+	 * exchanges from being processed. The method will then block until all current
+	 * exchange handlers have completed or else when approximately the number of
+	 * seconds returned by {@link IHttpServerConfig#getStopDelay()} has elapsed
+	 * (whichever happens sooner). Then, all open TCP connections are closed, the
+	 * background thread created by {@code start()} exits, the thread pool is
+	 * shutdown and the method returns.
 	 * <p>
 	 *
 	 * @throws IllegalArgumentException if delay is less than zero.
@@ -143,16 +142,16 @@ public class LightweightHttpServer {
 	}
 
 	/**
-	 * @return the currently active {@link HttpServer} object or null if the
-	 *         server was never started.
+	 * @return the currently active {@link HttpServer} object or null if the server
+	 *         was never started.
 	 */
 	public HttpServer getServer() {
 		return server;
 	}
 
 	/**
-	 * @return the currently configured {@link HttpContext} objects or null if
-	 *         the server was never started.
+	 * @return the currently configured {@link HttpContext} objects or null if the
+	 *         server was never started.
 	 */
 	public Collection<HttpContext> getContexts() {
 		return contexts;

@@ -84,15 +84,15 @@ abstract class AbstractDateFieldEditor extends StringFieldEditor {
 	/**
 	 * Creates a date field editor.
 	 * 
-	 * @param name      the name of the preference this field editor works on
+	 * @param name the name of the preference this field editor works on
 	 * @param labelText the label text of the field editor
-	 * @param pattern   the date pattern expected
-	 * @param style     the style of the control, can be {@link SWT#NONE} or
-	 *                  {@link SWT#DROP_DOWN}
-	 * @param width     the width of the text input field in characters, or
-	 *                  <code>UNLIMITED</code> for no limit
-	 * @param strategy  the strategy for validating the text
-	 * @param parent    the parent of the field editor's control
+	 * @param pattern the date pattern expected
+	 * @param style the style of the control, can be {@link SWT#NONE} or
+	 *        {@link SWT#DROP_DOWN}
+	 * @param width the width of the text input field in characters, or
+	 *        <code>UNLIMITED</code> for no limit
+	 * @param strategy the strategy for validating the text
+	 * @param parent the parent of the field editor's control
 	 */
 	protected AbstractDateFieldEditor(final String name, final String labelText, final String pattern, final int style, final int width, final int strategy, final Composite parent) {
 		super(name, labelText, width, strategy, parent);

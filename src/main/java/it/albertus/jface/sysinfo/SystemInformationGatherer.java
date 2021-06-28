@@ -88,8 +88,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 	/**
 	 * Returns a map containing the environment variables (can be null).
 	 * 
-	 * @return a map containing a copy of the environment variables (can be
-	 *         null).
+	 * @return a map containing a copy of the environment variables (can be null).
 	 */
 	@Nullable
 	public Map<String, String> getEnv() {

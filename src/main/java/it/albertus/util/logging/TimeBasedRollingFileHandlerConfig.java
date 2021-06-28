@@ -32,8 +32,7 @@ public class TimeBasedRollingFileHandlerConfig extends AbstractFileHandlerConfig
 	 * @param limit an approximate maximum amount to write (in bytes) to any one
 	 *        file. If this is zero, then there is no limit
 	 * @param count how many output files to cycle through
-	 * @param append whether the FileHandler should append onto any existing
-	 *        files
+	 * @param append whether the FileHandler should append onto any existing files
 	 * @param fileNamePattern the file name pattern
 	 * @param datePattern the date pattern used for rolling
 	 */

@@ -27,8 +27,8 @@ public enum NewLine {
 	}
 
 	/**
-	 * Restituisce una stringa contenente la sequenza di caratteri che
-	 * rappresenta il ritorno a capo.
+	 * Restituisce una stringa contenente la sequenza di caratteri che rappresenta
+	 * il ritorno a capo.
 	 * 
 	 * @return la stringa che rappresenta il ritorno a capo.
 	 */
@@ -42,9 +42,9 @@ public enum NewLine {
 	 * desiderato.
 	 * 
 	 * @param characters una stringa tra "CR", "\r" (Macintosh), "LF", "\n"
-	 *        (Unix/OS X), "CRLF", "\r\n" (DOS/Windows).
-	 * @return l'<b>enum</b> corrispondente al tipo di ritorno a capo passato
-	 *         come parametro, oppure null se non riconosciuto.
+	 *        (Unix/macOS), "CRLF", "\r\n" (DOS/Windows).
+	 * @return l'<b>enum</b> corrispondente al tipo di ritorno a capo passato come
+	 *         parametro, oppure null se non riconosciuto.
 	 */
 	public static NewLine getEnum(final String characters) {
 		if (characters != null && characters.length() != 0) {

@@ -101,17 +101,17 @@ public abstract class HttpServerDefaultConfig implements IHttpServerConfig {
 	}
 
 	/**
-	 * Returns a copy of the SSLParameters indicating the default settings for
-	 * the given SSL context.
+	 * Returns a copy of the SSLParameters indicating the default settings for the
+	 * given SSL context.
 	 *
 	 * <p>
-	 * The parameters will always have the ciphersuites and protocols arrays set
-	 * to non-null values.
+	 * The parameters will always have the ciphersuites and protocols arrays set to
+	 * non-null values.
 	 * 
 	 * @param context the {@link javax.net.ssl.SSLContext SSLContext}.
 	 * @return a copy of the SSLParameters object with the default settings
-	 * @throws UnsupportedOperationException if the default SSL parameters could
-	 *         not be obtained.
+	 * @throws UnsupportedOperationException if the default SSL parameters could not
+	 *         be obtained.
 	 */
 	@Override
 	public SSLParameters getSslParameters(final SSLContext context) {

@@ -50,9 +50,9 @@ public class ChecksumOutputStream<T extends Checksum> extends OutputStream {
 	}
 
 	/**
-	 * Closing a <tt>ChecksumOutputStream</tt> has no effect. The methods in
-	 * this class can be called after the stream has been closed without
-	 * generating an <tt>IOException</tt>.
+	 * Closing a <tt>ChecksumOutputStream</tt> has no effect. The methods in this
+	 * class can be called after the stream has been closed without generating an
+	 * <tt>IOException</tt>.
 	 * <p>
 	 */
 	@Override

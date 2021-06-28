@@ -23,8 +23,7 @@ public class MqttPayloadTest {
 
 	private static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
 
-	private static final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." + NewLine.CRLF + "Mauris pretium eget ligula vehicula tempus. Proin accumsan varius sem non blandit." + NewLine.LF + "Nam consectetur magna eu cursus condimentum. Nunc volutpat tellus velit. Nullam elementum vel nisi at euismod." + NewLine.CRLF + "Pellentesque et ante nibh. Donec et leo varius, volutpat libero sit amet, vulputate sem." + NewLine.CR
-			+ "Vivamus tempus mi est, malesuada tincidunt mi consequat id. Nunc neque ligula, interdum ut feugiat \u00E8get, imperdiet sed orci." + NewLine.CR;
+	private static final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." + NewLine.CRLF + "Mauris pretium eget ligula vehicula tempus. Proin accumsan varius sem non blandit." + NewLine.LF + "Nam consectetur magna eu cursus condimentum. Nunc volutpat tellus velit. Nullam elementum vel nisi at euismod." + NewLine.CRLF + "Pellentesque et ante nibh. Donec et leo varius, volutpat libero sit amet, vulputate sem." + NewLine.CR + "Vivamus tempus mi est, malesuada tincidunt mi consequat id. Nunc neque ligula, interdum ut feugiat \u00E8get, imperdiet sed orci." + NewLine.CR;
 
 	private static MqttPayloadDecoder decoder;
 	private static MqttPayloadEncoder encoder;
@@ -117,7 +116,7 @@ public class MqttPayloadTest {
 		final Map<String, String> customHeaders = new HashMap<String, String>();
 		customHeaders.put("X-Custom-Header", "Custom value");
 		customHeaders.put("X-Empty-Val-Header", "");
-//		customHeaders.put("X-Null-Val-Header", null);
+		//	customHeaders.put("X-Null-Val-Header", null);
 		customHeaders.put("Content-Encoding", "identity");
 
 		for (final Entry<String, String> e : customHeaders.entrySet()) {
@@ -138,7 +137,7 @@ public class MqttPayloadTest {
 		// Headers added manually
 		Assert.assertEquals("Invalid header value", "Custom value", mp2.getHeaders().getFirst("X-Custom-Header"));
 		Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Empty-Val-Header"));
-//		Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Null-Val-Header"));
+		//	Assert.assertEquals("Invalid header value", "", mp2.getHeaders().getFirst("X-Null-Val-Header"));
 		Assert.assertEquals("Invalid header value", "identity", mp2.getHeaders().getFirst("Content-Encoding"));
 
 		final byte[] decoded = decoder.decode(mp2);

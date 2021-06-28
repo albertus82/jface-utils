@@ -38,8 +38,7 @@ public class FileHandlerConfig extends AbstractFileHandlerConfig {
 	 * @param limit an approximate maximum amount to write (in bytes) to any one
 	 *        file. If this is zero, then there is no limit
 	 * @param count how many output files to cycle through
-	 * @param append whether the FileHandler should append onto any existing
-	 *        files
+	 * @param append whether the FileHandler should append onto any existing files
 	 * @param pattern the file name pattern
 	 */
 	public FileHandlerConfig(final Level level, final Filter filter, final Formatter formatter, final String encoding, final int limit, final int count, final boolean append, final String pattern) {

@@ -78,7 +78,7 @@ public class Version {
 	 * @return the version date.
 	 * 
 	 * @throws ParseException if the {@value #KEY_VERSION_DATE} property is not a
-	 *                        date in the {@value #ISO_8601_PATTERN} format.
+	 *         date in the {@value #ISO_8601_PATTERN} format.
 	 */
 	@Nullable
 	public static Date getDate() throws ParseException {

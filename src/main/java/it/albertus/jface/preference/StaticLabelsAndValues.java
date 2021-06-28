@@ -15,7 +15,7 @@ public class StaticLabelsAndValues implements LabelsAndValues {
 	}
 
 	public StaticLabelsAndValues(final int expectedSize) {
-		entries = MapUtils.<String, String> newLinkedHashMapWithExpectedSize(expectedSize);
+		entries = MapUtils.<String, String>newLinkedHashMapWithExpectedSize(expectedSize);
 	}
 
 	public StaticLabelsAndValues(final String name, final Object value) {

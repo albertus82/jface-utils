@@ -90,9 +90,8 @@ public class SystemInformationDialog extends Dialog {
 	protected final Iterable<String> jvmArgs;
 
 	/**
-	 * Determine if the dialog can be populated with informations. The presence
-	 * of a {@link SecurityManager} could limit the informations that can be
-	 * retrieved.
+	 * Determine if the dialog can be populated with informations. The presence of a
+	 * {@link SecurityManager} could limit the informations that can be retrieved.
 	 * 
 	 * @return {@code true} if there are informations to show, otherwise
 	 *         {@code false}.
@@ -127,8 +126,8 @@ public class SystemInformationDialog extends Dialog {
 	}
 
 	/**
-	 * If informations are available, opens a <em>System Information</em>
-	 * dialog, otherwise opens a info message box.
+	 * If informations are available, opens a <em>System Information</em> dialog,
+	 * otherwise opens a info message box.
 	 * 
 	 * @param shell the parent shell
 	 * 
@@ -158,8 +157,8 @@ public class SystemInformationDialog extends Dialog {
 	}
 
 	/**
-	 * Constructs a new instance of the <em>System Information</em> dialog with
-	 * one or more collections of data.
+	 * Constructs a new instance of the <em>System Information</em> dialog with one
+	 * or more collections of data.
 	 * 
 	 * @param parent the parent control
 	 * @param properties a map contaning the system properties (can be null)

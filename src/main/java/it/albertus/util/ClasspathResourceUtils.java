@@ -126,7 +126,7 @@ public class ClasspathResourceUtils {
 	 * List the resources that match args[0].
 	 * 
 	 * @param args args[0] is the pattern to match, or list all resources if there
-	 *             are no args.
+	 *        are no args.
 	 */
 	public static void main(final String[] args) {
 		final Pattern pattern;

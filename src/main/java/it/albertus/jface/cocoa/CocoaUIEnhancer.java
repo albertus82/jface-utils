@@ -269,8 +269,8 @@ public class CocoaUIEnhancer {
 	/**
 	 * Creates a new instance associated with the provided display object.
 	 * <p>
-	 * <b>Note:</b> in order to better integrate your JFace application with
-	 * macOS, you should call the following static methods of
+	 * <b>Note:</b> in order to better integrate your JFace application with macOS,
+	 * you should call the following static methods of
 	 * {@link org.eclipse.swt.widgets.Display Display} before calling this
 	 * constructor:
 	 * 
@@ -291,17 +291,17 @@ public class CocoaUIEnhancer {
 	 * Activates the macOS application menu items and binds them to the provided
 	 * listeners. This method must be called before opening the shell.
 	 * <p>
-	 * If one argument is null, then the respective menu item will be disabled;
-	 * so, for instance, if your application does not have a preferences
-	 * management, you can pass null in place of {@code preferencesListener} and
-	 * the <b>Preferences...</b> menu item will be grayed out.
+	 * If one argument is null, then the respective menu item will be disabled; so,
+	 * for instance, if your application does not have a preferences management, you
+	 * can pass null in place of {@code preferencesListener} and the
+	 * <b>Preferences...</b> menu item will be grayed out.
 	 * 
-	 * @param quitListener the listener that will be notified when the user
-	 *        selects the <b>Quit</b> menu item; should not be null.
-	 * @param aboutListener the listener that will be notified when the user
-	 *        selects the <b>About</b> menu item; can be null.
-	 * @param preferencesListener the listener that will be notified when the
-	 *        user selects the <b>Preferences...</b> menu item; can be null.
+	 * @param quitListener the listener that will be notified when the user selects
+	 *        the <b>Quit</b> menu item; should not be null.
+	 * @param aboutListener the listener that will be notified when the user selects
+	 *        the <b>About</b> menu item; can be null.
+	 * @param preferencesListener the listener that will be notified when the user
+	 *        selects the <b>Preferences...</b> menu item; can be null.
 	 * @throws CocoaEnhancerException if the UI cannot be improved because of an
 	 *         error.
 	 */
@@ -319,18 +319,17 @@ public class CocoaUIEnhancer {
 
 	/**
 	 * Activates the macOS application menu items and binds them to the provided
-	 * listener and actions. This method must be called before opening the
-	 * shell.
+	 * listener and actions. This method must be called before opening the shell.
 	 * <p>
-	 * If one argument is null, then the respective menu item will be disabled;
-	 * so, for instance, if your application does not have a preferences
-	 * management, you can pass null in place of {@code preferencesAction} and
-	 * the <b>Preferences...</b> menu item will be grayed out.
+	 * If one argument is null, then the respective menu item will be disabled; so,
+	 * for instance, if your application does not have a preferences management, you
+	 * can pass null in place of {@code preferencesAction} and the
+	 * <b>Preferences...</b> menu item will be grayed out.
 	 * 
-	 * @param quitListener the listener that will be notified when the user
-	 *        selects the <b>Quit</b> menu item; should not be null.
-	 * @param aboutAction the action that will be activated when the user
-	 *        selects the <b>About</b> menu item; can be null.
+	 * @param quitListener the listener that will be notified when the user selects
+	 *        the <b>Quit</b> menu item; should not be null.
+	 * @param aboutAction the action that will be activated when the user selects
+	 *        the <b>About</b> menu item; can be null.
 	 * @param preferencesAction the action that will be activated when the user
 	 *        selects the <b>Preferences...</b> menu item; can be null.
 	 * @throws CocoaEnhancerException if the UI cannot be improved because of an

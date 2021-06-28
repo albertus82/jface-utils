@@ -115,9 +115,9 @@ public class SwtUtils {
 	/**
 	 * Check if SWT is running on GTK3 or not.
 	 * 
-	 * @return <tt>true</tt> if SWT is running on GTK3, <tt>false</tt> if SWT
-	 *         isn't running on GTK3 (e.g., GTK2, Windows, macOS), or <b>
-	 *         <tt>null</tt> if the GTK version is not determinable.</b>
+	 * @return <tt>true</tt> if SWT is running on GTK3, <tt>false</tt> if SWT isn't
+	 *         running on GTK3 (e.g., GTK2, Windows, macOS), or <b> <tt>null</tt> if
+	 *         the GTK version is not determinable.</b>
 	 */
 	@Nullable
 	public static Boolean isGtk3() {

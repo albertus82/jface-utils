@@ -77,9 +77,9 @@ public class MqttPayload {
 	/**
 	 * Creates a new instance with the provided <em>effective payload</em>.
 	 * <p>
-	 * Caller can mange the headers invoking {@link #getHeaders()} on the
-	 * created object, and eventually must call {@link #toPayload()} in order to
-	 * obtain the full payload (byte array) to send as MQTT message.
+	 * Caller can mange the headers invoking {@link #getHeaders()} on the created
+	 * object, and eventually must call {@link #toPayload()} in order to obtain the
+	 * full payload (byte array) to send as MQTT message.
 	 * 
 	 * @param body the <em>effective payload</em>
 	 */

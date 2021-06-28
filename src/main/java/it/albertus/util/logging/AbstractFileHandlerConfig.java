@@ -9,8 +9,7 @@ import java.util.logging.XMLFormatter;
 public abstract class AbstractFileHandlerConfig {
 
 	/**
-	 * Specifies the default level for the Handler (defaults to
-	 * {@code Level.ALL}).
+	 * Specifies the default level for the Handler (defaults to {@code Level.ALL}).
 	 */
 	private Level level = Level.ALL;
 
@@ -30,8 +29,8 @@ public abstract class AbstractFileHandlerConfig {
 	private String encoding = Charset.defaultCharset().name();
 
 	/**
-	 * Specifies an approximate maximum amount to write (in bytes) to any one
-	 * file. If this is zero, then there is no limit. (Defaults to no limit).
+	 * Specifies an approximate maximum amount to write (in bytes) to any one file.
+	 * If this is zero, then there is no limit. (Defaults to no limit).
 	 */
 	private int limit = 0;
 
@@ -59,8 +58,7 @@ public abstract class AbstractFileHandlerConfig {
 	 * @param limit an approximate maximum amount to write (in bytes) to any one
 	 *        file. If this is zero, then there is no limit
 	 * @param count how many output files to cycle through
-	 * @param append whether the FileHandler should append onto any existing
-	 *        files
+	 * @param append whether the FileHandler should append onto any existing files
 	 */
 	protected AbstractFileHandlerConfig(final Level level, final Filter filter, final Formatter formatter, final String encoding, final int limit, final int count, final boolean append) {
 		this.level = level;

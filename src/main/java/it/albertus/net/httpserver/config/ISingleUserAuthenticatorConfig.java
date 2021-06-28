@@ -10,8 +10,8 @@ public interface ISingleUserAuthenticatorConfig extends IAuthenticatorConfig {
 	String getUsername();
 
 	/**
-	 * Returns the expected password or the expected password hash, depending on
-	 * the value returned by {@link #getPasswordHashAlgorithm()}.
+	 * Returns the expected password or the expected password hash, depending on the
+	 * value returned by {@link #getPasswordHashAlgorithm()}.
 	 * 
 	 * @return the password or the password hash.
 	 */

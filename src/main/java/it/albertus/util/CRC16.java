@@ -5,10 +5,11 @@ import java.util.zip.Checksum;
 /**
  * A class that can be used to compute the CRC-16 of a data stream.
  *
- * <p> Passing a {@code null} argument to a method in this class will cause
- * a {@link NullPointerException} to be thrown.
+ * <p>
+ * Passing a {@code null} argument to a method in this class will cause a
+ * {@link NullPointerException} to be thrown.
  *
- * @see         Checksum
+ * @see Checksum
  */
 public class CRC16 implements Checksum {
 
@@ -64,14 +65,13 @@ public class CRC16 implements Checksum {
 		crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];
 	}
 
-    /**
-     * Updates the CRC-16 checksum with the specified array of bytes.
-     *
-     * @throws  ArrayIndexOutOfBoundsException
-     *          if {@code off} is negative, or {@code len} is negative,
-     *          or {@code off+len} is greater than the length of the
-     *          array {@code b}
-     */
+	/**
+	 * Updates the CRC-16 checksum with the specified array of bytes.
+	 *
+	 * @throws ArrayIndexOutOfBoundsException if {@code off} is negative, or
+	 *         {@code len} is negative, or {@code off+len} is greater than the
+	 *         length of the array {@code b}
+	 */
 	@Override
 	public void update(final byte[] b, final int off, final int len) {
 		if (b == null) {
@@ -91,11 +91,11 @@ public class CRC16 implements Checksum {
 	}
 
 	/**
-	 * Converts the CRC-16 checksum value to a lowercase string of ASCII digits
-	 * in hexadecimal (base 16) with extra leading {@code 0}s.
+	 * Converts the CRC-16 checksum value to a lowercase string of ASCII digits in
+	 * hexadecimal (base 16) with extra leading {@code 0}s.
 	 * 
-	 * @return a string representation of the CRC-16 checksum as an unsigned
-	 *         integer in base 16.
+	 * @return a string representation of the CRC-16 checksum as an unsigned integer
+	 *         in base 16.
 	 */
 	@Override
 	public String toString() {

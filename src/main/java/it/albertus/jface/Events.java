@@ -57,12 +57,12 @@ public class Events {
 	}
 
 	/**
-	 * Returns the event name corresponding to the provided event object, as
-	 * defined in {@link org.eclipse.swt.SWT SWT} class.
+	 * Returns the event name corresponding to the provided event object, as defined
+	 * in {@link org.eclipse.swt.SWT SWT} class.
 	 * 
 	 * @param event the event object
-	 * @return the event name, or null if the argument is null or there's no
-	 *         match for the event's type
+	 * @return the event name, or null if the argument is null or there's no match
+	 *         for the event's type
 	 * @see #getName(int)
 	 * @see org.eclipse.swt.SWT
 	 */

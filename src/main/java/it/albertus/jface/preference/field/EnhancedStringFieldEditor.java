@@ -116,8 +116,8 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
 	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
-	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
-	 * methods from here</strong>; these methods should be invoked only from
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage} methods
+	 * from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 
@@ -142,8 +142,8 @@ public class EnhancedStringFieldEditor extends StringFieldEditor implements Fiel
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
 	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
-	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage}
-	 * methods from here</strong>; these methods should be invoked only from
+	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage} methods
+	 * from here</strong>; these methods should be invoked only from
 	 * {@link #refreshValidState() refreshValidState}.
 	 * </p>
 	 * 

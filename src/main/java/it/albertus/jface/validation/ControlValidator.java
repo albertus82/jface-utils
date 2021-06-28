@@ -6,7 +6,7 @@ public abstract class ControlValidator<T extends Control> implements Validator {
 
 	protected final T control;
 
-	public ControlValidator(final T control) {
+	protected ControlValidator(final T control) {
 		this.control = control;
 	}
 

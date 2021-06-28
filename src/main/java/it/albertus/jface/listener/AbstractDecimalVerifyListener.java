@@ -6,11 +6,11 @@ import it.albertus.util.ISupplier;
 
 abstract class AbstractDecimalVerifyListener<T extends Number> extends AbstractNumberVerifyListener<T> {
 
-	public AbstractDecimalVerifyListener(final boolean allowNegatives) {
+	protected AbstractDecimalVerifyListener(final boolean allowNegatives) {
 		super(allowNegatives);
 	}
 
-	public AbstractDecimalVerifyListener(final ISupplier<Boolean> allowNegatives) {
+	protected AbstractDecimalVerifyListener(final ISupplier<Boolean> allowNegatives) {
 		super(allowNegatives);
 	}
 

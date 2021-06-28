@@ -57,7 +57,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 	}
 
 	@Override
-	public boolean isLoggable(final LogRecord record) {
+	public boolean isLoggable(final LogRecord rec) {
 		final String newFileNamePart = dateFormat.get().format(new Date());
 		if (!newFileNamePart.equals(currentFileNamePart)) {
 			int keep = this.maxHistory;

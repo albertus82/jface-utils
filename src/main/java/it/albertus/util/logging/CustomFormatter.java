@@ -55,33 +55,33 @@ public class CustomFormatter extends Formatter {
 	/**
 	 * Format the given LogRecord.
 	 * 
-	 * @param record the log record to be formatted.
+	 * @param rec the log record to be formatted.
 	 * @return a formatted log record
 	 */
 	@Override
-	public synchronized String format(final LogRecord record) {
-		timestamp.setTime(record.getMillis());
+	public synchronized String format(final LogRecord rec) {
+		timestamp.setTime(rec.getMillis());
 		String source;
-		if (record.getSourceClassName() != null) {
-			source = record.getSourceClassName();
-			if (record.getSourceMethodName() != null) {
-				source += " " + record.getSourceMethodName();
+		if (rec.getSourceClassName() != null) {
+			source = rec.getSourceClassName();
+			if (rec.getSourceMethodName() != null) {
+				source += " " + rec.getSourceMethodName();
 			}
 		}
 		else {
-			source = record.getLoggerName();
+			source = rec.getLoggerName();
 		}
-		final String message = formatMessage(record);
+		final String message = formatMessage(rec);
 		String throwable = "";
-		if (record.getThrown() != null) {
+		if (rec.getThrown() != null) {
 			final StringWriter sw = new StringWriter();
 			final PrintWriter pw = new PrintWriter(sw);
 			pw.println();
-			record.getThrown().printStackTrace(pw);
+			rec.getThrown().printStackTrace(pw);
 			pw.close();
 			throwable = sw.toString();
 		}
-		return String.format(format, timestamp, source, record.getLoggerName(), record.getLevel().getName(), message, throwable);
+		return String.format(format, timestamp, source, rec.getLoggerName(), rec.getLevel().getName(), message, throwable);
 	}
 
 	/**

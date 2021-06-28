@@ -16,15 +16,15 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 	private T minValidValue;
 	private T maxValidValue;
 
-	public NumberTextValidator(final Text text) {
+	protected NumberTextValidator(final Text text) {
 		super(text, EMPTY_STRING_ALLOWED);
 	}
 
-	public NumberTextValidator(final Text text, final boolean emptyStringAllowed) {
+	protected NumberTextValidator(final Text text, final boolean emptyStringAllowed) {
 		super(text, emptyStringAllowed);
 	}
 
-	public NumberTextValidator(final Text text, final boolean emptyStringAllowed, final T minValidValue, final T maxValidValue) {
+	protected NumberTextValidator(final Text text, final boolean emptyStringAllowed, final T minValidValue, final T maxValidValue) {
 		this(text, emptyStringAllowed);
 		this.minValidValue = minValidValue;
 		this.maxValidValue = maxValidValue;

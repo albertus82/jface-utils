@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 
 abstract class AbstractIntegerFieldEditor<T extends Number & Comparable<? extends Number>> extends AbstractNumberFieldEditor<T> {
 
-	public AbstractIntegerFieldEditor(String name, String labelText, Composite parent) {
+	protected AbstractIntegerFieldEditor(String name, String labelText, Composite parent) {
 		super(name, labelText, parent);
 	}
 

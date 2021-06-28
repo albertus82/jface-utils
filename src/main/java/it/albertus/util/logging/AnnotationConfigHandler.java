@@ -10,7 +10,7 @@ public abstract class AnnotationConfigHandler extends Handler {
 
 	private final String[] exclusions;
 
-	public AnnotationConfigHandler() {
+	protected AnnotationConfigHandler() {
 		// Exclusions
 		final ExcludeLoggers excludeLoggers = getClass().getAnnotation(ExcludeLoggers.class);
 		if (excludeLoggers != null && excludeLoggers.value() != null) {
@@ -28,17 +28,17 @@ public abstract class AnnotationConfigHandler extends Handler {
 	}
 
 	@Override
-	public boolean isLoggable(final LogRecord record) {
-		boolean loggable = super.isLoggable(record);
+	public boolean isLoggable(final LogRecord rec) {
+		boolean loggable = super.isLoggable(rec);
 		if (!loggable) {
 			return false;
 		}
-		else if (record.getLoggerName() == null) {
+		else if (rec.getLoggerName() == null) {
 			return true;
 		}
 		else {
 			for (final String exclusion : exclusions) {
-				if (record.getLoggerName().startsWith(exclusion)) {
+				if (rec.getLoggerName().startsWith(exclusion)) {
 					return false;
 				}
 			}

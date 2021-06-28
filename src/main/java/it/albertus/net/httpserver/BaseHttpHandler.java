@@ -85,7 +85,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		return resources;
 	}
 
-	public BaseHttpHandler(final IHttpServerConfig config) {
+	protected BaseHttpHandler(final IHttpServerConfig config) {
 		this.httpServerConfig = config;
 	}
 

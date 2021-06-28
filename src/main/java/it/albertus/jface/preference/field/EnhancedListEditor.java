@@ -79,11 +79,11 @@ public abstract class EnhancedListEditor extends FieldEditor {
 		container = false;
 	}
 
-	public EnhancedListEditor(final String name, final String labelText, final Composite parent) {
+	protected EnhancedListEditor(final String name, final String labelText, final Composite parent) {
 		this(name, labelText, parent, null);
 	}
 
-	public EnhancedListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan) {
+	protected EnhancedListEditor(final String name, final String labelText, final Composite parent, final Integer horizontalSpan) {
 		super(name, labelText, (horizontalSpan != null && horizontalSpan > 0) ? createContainer(parent, horizontalSpan) : parent);
 		if (horizontalSpan != null && horizontalSpan > 0) {
 			container = true;

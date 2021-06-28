@@ -35,8 +35,8 @@ public class TimeBasedRollingFileHandler extends Handler {
 	}
 
 	@Override
-	public synchronized void publish(final LogRecord record) {
-		if (!isLoggable(record)) {
+	public synchronized void publish(final LogRecord rec) {
+		if (!isLoggable(rec)) {
 			return;
 		}
 
@@ -60,7 +60,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 			}
 		}
 
-		underlyingFileHandler.publish(record);
+		underlyingFileHandler.publish(rec);
 	}
 
 	private static String generateFileHandlerPattern(final String fileNamePattern, final DateFormat dateFormat) {

@@ -8,7 +8,7 @@ public abstract class AbstractStaticHandler extends BaseHttpHandler {
 	private String cacheControl;
 	private boolean attachment;
 
-	public AbstractStaticHandler(final IHttpServerConfig config) {
+	protected AbstractStaticHandler(final IHttpServerConfig config) {
 		super(config);
 	}
 

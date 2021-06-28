@@ -15,7 +15,7 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 	private T minValidValue;
 	private T maxValidValue;
 
-	public AbstractNumberComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
+	protected AbstractNumberComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setEmptyStringAllowed(false);
 		labelsCase = getLabelsCase();

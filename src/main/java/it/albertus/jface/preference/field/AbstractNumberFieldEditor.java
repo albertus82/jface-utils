@@ -9,7 +9,7 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 	private T minValidValue;
 	private T maxValidValue;
 
-	public AbstractNumberFieldEditor(final String name, final String labelText, final Composite parent) {
+	protected AbstractNumberFieldEditor(final String name, final String labelText, final Composite parent) {
 		init(name, labelText);
 		setEmptyStringAllowed(false);
 		setTextLimit(getDefaultTextLimit());

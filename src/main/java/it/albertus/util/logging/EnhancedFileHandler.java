@@ -52,7 +52,7 @@ public class EnhancedFileHandler extends FileHandler {
 		final String fieldName = "pattern";
 		try {
 			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
 			return (String) field.get(this);
 		}
 		catch (final NoSuchFieldException e) {
@@ -74,7 +74,7 @@ public class EnhancedFileHandler extends FileHandler {
 		final String fieldName = "limit";
 		try {
 			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
 			return (int) field.getLong(this); // limit became "long" since Java 9
 		}
 		catch (final NoSuchFieldException e) {
@@ -96,7 +96,7 @@ public class EnhancedFileHandler extends FileHandler {
 		final String fieldName = "count";
 		try {
 			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
 			return field.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
@@ -118,7 +118,7 @@ public class EnhancedFileHandler extends FileHandler {
 		final String fieldName = "append";
 		try {
 			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
 			return field.getBoolean(this);
 		}
 		catch (final NoSuchFieldException e) {

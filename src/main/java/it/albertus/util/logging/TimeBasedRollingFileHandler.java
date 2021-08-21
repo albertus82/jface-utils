@@ -56,7 +56,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 				oldFileHandler.close();
 			}
 			catch (final IOException e) {
-				reportError(e.toString(), e, ErrorManager.OPEN_FAILURE);
+				reportError(null, e, ErrorManager.OPEN_FAILURE);
 			}
 		}
 

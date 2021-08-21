@@ -39,7 +39,7 @@ import it.albertus.util.logging.LoggerFactory;
 @SuppressWarnings("restriction")
 public class LightweightHttpServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServer.class);
+	private static final Logger log = LoggerFactory.getLogger(LightweightHttpServer.class);
 
 	protected final IHttpServerConfig httpServerConfiguration;
 
@@ -96,7 +96,7 @@ public class LightweightHttpServer {
 					shutdownThreadPool();
 				}
 				catch (final Exception e) {
-					logger.log(Level.SEVERE, e.toString(), e);
+					log.log(Level.SEVERE, "An error occurred while stopping the server:", e);
 				}
 				running = false;
 			}
@@ -127,7 +127,7 @@ public class LightweightHttpServer {
 				threadPool.shutdown();
 			}
 			catch (final Exception e) {
-				logger.log(Level.SEVERE, e.toString(), e);
+				log.log(Level.SEVERE, "An error occurred while stopping the thread pool executor:", e);
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class LightweightHttpServer {
 			}
 		}
 		else {
-			logger.log(Level.WARNING, JFaceMessages.get("msg.httpserver.configuration.handlers.none"));
+			log.log(Level.WARNING, JFaceMessages.get("msg.httpserver.configuration.handlers.none"));
 		}
 		return httpContexts;
 	}
@@ -249,7 +249,7 @@ public class LightweightHttpServer {
 						sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
 						final SSLParameters sslParameters = httpServerConfiguration.getSslParameters(sslContext);
-						logger.log(Level.CONFIG, "SSLParameters [cipherSuites={0}, protocols={1}, wantClientAuth={2}, needClientAuth={3}]", new Object[] { Arrays.toString(sslParameters.getCipherSuites()), Arrays.toString(sslParameters.getProtocols()), sslParameters.getWantClientAuth(), sslParameters.getNeedClientAuth() });
+						log.log(Level.CONFIG, "SSLParameters [cipherSuites={0}, protocols={1}, wantClientAuth={2}, needClientAuth={3}]", new Object[] { Arrays.toString(sslParameters.getCipherSuites()), Arrays.toString(sslParameters.getProtocols()), sslParameters.getWantClientAuth(), sslParameters.getNeedClientAuth() });
 
 						final HttpsConfigurator httpsConfigurator = new HttpsConfigurator(sslContext) {
 							@Override
@@ -277,7 +277,7 @@ public class LightweightHttpServer {
 									executor.getQueue().put(r);
 								}
 								catch (final InterruptedException e) {
-									logger.log(Level.FINE, e.toString(), e);
+									log.log(Level.FINE, "Interrupted while waiting for space to become available in the queue:", e);
 									Thread.currentThread().interrupt();
 								}
 							}
@@ -287,17 +287,17 @@ public class LightweightHttpServer {
 
 					server.start();
 					running = true;
-					logger.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", httpServerConfiguration.isSslEnabled() ? "HTTPS" : "HTTP", port));
+					log.log(Level.INFO, JFaceMessages.get("msg.httpserver.started", httpServerConfiguration.isSslEnabled() ? "HTTPS" : "HTTP", port));
 				}
 			}
 			catch (final BindException e) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start.port", port), e);
+				log.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start.port", port), e);
 			}
 			catch (final FileNotFoundException e) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start.keystore.file"), e);
+				log.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start.keystore.file"), e);
 			}
 			catch (final Exception e) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start"), e);
+				log.log(Level.SEVERE, JFaceMessages.get("err.httpserver.start"), e);
 			}
 		}
 	}

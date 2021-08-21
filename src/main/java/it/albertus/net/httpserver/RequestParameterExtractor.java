@@ -24,7 +24,7 @@ import it.albertus.util.logging.LoggerFactory;
 @SuppressWarnings("restriction")
 public class RequestParameterExtractor {
 
-	private static final Logger logger = LoggerFactory.getLogger(RequestParameterExtractor.class);
+	private static final Logger log = LoggerFactory.getLogger(RequestParameterExtractor.class);
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
@@ -50,12 +50,14 @@ public class RequestParameterExtractor {
 	}
 
 	private static Charset getDefaultCharset() {
+		final String charsetName = PREFERRED_CHARSET;
 		try {
-			return Charset.forName(PREFERRED_CHARSET);
+			return Charset.forName(charsetName);
 		}
 		catch (final RuntimeException e) {
-			logger.log(Level.WARNING, e.toString(), e);
-			return Charset.defaultCharset();
+			final Charset defaultCharset = Charset.defaultCharset();
+			log.log(Level.WARNING, "Cannot determine charset for name \"" + charsetName + "\", falling back to " + defaultCharset + ':', e);
+			return defaultCharset;
 		}
 	}
 

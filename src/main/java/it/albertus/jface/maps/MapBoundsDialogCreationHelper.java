@@ -89,10 +89,10 @@ public class MapBoundsDialogCreationHelper {
 				dialog.setReturnCode(buttonCode);
 			}
 			catch (final SWTException e) {
-				log.log(Level.FINE, "Cannot retrieve map coordinates and bounds:", e);
+				log.log(Level.FINE, JFaceMessages.get("err.map.retrieve"), e);
 			}
 			catch (final Exception e) {
-				log.log(Level.SEVERE, "Cannot retrieve map coordinates and bounds:", e);
+				log.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
 			}
 			finally {
 				final Shell shell = browser.getShell();

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class LoggingManager implements ILoggingManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoggingManager.class);
+	private static final Logger log = LoggerFactory.getLogger(LoggingManager.class);
 
 	private final ILoggingConfig loggingConfig;
 
@@ -53,16 +53,16 @@ public class LoggingManager implements ILoggingManager {
 			if (fileHandler != null) {
 				final FileHandlerConfig oldConfig = FileHandlerConfig.fromHandler(fileHandler);
 				if (!oldConfig.getPattern().equals(newConfig.getPattern()) || oldConfig.getLimit() != newConfig.getLimit() || oldConfig.getCount() != newConfig.getCount()) {
-					logger.log(Level.FINE, "Logging configuration has changed; closing and removing old {0}...", fileHandler.getClass().getSimpleName());
+					log.log(Level.FINE, "Logging configuration has changed; closing and removing old {0}...", fileHandler.getClass().getSimpleName());
 					LoggingSupport.getRootLogger().removeHandler(fileHandler);
 					fileHandler.close();
 					fileHandler = null;
-					logger.log(Level.FINE, "Old FileHandler closed and removed.");
+					log.log(Level.FINE, "Old FileHandler closed and removed.");
 				}
 			}
 
 			if (fileHandler == null) {
-				logger.log(Level.FINE, "FileHandler not found; creating one...");
+				log.log(Level.FINE, "FileHandler not found; creating one...");
 				try {
 					final File logDir = new File(fileHandlerPattern).getParentFile();
 					if (logDir != null) {
@@ -70,10 +70,10 @@ public class LoggingManager implements ILoggingManager {
 					}
 					fileHandler = new EnhancedFileHandler(newConfig);
 					LoggingSupport.getRootLogger().addHandler(fileHandler);
-					logger.log(Level.FINE, "{0} created successfully.", fileHandler.getClass().getSimpleName());
+					log.log(Level.FINE, "{0} created successfully.", fileHandler.getClass().getSimpleName());
 				}
 				catch (final IOException e) {
-					logger.log(Level.SEVERE, e.toString(), e);
+					log.log(Level.SEVERE, "An error occurred while creating the FileHandler:", e);
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class LoggingManager implements ILoggingManager {
 			LoggingSupport.getRootLogger().removeHandler(fileHandler);
 			fileHandler.close();
 			fileHandler = null;
-			logger.log(Level.FINE, "FileHandler closed and removed.");
+			log.log(Level.FINE, "FileHandler closed and removed.");
 		}
 	}
 
@@ -93,7 +93,7 @@ public class LoggingManager implements ILoggingManager {
 			LoggingSupport.setLevel(LoggingSupport.getRootLogger().getName(), Level.parse(loggingConfig.getLoggingLevel()));
 		}
 		catch (final IllegalArgumentException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot update logging level:", e);
 		}
 	}
 

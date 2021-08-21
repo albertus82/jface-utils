@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ExceptionUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(ExceptionUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
 
 	private ExceptionUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -26,7 +26,7 @@ public class ExceptionUtils {
 				return sw.toString();
 			}
 			catch (final RuntimeException re) {
-				logger.log(Level.WARNING, re.toString(), re);
+				log.log(Level.WARNING, "Cannot convert stack trace to string:", re);
 			}
 			finally {
 				IOUtils.closeQuietly(pw, sw);

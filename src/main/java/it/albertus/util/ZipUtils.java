@@ -20,7 +20,7 @@ public class ZipUtils {
 
 	public static final String ZIP_FILE_EXTENSION = ".zip";
 
-	private static final Logger logger = LoggerFactory.getLogger(ZipUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(ZipUtils.class);
 
 	private static final int THRESHOLD_ENTRIES = 0xFFFF;
 
@@ -71,14 +71,14 @@ public class ZipUtils {
 			return true;
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "An error occurred while validating the ZIP file:", e);
 			return false;
 		}
 	}
 
 	public static void test(final File zipFile) throws IOException {
 		final String currentPath = new File("").getCanonicalPath();
-		logger.log(Level.FINER, "currentPath: {0}", currentPath);
+		log.log(Level.FINER, "currentPath: {0}", currentPath);
 		ZipFile zf = null;
 		try {
 			zf = new ZipFile(zipFile);
@@ -95,7 +95,7 @@ public class ZipUtils {
 				final long expectedCrc = ze.getCrc();
 				final String fileName = ze.getName();
 				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
-				logger.log(Level.FINER, "entryPath: {0}", entryPath);
+				log.log(Level.FINER, "entryPath: {0}", entryPath);
 				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
 					throw new SecurityException("ZIP entry not within target directory");
 				}

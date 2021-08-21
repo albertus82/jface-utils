@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 /* Decorator */
 public class Configuration implements IConfiguration {
 
-	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
 	private final IPropertiesConfiguration propertiesConfiguration;
 
@@ -92,8 +92,8 @@ public class Configuration implements IConfiguration {
 			value = getLong(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
+			log.log(Level.FINE, "Unable to get long value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Long.MIN_VALUE, Long.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -124,8 +124,8 @@ public class Configuration implements IConfiguration {
 			value = getInt(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
+			log.log(Level.FINE, "Unable to get int value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Integer.MIN_VALUE, Integer.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -156,8 +156,8 @@ public class Configuration implements IConfiguration {
 			value = getShort(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue), e);
+			log.log(Level.FINE, "Unable to get short value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Short.MIN_VALUE, Short.MAX_VALUE, defaultValue), e);
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -188,8 +188,8 @@ public class Configuration implements IConfiguration {
 			value = getByte(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
+			log.log(Level.FINE, "Unable to get byte value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Byte.MIN_VALUE, Byte.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -220,8 +220,8 @@ public class Configuration implements IConfiguration {
 			value = getFloat(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
+			log.log(Level.FINE, "Unable to get float value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Float.MIN_VALUE, Float.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -252,8 +252,8 @@ public class Configuration implements IConfiguration {
 			value = getDouble(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
+			log.log(Level.FINE, "Unable to get double value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, Double.MIN_VALUE, Double.MAX_VALUE, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -284,8 +284,8 @@ public class Configuration implements IConfiguration {
 			value = getBigDecimal(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
+			log.log(Level.FINE, "Unable to get BigDecimal value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -316,8 +316,8 @@ public class Configuration implements IConfiguration {
 			value = getBigInteger(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
+			log.log(Level.FINE, "Unable to get BigInteger value from configuration:", e);
+			log.log(Level.WARNING, getInvalidNumberErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;
@@ -344,8 +344,8 @@ public class Configuration implements IConfiguration {
 			value = getChar(key);
 		}
 		catch (final ConfigurationException e) {
-			logger.log(Level.FINE, e.toString(), e);
-			logger.log(Level.WARNING, getInvalidCharacterErrorMessage(key, defaultValue));
+			log.log(Level.FINE, "Unable to get char value from configuration:", e);
+			log.log(Level.WARNING, getInvalidCharacterErrorMessage(key, defaultValue));
 			value = defaultValue;
 		}
 		return value != null ? value : defaultValue;

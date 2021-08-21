@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class IOUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(IOUtils.class);
 
 	public static final int EOF = -1;
 
@@ -35,7 +35,7 @@ public class IOUtils {
 			}
 		}
 		catch (final IOException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "An error occurred while closing the resource:", e);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class IOUtils {
 			}
 		}
 		catch (final IOException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "An error occurred while closing the ZIP file:", e);
 		}
 	}
 

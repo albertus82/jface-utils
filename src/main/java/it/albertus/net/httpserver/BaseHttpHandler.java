@@ -53,7 +53,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	private static final String[] maskedHeaderKeys = { "authorization", "password", "session", "token" };
 
-	private static final Logger logger = LoggerFactory.getLogger(BaseHttpHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(BaseHttpHandler.class);
 
 	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
@@ -76,10 +76,10 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	private static Collection<Resource> initResources() {
 		final Collection<Resource> resources = ClasspathResourceUtils.getResourceList(Pattern.compile(".*(?<!\\.class)$"));
-		logger.log(Level.CONFIG, JFaceMessages.get("msg.httpserver.resources.found"), Integer.toString(resources.size()));
-		if (logger.isLoggable(Level.FINE)) {
+		log.log(Level.CONFIG, JFaceMessages.get("msg.httpserver.resources.found"), Integer.toString(resources.size()));
+		if (log.isLoggable(Level.FINE)) {
 			for (final Resource resource : resources) {
-				logger.fine(String.valueOf(resource));
+				log.fine(String.valueOf(resource));
 			}
 		}
 		return resources;
@@ -101,14 +101,14 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			}
 		}
 		catch (final HttpException e) {
-			logger.log(Level.INFO, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
+			log.log(Level.INFO, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
 			sendError(exchange, e);
 		}
 		catch (final IOException e) {
-			logger.log(Level.FINE, e.toString(), e); // often caused by the client that interrupts the stream.
+			log.log(Level.FINE, "Broken pipe:", e); // often caused by the client that interrupts the stream.
 		}
 		catch (final Exception e) {
-			logger.log(Level.SEVERE, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
+			log.log(Level.SEVERE, e.toString() + " -- " + JFaceMessages.get("msg.httpserver.request.headers", buildSafeHeadersMap(exchange.getRequestHeaders())), e);
 			sendInternalError(exchange);
 		}
 		finally {
@@ -195,7 +195,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 				out.close();
 			}
 			catch (final IOException e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "An error occurred while closing the response:", e);
 			}
 		}
 	}
@@ -289,12 +289,14 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	private static Charset initCharset() {
+		final String charsetName = PREFERRED_CHARSET;
 		try {
-			return Charset.forName(PREFERRED_CHARSET);
+			return Charset.forName(charsetName);
 		}
 		catch (final RuntimeException e) {
-			logger.log(Level.WARNING, e.toString(), e);
-			return Charset.defaultCharset();
+			final Charset defaultCharset = Charset.defaultCharset();
+			log.log(Level.WARNING, "Cannot determine charset for name \"" + charsetName + "\", falling back to " + defaultCharset + ':', e);
+			return defaultCharset;
 		}
 	}
 
@@ -413,7 +415,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 				return doCompressResponse(uncompressed, exchange);
 			}
 			catch (final IOException e) {
-				logger.log(Level.WARNING, e.toString(), e);
+				log.log(Level.WARNING, "Cannot compress response:", e);
 			}
 		}
 		return uncompressed;
@@ -490,20 +492,22 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected void setContentMd5Header(final HttpExchange exchange, final File file) {
+		final String headerName = "Content-MD5";
 		try {
-			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(file));
+			exchange.getResponseHeaders().set(headerName, generateContentMd5(file));
 		}
 		catch (final Exception e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot set " + headerName + " header:", e);
 		}
 	}
 
 	protected void setContentMd5Header(final HttpExchange exchange, final byte[] responseBody) {
+		final String headerName = "Content-MD5";
 		try {
-			exchange.getResponseHeaders().set("Content-MD5", generateContentMd5(responseBody));
+			exchange.getResponseHeaders().set(headerName, generateContentMd5(responseBody));
 		}
 		catch (final Exception e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot set " + headerName + " header:", e);
 		}
 	}
 
@@ -684,7 +688,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		}
 		else {
 			sendNotFound(exchange);
-			logger.log(Level.WARNING, JFaceMessages.get("err.httpserver.traversal", file, exchange.getRemoteAddress()));
+			log.log(Level.WARNING, JFaceMessages.get("err.httpserver.traversal", file, exchange.getRemoteAddress()));
 		}
 	}
 
@@ -734,7 +738,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			}
 		}
 		catch (final FileNotFoundException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "File not found, sending HTTP 404:", e);
 			sendNotFound(exchange);
 		}
 		finally {
@@ -791,17 +795,17 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			level = Level.parse(httpServerConfig.getRequestLoggingLevel());
 		}
 		catch (final RuntimeException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot log request:", e);
 		}
 		doLogRequest(exchange, level);
 	}
 
 	protected void doLogRequest(final HttpExchange exchange, final Level level) {
-		if (logger.isLoggable(level) && !Level.OFF.equals(level)) {
+		if (log.isLoggable(level) && !Level.OFF.equals(level)) {
 			final Object[] requestInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() };
 			if (!Arrays.equals(requestInfo, getLastRequestInfo())) {
 				setLastRequestInfo(requestInfo);
-				logger.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol() });
+				log.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol() });
 			}
 		}
 	}
@@ -812,18 +816,18 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			level = Level.parse(httpServerConfig.getResponseLoggingLevel());
 		}
 		catch (final RuntimeException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot log response:", e);
 		}
 		doLogResponse(exchange, level);
 	}
 
 	protected void doLogResponse(final HttpExchange exchange, final Level level) {
-		if (logger.isLoggable(level) && !Level.OFF.equals(level)) {
+		if (log.isLoggable(level) && !Level.OFF.equals(level)) {
 			final Object[] responseInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode() };
 			if (!Arrays.equals(responseInfo, getLastResponseInfo())) {
 				setLastResponseInfo(responseInfo);
 				final String textStatus = HttpStatusCodes.getDescription(exchange.getResponseCode());
-				logger.log(level, JFaceMessages.get("msg.httpserver.log.response"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode(), textStatus != null ? ' ' + textStatus : "" });
+				log.log(level, JFaceMessages.get("msg.httpserver.log.response"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode(), textStatus != null ? ' ' + textStatus : "" });
 			}
 		}
 	}

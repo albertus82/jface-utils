@@ -24,7 +24,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINE, "An error occurred while closing the connection:", e);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINE, "An error occurred while closing the statement:", e);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			logger.log(Level.FINE, "An error occurred while closing the result set:", e);
 		}
 	}
 

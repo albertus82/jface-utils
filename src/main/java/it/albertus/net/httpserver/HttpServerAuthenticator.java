@@ -21,7 +21,7 @@ import it.albertus.util.logging.LoggerFactory;
 @SuppressWarnings("restriction")
 public class HttpServerAuthenticator extends BasicAuthenticator {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpServerAuthenticator.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpServerAuthenticator.class);
 
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
@@ -59,12 +59,12 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 			}
 			else {
 				final HttpExchange exchange = exchanges.get();
-				logger.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new Object[] { specifiedUsername, specifiedPassword, exchange != null ? exchange.getRemoteAddress() : null });
+				log.log(Level.parse(getConfiguration().getFailureLoggingLevel()), JFaceMessages.get("err.httpserver.authentication"), new Object[] { specifiedUsername, specifiedPassword, exchange != null ? exchange.getRemoteAddress() : null });
 				return fail();
 			}
 		}
 		catch (final Exception e) {
-			logger.log(Level.SEVERE, e.toString(), e);
+			log.log(Level.SEVERE, "An error occurred while checking credentials:", e);
 			return fail();
 		}
 	}
@@ -95,7 +95,7 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 			TimeUnit.MILLISECONDS.sleep(configuration.getFailDelayMillis());
 		}
 		catch (final InterruptedException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Sleep interrupted:", e);
 			Thread.currentThread().interrupt();
 		}
 		return false;

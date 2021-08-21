@@ -33,7 +33,7 @@ public class SwtUtils {
 	private static final String ORG_ECLIPSE_SWT_INTERNAL_GTK_VERSION = "org.eclipse.swt.internal.gtk.version";
 	private static final String SWT_GTK3 = "SWT_GTK3";
 
-	private static final Logger logger = LoggerFactory.getLogger(SwtUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(SwtUtils.class);
 
 	private SwtUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -125,7 +125,7 @@ public class SwtUtils {
 			return isGtk3(Util.isGtk(), SWT.getVersion(), System.getProperty(ORG_ECLIPSE_SWT_INTERNAL_GTK_VERSION), System.getProperty(SWT_GTK3) != null ? System.getProperty(SWT_GTK3) : System.getenv(SWT_GTK3));
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "Cannot determine GTK version:", e);
 			return null;
 		}
 	}

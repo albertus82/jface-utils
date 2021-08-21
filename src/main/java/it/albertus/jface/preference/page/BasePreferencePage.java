@@ -35,7 +35,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class BasePreferencePage extends FieldEditorPreferencePage {
 
-	private static final Logger logger = LoggerFactory.getLogger(BasePreferencePage.class);
+	private static final Logger log = LoggerFactory.getLogger(BasePreferencePage.class);
 
 	protected static final Map<IPreference, FieldEditorWrapper> universe = new HashMap<IPreference, FieldEditorWrapper>();
 
@@ -100,7 +100,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		}
 		catch (final IOException ioe) {
 			final String message = JFaceMessages.get("err.preferences.save");
-			logger.log(Level.SEVERE, message, ioe);
+			log.log(Level.SEVERE, message, ioe);
 			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.ERROR, ioe, Display.getCurrent().getSystemImage(SWT.ICON_ERROR));
 		}
 
@@ -110,7 +110,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		}
 		catch (final IOException ioe) {
 			final String message = JFaceMessages.get("err.preferences.reload");
-			logger.log(Level.WARNING, message, ioe);
+			log.log(Level.WARNING, message, ioe);
 			EnhancedErrorDialog.openError(getShell(), JFaceMessages.get("lbl.preferences.title"), message, IStatus.WARNING, ioe, Display.getCurrent().getSystemImage(SWT.ICON_WARNING));
 		}
 	}
@@ -211,7 +211,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 				parentEnabled = ((BooleanFieldEditor) fieldEditorWrapper.getFieldEditor()).getBooleanValue();
 			}
 			catch (final NullPointerException e) { // Uninitialized field.
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Field probably not initialized:", e);
 				parentEnabled = getPreferenceStore().getBoolean(preference.getName());
 			}
 		}
@@ -266,7 +266,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 						parentEnabled = ((BooleanFieldEditor) fieldEditor).getBooleanValue();
 					}
 					catch (final NullPointerException e) {
-						logger.log(Level.FINE, e.toString(), e);
+						log.log(Level.FINE, "Field probably not initialized:", e);
 						parentEnabled = getBooleanFromStore(preference);
 					}
 				}

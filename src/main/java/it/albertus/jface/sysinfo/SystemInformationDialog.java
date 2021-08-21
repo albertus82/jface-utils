@@ -75,7 +75,7 @@ public class SystemInformationDialog extends Dialog {
 
 	private static final String TABLE_ITEM_FONT_SYMBOLIC_NAME = SystemInformationDialog.class.getName();
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialog.class);
+	private static final Logger log = LoggerFactory.getLogger(SystemInformationDialog.class);
 
 	/** The map contaning the system properties (can be null). */
 	@Nullable
@@ -106,21 +106,21 @@ public class SystemInformationDialog extends Dialog {
 			return true;
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "The calling thread does not have permission to access the system properties:", e);
 		}
 		try {
 			sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables
 			return true;
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Access to the environment variables is not permitted based on the current security policy:", e);
 		}
 		try {
 			sm.checkPermission(new ManagementPermission("monitor")); // jvm args
 			return true;
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Access to the JVM arguments is not permitted based on the current security policy:", e);
 		}
 		return false;
 	}
@@ -580,13 +580,13 @@ public class SystemInformationDialog extends Dialog {
 			}
 			catch (final InvocationTargetException e) {
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
-				logger.log(Level.WARNING, message, e);
+				log.log(Level.WARNING, message, e);
 				SwtUtils.unblockShell(shell);
 				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.WARNING, e.getCause() != null ? e.getCause() : e, shell.getDisplay().getSystemImage(SWT.ICON_WARNING));
 			}
 			catch (final Exception e) { // NOSONAR Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here. "InterruptedException" should not be ignored (java:S2142)
 				final String message = JFaceMessages.get(ERR_SYSTEM_INFO_EXPORT);
-				logger.log(Level.SEVERE, message, e);
+				log.log(Level.SEVERE, message, e);
 				SwtUtils.unblockShell(shell);
 				EnhancedErrorDialog.openError(shell, JFaceMessages.get(LBL_SYSTEM_INFO_DIALOG_TITLE), message, IStatus.ERROR, e, shell.getDisplay().getSystemImage(SWT.ICON_ERROR));
 			}

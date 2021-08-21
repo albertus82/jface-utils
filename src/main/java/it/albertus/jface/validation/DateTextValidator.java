@@ -12,7 +12,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class DateTextValidator extends StringTextValidator {
 
-	private static final Logger logger = LoggerFactory.getLogger(DateTextValidator.class);
+	private static final Logger log = LoggerFactory.getLogger(DateTextValidator.class);
 
 	private static final boolean EMPTY_STRING_ALLOWED = true;
 
@@ -57,7 +57,7 @@ public class DateTextValidator extends StringTextValidator {
 			}
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "An error occurred while validating the date:", e);
 		}
 		return false;
 	}

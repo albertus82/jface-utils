@@ -32,7 +32,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class EnhancedErrorDialog extends ErrorDialog {
 
-	private static final Logger logger = LoggerFactory.getLogger(EnhancedErrorDialog.class);
+	private static final Logger log = LoggerFactory.getLogger(EnhancedErrorDialog.class);
 
 	private static final String NESTING_INDENT = "  ";
 
@@ -160,7 +160,7 @@ public class EnhancedErrorDialog extends ErrorDialog {
 			}
 		}
 		catch (final IOException e) {
-			logger.log(Level.WARNING, e.toString(), e);
+			log.log(Level.WARNING, "An error occurred while collecting statuses:", e);
 		}
 		finally {
 			IOUtils.closeQuietly(br, sr);

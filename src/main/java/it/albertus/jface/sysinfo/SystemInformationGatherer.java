@@ -21,7 +21,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 
 	private static final String TASK_NAME = "Gathering system information";
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemInformationGatherer.class);
+	private static final Logger log = LoggerFactory.getLogger(SystemInformationGatherer.class);
 
 	/** The map contaning the system properties (can be null). */
 	@Nullable
@@ -48,7 +48,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 			}
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "The calling thread does not have permission to access the system properties:", e);
 		}
 		monitor.worked(1);
 
@@ -62,7 +62,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 			}
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Access to the environment variables is not permitted based on the current security policy:", e);
 		}
 		monitor.worked(1);
 
@@ -70,7 +70,7 @@ public class SystemInformationGatherer implements IRunnableWithProgress {
 			jvmArgs = Collections.unmodifiableList(ManagementFactory.getRuntimeMXBean().getInputArguments());
 		}
 		catch (final SecurityException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Access to the JVM arguments is not permitted based on the current security policy:", e);
 		}
 		monitor.done();
 	}

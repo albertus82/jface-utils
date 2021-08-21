@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public abstract class NumberTextValidator<T extends Number & Comparable<? extends Number>> extends StringTextValidator {
 
-	private static final Logger logger = LoggerFactory.getLogger(NumberTextValidator.class);
+	private static final Logger log = LoggerFactory.getLogger(NumberTextValidator.class);
 
 	private static final boolean EMPTY_STRING_ALLOWED = false;
 
@@ -45,7 +45,7 @@ public abstract class NumberTextValidator<T extends Number & Comparable<? extend
 			}
 		}
 		catch (final RuntimeException e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "An error occurred while validating the number:", e);
 		}
 		return false;
 	}

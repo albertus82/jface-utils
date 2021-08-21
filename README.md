@@ -324,7 +324,6 @@ Now, if you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` o
 GC gc = null;
 try {
     gc = new GC(canvas);
-    gc.setBackground(getBackgroundColor());
     Rectangle canvasBounds = canvas.getBounds();
     gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
 }
@@ -339,7 +338,6 @@ finally {
 ```java
 try (CloseableResource<GC> wrapper = new CloseableResource<>(new GC(canvas))) {
     GC gc = wrapper.getResource();
-    gc.setBackground(getBackgroundColor());
     Rectangle canvasBounds = canvas.getBounds();
     gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
 }

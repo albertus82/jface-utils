@@ -58,7 +58,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			return Short.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Short:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Short:", e);
 			return super.getValue();
 		}
 	}
@@ -69,7 +69,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			super.setValue(Short.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Short:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Short:", e);
 			super.setValue(value);
 		}
 	}

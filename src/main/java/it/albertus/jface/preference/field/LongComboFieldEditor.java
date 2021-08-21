@@ -57,7 +57,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			return Long.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Long:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Long:", e);
 			return super.getValue();
 		}
 	}
@@ -68,7 +68,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			super.setValue(Long.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Long:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Long:", e);
 			super.setValue(value);
 		}
 	}

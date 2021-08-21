@@ -56,7 +56,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			return Float.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Float:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Float:", e);
 			return super.getValue();
 		}
 	}
@@ -67,7 +67,7 @@ public class FloatComboFieldEditor extends AbstractDecimalComboFieldEditor<Float
 			super.setValue(Float.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Float:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Float:", e);
 			super.setValue(value);
 		}
 	}

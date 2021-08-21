@@ -57,7 +57,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 			return Integer.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into an Integer:", e);
+			log.log(Level.FINEST, "Cannot translate the string into an Integer:", e);
 			return super.getValue();
 		}
 	}
@@ -68,7 +68,7 @@ public class IntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<Int
 			super.setValue(Integer.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into an Integer:", e);
+			log.log(Level.FINEST, "Cannot translate the string into an Integer:", e);
 			super.setValue(value);
 		}
 	}

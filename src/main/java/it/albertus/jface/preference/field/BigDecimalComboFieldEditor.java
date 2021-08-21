@@ -50,7 +50,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			return new BigDecimal(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a BigDecimal:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a BigDecimal:", e);
 			return super.getValue();
 		}
 	}
@@ -61,7 +61,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			super.setValue(new BigDecimal(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a BigDecimal:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a BigDecimal:", e);
 			super.setValue(value);
 		}
 	}

@@ -58,7 +58,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			return Byte.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Byte:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Byte:", e);
 			return super.getValue();
 		}
 	}
@@ -69,7 +69,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			super.setValue(Byte.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Byte:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Byte:", e);
 			super.setValue(value);
 		}
 	}

@@ -50,7 +50,7 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 			return new BigInteger(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a BigInteger:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a BigInteger:", e);
 			return super.getValue();
 		}
 	}
@@ -61,7 +61,7 @@ public class BigIntegerComboFieldEditor extends AbstractIntegerComboFieldEditor<
 			super.setValue(new BigInteger(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a BigInteger:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a BigInteger:", e);
 			super.setValue(value);
 		}
 	}

@@ -56,7 +56,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 			return Double.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Double:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Double:", e);
 			return super.getValue();
 		}
 	}
@@ -67,7 +67,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 			super.setValue(Double.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINE, "Cannot translate the string into a Double:", e);
+			log.log(Level.FINEST, "Cannot translate the string into a Double:", e);
 			super.setValue(value);
 		}
 	}

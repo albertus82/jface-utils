@@ -39,10 +39,28 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>cocoa-macosx-aarch64</id>
+			<activation>
+				<os>
+					<family>mac</family>
+					<arch>aarch64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.platform</groupId>
+					<artifactId>org.eclipse.swt.cocoa.macosx.aarch64</artifactId>
+					<version>3.116.100</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
 			<id>cocoa-macosx-x86_64</id>
 			<activation>
 				<os>
 					<family>mac</family>
+					<arch>x86_64</arch>
 				</os>
 			</activation>
 			<dependencies>

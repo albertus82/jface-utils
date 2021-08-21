@@ -31,7 +31,7 @@ import it.albertus.util.logging.LoggingSupport;
 
 public abstract class ScrollableConsole<T extends Scrollable> extends OutputStream {
 
-	private static final Logger logger = LoggerFactory.getLogger(ScrollableConsole.class);
+	private static final Logger log = LoggerFactory.getLogger(ScrollableConsole.class);
 
 	protected static final PrintStream defaultSysOut = System.out; // NOSONAR
 	protected static final PrintStream defaultSysErr = System.err; // NOSONAR
@@ -135,7 +135,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 			redirectLogging(); // Redirect java.util.logging
 		}
 		catch (final RuntimeException re) {
-			logger.log(Level.SEVERE, JFaceMessages.get("err.console.streams.redirect"), re);
+			log.log(Level.SEVERE, JFaceMessages.get("err.console.streams.redirect"), re);
 		}
 	}
 
@@ -171,7 +171,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 			System.setErr(defaultSysErr);
 		}
 		catch (final RuntimeException re) {
-			logger.log(Level.SEVERE, JFaceMessages.get("err.console.streams.reset"), re);
+			log.log(Level.SEVERE, JFaceMessages.get("err.console.streams.reset"), re);
 		}
 	}
 
@@ -188,7 +188,7 @@ public abstract class ScrollableConsole<T extends Scrollable> extends OutputStre
 			return limit != null && limit.get() != null ? limit.get() : getDefaultLimit();
 		}
 		catch (final RuntimeException re) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", getDefaultLimit()), re);
+			log.log(Level.WARNING, JFaceMessages.get("err.console.capacity") + ' ' + JFaceMessages.get("err.configuration.using.default", getDefaultLimit()), re);
 			return getDefaultLimit();
 		}
 	}

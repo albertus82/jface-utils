@@ -28,7 +28,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class Preferences {
 
-	private static final Logger logger = LoggerFactory.getLogger(Preferences.class);
+	private static final Logger log = LoggerFactory.getLogger(Preferences.class);
 
 	private final IPreferencesCallback preferencesCallback;
 	private final IPageDefinition[] pageDefinitions;
@@ -90,7 +90,7 @@ public class Preferences {
 			}
 			catch (final IOException ioe) {
 				final String message = JFaceMessages.get("err.preferences.reload");
-				logger.log(Level.WARNING, message, ioe);
+				log.log(Level.WARNING, message, ioe);
 				EnhancedErrorDialog.openError(parentShell, dialogTitle, message, IStatus.WARNING, ioe, Display.getCurrent().getSystemImage(SWT.ICON_WARNING));
 			}
 		}

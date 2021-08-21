@@ -11,7 +11,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class SqlUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(SqlUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(SqlUtils.class);
 
 	private SqlUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -24,7 +24,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, "An error occurred while closing the connection:", e);
+			log.log(Level.FINE, "An error occurred while closing the connection:", e);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, "An error occurred while closing the statement:", e);
+			log.log(Level.FINE, "An error occurred while closing the statement:", e);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class SqlUtils {
 			}
 		}
 		catch (final SQLException e) {
-			logger.log(Level.FINE, "An error occurred while closing the result set:", e);
+			log.log(Level.FINE, "An error occurred while closing the result set:", e);
 		}
 	}
 

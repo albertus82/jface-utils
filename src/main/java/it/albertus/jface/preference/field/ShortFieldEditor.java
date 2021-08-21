@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ShortFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(ShortFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MAX_VALUE).length();
 
@@ -46,7 +46,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 				value = Short.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
 			catch (final NumberFormatException e) {
-				logger.log(Level.FINEST, "The value provided does not contain a parsable short:", e);
+				log.log(Level.FINEST, "The value provided does not contain a parsable short:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -76,7 +76,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 			return Short.valueOf(defaultValue).toString();
 		}
 		catch (final NumberFormatException e) {
-			logger.log(Level.FINEST, "The value provided does not contain a parsable short:", e);
+			log.log(Level.FINEST, "The value provided does not contain a parsable short:", e);
 			return "";
 		}
 	}
@@ -99,7 +99,7 @@ public class ShortFieldEditor extends AbstractIntegerFieldEditor<Short> {
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, "Cannot change the value of the field:", e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

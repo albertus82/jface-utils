@@ -15,7 +15,7 @@ import it.albertus.util.FileSorter;
 
 public class HousekeepingFilter extends Observable implements Filter {
 
-	private static final Logger logger = LoggerFactory.getLogger(HousekeepingFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(HousekeepingFilter.class);
 
 	public static final int MIN_HISTORY = 1;
 
@@ -33,7 +33,7 @@ public class HousekeepingFilter extends Observable implements Filter {
 			}
 			catch (final RuntimeException e) {
 				final String defaultDatePattern = TimeBasedRollingFileHandlerConfig.DEFAULT_DATE_PATTERN;
-				logger.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.datePattern", datePattern, defaultDatePattern), e);
+				log.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.datePattern", datePattern, defaultDatePattern), e);
 				return new SimpleDateFormat(defaultDatePattern);
 			}
 		}
@@ -46,14 +46,14 @@ public class HousekeepingFilter extends Observable implements Filter {
 	public HousekeepingFilter(final ILogFileManager logFileManager, final int maxHistory, final String datePattern) {
 		this.logFileManager = logFileManager;
 		if (maxHistory < MIN_HISTORY) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.maxHistory"), MIN_HISTORY);
+			log.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.maxHistory"), MIN_HISTORY);
 			this.maxHistory = MIN_HISTORY;
 		}
 		else {
 			this.maxHistory = maxHistory;
 		}
 		this.datePattern = datePattern;
-		logger.log(Level.FINE, "Created new {0}", this);
+		log.log(Level.FINE, "Created new {0}", this);
 	}
 
 	@Override

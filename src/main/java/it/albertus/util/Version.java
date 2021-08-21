@@ -21,7 +21,7 @@ import it.albertus.util.logging.LoggerFactory;
  */
 public class Version {
 
-	private static final Logger logger = LoggerFactory.getLogger(Version.class);
+	private static final Logger log = LoggerFactory.getLogger(Version.class);
 
 	public static final String ISO_8601_PATTERN = "yyyy-MM-dd";
 
@@ -48,7 +48,7 @@ public class Version {
 			}
 		}
 		catch (final IOException e) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.load.file", resourceName), e);
+			log.log(Level.WARNING, JFaceMessages.get("err.load.file", resourceName), e);
 		}
 		finally {
 			if (in != null) {
@@ -56,7 +56,7 @@ public class Version {
 					in.close();
 				}
 				catch (final IOException e) {
-					logger.log(Level.FINE, "Cannot close resource \"" + resourceName + "\".", e);
+					log.log(Level.FINE, "Cannot close resource \"" + resourceName + "\":", e);
 				}
 			}
 		}

@@ -21,7 +21,7 @@ public class DisplayThreadExecutor implements Executor {
 		ASYNC
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(DisplayThreadExecutor.class);
+	private static final Logger log = LoggerFactory.getLogger(DisplayThreadExecutor.class);
 
 	private final Widget widget;
 	private final Mode mode;
@@ -72,7 +72,7 @@ public class DisplayThreadExecutor implements Executor {
 
 	protected void onError(final Exception e) {
 		if (e != null && !(e instanceof SWTException)) {
-			logger.log(Level.SEVERE, "Error in SWT thread", e);
+			log.log(Level.SEVERE, "Error in SWT thread:", e);
 		}
 	}
 

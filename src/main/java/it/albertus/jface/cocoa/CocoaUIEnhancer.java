@@ -251,7 +251,7 @@ import it.albertus.util.logging.LoggerFactory;
  */
 public class CocoaUIEnhancer {
 
-	private static final Logger logger = LoggerFactory.getLogger(CocoaUIEnhancer.class);
+	private static final Logger log = LoggerFactory.getLogger(CocoaUIEnhancer.class);
 
 	private static final String ITEM_AT_INDEX = "itemAtIndex";
 
@@ -350,7 +350,7 @@ public class CocoaUIEnhancer {
 	private void hookApplicationMenu(@Nullable final Listener quitListener, final CallbackObject callbackObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 		// Check platform
 		if (!Util.isCocoa()) {
-			logger.log(Level.WARNING, JFaceMessages.get("err.cocoa.enhancer.platform"));
+			log.log(Level.WARNING, JFaceMessages.get("err.cocoa.enhancer.platform"));
 		}
 
 		initialize(callbackObject);

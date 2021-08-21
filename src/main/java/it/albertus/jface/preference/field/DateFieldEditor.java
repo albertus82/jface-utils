@@ -17,7 +17,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEditorDefault {
 
-	private static final Logger logger = LoggerFactory.getLogger(DateFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(DateFieldEditor.class);
 
 	private static final Formatter formatter = new Formatter(DateFieldEditor.class);
 
@@ -88,7 +88,7 @@ public class DateFieldEditor extends AbstractDateFieldEditor implements FieldEdi
 						formatter.updateFontStyle(getDateTimeControl(), defaultValue, dateFormats.get().format(date));
 					}
 					catch (final ParseException pe) {
-						logger.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
+						log.log(Level.SEVERE, JFaceMessages.get("err.date.parse"), pe);
 					}
 				}
 			}

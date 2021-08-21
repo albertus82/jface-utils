@@ -35,7 +35,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class EnhancedPreferenceDialog extends PreferenceDialog {
 
-	private static final Logger logger = LoggerFactory.getLogger(EnhancedPreferenceDialog.class);
+	private static final Logger log = LoggerFactory.getLogger(EnhancedPreferenceDialog.class);
 
 	private final String title;
 	private final Image[] images;
@@ -109,7 +109,7 @@ public class EnhancedPreferenceDialog extends PreferenceDialog {
 					}
 					catch (final IOException ioe) {
 						final String message = JFaceMessages.get("err.preferences.save");
-						logger.log(Level.SEVERE, message, ioe);
+						log.log(Level.SEVERE, message, ioe);
 						EnhancedErrorDialog.openError(getShell(), title, message, IStatus.ERROR, ioe, Display.getCurrent().getSystemImage(SWT.ICON_ERROR));
 					}
 				}

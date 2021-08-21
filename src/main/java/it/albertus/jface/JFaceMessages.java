@@ -15,7 +15,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class JFaceMessages {
 
-	private static final Logger logger = LoggerFactory.getLogger(JFaceMessages.class);
+	private static final Logger log = LoggerFactory.getLogger(JFaceMessages.class);
 
 	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase(Locale.ROOT);
 
@@ -58,7 +58,7 @@ public class JFaceMessages {
 			message = message != null ? message.replace("''", "'").trim() : "";
 		}
 		catch (final MissingResourceException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
+			log.log(Level.WARNING, e.getMessage(), e);
 			message = key;
 		}
 		return message;
@@ -75,7 +75,7 @@ public class JFaceMessages {
 			message = message != null ? message.trim() : "";
 		}
 		catch (final MissingResourceException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
+			log.log(Level.WARNING, e.getMessage(), e);
 			message = key;
 		}
 		return message;

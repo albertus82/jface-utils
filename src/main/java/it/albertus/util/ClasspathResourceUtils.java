@@ -25,7 +25,7 @@ public class ClasspathResourceUtils {
 
 	private static final int THRESHOLD_ENTRIES = 0xFFFF;
 
-	private static final Logger logger = LoggerFactory.getLogger(ClasspathResourceUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(ClasspathResourceUtils.class);
 
 	private ClasspathResourceUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -66,20 +66,20 @@ public class ClasspathResourceUtils {
 		try {
 			zf = new ZipFile(file);
 			final String currentPath = new File("").getCanonicalPath();
-			logger.log(Level.FINEST, "currentPath: {0}", currentPath);
+			log.log(Level.FINEST, "currentPath: {0}", currentPath);
 			final Enumeration<? extends ZipEntry> e = zf.entries();
 			int entryCount = 0;
 			while (e.hasMoreElements()) {
 				if (++entryCount > THRESHOLD_ENTRIES) {
-					logger.log(Level.WARNING, "Too many ZIP entries!");
+					log.log(Level.WARNING, "Too many ZIP entries!");
 					break;
 				}
 				final ZipEntry ze = e.nextElement();
 				final String fileName = ze.getName();
 				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
-				logger.log(Level.FINEST, "entryPath: {0}", entryPath);
+				log.log(Level.FINEST, "entryPath: {0}", entryPath);
 				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
-					logger.log(Level.WARNING, "Ignoring ZIP entry {0} not within target directory!", ze);
+					log.log(Level.WARNING, "Ignoring ZIP entry {0} not within target directory!", ze);
 					continue;
 				}
 				final boolean accept = pattern.matcher(fileName).matches();
@@ -97,7 +97,7 @@ public class ClasspathResourceUtils {
 					zf.close();
 				}
 				catch (final IOException e) {
-					logger.log(Level.WARNING, "Exception closing " + zf, e);
+					log.log(Level.WARNING, "Exception closing " + zf, e);
 				}
 			}
 		}

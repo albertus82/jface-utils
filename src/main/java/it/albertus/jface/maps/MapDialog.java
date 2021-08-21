@@ -41,7 +41,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public abstract class MapDialog extends Dialog implements LineParser {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapDialog.class);
+	private static final Logger log = LoggerFactory.getLogger(MapDialog.class);
 
 	public static final String OPTIONS_PLACEHOLDER = "/* {{options}} */";
 	public static final String MARKERS_PLACEHOLDER = "/* {{markers}} */";
@@ -152,7 +152,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 				line = lineParser.parseLine(line);
 				if (line != null) {
 					line = line.trim();
-					logger.log(Level.FINE, line);
+					log.fine(line);
 					bw.write(line);
 					bw.newLine();
 				}
@@ -160,7 +160,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 			pageUrl = tempFile.toURI();
 		}
 		catch (final Exception e) {
-			logger.log(Level.SEVERE, JFaceMessages.get("err.map.open"), e);
+			log.log(Level.SEVERE, JFaceMessages.get("err.map.open"), e);
 		}
 		finally {
 			IOUtils.closeQuietly(bw, fw, br, isr);
@@ -177,7 +177,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 						}
 					}
 					catch (final RuntimeException re) {
-						logger.log(Level.WARNING, JFaceMessages.get("err.delete.temp", fileToDelete), re);
+						log.log(Level.WARNING, JFaceMessages.get("err.delete.temp", fileToDelete), re);
 					}
 				}
 			});

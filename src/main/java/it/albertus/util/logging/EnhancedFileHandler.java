@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 public class EnhancedFileHandler extends FileHandler {
 
+	private static final String FIELD_ACCESS_ERROR_MESSAGE_FORMAT = "Cannot access field %s, try adding the following option to the java command: --add-opens java.logging/java.util.logging=ALL-UNNAMED";
+
 	private static final Logger log = LoggerFactory.getLogger(EnhancedFileHandler.class);
 
 	/**
@@ -54,12 +56,14 @@ public class EnhancedFileHandler extends FileHandler {
 			return (String) field.get(this);
 		}
 		catch (final NoSuchFieldException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 		catch (final IllegalAccessException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 	}
 
@@ -76,12 +80,14 @@ public class EnhancedFileHandler extends FileHandler {
 			return (int) field.getLong(this); // limit became "long" since Java 9
 		}
 		catch (final NoSuchFieldException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 		catch (final IllegalAccessException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 	}
 
@@ -98,12 +104,14 @@ public class EnhancedFileHandler extends FileHandler {
 			return field.getInt(this);
 		}
 		catch (final NoSuchFieldException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 		catch (final IllegalAccessException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 	}
 
@@ -120,12 +128,14 @@ public class EnhancedFileHandler extends FileHandler {
 			return field.getBoolean(this);
 		}
 		catch (final NoSuchFieldException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 		catch (final IllegalAccessException e) {
-			log.log(Level.WARNING, "Cannot access field " + fieldName, e);
-			throw new LinkageError("Cannot access field " + fieldName);
+			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
+			log.log(Level.WARNING, message, e);
+			throw new LinkageError(message);
 		}
 	}
 

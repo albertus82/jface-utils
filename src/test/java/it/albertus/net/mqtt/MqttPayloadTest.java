@@ -19,7 +19,7 @@ import it.albertus.util.logging.LoggerFactory;
 @SuppressWarnings("restriction")
 public class MqttPayloadTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(MqttPayloadTest.class);
+	private static final Logger log = LoggerFactory.getLogger(MqttPayloadTest.class);
 
 	private static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
 
@@ -90,7 +90,7 @@ public class MqttPayloadTest {
 			Assert.assertTrue("Content-Length check malfunction", false);
 		}
 		catch (final IOException e) {
-			logger.log(Level.INFO, e.toString(), e);
+			log.log(Level.INFO, e.toString(), e);
 			Assert.assertTrue(true);
 		}
 	}
@@ -202,7 +202,7 @@ public class MqttPayloadTest {
 			Assert.assertTrue("Content-Length check malfunction", false);
 		}
 		catch (final IOException e) {
-			logger.log(Level.INFO, e.toString(), e);
+			log.log(Level.INFO, e.toString(), e);
 			Assert.assertTrue(true);
 		}
 	}
@@ -220,7 +220,7 @@ public class MqttPayloadTest {
 			Assert.assertTrue("CRLFs check malfunction", false);
 		}
 		catch (final IOException e) {
-			logger.log(Level.INFO, e.toString(), e);
+			log.log(Level.INFO, e.toString(), e);
 			Assert.assertTrue(true);
 		}
 	}

@@ -74,14 +74,14 @@ public class LightweightHttpServerTest {
 		@Override
 		protected void service(HttpExchange exchange) throws IOException {
 			for (final Filter filter : exchange.getHttpContext().getFilters()) {
-				logger.fine(filter.description());
+				log.fine(filter.description());
 			}
 			super.service(exchange);
 		}
 
 		@Override
 		protected void doGet(final HttpExchange exchange) throws IOException {
-			logger.log(Level.INFO, exchange.getRequestHeaders().entrySet().toString());
+			log.log(Level.INFO, exchange.getRequestHeaders().entrySet().toString());
 			RequestParameterExtractor r = new RequestParameterExtractor(exchange);
 			Assert.assertEquals(4, r.getParameterMap().size());
 
@@ -103,7 +103,7 @@ public class LightweightHttpServerTest {
 		}
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(LightweightHttpServerTest.class);
+	private static final Logger log = LoggerFactory.getLogger(LightweightHttpServerTest.class);
 
 	private static final List<SocketTimeoutException> exceptions = new ArrayList<SocketTimeoutException>();
 
@@ -170,7 +170,7 @@ public class LightweightHttpServerTest {
 		}
 		LoggingSupport.setRootLevel(Level.INFO);
 		if (exceptions.size() > 0) {
-			logger.log(Level.WARNING, "Total errors count: {0}.", exceptions.size());
+			log.log(Level.WARNING, "Total errors count: {0}.", exceptions.size());
 		}
 	}
 
@@ -178,7 +178,7 @@ public class LightweightHttpServerTest {
 	public static void init() throws InterruptedException, IOException {
 		LoggingSupport.setRootLevel(Level.FINE);
 		certificate = File.createTempFile("cert-", ".jks");
-		logger.info(certificate.toString());
+		log.info(certificate.toString());
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(certificate);
@@ -322,7 +322,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(queryString, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -369,7 +369,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(queryString, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -409,7 +409,7 @@ public class LightweightHttpServerTest {
 			connection.addRequestProperty("Content-Length", Integer.toString(compressedQueryString.length - 1));
 			connection.addRequestProperty("Content-Encoding", "gzip");
 			connection.getOutputStream().write(compressedQueryString);
-			logger.log(Level.INFO, "Compressed bytes POSTed: ===>{0}<=== ({1})", new String[] { new String(compressedQueryString), DatatypeConverter.printHexBinary(compressedQueryString) });
+			log.log(Level.INFO, "Compressed bytes POSTed: ===>{0}<=== ({1})", new String[] { new String(compressedQueryString), DatatypeConverter.printHexBinary(compressedQueryString) });
 			Assert.assertEquals(200, connection.getResponseCode());
 			Assert.assertEquals("200 " + HttpStatusCodes.getMap().get(200), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
@@ -428,10 +428,10 @@ public class LightweightHttpServerTest {
 			}
 			connection.disconnect();
 			Assert.assertEquals(queryString, os.toString());
-			logger.log(Level.INFO, "Bytes received: ===>{0}<===", os);
+			log.log(Level.INFO, "Bytes received: ===>{0}<===", os);
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -466,7 +466,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -502,7 +502,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -554,7 +554,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -607,7 +607,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -644,7 +644,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(1082518, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -681,7 +681,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(certificate.length(), os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -719,7 +719,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -758,7 +758,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -798,7 +798,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -834,7 +834,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -871,7 +871,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -922,7 +922,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -958,7 +958,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(1082518, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -995,7 +995,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1034,7 +1034,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1073,7 +1073,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1094,7 +1094,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			Assert.assertNull(connection.getHeaderField("Content-disposition"));
@@ -1111,7 +1111,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(true, os.toString().isEmpty());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1147,7 +1147,7 @@ public class LightweightHttpServerTest {
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremLargeMd5, connection.getHeaderField("eTag"));
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			Assert.assertNull(connection.getHeaderField("Content-Disposition"));
 			InputStream is = null;
@@ -1166,7 +1166,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1219,7 +1219,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1257,7 +1257,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1279,7 +1279,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			Assert.assertEquals(etag, connection.getHeaderField("Etag"));
 			Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
@@ -1297,7 +1297,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1321,7 +1321,7 @@ public class LightweightHttpServerTest {
 			Assert.assertNull(connection.getContentType());
 			Assert.assertNull(connection.getHeaderField("Transfer-Encoding"));
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			Assert.assertEquals("max-age=86400", connection.getHeaderField("cache-control"));
 			Assert.assertNull(connection.getHeaderField("Content-Disposition"));
@@ -1338,7 +1338,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1358,7 +1358,7 @@ public class LightweightHttpServerTest {
 			connection.disconnect();
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1380,7 +1380,7 @@ public class LightweightHttpServerTest {
 			connection.disconnect();
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1400,7 +1400,7 @@ public class LightweightHttpServerTest {
 			connection.disconnect();
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1421,7 +1421,7 @@ public class LightweightHttpServerTest {
 			connection.disconnect();
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1462,7 +1462,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1505,7 +1505,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(loremSmallTxt, os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1533,7 +1533,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals("304 " + HttpStatusCodes.getMap().get(304), connection.getHeaderField("Status"));
 			Assert.assertNotEquals(0, connection.getDate());
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			InputStream is = null;
@@ -1549,7 +1549,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(true, os.toString().isEmpty());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1579,7 +1579,7 @@ public class LightweightHttpServerTest {
 			Assert.assertNotEquals(0, connection.getDate());
 			Assert.assertEquals(loremSmallMd5, connection.getHeaderField("Etag"));
 			if (connection.getContentLength() != -1) {
-				logger.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
+				log.log(Level.WARNING, "HTTP 304 responses should not set a content length!");
 			}
 			InputStream is = null;
 			final ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1594,7 +1594,7 @@ public class LightweightHttpServerTest {
 			Assert.assertTrue(os.toString().isEmpty());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1629,7 +1629,7 @@ public class LightweightHttpServerTest {
 			Assert.assertEquals(0, os.size());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1660,10 +1660,10 @@ public class LightweightHttpServerTest {
 			}
 			connection.disconnect();
 			Assert.assertNotEquals(0, os.size());
-			logger.info(os.toString());
+			log.info(os.toString());
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}
@@ -1773,7 +1773,7 @@ public class LightweightHttpServerTest {
 			}
 		}
 		catch (final SocketTimeoutException e) {
-			logger.log(Level.WARNING, "Undesirable exception", e);
+			log.log(Level.WARNING, "Undesirable exception", e);
 			exceptions.add(e);
 			Assume.assumeTrue(false);
 		}

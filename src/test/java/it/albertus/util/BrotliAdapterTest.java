@@ -16,7 +16,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class BrotliAdapterTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(BrotliAdapterTest.class);
+	private static final Logger log = LoggerFactory.getLogger(BrotliAdapterTest.class);
 
 	private static final int JOBS_COUNT = 50;
 	private static final int CONCURRENT_THREADS = 4;
@@ -89,11 +89,11 @@ public class BrotliAdapterTest {
 				final long t0 = System.nanoTime();
 				final byte[] compressed = instance.compress(original.getBytes(CHARSET_NAME), 2);
 				final long t1 = System.nanoTime();
-				logger.log(Level.INFO, "Brotli compressed in {0,number,#} ms.", TimeUnit.NANOSECONDS.toMillis(t1 - t0));
+				log.log(Level.INFO, "Brotli compressed in {0,number,#} ms.", TimeUnit.NANOSECONDS.toMillis(t1 - t0));
 				final long t2 = System.nanoTime();
 				decompressed = instance.decompress(compressed);
 				final long t3 = System.nanoTime();
-				logger.log(Level.INFO, "Brotli decompressed in {0} ms.", Double.toString(TimeUnit.NANOSECONDS.toMicros(t3 - t2) / 1000d));
+				log.log(Level.INFO, "Brotli decompressed in {0} ms.", Double.toString(TimeUnit.NANOSECONDS.toMicros(t3 - t2) / 1000d));
 			}
 			catch (final Exception e) {
 				throw new RuntimeException(e);

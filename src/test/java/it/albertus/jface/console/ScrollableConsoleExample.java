@@ -12,12 +12,13 @@ import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.swt.widgets.Shell;
 
 import it.albertus.util.IOUtils;
+import it.albertus.util.logging.LoggerFactory;
 
 public abstract class ScrollableConsoleExample<T extends Scrollable> {
 
 	private static volatile int counter = 0;
 
-	private static final Logger logger = Logger.getLogger(ScrollableConsoleExample.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(ScrollableConsoleExample.class);
 
 	private static final char[] specialChars = { '\u20AC', '\u00E0', '\u00E1', '\u00E8', '\u00E9', '\u00EC', '\u00ED', '\u00F2', '\u00F3', '\u00F9', '\u00FA' };
 
@@ -72,7 +73,7 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 						System.out.println(c);
 					}
 					TimeUnit.MILLISECONDS.sleep(1250);
-					logger.log(Level.WARNING, String.valueOf(specialChars));
+					log.log(Level.WARNING, String.valueOf(specialChars));
 					System.out.println(String.valueOf(specialChars));
 					System.err.println(specialChars);
 					TimeUnit.MILLISECONDS.sleep(1500);
@@ -80,7 +81,7 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 						for (final String dummy : loremIpsum) {
 							final String text = ++counter + ". " + dummy;
 							System.out.println(text);
-							logger.log(Level.INFO, text);
+							log.log(Level.INFO, text);
 							if (counter % 5 == 0) {
 								for (int i = 0; i < counter / 5; i++) {
 									System.out.println();

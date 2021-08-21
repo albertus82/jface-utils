@@ -14,14 +14,14 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class SystemInformationDialogTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemInformationDialogTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SystemInformationDialogTest.class);
 
 	private static boolean skip = false;
 
 	@BeforeClass
 	public static void beforeAll() {
 		if (System.getSecurityManager() != null) {
-			logger.log(Level.WARNING, "SecurityManager detected, ignoring test {0}.", SystemInformationDialogTest.class);
+			log.log(Level.WARNING, "SecurityManager detected, ignoring test {0}.", SystemInformationDialogTest.class);
 			skip = true;
 		}
 	}

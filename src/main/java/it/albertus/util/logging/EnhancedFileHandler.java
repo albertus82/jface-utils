@@ -2,16 +2,18 @@ package it.albertus.util.logging;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EnhancedFileHandler extends FileHandler {
 
-	private static final String FIELD_ACCESS_ERROR_MESSAGE_FORMAT = "Cannot access field %s, try adding the following option to the java command: --add-opens java.logging/java.util.logging=ALL-UNNAMED";
-
 	private static final Logger log = LoggerFactory.getLogger(EnhancedFileHandler.class);
+
+	private final String pattern;
+	private final int limit;
+	private final int count;
+	private final boolean append;
 
 	/**
 	 * Initialize a {@code EnhancedFileHandler}.
@@ -28,6 +30,10 @@ public class EnhancedFileHandler extends FileHandler {
 	 */
 	public EnhancedFileHandler(final FileHandlerConfig config) throws IOException {
 		super(config.getPattern(), config.getLimit(), config.getCount(), config.isAppend());
+		this.pattern = config.getPattern();
+		this.limit = config.getLimit();
+		this.count = config.getCount();
+		this.append = config.isAppend();
 		configure(config);
 	}
 
@@ -49,22 +55,7 @@ public class EnhancedFileHandler extends FileHandler {
 	 * @return the pattern for naming the output file
 	 */
 	public String getPattern() {
-		final String fieldName = "pattern";
-		try {
-			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
-			return (String) field.get(this);
-		}
-		catch (final NoSuchFieldException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
-		catch (final IllegalAccessException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
+		return pattern;
 	}
 
 	/**
@@ -73,22 +64,7 @@ public class EnhancedFileHandler extends FileHandler {
 	 * @return the maximum number of bytes to write to any one file
 	 */
 	public int getLimit() {
-		final String fieldName = "limit";
-		try {
-			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
-			return (int) field.getLong(this); // limit became "long" since Java 9
-		}
-		catch (final NoSuchFieldException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
-		catch (final IllegalAccessException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
+		return limit;
 	}
 
 	/**
@@ -97,22 +73,7 @@ public class EnhancedFileHandler extends FileHandler {
 	 * @return the number of files to use
 	 */
 	public int getCount() {
-		final String fieldName = "count";
-		try {
-			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
-			return field.getInt(this);
-		}
-		catch (final NoSuchFieldException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
-		catch (final IllegalAccessException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
+		return count;
 	}
 
 	/**
@@ -121,22 +82,7 @@ public class EnhancedFileHandler extends FileHandler {
 	 * @return the append mode
 	 */
 	public boolean isAppend() {
-		final String fieldName = "append";
-		try {
-			final Field field = FileHandler.class.getDeclaredField(fieldName);
-			field.setAccessible(true); // --add-opens java.logging/java.util.logging=ALL-UNNAMED
-			return field.getBoolean(this);
-		}
-		catch (final NoSuchFieldException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
-		catch (final IllegalAccessException e) {
-			final String message = String.format(FIELD_ACCESS_ERROR_MESSAGE_FORMAT, fieldName);
-			log.log(Level.WARNING, message, e);
-			throw new LinkageError(message);
-		}
+		return append;
 	}
 
 }

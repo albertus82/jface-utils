@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 
-	private static final Logger logger = LoggerFactory.getLogger(FloatFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(FloatFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = 16;
 
@@ -43,7 +43,8 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 			try {
 				value = Float.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided does not contain a parsable float:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -72,7 +73,8 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 		try {
 			return Float.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable float:", e);
 			return "";
 		}
 	}
@@ -95,7 +97,7 @@ public class FloatFieldEditor extends AbstractDecimalFieldEditor<Float> {
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

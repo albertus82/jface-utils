@@ -25,7 +25,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class MapBoundsDialogCreationHelper {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapBoundsDialogCreationHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(MapBoundsDialogCreationHelper.class);
 
 	private final MapBoundsDialog dialog;
 
@@ -89,10 +89,10 @@ public class MapBoundsDialogCreationHelper {
 				dialog.setReturnCode(buttonCode);
 			}
 			catch (final SWTException e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot retrieve map coordinates and bounds:", e);
 			}
 			catch (final Exception e) {
-				logger.log(Level.SEVERE, JFaceMessages.get("err.map.retrieve"), e);
+				log.log(Level.SEVERE, "Cannot retrieve map coordinates and bounds:", e);
 			}
 			finally {
 				final Shell shell = browser.getShell();

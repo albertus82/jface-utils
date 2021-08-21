@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integer> {
 
-	private static final Logger logger = LoggerFactory.getLogger(EnhancedIntegerFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(EnhancedIntegerFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Integer.toString(Integer.MAX_VALUE).length() - 1;
 
@@ -44,7 +44,8 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 			try {
 				value = Integer.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided does not contain a parsable int:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -73,7 +74,8 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 		try {
 			return Integer.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable int:", e);
 			return "";
 		}
 	}
@@ -96,7 +98,7 @@ public class EnhancedIntegerFieldEditor extends AbstractIntegerFieldEditor<Integ
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

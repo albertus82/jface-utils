@@ -1,7 +1,5 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.SWT;
@@ -14,6 +12,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import it.albertus.jface.JFaceMessages;
 
 public class WrapStringFieldEditor extends EnhancedStringFieldEditor {
 

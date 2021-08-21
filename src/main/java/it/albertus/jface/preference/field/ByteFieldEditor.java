@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ByteFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(ByteFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
@@ -45,7 +45,8 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 			try {
 				value = Byte.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided does not contain a parsable byte:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -74,7 +75,8 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 		try {
 			return Byte.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable byte:", e);
 			return "";
 		}
 	}
@@ -97,7 +99,7 @@ public class ByteFieldEditor extends AbstractIntegerFieldEditor<Byte> {
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

@@ -1,10 +1,16 @@
 package it.albertus.jface.listener;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.annotation.Nullable;
 
 import it.albertus.util.ISupplier;
+import it.albertus.util.logging.LoggerFactory;
 
 abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractNumberVerifyListener<T> {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractIntegerVerifyListener.class);
 
 	protected AbstractIntegerVerifyListener(final boolean allowNegatives) {
 		super(allowNegatives);
@@ -21,7 +27,8 @@ abstract class AbstractIntegerVerifyListener<T extends Number> extends AbstractN
 				parseNumber(string);
 				return true;
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided is not a valid representation of a number:", e);
 				if (Boolean.TRUE.equals(allowNegatives.get()) && "-".equals(string)) {
 					return true;
 				}

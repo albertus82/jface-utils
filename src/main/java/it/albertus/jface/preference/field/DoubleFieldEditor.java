@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 
-	private static final Logger logger = LoggerFactory.getLogger(DoubleFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(DoubleFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = 32;
 
@@ -43,7 +43,8 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 			try {
 				value = Double.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided does not contain a parsable double:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -72,7 +73,8 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 		try {
 			return Double.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable double:", e);
 			return "";
 		}
 	}
@@ -95,7 +97,7 @@ public class DoubleFieldEditor extends AbstractDecimalFieldEditor<Double> {
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

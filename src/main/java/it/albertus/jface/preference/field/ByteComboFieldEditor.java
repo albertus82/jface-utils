@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ByteComboFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(ByteComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Byte.toString(Byte.MAX_VALUE).length();
 
@@ -30,7 +30,8 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 		try {
 			return Byte.valueOf(cleanValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable byte:", e);
 			return cleanValue;
 		}
 	}
@@ -44,7 +45,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			newText = getNameForValue(Byte.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINER, e.toString(), e);
+			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -57,7 +58,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			return Byte.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Byte:", e);
 			return super.getValue();
 		}
 	}
@@ -68,7 +69,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			super.setValue(Byte.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Byte:", e);
 			super.setValue(value);
 		}
 	}

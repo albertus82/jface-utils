@@ -21,7 +21,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEditorDefault {
 
-	private static final Logger logger = LoggerFactory.getLogger(ScaleIntegerFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(ScaleIntegerFieldEditor.class);
 
 	private static final Formatter formatter = new Formatter(ScaleIntegerFieldEditor.class);
 
@@ -78,7 +78,8 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 		try {
 			return Integer.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable int:", e);
 			return "";
 		}
 	}
@@ -136,7 +137,7 @@ public class ScaleIntegerFieldEditor extends ScaleFieldEditor implements FieldEd
 				scale.setSelection(textValue);
 			}
 			catch (final RuntimeException e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot update the selection (which is the value) of the scale:", e);
 				setText(scale.getSelection());
 			}
 		}

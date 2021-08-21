@@ -1,5 +1,7 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
@@ -7,8 +9,11 @@ import org.eclipse.swt.widgets.Composite;
 import it.albertus.jface.listener.LowerCaseVerifyListener;
 import it.albertus.jface.listener.TrimVerifyListener;
 import it.albertus.jface.listener.UpperCaseVerifyListener;
+import it.albertus.util.logging.LoggerFactory;
 
 abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? extends Number>> extends ValidatedComboFieldEditor {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractNumberComboFieldEditor.class);
 
 	protected final LabelsCase labelsCase;
 
@@ -49,7 +54,9 @@ abstract class AbstractNumberComboFieldEditor<T extends Number & Comparable<? ex
 		try {
 			return checkValidRange(getNumberValue());
 		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided is not a valid representation of a number:", e);
+		}
 		return false;
 	}
 

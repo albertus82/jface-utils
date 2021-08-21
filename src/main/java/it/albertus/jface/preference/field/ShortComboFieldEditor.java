@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ShortComboFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(ShortComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Short.toString(Short.MAX_VALUE).length();
 
@@ -30,7 +30,8 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 		try {
 			return Short.valueOf(cleanValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable short:", e);
 			return cleanValue;
 		}
 	}
@@ -44,7 +45,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			newText = getNameForValue(Short.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINER, e.toString(), e);
+			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -57,7 +58,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			return Short.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Short:", e);
 			return super.getValue();
 		}
 	}
@@ -68,7 +69,7 @@ public class ShortComboFieldEditor extends AbstractIntegerComboFieldEditor<Short
 			super.setValue(Short.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Short:", e);
 			super.setValue(value);
 		}
 	}

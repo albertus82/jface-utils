@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> {
 
-	private static final Logger logger = LoggerFactory.getLogger(LongComboFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(LongComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
 
@@ -29,7 +29,8 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 		try {
 			return Long.valueOf(cleanValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable long:", e);
 			return cleanValue;
 		}
 	}
@@ -43,7 +44,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			newText = getNameForValue(Long.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINER, e.toString(), e);
+			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -56,7 +57,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			return Long.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Long:", e);
 			return super.getValue();
 		}
 	}
@@ -67,7 +68,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			super.setValue(Long.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Long:", e);
 			super.setValue(value);
 		}
 	}

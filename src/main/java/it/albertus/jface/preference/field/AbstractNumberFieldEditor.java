@@ -1,10 +1,16 @@
 package it.albertus.jface.preference.field;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
+import it.albertus.util.logging.LoggerFactory;
+
 abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends Number>> extends EnhancedStringFieldEditor {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractNumberFieldEditor.class);
 
 	private T minValidValue;
 	private T maxValidValue;
@@ -27,7 +33,9 @@ abstract class AbstractNumberFieldEditor<T extends Number & Comparable<? extends
 		try {
 			return checkValidRange(getNumberValue());
 		}
-		catch (final NumberFormatException nfe) {/* Ignore */}
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided is not a valid representation of a number:", e);
+		}
 		return false;
 	}
 

@@ -2,12 +2,17 @@ package it.albertus.jface.preference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.preference.PreferenceStore;
 
 import it.albertus.util.config.Configuration;
+import it.albertus.util.logging.LoggerFactory;
 
 public class ConfigurationStore extends PreferenceStore {
+
+	private static final Logger log = LoggerFactory.getLogger(ConfigurationStore.class);
 
 	protected final String filename;
 
@@ -40,7 +45,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Integer.parseInt(getString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable int:", e);
 			return INT_DEFAULT_DEFAULT;
 		}
 	}
@@ -50,7 +56,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Integer.parseInt(getDefaultString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable int:", e);
 			return INT_DEFAULT_DEFAULT;
 		}
 	}
@@ -60,7 +67,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Long.parseLong(getString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable long:", e);
 			return LONG_DEFAULT_DEFAULT;
 		}
 	}
@@ -70,7 +78,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Long.parseLong(getDefaultString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable long:", e);
 			return LONG_DEFAULT_DEFAULT;
 		}
 	}
@@ -80,7 +89,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Float.parseFloat(getString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable float:", e);
 			return FLOAT_DEFAULT_DEFAULT;
 		}
 	}
@@ -90,7 +100,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Float.parseFloat(getDefaultString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable float:", e);
 			return FLOAT_DEFAULT_DEFAULT;
 		}
 	}
@@ -100,7 +111,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Double.parseDouble(getString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable double:", e);
 			return DOUBLE_DEFAULT_DEFAULT;
 		}
 	}
@@ -110,7 +122,8 @@ public class ConfigurationStore extends PreferenceStore {
 		try {
 			return Double.parseDouble(getDefaultString(name).trim());
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable double:", e);
 			return DOUBLE_DEFAULT_DEFAULT;
 		}
 	}

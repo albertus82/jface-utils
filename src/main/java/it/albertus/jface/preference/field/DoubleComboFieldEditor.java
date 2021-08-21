@@ -9,7 +9,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Double> {
 
-	private static final Logger logger = LoggerFactory.getLogger(DoubleComboFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(DoubleComboFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = 32;
 
@@ -28,7 +28,8 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 		try {
 			return Double.valueOf(cleanValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable double:", e);
 			return cleanValue;
 		}
 	}
@@ -42,7 +43,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 			newText = getNameForValue(Double.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINER, e.toString(), e);
+			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -55,7 +56,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 			return Double.valueOf(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Double:", e);
 			return super.getValue();
 		}
 	}
@@ -66,7 +67,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 			super.setValue(Double.valueOf(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a Double:", e);
 			super.setValue(value);
 		}
 	}
@@ -79,7 +80,7 @@ public class DoubleComboFieldEditor extends AbstractDecimalComboFieldEditor<Doub
 				comboValue = Double.valueOf(entry[1]).toString();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot translate the string into a Double:", e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

@@ -10,7 +10,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<BigDecimal> {
 
-	private static final Logger logger = LoggerFactory.getLogger(BigDecimalComboFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(BigDecimalComboFieldEditor.class);
 
 	public BigDecimalComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
@@ -22,7 +22,8 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 		try {
 			return new BigDecimal(cleanValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided is not a valid representation of a BigDecimal:", e);
 			return cleanValue;
 		}
 	}
@@ -36,7 +37,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			newText = getNameForValue(new BigDecimal(newText).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINER, e.toString(), e);
+			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);
@@ -49,7 +50,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			return new BigDecimal(super.getValue()).toString();
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a BigDecimal:", e);
 			return super.getValue();
 		}
 	}
@@ -60,7 +61,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 			super.setValue(new BigDecimal(value).toString());
 		}
 		catch (final Exception e) {
-			logger.log(Level.FINE, e.toString(), e);
+			log.log(Level.FINE, "Cannot translate the string into a BigDecimal:", e);
 			super.setValue(value);
 		}
 	}
@@ -73,7 +74,7 @@ public class BigDecimalComboFieldEditor extends AbstractDecimalComboFieldEditor<
 				comboValue = new BigDecimal(entry[1]).toString();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot translate the string into a BigDecimal:", e);
 				comboValue = entry[1];
 			}
 			if (value.equals(comboValue)) {

@@ -1,8 +1,8 @@
 package it.albertus.jface.preference.field;
 
-import it.albertus.jface.JFaceMessages;
-
 import org.eclipse.swt.widgets.Composite;
+
+import it.albertus.jface.JFaceMessages;
 
 abstract class AbstractIntegerFieldEditor<T extends Number & Comparable<? extends Number>> extends AbstractNumberFieldEditor<T> {
 

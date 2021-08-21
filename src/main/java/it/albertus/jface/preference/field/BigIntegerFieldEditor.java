@@ -15,7 +15,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger> {
 
-	private static final Logger logger = LoggerFactory.getLogger(BigIntegerFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(BigIntegerFieldEditor.class);
 
 	public BigIntegerFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -37,7 +37,8 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 			try {
 				value = new BigInteger(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided is not a valid representation of a BigInteger:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -66,7 +67,8 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 		try {
 			return new BigInteger(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided is not a valid representation of a BigInteger:", e);
 			return "";
 		}
 	}
@@ -89,7 +91,7 @@ public class BigIntegerFieldEditor extends AbstractIntegerFieldEditor<BigInteger
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

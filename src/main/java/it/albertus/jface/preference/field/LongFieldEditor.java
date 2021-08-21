@@ -14,7 +14,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 
-	private static final Logger logger = LoggerFactory.getLogger(LongFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(LongFieldEditor.class);
 
 	private static final int DEFAULT_TEXT_LIMIT = Long.toString(Long.MAX_VALUE).length() - 1;
 
@@ -44,7 +44,8 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 			try {
 				value = Long.valueOf(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided does not contain a parsable long:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -73,7 +74,8 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 		try {
 			return Long.valueOf(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided does not contain a parsable long:", e);
 			return "";
 		}
 	}
@@ -96,7 +98,7 @@ public class LongFieldEditor extends AbstractIntegerFieldEditor<Long> {
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

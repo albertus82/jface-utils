@@ -15,7 +15,7 @@ import it.albertus.util.logging.LoggerFactory;
 
 public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal> {
 
-	private static final Logger logger = LoggerFactory.getLogger(BigDecimalFieldEditor.class);
+	private static final Logger log = LoggerFactory.getLogger(BigDecimalFieldEditor.class);
 
 	public BigDecimalFieldEditor(final String name, final String labelText, final Composite parent) {
 		super(name, labelText, parent);
@@ -37,7 +37,8 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 			try {
 				value = new BigDecimal(getPreferenceStore().getString(getPreferenceName()).trim()).toString();
 			}
-			catch (final NumberFormatException nfe) {
+			catch (final NumberFormatException e) {
+				log.log(Level.FINEST, "The value provided is not a valid representation of a BigDecimal:", e);
 				value = "";
 			}
 			text.setText(value);
@@ -66,7 +67,8 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 		try {
 			return new BigDecimal(defaultValue).toString();
 		}
-		catch (final NumberFormatException nfe) {
+		catch (final NumberFormatException e) {
+			log.log(Level.FINEST, "The value provided is not a valid representation of a BigDecimal:", e);
 			return "";
 		}
 	}
@@ -89,7 +91,7 @@ public class BigDecimalFieldEditor extends AbstractDecimalFieldEditor<BigDecimal
 				valueChanged();
 			}
 			catch (final Exception e) {
-				logger.log(Level.FINE, e.toString(), e);
+				log.log(Level.FINE, "Cannot change the value of the field:", e);
 			}
 		}
 	}

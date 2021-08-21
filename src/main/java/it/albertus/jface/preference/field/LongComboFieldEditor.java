@@ -44,7 +44,7 @@ public class LongComboFieldEditor extends AbstractIntegerComboFieldEditor<Long> 
 			newText = getNameForValue(Long.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
+			log.log(Level.FINEST, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);

@@ -16,7 +16,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 	public ByteComboFieldEditor(final String name, final String labelText, final String[][] entryNamesAndValues, final Composite parent) {
 		super(name, labelText, entryNamesAndValues, parent);
 		setMinValidValue((byte) 0); // Positive by default
-		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly
+		setMaxValidValue(Byte.MAX_VALUE); // Not so ugly (127)
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ByteComboFieldEditor extends AbstractIntegerComboFieldEditor<Byte> 
 			newText = getNameForValue(Byte.valueOf(newText).toString());
 		}
 		catch (final Exception e) {
-			log.log(Level.FINER, "Cannot determine a name for the value provided:", e);
+			log.log(Level.FINEST, "Cannot determine a name for the value provided:", e);
 		}
 		if (!newText.equals(oldText)) {
 			getComboBoxControl().setText(newText);

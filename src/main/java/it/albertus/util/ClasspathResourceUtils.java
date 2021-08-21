@@ -66,7 +66,7 @@ public class ClasspathResourceUtils {
 		try {
 			zf = new ZipFile(file);
 			final String currentPath = new File("").getCanonicalPath();
-			logger.log(Level.FINER, "currentPath: {0}", currentPath);
+			logger.log(Level.FINEST, "currentPath: {0}", currentPath);
 			final Enumeration<? extends ZipEntry> e = zf.entries();
 			int entryCount = 0;
 			while (e.hasMoreElements()) {
@@ -77,7 +77,7 @@ public class ClasspathResourceUtils {
 				final ZipEntry ze = e.nextElement();
 				final String fileName = ze.getName();
 				final String entryPath = new File(currentPath, fileName).getCanonicalPath();
-				logger.log(Level.FINER, "entryPath: {0}", entryPath);
+				logger.log(Level.FINEST, "entryPath: {0}", entryPath);
 				if (!entryPath.startsWith(currentPath)) { // https://blog.ripstech.com/2019/hidden-flaws-of-archives-java/
 					logger.log(Level.WARNING, "Ignoring ZIP entry {0} not within target directory!", ze);
 					continue;

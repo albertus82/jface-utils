@@ -1,3 +1,4 @@
+// @formatter:off
 /*******************************************************************************
  * Copyright (c) 2000, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -251,3 +252,4 @@ abstract class ComboFieldEditor extends FieldEditor {
 	}
 
 }
+// @formatter:on

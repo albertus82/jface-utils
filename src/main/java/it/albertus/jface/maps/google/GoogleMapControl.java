@@ -1,5 +1,6 @@
 package it.albertus.jface.maps.google;
 
+// @formatter:off
 /**
  * <p>
  * The maps displayed through the Google Maps JavaScript API contain UI elements
@@ -71,6 +72,7 @@ package it.albertus.jface.maps.google;
  * documentation online</a>.
  * </p>
  */
+// @formatter:on
 public enum GoogleMapControl {
 
 	/**

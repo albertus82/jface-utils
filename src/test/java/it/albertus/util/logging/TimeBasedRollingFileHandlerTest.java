@@ -66,10 +66,13 @@ public class TimeBasedRollingFileHandlerTest {
 		tempDir.mkdir();
 		log.log(Level.INFO, "Created temporary directory \"{0}\".", tempDir);
 
+		final Level originalRootLevel = LoggingSupport.getRootLogger().getLevel();
 		final TimeBasedRollingFileHandlerConfig config = new TimeBasedRollingFileHandlerConfig();
+		config.setLevel(Level.FINE);
 		config.setFileNamePattern(tempDir + File.separator + "testLogFile_%d.log");
 		TimeBasedRollingFileHandler handler = null;
 		try {
+			LoggingSupport.setRootLevel(Level.FINER);
 			Assert.assertEquals(0, tempDir.listFiles().length);
 			handler = new TimeBasedRollingFileHandler(config, dateSupplier);
 			Assert.assertEquals(1, tempDir.listFiles(filter).length);
@@ -81,19 +84,22 @@ public class TimeBasedRollingFileHandlerTest {
 			log.info("2");
 			Assert.assertEquals(1, tempDir.listFiles(filter).length);
 			Assert.assertEquals("testLogFile_20200630.log", tempDir.listFiles(filter)[0].getName());
-			log.info("3");
+			log.fine("3");
+			Assert.assertEquals(2, tempDir.listFiles(filter).length);
+			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log" }, toFileNameArray(tempDir.listFiles(filter)));
+			log.finest("4");
 			Assert.assertEquals(2, tempDir.listFiles(filter).length);
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log" }, toFileNameArray(tempDir.listFiles(filter)));
 			log.info("4");
 			Assert.assertEquals(3, tempDir.listFiles(filter).length);
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log", "testLogFile_20200915.log" }, toFileNameArray(tempDir.listFiles(filter)));
-			log.info("5");
+			log.fine("5");
 			Assert.assertEquals(3, tempDir.listFiles(filter).length);
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log", "testLogFile_20200915.log" }, toFileNameArray(tempDir.listFiles(filter)));
 			log.info("6");
 			Assert.assertEquals(4, tempDir.listFiles(filter).length);
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log", "testLogFile_20200915.log", "testLogFile_20210816.log" }, toFileNameArray(tempDir.listFiles(filter)));
-			log.info("7");
+			log.finer("7");
 			Assert.assertEquals(4, tempDir.listFiles(filter).length);
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log", "testLogFile_20200915.log", "testLogFile_20210816.log" }, toFileNameArray(tempDir.listFiles(filter)));
 			log.info("8");
@@ -101,6 +107,7 @@ public class TimeBasedRollingFileHandlerTest {
 			Assert.assertArrayEquals(new String[] { "testLogFile_20200630.log", "testLogFile_20200701.log", "testLogFile_20200915.log", "testLogFile_20210816.log" }, toFileNameArray(tempDir.listFiles(filter)));
 		}
 		finally {
+			LoggingSupport.setRootLevel(originalRootLevel);
 			if (handler != null) {
 				LoggingSupport.getRootLogger().removeHandler(handler);
 				handler.close();

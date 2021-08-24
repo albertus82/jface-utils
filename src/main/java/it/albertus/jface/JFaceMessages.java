@@ -58,7 +58,7 @@ public class JFaceMessages {
 			message = message != null ? message.replace("''", "'").trim() : "";
 		}
 		catch (final MissingResourceException e) {
-			log.log(Level.WARNING, e.getMessage(), e);
+			log.log(Level.WARNING, "Cannot find message for key \"" + key + "\":", e);
 			message = key;
 		}
 		return message;
@@ -75,7 +75,7 @@ public class JFaceMessages {
 			message = message != null ? message.trim() : "";
 		}
 		catch (final MissingResourceException e) {
-			log.log(Level.WARNING, e.getMessage(), e);
+			log.log(Level.WARNING, "Cannot find message for key \"" + key + "\":", e);
 			message = key;
 		}
 		return message;

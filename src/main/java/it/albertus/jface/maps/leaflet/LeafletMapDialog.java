@@ -39,7 +39,7 @@ public class LeafletMapDialog extends MapDialog {
 		}
 		// Markers
 		else if (line.contains(MARKERS_PLACEHOLDER)) {
-			if (markers.isEmpty()) {
+			if (markers == null || markers.isEmpty()) {
 				return null;
 			}
 			else {

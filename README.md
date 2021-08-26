@@ -33,9 +33,9 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
 
     <!-- Required -->
     <dependency>
-        <groupId>org.eclipse.swt</groupId>
+        <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.swt.${osgi.platform}</artifactId> <!-- platform dependent -->
-        <version>4.3.2</version> <!-- or newer -->
+        <version>3.105.2</version> <!-- or newer, although older versions from https://github.com/maven-eclipse/maven-eclipse.github.io are also usable -->
     </dependency>
     <dependency>
         <groupId>org.eclipse.platform</groupId>

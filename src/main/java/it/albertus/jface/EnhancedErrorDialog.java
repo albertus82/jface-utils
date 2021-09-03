@@ -148,25 +148,27 @@ public class EnhancedErrorDialog extends ErrorDialog {
 	public static MultiStatus createMultiStatus(final int severity, final Throwable throwable) {
 		final Collection<IStatus> childStatuses = new ArrayList<IStatus>();
 
-		StringReader sr = null;
-		BufferedReader br = null;
-		try {
-			sr = new StringReader(ExceptionUtils.getStackTrace(throwable));
-			br = new BufferedReader(sr);
-			String line;
-			while ((line = br.readLine()) != null) {
-				final IStatus status = new Status(severity, throwable.getClass().getName(), line.replace("\t", NESTING_INDENT));
-				childStatuses.add(status);
+		if (throwable != null) {
+			StringReader sr = null;
+			BufferedReader br = null;
+			try {
+				sr = new StringReader(ExceptionUtils.getStackTrace(throwable));
+				br = new BufferedReader(sr);
+				String line;
+				while ((line = br.readLine()) != null) {
+					final IStatus status = new Status(severity, throwable.getClass().getName(), line.replace("\t", NESTING_INDENT));
+					childStatuses.add(status);
+				}
+			}
+			catch (final IOException e) {
+				log.log(Level.WARNING, "An error occurred while collecting statuses:", e);
+			}
+			finally {
+				IOUtils.closeQuietly(br, sr);
 			}
 		}
-		catch (final IOException e) {
-			log.log(Level.WARNING, "An error occurred while collecting statuses:", e);
-		}
-		finally {
-			IOUtils.closeQuietly(br, sr);
-		}
 
-		return new MultiStatus(EnhancedErrorDialog.class.getPackage().getName(), severity, childStatuses.toArray(new IStatus[childStatuses.size()]), throwable.toString(), throwable);
+		return new MultiStatus(EnhancedErrorDialog.class.getPackage().getName(), severity, childStatuses.toArray(new IStatus[childStatuses.size()]), String.valueOf(throwable), throwable);
 	}
 
 }

@@ -16,15 +16,9 @@ import it.albertus.util.ISupplier;
 
 public class TimeBasedRollingFileHandler extends Handler {
 
-	private final ThreadLocal<DateFormat> dateFormats = new ThreadLocal<DateFormat>() {
-		@Override
-		protected DateFormat initialValue() {
-			return new SimpleDateFormat(datePattern);
-		}
-	};
-
 	private final String fileNamePattern;
 	private final String datePattern;
+	private final DateFormat dateFormat;
 	private final ISupplier<Date> dateSupplier;
 
 	private EnhancedFileHandler underlyingFileHandler;
@@ -41,9 +35,10 @@ public class TimeBasedRollingFileHandler extends Handler {
 	TimeBasedRollingFileHandler(final TimeBasedRollingFileHandlerConfig config, final ISupplier<Date> dateSupplier) throws IOException {
 		this.fileNamePattern = config.getFileNamePattern();
 		this.datePattern = config.getDatePattern();
+		this.dateFormat = new SimpleDateFormat(datePattern);
 		this.dateSupplier = dateSupplier;
 
-		final FileHandlerConfig underlyingFileHandlerConfig = new FileHandlerConfig(config.getLevel(), config.getFilter(), config.getFormatter(), config.getEncoding(), config.getLimit(), config.getCount(), config.isAppend(), generateFileHandlerPattern(config.getFileNamePattern(), dateFormats.get(), dateSupplier));
+		final FileHandlerConfig underlyingFileHandlerConfig = new FileHandlerConfig(config.getLevel(), config.getFilter(), config.getFormatter(), config.getEncoding(), config.getLimit(), config.getCount(), config.isAppend(), generateFileHandlerPattern(config.getFileNamePattern(), dateFormat, dateSupplier));
 		underlyingFileHandler = new EnhancedFileHandler(underlyingFileHandlerConfig);
 	}
 
@@ -53,7 +48,7 @@ public class TimeBasedRollingFileHandler extends Handler {
 			return;
 		}
 
-		final String fileHandlerPattern = generateFileHandlerPattern(fileNamePattern, dateFormats.get(), dateSupplier);
+		final String fileHandlerPattern = generateFileHandlerPattern(fileNamePattern, dateFormat, dateSupplier);
 		if (!fileHandlerPattern.equals(underlyingFileHandler.getPattern())) { // check if date has changed
 			try {
 				final EnhancedFileHandler oldFileHandler = underlyingFileHandler; // must be closed at the end!
@@ -91,7 +86,6 @@ public class TimeBasedRollingFileHandler extends Handler {
 	@Override
 	public void close() {
 		underlyingFileHandler.close();
-		dateFormats.remove(); // Not a solution but better than nothing
 	}
 
 	public String getDatePattern() {

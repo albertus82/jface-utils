@@ -28,7 +28,7 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
     <dependency>
         <groupId>it.albertus</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>17.3.2</version>
+        <version>17.3.3</version>
     </dependency>
 
     <!-- Required -->

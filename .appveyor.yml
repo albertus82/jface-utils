@@ -18,7 +18,7 @@ environment:
         secure: iraKgcF8ghXlZsLu+cIcsqqxeNTyeuCkLCtXA+SkOKrVFyGp+djEDD0ga3O8AHRb
 
 build_script:
-  - mvn clean install -B -V -e -ntp
+  - cmd: mvn clean install -B -V -e -ntp
 
 after_build:
   - cmd: IF DEFINED GITHUB_SITE_MAVEN_PLUGIN_TOKEN mvn deploy -DskipTests -B -V -e

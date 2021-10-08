@@ -256,7 +256,6 @@
 				<version>3.0.0-M3</version>
 				<executions>
 					<execution>
-						<id>enforce-bytecode-version</id>
 						<goals>
 							<goal>enforce</goal>
 						</goals>
@@ -268,6 +267,9 @@
 										<exclude>org.eclipse.platform:org.eclipse.swt.gtk.linux.aarch64</exclude>
 									</excludes>
 								</enforceBytecodeVersion>
+								<requireMavenVersion>
+									<version>3.3.9</version>
+								</requireMavenVersion>
 							</rules>
 							<fail>true</fail>
 						</configuration>

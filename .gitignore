@@ -1,8 +1,11 @@
+*.versionsBackup
+.classpath
+.DS_Store
+.factorypath
+.project
+.settings/
 /bin/
-/target/
-/.settings/
-/.project
-/.classpath
-/sonar-project.properties
 /configuration.properties
+/target/
 hs_err_pid*.log
+junit*.properties

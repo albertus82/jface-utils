@@ -26,7 +26,7 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
 
 <dependencies>
     <dependency>
-        <groupId>it.albertus</groupId>
+        <groupId>com.github.albertus82</groupId>
         <artifactId>jface-utils</artifactId>
         <version>17.3.3</version>
     </dependency>
@@ -81,17 +81,17 @@ This framework will allow you to create a complete preferences dialog by writing
 
 ### Getting started
 
-In order to open a preferences dialog, you must instantiate a [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) object and invoke one of its `openDialog` methods (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/it/albertus/jface/preference/Preferences.java) constructors take three or four arguments:
-* [`IPageDefinition[]`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java): definitions of the pages that will contain the preference items;
-* [`IPreference[]`](src/main/java/it/albertus/jface/preference/IPreference.java): the preference items;
-* [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java): the object that updates the application properties;
+In order to open a preferences dialog, you must instantiate a [`Preferences`](src/main/java/io/github/albertus82/jface/preference/Preferences.java) object and invoke one of its `openDialog` methods (e.g. from a `SelectionListener`). The [`Preferences`](src/main/java/io/github/albertus82/jface/preference/Preferences.java) constructors take three or four arguments:
+* [`IPageDefinition[]`](src/main/java/io/github/albertus82/jface/preference/page/IPageDefinition.java): definitions of the pages that will contain the preference items;
+* [`IPreference[]`](src/main/java/io/github/albertus82/jface/preference/IPreference.java): the preference items;
+* [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/IPreferencesCallback.java): the object that updates the application properties;
 * `Image[]`: icons used for the preference dialogs (optional).
 
-A convenient approach may be to implement [`IPageDefinition`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java) and [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
+A convenient approach may be to implement [`IPageDefinition`](src/main/java/io/github/albertus82/jface/preference/page/IPageDefinition.java) and [`IPreference`](src/main/java/io/github/albertus82/jface/preference/IPreference.java) interfaces using enums, like in the following code examples.
 
 #### Page definition enum
 
-This is a very simple example of enum that implements [`IPageDefinition`](src/main/java/it/albertus/jface/preference/page/IPageDefinition.java):
+This is a very simple example of enum that implements [`IPageDefinition`](src/main/java/io/github/albertus82/jface/preference/page/IPageDefinition.java):
 
 ```java
 public enum MyPageDefinition implements IPageDefinition {
@@ -141,11 +141,11 @@ public enum MyPageDefinition implements IPageDefinition {
 }
 ```
 
-You can surely improve this code, for example introducing localization and autodetermining `nodeId` values using the enum names. This example makes use of [`PageDefinitionDetails`](src/main/java/it/albertus/jface/preference/page/PageDefinitionDetails.java) helper class and its builder.
+You can surely improve this code, for example introducing localization and autodetermining `nodeId` values using the enum names. This example makes use of [`PageDefinitionDetails`](src/main/java/io/github/albertus82/jface/preference/page/PageDefinitionDetails.java) helper class and its builder.
 
 #### Preference enum
 
-This is a simple example of enum that implements [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java):
+This is a simple example of enum that implements [`IPreference`](src/main/java/io/github/albertus82/jface/preference/IPreference.java):
 
 ```java
 public enum MyPreference implements IPreference {
@@ -233,22 +233,22 @@ public enum MyPreference implements IPreference {
 }
 ```
 
-You can surely improve this code, for example introducing localization and autodetermining `name` values using the enum names. This example makes use of [`PreferenceDetails`](src/main/java/it/albertus/jface/preference/PreferenceDetails.java) and [`FieldEditorDetails`](src/main/java/it/albertus/jface/preference/FieldEditorDetails.java) helper classes and their respective builders.
+You can surely improve this code, for example introducing localization and autodetermining `name` values using the enum names. This example makes use of [`PreferenceDetails`](src/main/java/io/github/albertus82/jface/preference/PreferenceDetails.java) and [`FieldEditorDetails`](src/main/java/io/github/albertus82/jface/preference/FieldEditorDetails.java) helper classes and their respective builders.
 
 #### Callback object
 
-The interface [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) declares two methods:
+The interface [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/IPreferencesCallback.java) declares two methods:
 * **`getFileName`**: must return the path and name of your configuration file.
 * **`reload`**: must **reload the configuration file and update your in-memory configuration properties**, so that your application can see the updated values. This method is invoked automatically when necessary (callback).
 
-You can manually implement [`IPreferencesCallback`](src/main/java/it/albertus/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/it/albertus/jface/preference/PreferencesCallback.java) or use/extend [`PropertiesConfiguration`](src/main/java/it/albertus/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/it/albertus/util/Configuration.java) depending on your needs.
+You can manually implement [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/PreferencesCallback.java) or use/extend [`PropertiesConfiguration`](src/main/java/io/github/albertus82/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/io/github/albertus82/util/Configuration.java) depending on your needs.
 
 
-### [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java)
+### [`FieldEditorFactory`](src/main/java/io/github/albertus82/jface/preference/FieldEditorFactory.java)
 
-The [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) helps you to create `FieldEditor` objects, as you saw in the previous [`IPreference`](src/main/java/it/albertus/jface/preference/IPreference.java) example.
+The [`FieldEditorFactory`](src/main/java/io/github/albertus82/jface/preference/FieldEditorFactory.java) helps you to create `FieldEditor` objects, as you saw in the previous [`IPreference`](src/main/java/io/github/albertus82/jface/preference/IPreference.java) example.
 
-By default, custom values are presented in *bold* format. If you don't like this behaviour, you can disable it invoking the `setBoldCustomValues(boolean)` method of [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java):
+By default, custom values are presented in *bold* format. If you don't like this behaviour, you can disable it invoking the `setBoldCustomValues(boolean)` method of [`FieldEditorFactory`](src/main/java/io/github/albertus82/jface/preference/FieldEditorFactory.java):
 
 ```java
 public enum MyPreference implements IPreference {
@@ -265,7 +265,7 @@ public enum MyPreference implements IPreference {
 
 #### Extension
 
-If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/it/albertus/jface/preference/FieldEditorFactory.java) to add support for these new objects:
+If you need to create your custom `FieldEditor` classes, you can extend [`FieldEditorFactory`](src/main/java/io/github/albertus82/jface/preference/FieldEditorFactory.java) to add support for these new objects:
 
 ```java
 public class MyFieldEditorFactory extends FieldEditorFactory {
@@ -288,9 +288,9 @@ public class MyFieldEditorFactory extends FieldEditorFactory {
 
 After that, you can use your new factory instead of the default one.
 
-## macOS integration with [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java)
+## macOS integration with [`CocoaUIEnhancer`](src/main/java/io/github/albertus82/jface/cocoa/CocoaUIEnhancer.java)
 
-The [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) class provides a hook to connect the **Preferences**, **About** and **Quit** menu items of the **macOS** application menu.
+The [`CocoaUIEnhancer`](src/main/java/io/github/albertus82/jface/cocoa/CocoaUIEnhancer.java) class provides a hook to connect the **Preferences**, **About** and **Quit** menu items of the **macOS** application menu.
 This is a modified version of the [`CocoaUIEnhancer`](http://www.transparentech.com/files/CocoaUIEnhancer.java) class available at [TransparenTech](http://www.transparentech.com/opensource/cocoauienhancer), and it is released under the Eclipse Public License ([EPL](https://www.eclipse.org/legal/epl-v10.html)).
 
 In order to better integrate your JFace application with macOS, you should first call the following static methods of `Display` before its creation:
@@ -300,7 +300,7 @@ Display.setAppName("My JFace Application");
 Display.setAppVersion("1.2.3");
 ```
 
-Next, you can use [`CocoaUIEnhancer`](src/main/java/it/albertus/jface/cocoa/CocoaUIEnhancer.java) before opening the shell:
+Next, you can use [`CocoaUIEnhancer`](src/main/java/io/github/albertus82/jface/cocoa/CocoaUIEnhancer.java) before opening the shell:
 
 ```java
 if (Util.isCocoa()) {
@@ -314,7 +314,7 @@ The `hookApplicationMenu` method is overloaded in order to accept **SWT Listener
 
 SWT uses operating system resources to deliver its native graphics and widget functionality. These resources should be freed when no longer needed, and the traditional way to do it is calling the `dispose()` method on the objects that represent the resources, however this approach may be error prone.
 
-Now, if you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` or `Clipboard` and you want to make sure that its resources will be released after use, you can use the `Closeable` wrappers available in the `it.albertus.jface.closeable` package with a *try-for-resources* statement. The wrapped object will be disposed automatically after the `try` block like any other *closeable* resource, so you will not have to invoke its `dispose()` method.
+Now, if you need to instantiate a `Widget`, `Resource` (like a `GC`), `Device` or `Clipboard` and you want to make sure that its resources will be released after use, you can use the `Closeable` wrappers available in the `io.github.albertus82.jface.closeable` package with a *try-for-resources* statement. The wrapped object will be disposed automatically after the `try` block like any other *closeable* resource, so you will not have to invoke its `dispose()` method.
 
 ### Example
 

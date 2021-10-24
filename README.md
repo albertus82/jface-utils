@@ -243,7 +243,7 @@ The interface [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/
 * **`getFileName`**: must return the path and name of your configuration file.
 * **`reload`**: must **reload the configuration file and update your in-memory configuration properties**, so that your application can see the updated values. This method is invoked automatically when necessary (callback).
 
-You can manually implement [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/IPreferencesCallback.java) or [`PreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/PreferencesCallback.java) or use/extend [`PropertiesConfiguration`](src/main/java/io/github/albertus82/util/PropertiesConfiguration.java) or [`Configuration`](src/main/java/io/github/albertus82/util/Configuration.java) depending on your needs.
+You can manually implement [`IPreferencesCallback`](src/main/java/io/github/albertus82/jface/preference/IPreferencesCallback.java) or use/extend [`PropertiesConfiguration`](src/main/java/io/github/albertus82/util/config/PropertiesConfiguration.java) or [`Configuration`](src/main/java/io/github/albertus82/util/config/Configuration.java) depending on your needs.
 
 
 ### [`FieldEditorFactory`](src/main/java/io/github/albertus82/jface/preference/FieldEditorFactory.java)

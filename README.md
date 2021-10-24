@@ -6,8 +6,6 @@ JFaceUtils
 [![Build status](https://ci.appveyor.com/api/projects/status/github/albertus82/jface-utils?branch=master&svg=true)](https://ci.appveyor.com/project/albertus82/jface-utils)
 [![Known Vulnerabilities](https://snyk.io/test/github/albertus82/jface-utils/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/albertus82/jface-utils?targetFile=pom.xml)
 
-## :warning: Starting from version 18.0.0 the Maven **groupId** and the **base package** name will change from `it.albertus` to `io.github.albertus82`.
-
 ### Java SWT/JFace Utility Library including a Preferences Framework
 
 This library is meant to support the development of small footprint Java desktop applications with graphical user interface. Some non GUI utility classes are also included, aiming to improve some basic Java features such as logging, configuration, I/O and the lightweight HTTP server.

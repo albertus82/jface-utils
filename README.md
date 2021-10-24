@@ -14,6 +14,8 @@ This library is meant to support the development of small footprint Java desktop
 
 ### Maven
 
+> :warning: Starting from version 18.0.0, the **Maven Group ID** and the **Java base package name** changed from `it.albertus` to `io.github.albertus82` (to know the reasons behind this change, see [Choosing your Coordinates - The Central Repository Documentation](https://central.sonatype.org/publish/requirements/coordinates/)).
+
 Add the following elements to your project's `pom.xml` file (please check [Maven Central](https://mvnrepository.com/artifact/org.eclipse.platform) for new versions of the required Eclipse libraries):
 
 ```xml
@@ -26,9 +28,9 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
 
 <dependencies>
     <dependency>
-        <groupId>com.github.albertus82</groupId>
+        <groupId>io.github.albertus82</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>17.3.3</version>
+        <version>18.0.0</version>
     </dependency>
 
     <!-- Required -->

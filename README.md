@@ -60,9 +60,9 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
         <version>0.1.2</version> <!-- or newer -->
     </dependency>
     <dependency>
-        <groupId>com.github</groupId>
+        <groupId>io.github.albertus82</groupId>
         <artifactId>brotli-haxe</artifactId>
-        <version>20170316-1902</version>
+        <version>1.0.0.201703161902</version>
     </dependency>
 </dependencies>
 ```

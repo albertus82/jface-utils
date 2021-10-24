@@ -507,9 +507,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github</groupId>
+			<groupId>io.github.albertus82</groupId>
 			<artifactId>brotli-haxe</artifactId>
-			<version>20170316-1902</version>
+			<version>1.0.0.201703161902</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

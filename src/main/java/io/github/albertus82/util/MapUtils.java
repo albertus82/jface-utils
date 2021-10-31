@@ -35,7 +35,9 @@ public class MapUtils {
 	 * behavior cannot be broadly guaranteed, but it is observed to be true for
 	 * OpenJDK 1.7. It also can't be guaranteed that the method isn't inadvertently
 	 * <i>oversizing</i> the returned map.
-	 *
+	 * 
+	 * @param <K> the type of keys
+	 * @param <V> the type of mapped values
 	 * @param expectedSize the number of entries you expect to add to the returned
 	 *        map
 	 * @return a new, empty {@code HashMap} with enough capacity to hold {@code
@@ -52,7 +54,9 @@ public class MapUtils {
 	 * growth. This behavior cannot be broadly guaranteed, but it is observed to be
 	 * true for OpenJDK 1.7. It also can't be guaranteed that the method isn't
 	 * inadvertently <i>oversizing</i> the returned map.
-	 *
+	 * 
+	 * @param <K> the type of keys
+	 * @param <V> the type of mapped values
 	 * @param expectedSize the number of entries you expect to add to the returned
 	 *        map
 	 * @return a new, empty {@code LinkedHashMap} with enough capacity to hold

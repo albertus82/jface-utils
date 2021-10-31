@@ -38,6 +38,8 @@ public class DisplayThreadExecutor implements Executor {
 	}
 
 	/**
+	 * @param widget the widget whose display is used for the execution
+	 * 
 	 * @deprecated Use {@link #DisplayThreadExecutor(Widget, Mode)}.
 	 */
 	@Deprecated
@@ -46,6 +48,9 @@ public class DisplayThreadExecutor implements Executor {
 	}
 
 	/**
+	 * @param widget the widget whose display is used for the execution
+	 * @param async the executor mode: true for async, false for sync
+	 * 
 	 * @deprecated Use {@link #DisplayThreadExecutor(Widget, Mode)}.
 	 */
 	@Deprecated
@@ -63,6 +68,8 @@ public class DisplayThreadExecutor implements Executor {
 	}
 
 	/**
+	 * @return true if the mode is asynchronous, otherwise false.
+	 * 
 	 * @deprecated Use {@link #getMode()}.
 	 */
 	@Deprecated

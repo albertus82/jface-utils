@@ -13,7 +13,7 @@ public class FileHandlerConfig extends AbstractFileHandlerConfig {
 
 	/**
 	 * Specifies a pattern for generating the output file name. (Defaults to
-	 * <tt>%h/java%u.log</tt>).
+	 * {@code %h/java%u.log}).
 	 */
 	private String pattern = "%h/java%u.log";
 

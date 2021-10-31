@@ -21,7 +21,12 @@ public class TrayRestoreListener implements SelectionListener, ShellListener {
 	@Nullable
 	private final TrayItem trayItem;
 
-	/** Create a listener that restores the shell and hides the tray icon. */
+	/**
+	 * Create a listener that restores the shell and hides the tray icon.
+	 * 
+	 * @param shell a shell which will be the parent of the new instance
+	 * @param trayItem the tray item to hide
+	 */
 	public TrayRestoreListener(final Shell shell, @Nullable final TrayItem trayItem) {
 		this.shell = shell;
 		this.trayItem = trayItem;
@@ -29,6 +34,8 @@ public class TrayRestoreListener implements SelectionListener, ShellListener {
 
 	/**
 	 * Create a listener that restores the shell without hiding the tray icon.
+	 * 
+	 * @param shell a shell which will be the parent of the new instance
 	 */
 	public TrayRestoreListener(final Shell shell) {
 		this(shell, null);

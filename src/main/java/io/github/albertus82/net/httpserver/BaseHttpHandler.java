@@ -301,7 +301,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Set the <tt>Content-Type</tt> response header. The value is determined by the
+	 * Set the {@code Content-Type} response header. The value is determined by the
 	 * URI path extension. This method can be overriden by subclasses.
 	 * 
 	 * @param exchange the HTTP exchange.
@@ -312,7 +312,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Set the <tt>Content-Type</tt> response header with the provided value, or
+	 * Set the {@code Content-Type} response header with the provided value, or
 	 * remove the header if the value argument is null.
 	 * 
 	 * @param exchange the HTTP exchange
@@ -329,7 +329,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Hook for subclasses to set the <tt>Content-Language</tt> response header as
+	 * Hook for subclasses to set the {@code Content-Language} response header as
 	 * needed. The default implementation does nothing.
 	 * 
 	 * @param exchange the HTTP exchange
@@ -338,7 +338,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	protected void setContentLanguageHeader(final HttpExchange exchange) {}
 
 	/**
-	 * Set the <tt>Content-Language</tt> response header with the provided value, or
+	 * Set the {@code Content-Language} response header with the provided value, or
 	 * remove the header if the value argument is null.
 	 * 
 	 * @param exchange the HTTP exchange
@@ -355,7 +355,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	/**
-	 * Adds <tt>Content-Encoding: gzip</tt> header to the provided
+	 * Adds {@code Content-Encoding: gzip} header to the provided
 	 * {@link HttpExchange} object.
 	 * 
 	 * @param exchange the {@link HttpExchange} to be modified.

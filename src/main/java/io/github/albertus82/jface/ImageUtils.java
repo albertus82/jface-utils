@@ -34,7 +34,7 @@ public class ImageUtils {
 	 * original one. This method is optimized for quality, not for speed.
 	 * 
 	 * @param image source image
-	 * @param scale scale factor (<1 = downscaling, >1 = upscaling)
+	 * @param scale scale factor (&lt;1 = downscaling, &gt;1 = upscaling)
 	 * @return scaled image
 	 * 
 	 * @see <a href="https://stackoverflow.com/q/4752748/3260495">SWT: How to do

@@ -14,7 +14,7 @@ import javax.xml.bind.DatatypeConverter;
  * <code>getValue()</code> (byte array) and <code>toString()</code>
  * (hexadecimal) only when the stream is closed.
  * <p>
- * Closing a <tt>DigestOutputStream</tt> completes the hash computation by
+ * Closing a {@code DigestOutputStream} completes the hash computation by
  * performing final operations such as padding.
  * </p>
  * 
@@ -105,6 +105,8 @@ public class DigestOutputStream extends OutputStream {
 
 	/**
 	 * Returns the digest, or null if the stream is not closed.
+	 * 
+	 * @return the digest, or null if the stream is not closed
 	 */
 	public byte[] getValue() {
 		return result;

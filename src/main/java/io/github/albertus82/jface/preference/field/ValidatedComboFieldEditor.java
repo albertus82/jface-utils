@@ -111,7 +111,12 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 		fireValueChanged(IS_VALID, oldValue, valid);
 	}
 
-	/** Trim value (from configuration file) to empty. */
+	/**
+	 * Trim value (from configuration file) to empty.
+	 * 
+	 * @param value the value to trim
+	 * @return the trimmed value
+	 */
 	protected String cleanValue(@Nullable final String value) {
 		return value != null ? value.trim() : "";
 	}
@@ -133,10 +138,11 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
-	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage} methods
-	 * from here</strong>; these methods should be invoked only from
-	 * {@link #refreshValidState() refreshValidState}.
+	 * it's not recommended, but <strong>never invoke
+	 * {@link #showErrorMessage(String) showErrorMessage} or
+	 * {@link #clearErrorMessage() clearErrorMessage} methods from here</strong>;
+	 * these methods should be invoked only from {@link #refreshValidState()
+	 * refreshValidState}.
 	 * </p>
 	 * 
 	 * @return {@code true} if the field value is valid, and {@code false} if
@@ -156,10 +162,11 @@ public class ValidatedComboFieldEditor extends EditableComboFieldEditor implemen
 	 * 
 	 * <p>
 	 * You can invoke {@link #setErrorMessage(String) setErrorMessage}, although
-	 * it's not recommended, but <strong>never invoke {@link #showErrorMessage()
-	 * showErrorMessage} or {@link #clearErrorMessage() clearErrorMessage} methods
-	 * from here</strong>; these methods should be invoked only from
-	 * {@link #refreshValidState() refreshValidState}.
+	 * it's not recommended, but <strong>never invoke
+	 * {@link #showErrorMessage(String) showErrorMessage} or
+	 * {@link #clearErrorMessage() clearErrorMessage} methods from here</strong>;
+	 * these methods should be invoked only from {@link #refreshValidState()
+	 * refreshValidState}.
 	 * </p>
 	 * 
 	 * @return {@code true} if the field value is valid, and {@code false} if

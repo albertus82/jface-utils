@@ -36,7 +36,7 @@ import java.util.TimeZone;
 /**
  * Generates a date in the format required by the HTTP protocol.
  * 
- * <h3><a name="synchronization">Synchronization</a></h3>
+ * <h3>Synchronization</h3>
  * 
  * <p>
  * This class is not synchronized. It is recommended to create separate

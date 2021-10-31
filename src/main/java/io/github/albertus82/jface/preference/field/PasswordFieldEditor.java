@@ -203,8 +203,8 @@ public class PasswordFieldEditor extends StringFieldEditor {
 	}
 
 	/**
-	 * @deprecated Use the character-oriented method: {@link #setCharArrayValue()
-	 *             setCharArrayValue}.
+	 * @deprecated Use the character-oriented method:
+	 *             {@link #setCharArrayValue(char[]) setCharArrayValue}.
 	 */
 	@Override
 	@Deprecated

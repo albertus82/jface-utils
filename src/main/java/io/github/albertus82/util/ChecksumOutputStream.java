@@ -8,9 +8,9 @@ import java.util.zip.Checksum;
  * checksum of a data stream. The checksum value can be retrieved using
  * <code>getValue()</code> (long) and <code>toString()</code> (hexadecimal).
  * <p>
- * Closing a <tt>ChecksumOutputStream</tt> has no effect. The methods in this
+ * Closing a {@code ChecksumOutputStream} has no effect. The methods in this
  * class can be called after the stream has been closed without generating an
- * <tt>IOException</tt>.
+ * {@code IOException}.
  * </p>
  * 
  * @see Checksum
@@ -24,6 +24,7 @@ public class ChecksumOutputStream<T extends Checksum> extends OutputStream {
 	 * Creates a new ChecksumOutputStream object.
 	 * 
 	 * @param checksum the checksum object associated with this stream instance.
+	 * @param bits the checksum length in bits
 	 */
 	public ChecksumOutputStream(final T checksum, final int bits) {
 		this.checksum = checksum;
@@ -50,16 +51,17 @@ public class ChecksumOutputStream<T extends Checksum> extends OutputStream {
 	}
 
 	/**
-	 * Closing a <tt>ChecksumOutputStream</tt> has no effect. The methods in this
+	 * Closing a {@code ChecksumOutputStream} has no effect. The methods in this
 	 * class can be called after the stream has been closed without generating an
-	 * <tt>IOException</tt>.
-	 * <p>
+	 * {@code IOException}.
 	 */
 	@Override
 	public void close() {/* Do nothing */}
 
 	/**
-	 * Returns checksum value.
+	 * Returns the checksum value.
+	 * 
+	 * @return the checksum value
 	 */
 	public long getValue() {
 		return checksum.getValue();

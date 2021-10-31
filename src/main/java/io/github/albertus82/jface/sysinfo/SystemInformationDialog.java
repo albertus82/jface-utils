@@ -2,7 +2,6 @@ package io.github.albertus82.jface.sysinfo;
 
 import java.lang.management.ManagementPermission;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -165,7 +164,7 @@ public class SystemInformationDialog extends Dialog {
 	 * @param env a map containing the environment variables (can be null)
 	 * @param jvmArgs a collection containing the JVM arguments (can be null)
 	 * 
-	 * @see #SystemInformationDialog(Shell, int, Map, Map, Collection)
+	 * @see #SystemInformationDialog(Shell, int, Map, Map, Iterable)
 	 * @see org.eclipse.swt.widgets.Dialog#Dialog(Shell, int)
 	 */
 	protected SystemInformationDialog(final Shell parent, @Nullable final Map<String, String> properties, @Nullable final Map<String, String> env, @Nullable final Iterable<String> jvmArgs) {

@@ -23,7 +23,11 @@ public class LocalizedWidgets implements Map<Widget, ISupplier<String>> {
 		wrappedMap = new HashMap<Widget, ISupplier<String>>();
 	}
 
-	/** @see HashMap#HashMap(int) */
+	/**
+	 * @param initialCapacity the initial capacity.
+	 * 
+	 * @see HashMap#HashMap(int)
+	 */
 	public LocalizedWidgets(final int initialCapacity) {
 		wrappedMap = new HashMap<Widget, ISupplier<String>>(initialCapacity);
 	}

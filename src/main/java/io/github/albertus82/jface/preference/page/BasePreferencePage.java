@@ -286,7 +286,14 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		return header;
 	}
 
-	/** Viene aggiunto automaticamente un separatore tra il testo e i campi. */
+	/**
+	 * Hook to add an header on top of the preference page. Note that a separator is
+	 * automatically added between the text and the fields.
+	 * 
+	 * The default implementation returns null.
+	 * 
+	 * @return the new header, or null if no header should be added.
+	 */
 	protected Control createHeader() {
 		return null;
 	}

@@ -6,8 +6,8 @@ import com.sun.net.httpserver.HttpHandler;
 public interface HttpPathHandler extends HttpHandler {
 
 	/**
-	 * Returns the path associated with this handler, e.g., <tt>/</tt>,
-	 * <tt>/home</tt>, <tt>/index</tt>.
+	 * Returns the path associated with this handler, e.g., {@code /},
+	 * {@code /home}, {@code /index}.
 	 * 
 	 * @return the path associated with this handler.
 	 */

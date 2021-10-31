@@ -5,7 +5,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 /**
  * <p>
  * This is a very simple example of enum that implements
- * {@link io.github.albertus82.jface.preference.page.IPageDefinition IPageDefinition}:
+ * {@link io.github.albertus82.jface.preference.page.IPageDefinition
+ * IPageDefinition}:
  * </p>
  * 
  * <pre>
@@ -39,7 +40,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * 	}
  * 
  * 	&#64;Override
- * 	public Class<? extends BasePreferencePage> getPageClass() {
+ * 	public Class&lt;? extends BasePreferencePage&gt; getPageClass() {
  * 		return pageDefinitionDetails.getPageClass();
  * 	}
  * 
@@ -58,7 +59,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * <p>
  * You can surely improve this code, for example introducing localization and
  * autodetermining {@code nodeId} values using the enum names. This example
- * makes use of {@link io.github.albertus82.jface.preference.page.PageDefinitionDetails
+ * makes use of
+ * {@link io.github.albertus82.jface.preference.page.PageDefinitionDetails
  * PageDefinitionDetails} helper class and its builder.
  * </p>
  */

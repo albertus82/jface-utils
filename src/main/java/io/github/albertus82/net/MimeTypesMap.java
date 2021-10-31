@@ -12,7 +12,7 @@ import io.github.albertus82.util.IOUtils;
 
 /**
  * Singleton decorator for {@link MimetypesFileTypeMap} that uses the <b>Apache
- * <tt>httpd</tt></b> <tt>mime.types</tt> file.
+ * httpd</b> {@code mime.types} file.
  */
 public class MimeTypesMap {
 

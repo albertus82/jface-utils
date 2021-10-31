@@ -65,6 +65,8 @@ abstract class ComboFieldEditor extends FieldEditor {
 	/**
 	 * Checks whether given <code>String[][]</code> is of "type" 
 	 * <code>String[][2]</code>.
+	 * 
+	 * @param table the names (labels) and underlying values
 	 *
 	 * @return <code>true</code> if it is ok, and <code>false</code> otherwise
 	 */

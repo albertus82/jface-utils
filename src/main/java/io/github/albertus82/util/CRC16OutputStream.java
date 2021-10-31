@@ -7,9 +7,9 @@ import java.util.zip.Checksum;
  * of a data stream. The checksum value can be retrieved using
  * <code>getValue()</code> (long) and <code>toString()</code> (hexadecimal).
  * <p>
- * Closing a <tt>CRC16OutputStream</tt> has no effect. The methods in this class
+ * Closing a {@code CRC16OutputStream} has no effect. The methods in this class
  * can be called after the stream has been closed without generating an
- * <tt>IOException</tt>.
+ * {@code IOException}.
  * </p>
  * 
  * @see Checksum

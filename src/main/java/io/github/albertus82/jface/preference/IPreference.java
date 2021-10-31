@@ -81,7 +81,7 @@ import io.github.albertus82.jface.preference.page.IPageDefinition;
  * 
  * 	&#64;Override
  * 	public IPreference[] getChildren() {
- * 		Set<MyPreference> preferences = EnumSet.noneOf(MyPreference.class);
+ * 		Set&lt;MyPreference&gt; preferences = EnumSet.noneOf(MyPreference.class);
  * 		for (MyPreference item : MyPreference.values()) {
  * 			if (this.equals(item.getParent())) {
  * 				preferences.add(item);
@@ -100,7 +100,8 @@ import io.github.albertus82.jface.preference.page.IPageDefinition;
  * You can surely improve this code, for example introducing localization and
  * autodetermining <em>name</em> values using the enum names. This example makes
  * use of {@link io.github.albertus82.jface.preference.PreferenceDetails
- * PreferenceDetails} and {@link io.github.albertus82.jface.preference.FieldEditorDetails
+ * PreferenceDetails} and
+ * {@link io.github.albertus82.jface.preference.FieldEditorDetails
  * FieldEditorDetails} helper classes and their respective builders.
  * </p>
  */

@@ -33,7 +33,7 @@ public class MqttPayloadDecoder {
 	 *
 	 * @param bufferSize buffer size
 	 *
-	 * @exception IllegalArgumentException If bufferSize is <= 0
+	 * @exception IllegalArgumentException If bufferSize is &lt;= 0
 	 */
 	public MqttPayloadDecoder(final int bufferSize) {
 		if (bufferSize <= 0) {

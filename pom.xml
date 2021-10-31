@@ -19,6 +19,12 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<url>https://github.com/albertus82</url>
+		</developer>
+	</developers>
+
 	<scm>
 		<connection>scm:git:https://github.com/albertus82/jface-utils.git</connection>
 		<developerConnection>scm:git:https://github.com/albertus82/jface-utils.git</developerConnection>
@@ -60,6 +66,12 @@
 					<artifactId>org.eclipse.swt.cocoa.macosx.aarch64</artifactId>
 					<version>3.116.100</version>
 					<scope>provided</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>

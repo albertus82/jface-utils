@@ -207,6 +207,77 @@
 		</profile>
 	</profiles>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.jface</artifactId>
+			<version>3.10.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.commands</artifactId>
+			<version>3.6.100</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.6.200</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.albertus82</groupId>
+			<artifactId>brotli-haxe</artifactId>
+			<version>1.0.0.201703161902</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.brotli</groupId>
+			<artifactId>dec</artifactId>
+			<version>0.1.2</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- Java >= 9 -->
+		<dependency>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>javax.activation</artifactId>
+			<version>1.2.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.12</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- Test -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.191</version> <!-- Last version compatible with JRE 6 -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version> <!-- Last version compatible with JRE 6 -->
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<distributionManagement>
 		<repository>
 			<id>internal</id>
@@ -512,76 +583,5 @@
 			<url>https://maven-eclipse.github.io/maven</url>
 		</repository>
 	</repositories>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.10.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.core.commands</artifactId>
-			<version>3.6.100</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.6.200</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.github.albertus82</groupId>
-			<artifactId>brotli-haxe</artifactId>
-			<version>1.0.0.201703161902</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.brotli</groupId>
-			<artifactId>dec</artifactId>
-			<version>0.1.2</version>
-			<optional>true</optional>
-		</dependency>
-		<!-- Java >= 9 -->
-		<dependency>
-			<groupId>com.sun.activation</groupId>
-			<artifactId>javax.activation</artifactId>
-			<version>1.2.0</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.2.12</version>
-			<optional>true</optional>
-		</dependency>
-		<!-- Test -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.191</version> <!-- Last version compatible with JRE 6 -->
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version> <!-- Last version compatible with JRE 6 -->
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 </project>

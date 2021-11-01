@@ -11,15 +11,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MAVEN_OPTS: -Dhttp.keepAlive=false
-      MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSPHRASE }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
     steps:
-    - name: gpg import keys
-      run: echo "${{ secrets.OSSRH_GPG_SECRET_KEY }}" | gpg -q --batch --import
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
         java-version: ${{ matrix.java }}
+        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
     - run: mvn clean install -B -V -e -ntp
     - if: matrix.os == 'ubuntu-latest' && matrix.java == '11'
       env:

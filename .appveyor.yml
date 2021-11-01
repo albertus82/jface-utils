@@ -23,7 +23,6 @@ environment:
 
 before_build:
   - ps: '[System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($Env:OSSRH_GPG_SECRET_KEY_BASE64)) | gpg -q --batch --import' 
-  - cmd: gpg --list-secret-keys --keyid-format LONG
 
 build_script:
   - cmd: mvn clean install -B -V -e -ntp

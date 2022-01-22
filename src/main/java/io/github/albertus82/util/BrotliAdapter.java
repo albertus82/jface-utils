@@ -14,9 +14,19 @@ import haxe.root.Brotli;
 
 /**
  * Adapter class for <b>BrotliHaxe</b> library.
+ *
+ * @deprecated Deprecated for removal because no pure-Java Brotli implementation
+ *             is yet publicly available.
  * 
- * @see <a href="https://github.com/dominikhlbg/BrotliHaxe">BrotliHaxe</a>
+ * @see <a href= "https://github.com/google/brotli/issues/428">Java
+ *      implementation of Brotli - Issue #428 - google/brotli</a>
+ * 
+ * @see <a href=
+ *      "https://github.com/dominikhlbg/BrotliHaxe">dominikhlbg/BrotliHaxe:
+ *      BrotliHaxe - hand ported decoder &amp; encoder in haxe =&gt; JavaScript,
+ *      PHP, Python, Java, C# (Project dev: 2013-2015 release: 2017)</a>
  */
+@Deprecated
 public class BrotliAdapter {
 
 	/** Minimum Brotli compression quality ({@code 0}). */

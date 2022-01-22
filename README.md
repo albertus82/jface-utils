@@ -30,7 +30,7 @@ Add the following elements to your project's `pom.xml` file (please check [Maven
     <dependency>
         <groupId>io.github.albertus82</groupId>
         <artifactId>jface-utils</artifactId>
-        <version>18.0.0</version>
+        <version>18.1.0</version>
     </dependency>
 
     <!-- Required -->

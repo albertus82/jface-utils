@@ -7,7 +7,7 @@
 
 	<groupId>io.github.albertus82</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>18.0.1-SNAPSHOT</version>
+	<version>18.0.1</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 	<description>Java SWT/JFace Utility Library including a Preferences Framework, Lightweight HTTP Server and macOS support.</description>

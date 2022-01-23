@@ -7,7 +7,7 @@
 
 	<groupId>io.github.albertus82</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>18.1.0</version>
+	<version>19.0.0-SNAPSHOT</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 	<description>Java SWT/JFace Utility Library including a Preferences Framework, Lightweight HTTP Server and macOS support.</description>
@@ -21,7 +21,10 @@
 
 	<developers>
 		<developer>
-			<url>https://github.com/albertus82</url>
+			<name>albertus82</name>
+			<email>albertus82@pm.me</email>
+			<organization>albertus82-github</organization>
+			<organizationUrl>https://github.com/albertus82</organizationUrl>
 		</developer>
 	</developers>
 
@@ -33,26 +36,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<swt.version>4.3.2</swt.version>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.repo.owner>albertus82</maven.repo.owner>
-		<maven.repo.name>maven</maven.repo.name>
-		<maven.branch>master</maven.branch>
+		<maven.compiler.release>6</maven.compiler.release>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
+		<maven.version.rules>${project.baseUri}/maven-version-rules.xml</maven.version.rules>
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>javac-release-option</id>
-			<activation>
-				<jdk>[9,)</jdk>
-			</activation>
-			<properties>
-				<maven.compiler.release>6</maven.compiler.release>
-			</properties>
-		</profile>
-
 		<profile>
 			<id>skip-gpg</id>
 			<activation>
@@ -77,8 +66,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.cocoa.macosx.aarch64</artifactId>
-					<version>3.116.100</version>
-					<scope>provided</scope>
+					<version>3.118.0</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -98,28 +86,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>gtk-linux-armhf</id>
-			<activation>
-				<os>
-					<name>linux</name>
-					<arch>arm</arch>
-				</os>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.eclipse.swt</groupId>
-					<artifactId>org.eclipse.swt.gtk.linux.armhf</artifactId>
-					<version>${swt.version}</version>
-					<scope>provided</scope>
+					<version>3.118.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -135,8 +110,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.aarch64</artifactId>
-					<version>3.115.100</version>
-					<scope>provided</scope>
+					<version>3.118.0</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -156,11 +130,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
+					<version>3.108.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -174,11 +152,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
+					<version>3.118.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -192,11 +174,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
+					<version>3.108.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -210,11 +196,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>org.eclipse.swt</groupId>
+					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-					<version>${swt.version}</version>
-					<classifier>debug</classifier>
-					<scope>provided</scope>
+					<version>3.118.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>*</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -224,38 +214,29 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.10.2</version>
-			<scope>provided</scope>
+			<version>3.24.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.platform</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.core.commands</artifactId>
-			<version>3.6.100</version>
-			<scope>provided</scope>
+			<version>3.10.100</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.6.200</version>
-			<scope>provided</scope>
+			<version>3.15.100</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.github.albertus82</groupId>
-			<artifactId>brotli-haxe</artifactId>
-			<version>1.0.0.201703161902</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.brotli</groupId>
-			<artifactId>dec</artifactId>
-			<version>0.1.2</version>
-			<optional>true</optional>
 		</dependency>
 		<!-- Java >= 9 -->
 		<dependency>
@@ -265,16 +246,16 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.2.12</version>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>2.3.3</version>
 			<optional>true</optional>
 		</dependency>
 		<!-- Test -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.191</version> <!-- Last version compatible with JRE 6 -->
+			<version>2.1.210</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -286,24 +267,15 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.5</version> <!-- Last version compatible with JRE 6 -->
+			<version>2.11.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<distributionManagement>
-		<repository>
-			<id>internal</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</url>
-		</repository>
-	</distributionManagement>
 
 	<build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
 			</resource>
 			<resource>
 				<directory>${project.basedir}</directory>
@@ -318,9 +290,18 @@
 
 		<plugins>
 			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>4.0.5</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.9.0</version>
+				<configuration>
+					<parameters>true</parameters>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>5.0.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -330,33 +311,15 @@
 					</execution>
 				</executions>
 				<configuration>
-					<dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ssXXX</dateFormat>
+					<dateFormatTimeZone>Z</dateFormatTimeZone>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.2.0</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>regex-property</goal>
-						</goals>
-						<configuration>
-							<value>${git.commit.time}</value> <!-- yyyy-MM-dd'T'HH:mm:ssXXX -->
-							<regex>T.*$</regex>
-							<name>version.date</name> <!-- yyyy-MM-dd -->
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -364,17 +327,13 @@
 						</goals>
 						<configuration>
 							<rules>
-								<enforceBytecodeVersion>
-									<maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
-									<excludes>
-										<exclude>org.eclipse.platform:org.eclipse.swt.gtk.linux.aarch64</exclude>
-									</excludes>
-								</enforceBytecodeVersion>
 								<requireMavenVersion>
-									<version>3.3.9</version>
+									<version>3.5.4</version>
 								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>11</version>
+								</requireJavaVersion>
 							</rules>
-							<fail>true</fail>
 						</configuration>
 					</execution>
 				</executions>
@@ -382,30 +341,9 @@
 					<dependency>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>extra-enforcer-rules</artifactId>
-						<version>1.3</version>
+						<version>1.5.1</version>
 					</dependency>
 				</dependencies>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>animal-sniffer-maven-plugin</artifactId>
-				<version>1.20</version>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<signature>
-						<groupId>org.codehaus.mojo.signature</groupId>
-						<artifactId>java16-sun</artifactId>
-						<version>1.10</version>
-					</signature>
-				</configuration>
 			</plugin>
 
 			<plugin>
@@ -414,7 +352,7 @@
 				<version>3.2.0</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<propertiesEncoding>ISO-8859-1</propertiesEncoding>
+					<propertiesEncoding>UTF-8</propertiesEncoding>
 					<nonFilteredFileExtensions>
 						<nonFilteredFileExtension>txt</nonFilteredFileExtension>
 						<nonFilteredFileExtension>html</nonFilteredFileExtension>
@@ -425,14 +363,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.2</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
-							<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
+							<X-Compile-Source-JDK>1.${maven.compiler.release}</X-Compile-Source-JDK>
+							<X-Compile-Target-JDK>1.${maven.compiler.release}</X-Compile-Target-JDK>
 						</manifestEntries>
 						<manifest>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 					</archive>
@@ -520,14 +459,6 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.2</version>
-				<configuration>
-					<altDeploymentRepository>internal::default::file://${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</altDeploymentRepository>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>3.0.1</version>
@@ -550,33 +481,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.12</version>
-				<configuration>
-					<userName>albertus82</userName>
-					<password>${env.GITHUB_SITE_MAVEN_PLUGIN_TOKEN}</password>
-					<repositoryOwner>${maven.repo.owner}</repositoryOwner>
-					<repositoryName>${maven.repo.name}</repositoryName>
-					<branch>refs/heads/${maven.branch}</branch>
-					<outputDirectory>${project.build.directory}/${maven.repo.owner}/${maven.repo.name}/${maven.branch}</outputDirectory>
-					<message>Artifacts for ${project.groupId}:${project.artifactId}-${project.version}</message>
-					<merge>true</merge>
-					<includes>
-						<include>**/*</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>deploy</phase>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-help-plugin</artifactId>
 				<version>3.2.0</version>
@@ -590,15 +494,25 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.9.0</version>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>display-property-updates</goal>
+							<goal>display-dependency-updates</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -608,15 +522,15 @@
 		</pluginManagement>
 	</build>
 
-	<repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh-snapshot</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<repository>
-			<id>albertus82-github</id>
-			<url>https://albertus82.github.io/maven</url>
+			<id>ossrh-release</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-		<repository>
-			<id>maven-eclipse-github</id>
-			<url>https://maven-eclipse.github.io/maven</url>
-		</repository>
-	</repositories>
+	</distributionManagement>
 
 </project>

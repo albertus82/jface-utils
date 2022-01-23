@@ -36,6 +36,10 @@ public class JFaceMessages {
 		}
 	}
 
+	public static void setResourceBundle(final ResourceBundle bundle) {
+		resources = bundle;
+	}
+
 	/**
 	 * Switch the language for JFaceUtils messages.
 	 *

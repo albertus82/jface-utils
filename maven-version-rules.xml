@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset comparisonMethod="maven"
+	xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 https://www.mojohaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
+
+	<ignoreVersions>
+		<ignoreVersion type="regex">(?i).*[-_\.](ALPHA|B|BETA|RC|redhat|M|EA|does-not-exist)[-_\.]?[0-9]*</ignoreVersion>
+		<ignoreVersion type="regex">20\d{6}.*</ignoreVersion> <!-- e.g.: 20020829, 20041127.091804, 20030203.000550, etc. -->
+	</ignoreVersions>
+
+</ruleset>

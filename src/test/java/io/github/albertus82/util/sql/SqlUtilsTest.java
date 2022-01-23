@@ -15,7 +15,7 @@ public class SqlUtilsTest {
 	public void test() throws ClassNotFoundException, SQLException {
 		// Class.forName("org.h2.Driver");
 		final Connection conn = DriverManager.getConnection("jdbc:h2:mem:mytestdb", "sa", "");
-		final PreparedStatement st = conn.prepareStatement("SELECT * FROM DUAL");
+		final PreparedStatement st = conn.prepareStatement("SELECT 1 FROM DUAL");
 		final ResultSet rs = st.executeQuery();
 		while (rs.next()) {
 			Assert.assertEquals(1, rs.getInt(1));

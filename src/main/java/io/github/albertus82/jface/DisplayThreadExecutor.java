@@ -1,8 +1,5 @@
 package io.github.albertus82.jface;
 
-import static io.github.albertus82.jface.DisplayThreadExecutor.Mode.ASYNC;
-import static io.github.albertus82.jface.DisplayThreadExecutor.Mode.SYNC;
-
 import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,44 +34,12 @@ public class DisplayThreadExecutor implements Executor {
 		this.mode = mode;
 	}
 
-	/**
-	 * @param widget the widget whose display is used for the execution
-	 * 
-	 * @deprecated Use {@link #DisplayThreadExecutor(Widget, Mode)}.
-	 */
-	@Deprecated
-	public DisplayThreadExecutor(final Widget widget) {
-		this(widget, false);
-	}
-
-	/**
-	 * @param widget the widget whose display is used for the execution
-	 * @param async the executor mode: true for async, false for sync
-	 * 
-	 * @deprecated Use {@link #DisplayThreadExecutor(Widget, Mode)}.
-	 */
-	@Deprecated
-	public DisplayThreadExecutor(final Widget widget, final boolean async) {
-		this.widget = widget;
-		this.mode = async ? ASYNC : SYNC;
-	}
-
 	public Widget getWidget() {
 		return widget;
 	}
 
 	public Mode getMode() {
 		return mode;
-	}
-
-	/**
-	 * @return true if the mode is asynchronous, otherwise false.
-	 * 
-	 * @deprecated Use {@link #getMode()}.
-	 */
-	@Deprecated
-	public boolean isAsync() {
-		return ASYNC.equals(mode);
 	}
 
 	protected void onError(final Exception e) {

@@ -2,8 +2,7 @@ JFaceUtils
 ==========
 
 [![Latest release](https://img.shields.io/github/release/albertus82/jface-utils.svg)](https://github.com/albertus82/jface-utils/releases/latest)
-[![Build status](https://github.com/albertus82/jface-utils/workflows/build/badge.svg)](https://github.com/albertus82/jface-utils/actions)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/albertus82/jface-utils?branch=master&svg=true)](https://ci.appveyor.com/project/albertus82/jface-utils)
+[![Build status](https://github.com/albertus82/jface-utils/actions/workflows/build.yml/badge.svg)](https://github.com/albertus82/jface-utils/actions)
 [![Known Vulnerabilities](https://snyk.io/test/github/albertus82/jface-utils/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/albertus82/jface-utils?targetFile=pom.xml)
 
 ### Java SWT/JFace Utility Library including a Preferences Framework
@@ -16,57 +15,14 @@ This library is meant to support the development of small footprint Java desktop
 
 > :warning: Starting from version 18.0.0, the **Maven Group ID** and the **Java base package name** changed from `it.albertus` to `io.github.albertus82` (to know the reasons behind this change, see [Choosing your Coordinates - The Central Repository Documentation](https://central.sonatype.org/publish/requirements/coordinates/)).
 
-Add the following elements to your project's `pom.xml` file (please check [Maven Central](https://mvnrepository.com/artifact/org.eclipse.platform) for new versions of the required Eclipse libraries):
+Add the following element to your project's `pom.xml` file:
 
 ```xml
-<repositories>
-    <repository>
-        <id>albertus82-github</id>
-        <url>https://albertus82.github.io/maven</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>io.github.albertus82</groupId>
-        <artifactId>jface-utils</artifactId>
-        <version>18.1.0</version>
-    </dependency>
-
-    <!-- Required -->
-    <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.swt.${osgi.platform}</artifactId> <!-- platform dependent -->
-        <version>3.105.2</version> <!-- or newer, although older versions from https://github.com/maven-eclipse/maven-eclipse.github.io are also usable -->
-    </dependency>
-    <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.jface</artifactId>
-        <version>3.10.2</version> <!-- or newer -->
-    </dependency>
-    <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.core.commands</artifactId>
-        <version>3.6.100</version> <!-- or newer -->
-    </dependency>
-    <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.equinox.common</artifactId>
-        <version>3.6.200</version> <!-- or newer -->
-    </dependency>
-
-    <!-- Optional, only needed if the BrotliAdapter class is used -->
-    <dependency>
-        <groupId>org.brotli</groupId>
-        <artifactId>dec</artifactId>
-        <version>0.1.2</version> <!-- or newer -->
-    </dependency>
-    <dependency>
-        <groupId>io.github.albertus82</groupId>
-        <artifactId>brotli-haxe</artifactId>
-        <version>1.0.0.201703161902</version>
-    </dependency>
-</dependencies>
+<dependency>
+    <groupId>io.github.albertus82</groupId>
+    <artifactId>jface-utils</artifactId>
+    <version>19.0.0</version>
+</dependency>
 ```
 
 ### Manual download

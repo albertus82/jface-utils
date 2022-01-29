@@ -39,6 +39,7 @@
 		<maven.compiler.release>6</maven.compiler.release>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 		<maven.version.rules>${project.baseUri}/maven-version-rules.xml</maven.version.rules>
+		<swt.version>3.118.0</swt.version>
 	</properties>
 
 	<profiles>
@@ -66,7 +67,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.cocoa.macosx.aarch64</artifactId>
-					<version>3.118.0</version>
+					<version>${swt.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -88,7 +89,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-					<version>3.118.0</version>
+					<version>${swt.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -110,7 +111,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.aarch64</artifactId>
-					<version>3.118.0</version>
+					<version>${swt.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -154,7 +155,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-					<version>3.118.0</version>
+					<version>${swt.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>
@@ -198,7 +199,7 @@
 				<dependency>
 					<groupId>org.eclipse.platform</groupId>
 					<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-					<version>3.118.0</version>
+					<version>${swt.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>org.eclipse.platform</groupId>

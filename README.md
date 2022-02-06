@@ -1,7 +1,7 @@
 JFaceUtils
 ==========
 
-[![Latest release](https://img.shields.io/github/release/albertus82/jface-utils.svg)](https://github.com/albertus82/jface-utils/releases/latest)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.albertus82/jface-utils)](https://search.maven.org/artifact/io.github.albertus82/jface-utils)
 [![Build status](https://github.com/albertus82/jface-utils/actions/workflows/build.yml/badge.svg)](https://github.com/albertus82/jface-utils/actions)
 [![Known Vulnerabilities](https://snyk.io/test/github/albertus82/jface-utils/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/albertus82/jface-utils?targetFile=pom.xml)
 

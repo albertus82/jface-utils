@@ -2,6 +2,7 @@
 .classpath
 .DS_Store
 .factorypath
+.flattened-pom.xml
 .project
 .settings/
 /bin/

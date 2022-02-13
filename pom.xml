@@ -488,7 +488,7 @@
 				<version>3.2.0</version>
 				<executions>
 					<execution>
-						<?m2e ignore?>
+						<!-- <?m2e ignore?> -->
 						<phase>initialize</phase>
 						<goals>
 							<goal>active-profiles</goal>
@@ -525,7 +525,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<?m2e ignore?>
+						<!-- <?m2e ignore?> -->
 						<id>flatten</id>
 						<phase>process-resources</phase>
 						<goals>

@@ -38,7 +38,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>6</maven.compiler.release>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
-		<maven.version.rules>${project.baseUri}/maven-version-rules.xml</maven.version.rules>
+		<maven.version.rules>${project.baseUri}maven-version-rules.xml</maven.version.rules>
 		<swt.version>3.118.0</swt.version>
 	</properties>
 
@@ -329,7 +329,7 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>3.5.4</version>
+									<version>3.5.2</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>11</version>

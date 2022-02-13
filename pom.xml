@@ -502,7 +502,7 @@
 				<version>2.9.0</version>
 				<executions>
 					<execution>
-						<phase>verify</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>display-property-updates</goal>
 							<goal>display-dependency-updates</goal>

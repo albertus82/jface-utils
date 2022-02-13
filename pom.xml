@@ -519,6 +519,9 @@
 				<version>1.2.7</version>
 				<configuration>
 					<flattenMode>ossrh</flattenMode>
+					<pomElements>
+						<inceptionYear />
+					</pomElements>
 				</configuration>
 				<executions>
 					<execution>

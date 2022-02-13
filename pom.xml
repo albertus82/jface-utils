@@ -328,12 +328,12 @@
 						</goals>
 						<configuration>
 							<rules>
-								<requireMavenVersion>
-									<version>3.5.2</version>
-								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>11</version>
 								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>3.5.2</version>
+								</requireMavenVersion>
 							</rules>
 						</configuration>
 					</execution>

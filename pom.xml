@@ -38,6 +38,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>6</maven.compiler.release>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
+		<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 		<maven.version.rules>${project.baseUri}maven-version-rules.xml</maven.version.rules>
 		<swt.version>3.119.0</swt.version>
@@ -296,9 +299,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
 				<configuration>
-					<parameters>true</parameters>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
+					<compilerArgument>-Xlint:all</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>

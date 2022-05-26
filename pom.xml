@@ -298,6 +298,7 @@
 				<configuration>
 					<parameters>true</parameters>
 					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -1,5 +1,9 @@
 package io.github.albertus82.jface.maps.leaflet;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -8,9 +12,13 @@ import org.eclipse.swt.widgets.Shell;
 import io.github.albertus82.jface.maps.MapDialog;
 import io.github.albertus82.jface.maps.MapMarker;
 import io.github.albertus82.net.httpserver.html.HtmlUtils;
+import io.github.albertus82.util.IOUtils;
 import io.github.albertus82.util.NewLine;
 
 public class LeafletMapDialog extends MapDialog {
+
+	private static final String PLACEHOLDER_PREFIX = "/* {{";
+	private static final String PLACEHOLDER_SUFFIX = "}} */";
 
 	private final LeafletMapOptions options = new LeafletMapOptions();
 
@@ -59,9 +67,45 @@ public class LeafletMapDialog extends MapDialog {
 				return other;
 			}
 		}
+		else if (line.contains(PLACEHOLDER_PREFIX) && line.indexOf(PLACEHOLDER_PREFIX) == line.lastIndexOf(PLACEHOLDER_PREFIX) && line.contains(PLACEHOLDER_SUFFIX) && line.indexOf(PLACEHOLDER_SUFFIX) == line.lastIndexOf(PLACEHOLDER_SUFFIX) && line.indexOf(PLACEHOLDER_SUFFIX) > line.indexOf(PLACEHOLDER_PREFIX)) {
+			final String resourceName = line.substring(line.indexOf(PLACEHOLDER_PREFIX) + PLACEHOLDER_PREFIX.length(), line.indexOf(PLACEHOLDER_SUFFIX));
+			final String resource = readAllResource(resourceName);
+			if (resource != null) {
+				return resource;
+			}
+			else {
+				return line;
+			}
+		}
 		else {
 			return line;
 		}
+	}
+
+	private static String readAllResource(final String resourceName) {
+		final StringBuilder buf = new StringBuilder();
+		InputStream is = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		try {
+			is = LeafletMapDialog.class.getResourceAsStream(resourceName);
+			if (is == null) {
+				return null;
+			}
+			isr = new InputStreamReader(is, "UTF-8");
+			br = new BufferedReader(isr);
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				buf.append(line).append(NewLine.CRLF);
+			}
+		}
+		catch (final IOException e) {
+			throw new IllegalStateException(e);
+		}
+		finally {
+			IOUtils.closeQuietly(br, isr, is);
+		}
+		return buf.toString().trim();
 	}
 
 	@Override

@@ -43,7 +43,7 @@
 		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 		<maven.version.rules>${project.baseUri}maven-version-rules.xml</maven.version.rules>
-		<swt.version>3.120.0</swt.version>
+		<swt.version>3.121.0</swt.version>
 	</properties>
 
 	<profiles>
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.26.0</version>
+			<version>3.27.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.platform</groupId>
@@ -235,7 +235,7 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.16.100</version>
+			<version>3.16.200</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
@@ -367,7 +367,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
+				<version>3.3.0</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -502,7 +502,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.11.0</version>
+				<version>2.12.0</version>
 				<executions>
 					<execution>
 						<phase>initialize</phase>

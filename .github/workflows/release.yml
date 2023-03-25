@@ -35,4 +35,4 @@ jobs:
         draft: true
         generateReleaseNotes: true
     - run: >-
-        for f in target/*.jar; do echo "Submitting file $f to VirusTotal..." && sleep 15 && curl -v -X POST -H "accept: application/json" -H "content-type: multipart/form-data" -H "x-apikey: ${{ secrets.VT_API_KEY }}" -F "file=@$f" https://www.virustotal.com/api/v3/files && echo && echo "File $f submitted to VirusTotal."; done
+        for f in target/*.jar; do echo "Submitting file $f to VirusTotal..." && sleep 15 && curl -v -H "accept: application/json" -H "content-type: multipart/form-data" -H "x-apikey: ${{ secrets.VT_API_KEY }}" -F "file=@$f" https://www.virustotal.com/api/v3/files && echo && echo "File $f submitted to VirusTotal."; done

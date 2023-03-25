@@ -373,6 +373,7 @@
 						<manifestEntries>
 							<X-Compile-Source-JDK>1.${maven.compiler.release}</X-Compile-Source-JDK>
 							<X-Compile-Target-JDK>1.${maven.compiler.release}</X-Compile-Target-JDK>
+							<X-Compile-Release-JDK>${maven.compiler.release}</X-Compile-Release-JDK>
 						</manifestEntries>
 						<manifest>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>

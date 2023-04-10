@@ -6,6 +6,7 @@ jobs:
   build:
     name: Build
     strategy:
+      fail-fast: false
       matrix:
         os: [ windows-latest, ubuntu-latest, macOS-latest ]
     runs-on: ${{ matrix.os }}

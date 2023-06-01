@@ -30,7 +30,7 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         artifacts: target/*.jar
-        bodyFile: target/checksums.md
+        bodyFile: target/release.md
         token: ${{ secrets.GITHUB_TOKEN }}
         draft: true
         generateReleaseNotes: true

@@ -448,16 +448,7 @@
 										<include name="*.jar" />
 									</fileset>
 								</checksum>
-								<echo file="${release.file}"><![CDATA[
-```xml
-<dependency>
-    <groupId>${project.groupId}</groupId>
-    <artifactId>${project.artifactId}</artifactId>
-    <version>${project.version}</version>
-</dependency>
-```
-								]]></echo>
-								<echo file="${release.file}" append="true" message="&#13;&#10;&#13;&#10;### Checksums SHA-256&#13;&#10;&#13;&#10;" />
+								<echo file="${release.file}" message="```xml&#13;&#10;&lt;dependency&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;groupId&gt;${project.groupId}&lt;/groupId&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;version&gt;${project.version}&lt;/version&gt;&#13;&#10;&lt;/dependency&gt;&#13;&#10;```&#13;&#10;&#13;&#10;### Checksums SHA-256&#13;&#10;&#13;&#10;" />
 								<concat destfile="${release.file}" append="true">
 									<fileset dir="${checksums.directory}" />
 								</concat>

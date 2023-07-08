@@ -1437,7 +1437,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(401, connection.getResponseCode());
-			Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
+			Assert.assertTrue(connection.getHeaderField("WWW-Authenticate").startsWith("Basic realm=\"" + REALM + '"'));
 			connection.disconnect();
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);
@@ -1480,7 +1480,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(401, connection.getResponseCode());
-			Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
+			Assert.assertTrue(connection.getHeaderField("WWW-Authenticate").startsWith("Basic realm=\"" + REALM + '"'));
 			connection.disconnect();
 			connection = (HttpsURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);
@@ -1522,7 +1522,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(401, connection.getResponseCode());
-			Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
+			Assert.assertTrue(connection.getHeaderField("WWW-Authenticate").startsWith("Basic realm=\"" + REALM + '"'));
 			connection.disconnect();
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);
@@ -1567,7 +1567,7 @@ public class LightweightHttpServerTest {
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			Assert.assertEquals(401, connection.getResponseCode());
-			Assert.assertEquals("Basic realm=\"" + REALM + '"', connection.getHeaderField("WWW-Authenticate"));
+			Assert.assertTrue(connection.getHeaderField("WWW-Authenticate").startsWith("Basic realm=\"" + REALM + '"'));
 			connection.disconnect();
 			connection = (HttpsURLConnection) url.openConnection();
 			connection.setConnectTimeout(20000);

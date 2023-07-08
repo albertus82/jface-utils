@@ -7,7 +7,7 @@
 
 	<groupId>io.github.albertus82</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>19.0.8-SNAPSHOT</version>
+	<version>20.0.0-SNAPSHOT</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 	<description>Java SWT/JFace Utility Library including a Preferences Framework, Lightweight HTTP Server and macOS support.</description>
@@ -37,7 +37,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.release>6</maven.compiler.release>
+		<maven.compiler.release>7</maven.compiler.release>
 		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
 		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
@@ -260,7 +260,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.1.214</version>
+			<version>2.2.220</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -332,7 +332,7 @@
 						<configuration>
 							<rules>
 								<requireJavaVersion>
-									<version>11</version>
+									<version>17</version>
 								</requireJavaVersion>
 								<requireMavenVersion>
 									<version>3.6.3</version>

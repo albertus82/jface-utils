@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.30.0</version>
+			<version>3.31.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.platform</groupId>
@@ -440,20 +440,20 @@
 						<phase>integration-test</phase>
 						<configuration>
 							<target>
-								<property name="release.file" value="${project.build.directory}/release.md" />
-								<property name="checksums.directory" value="${project.build.directory}/checksums" />
-								<delete file="${release.file}" />
+								<property name="release.file" value="${project.build.directory}/release.md"/>
+								<property name="checksums.directory" value="${project.build.directory}/checksums"/>
+								<delete file="${release.file}"/>
 								<checksum algorithm="SHA-256" todir="${checksums.directory}" forceoverwrite="yes" fileext=".sha256" pattern="* {1}&#13;&#10;[`{0}`](https://www.virustotal.com/it/file/{0}/analysis/)">
 									<fileset dir="${project.build.directory}">
-										<include name="*.jar" />
+										<include name="*.jar"/>
 									</fileset>
 								</checksum>
-								<echo file="${release.file}" message="```xml&#13;&#10;&lt;dependency&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;groupId&gt;${project.groupId}&lt;/groupId&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;&#13;&#10;&#32;&#32;&#32;&#32;&lt;version&gt;${project.version}&lt;/version&gt;&#13;&#10;&lt;/dependency&gt;&#13;&#10;```&#13;&#10;&#13;&#10;### Checksums SHA-256&#13;&#10;&#13;&#10;" />
+								<echo file="${release.file}" message="```xml&#13;&#10;&lt;dependency&gt;&#13;&#10;    &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;&#13;&#10;    &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;&#13;&#10;    &lt;version&gt;${project.version}&lt;/version&gt;&#13;&#10;&lt;/dependency&gt;&#13;&#10;```&#13;&#10;&#13;&#10;### Checksums SHA-256&#13;&#10;&#13;&#10;"/>
 								<concat destfile="${release.file}" append="true">
-									<fileset dir="${checksums.directory}" />
+									<fileset dir="${checksums.directory}"/>
 								</concat>
-								<loadfile property="release.file.contents" srcFile="${release.file}" />
-								<echo level="info" message="${release.file.contents}" />
+								<loadfile property="release.file.contents" srcFile="${release.file}"/>
+								<echo level="info" message="${release.file.contents}"/>
 							</target>
 						</configuration>
 						<goals>
@@ -523,7 +523,7 @@
 				<configuration>
 					<flattenMode>ossrh</flattenMode>
 					<pomElements>
-						<inceptionYear />
+						<inceptionYear/>
 					</pomElements>
 				</configuration>
 				<executions>

@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -49,7 +50,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 
 	protected static final String HTML_FILE_NAME = "map.html";
 
-	private final Set<MapMarker> markers = new HashSet<MapMarker>();
+	private final Set<MapMarker> markers = new HashSet<>();
 
 	private volatile int returnCode = Window.CANCEL;
 
@@ -142,7 +143,7 @@ public abstract class MapDialog extends Dialog implements LineParser {
 		FileWriter fw = null;
 		BufferedWriter bw = null;
 		try {
-			isr = new InputStreamReader(is, "UTF-8");
+			isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 			br = new BufferedReader(isr);
 			tempFile = File.createTempFile(UUID.randomUUID().toString().replace("-", "").toLowerCase(Locale.ROOT), ".html");
 			fw = new FileWriter(tempFile);

@@ -1,6 +1,7 @@
 package io.github.albertus82.jface.preference.field;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		super(name, labelText, parent);
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
+			this.charset = StandardCharsets.UTF_8;
 		}
 		init();
 	}
@@ -59,7 +60,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		super(name, labelText, width, parent);
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			this.charset = Charset.forName(DEFAULT_CHARSET_NAME);
+			this.charset = StandardCharsets.UTF_8;
 		}
 		init();
 	}

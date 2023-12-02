@@ -18,7 +18,7 @@ public class LoggingSupport {
 	private static final String SYSTEM_PROPERTY_CONFIG_CLASS = "java.util.logging.config.class";
 	private static final String SYSTEM_PROPERTY_CONFIG_FILE = "java.util.logging.config.file";
 
-	private static final Map<Integer, Level> levels = new TreeMap<Integer, Level>(); // Cache
+	private static final Map<Integer, Level> levels = new TreeMap<>(); // Cache
 
 	private LoggingSupport() {
 		throw new IllegalAccessError("Utility class");
@@ -87,10 +87,10 @@ public class LoggingSupport {
 
 	public static Entry<String, String> getInitialConfigurationProperty() {
 		if (System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS) != null) {
-			return new SimpleEntry<String, String>(SYSTEM_PROPERTY_CONFIG_CLASS, System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS));
+			return new SimpleEntry<>(SYSTEM_PROPERTY_CONFIG_CLASS, System.getProperty(SYSTEM_PROPERTY_CONFIG_CLASS));
 		}
 		else if (System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE) != null) {
-			return new SimpleEntry<String, String>(SYSTEM_PROPERTY_CONFIG_FILE, System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE));
+			return new SimpleEntry<>(SYSTEM_PROPERTY_CONFIG_FILE, System.getProperty(SYSTEM_PROPERTY_CONFIG_FILE));
 		}
 		else {
 			return null;

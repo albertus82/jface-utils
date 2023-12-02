@@ -9,7 +9,7 @@ public class LeafletMapOptions extends MapOptions {
 
 	private static final long serialVersionUID = 6601920089135707963L;
 
-	private final Map<LeafletMapControl, String> controls = new EnumMap<LeafletMapControl, String>(LeafletMapControl.class);
+	private final Map<LeafletMapControl, String> controls = new EnumMap<>(LeafletMapControl.class);
 
 	public Map<LeafletMapControl, String> getControls() {
 		return controls;

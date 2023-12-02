@@ -14,13 +14,13 @@ import io.github.albertus82.util.ISupplier;
 
 public class LocalizedWidgets implements Map<Widget, ISupplier<String>> {
 
-	private static final Map<Class<? extends Widget>, Method> setTextMethods = new HashMap<Class<? extends Widget>, Method>();
+	private static final Map<Class<? extends Widget>, Method> setTextMethods = new HashMap<>();
 
 	private final Map<Widget, ISupplier<String>> wrappedMap;
 
 	/** @see HashMap#HashMap() */
 	public LocalizedWidgets() {
-		wrappedMap = new HashMap<Widget, ISupplier<String>>();
+		wrappedMap = new HashMap<>();
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class LocalizedWidgets implements Map<Widget, ISupplier<String>> {
 	 * @see HashMap#HashMap(int)
 	 */
 	public LocalizedWidgets(final int initialCapacity) {
-		wrappedMap = new HashMap<Widget, ISupplier<String>>(initialCapacity);
+		wrappedMap = new HashMap<>(initialCapacity);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class LocalizedWidgets implements Map<Widget, ISupplier<String>> {
 
 	public <T extends Widget> Entry<T, ISupplier<String>> putAndReturn(final T widget, final ISupplier<String> textSupplier) {
 		put(widget, textSupplier);
-		return new SimpleEntry<T, ISupplier<String>>(widget, textSupplier);
+		return new SimpleEntry<>(widget, textSupplier);
 	}
 
 	public void resetText(final Widget widget) {

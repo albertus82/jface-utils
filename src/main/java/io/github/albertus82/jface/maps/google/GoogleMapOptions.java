@@ -13,7 +13,7 @@ public class GoogleMapOptions extends MapOptions {
 
 	private GoogleMapType type = DEFAULT_TYPE;
 
-	private final Map<GoogleMapControl, Boolean> controls = new EnumMap<GoogleMapControl, Boolean>(GoogleMapControl.class);
+	private final Map<GoogleMapControl, Boolean> controls = new EnumMap<>(GoogleMapControl.class);
 
 	public GoogleMapOptions() {/* Default constructor */}
 

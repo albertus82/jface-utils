@@ -61,7 +61,7 @@ public class LogFileManager implements ILogFileManager {
 	}
 
 	public Set<File> getLockedFiles() {
-		final Set<File> lockedFiles = new HashSet<File>();
+		final Set<File> lockedFiles = new HashSet<>();
 		final File[] lockFiles = new File(getPath()).listFiles(getLockFilenameFilter());
 		if (lockFiles != null) {
 			for (final File lockFile : lockFiles) {

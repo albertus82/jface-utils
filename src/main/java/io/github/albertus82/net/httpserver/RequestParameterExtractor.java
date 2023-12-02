@@ -28,10 +28,10 @@ public class RequestParameterExtractor {
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
-	private final Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+	private final Map<String, String[]> parameterMap = new HashMap<>();
 
 	public RequestParameterExtractor(final HttpExchange exchange, final Charset charset) throws IOException {
-		final Map<String, List<String>> params = new HashMap<String, List<String>>();
+		final Map<String, List<String>> params = new HashMap<>();
 		params.putAll(parseQueryParameters(exchange, charset));
 		if (HttpMethod.POST.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.PUT.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.DELETE.equalsIgnoreCase(exchange.getRequestMethod()) || HttpMethod.PATCH.equalsIgnoreCase(exchange.getRequestMethod())) {
 			params.putAll(parseBodyParameters(exchange, charset));
@@ -91,12 +91,12 @@ public class RequestParameterExtractor {
 	}
 
 	private Map<String, List<String>> parseQuery(final String query, final Charset charset) throws UnsupportedEncodingException {
-		final Map<String, List<String>> map = new HashMap<String, List<String>>();
+		final Map<String, List<String>> map = new HashMap<>();
 		if (query != null) {
-			final String[] pairs = query.split("[&]");
+			final String[] pairs = query.split("&");
 
 			for (final String pair : pairs) {
-				final String[] param = pair.split("[=]");
+				final String[] param = pair.split("=");
 
 				String key = null;
 				String value = null;

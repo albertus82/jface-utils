@@ -73,7 +73,7 @@ public class Preferences {
 			preferenceDialog.setSelectedNode(selectedPage.getNodeId());
 		}
 
-		final Map<String, String> configurationBackup = new HashMap<String, String>();
+		final Map<String, String> configurationBackup = new HashMap<>();
 		for (final IPreference preference : preferenceItems) {
 			if (preference.isRestartRequired()) {
 				configurationBackup.put(preference.getName(), preferenceStore.getString(preference.getName()));
@@ -136,7 +136,7 @@ public class Preferences {
 		final PreferenceManager manager = new PreferenceManager();
 
 		// Pages creation...
-		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<IPageDefinition, PreferenceNode>();
+		final Map<IPageDefinition, PreferenceNode> preferenceNodes = new HashMap<>();
 		for (final IPageDefinition page : pageDefinitions) {
 			final PreferenceNode preferenceNode = new ConfigurationNode(page, preferenceItems, preferencesCallback);
 			if (page.getParent() != null) {

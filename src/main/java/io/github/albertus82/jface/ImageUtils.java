@@ -161,7 +161,7 @@ public class ImageUtils {
 	}
 
 	public static Map<Rectangle, Image> createImageMap(final Iterable<String> resourceNames, final SortOrder areaSortOrder) {
-		final Map<Rectangle, Image> map = new TreeMap<Rectangle, Image>(getAreaComparator(areaSortOrder));
+		final Map<Rectangle, Image> map = new TreeMap<>(getAreaComparator(areaSortOrder));
 		for (final String resourceName : resourceNames) {
 			InputStream stream = null;
 			try {

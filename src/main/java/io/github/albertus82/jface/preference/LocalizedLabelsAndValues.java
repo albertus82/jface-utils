@@ -10,11 +10,11 @@ public class LocalizedLabelsAndValues implements LabelsAndValues {
 	private final List<LabelValue> entries;
 
 	public LocalizedLabelsAndValues() {
-		entries = new ArrayList<LabelValue>();
+		entries = new ArrayList<>();
 	}
 
 	public LocalizedLabelsAndValues(final int initialCapacity) {
-		entries = new ArrayList<LabelValue>(initialCapacity);
+		entries = new ArrayList<>(initialCapacity);
 	}
 
 	public LocalizedLabelsAndValues(final ISupplier<String> name, final Object value) {

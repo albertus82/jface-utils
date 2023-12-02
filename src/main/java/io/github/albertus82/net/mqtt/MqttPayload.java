@@ -187,7 +187,7 @@ public class MqttPayload {
 	}
 
 	private static List<byte[]> split(final byte[] payload) {
-		final List<byte[]> byteArrays = new ArrayList<byte[]>();
+		final List<byte[]> byteArrays = new ArrayList<>();
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		for (int i = 0; i < payload.length; i++) {
 			if (payload.length > i + 3 && payload[i] == CR && payload[i + 1] == LF && payload[i + 2] == CR && payload[i + 3] == LF) {

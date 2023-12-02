@@ -27,7 +27,7 @@ public class ByteUtils {
 	}
 
 	public static List<Byte> toByteList(final int intValue) {
-		final List<Byte> byteList = new ArrayList<Byte>(2);
+		final List<Byte> byteList = new ArrayList<>(2);
 		byteList.add((byte) intValue);
 		byteList.add((byte) (intValue >>> 8));
 		return byteList;

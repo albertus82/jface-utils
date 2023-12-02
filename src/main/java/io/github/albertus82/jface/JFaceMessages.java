@@ -69,7 +69,7 @@ public class JFaceMessages {
 	}
 
 	public static String get(final String key, final Object... params) {
-		final List<String> stringParams = new ArrayList<String>(params.length);
+		final List<String> stringParams = new ArrayList<>(params.length);
 		for (final Object param : params) {
 			stringParams.add(String.valueOf(param));
 		}

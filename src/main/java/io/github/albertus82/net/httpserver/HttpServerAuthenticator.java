@@ -1,6 +1,7 @@
 package io.github.albertus82.net.httpserver;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -23,12 +24,10 @@ public class HttpServerAuthenticator extends BasicAuthenticator {
 
 	private static final Logger log = LoggerFactory.getLogger(HttpServerAuthenticator.class);
 
-	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
-
 	private final IAuthenticatorConfig configuration;
-	private Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
+	private Charset charset = StandardCharsets.UTF_8;
 
-	private final ThreadLocal<HttpExchange> exchanges = new ThreadLocal<HttpExchange>();
+	private final ThreadLocal<HttpExchange> exchanges = new ThreadLocal<>();
 
 	public HttpServerAuthenticator(final IAuthenticatorConfig configuration) {
 		super(configuration.getRealm());

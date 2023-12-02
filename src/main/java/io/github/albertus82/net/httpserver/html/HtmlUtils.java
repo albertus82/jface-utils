@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class HtmlUtils {
 
-	private static final Set<Character> charsToEscapeForEcmaScript = new HashSet<Character>(Arrays.asList('&', '"', '<', '>', '\'', '/'));
+	private static final Set<Character> charsToEscapeForEcmaScript = new HashSet<>(Arrays.asList('&', '"', '<', '>', '\'', '/'));
 
 	private HtmlUtils() {
 		throw new IllegalAccessError("Utility class");
@@ -14,7 +14,7 @@ public class HtmlUtils {
 
 	public static String escapeEcmaScript(final String unescaped) {
 		String escaped = unescaped.replace("\\", "\\\\");
-		final Set<Character> replacedChars = new HashSet<Character>();
+		final Set<Character> replacedChars = new HashSet<>();
 		for (final char c : escaped.toCharArray()) {
 			if (!replacedChars.contains(c) && (c < 0x20 || c > 0x7F || charsToEscapeForEcmaScript.contains(c))) {
 				escaped = escaped.replace(Character.toString(c), String.format(c > 0xFF ? "\\u%04X" : "\\x%02X", (int) c));

@@ -37,9 +37,9 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 
 	private static final Logger log = LoggerFactory.getLogger(BasePreferencePage.class);
 
-	protected static final Map<IPreference, FieldEditorWrapper> universe = new HashMap<IPreference, FieldEditorWrapper>();
+	protected static final Map<IPreference, FieldEditorWrapper> universe = new HashMap<>();
 
-	protected final Map<IPreference, FieldEditorWrapper> fieldEditorMap = new HashMap<IPreference, FieldEditorWrapper>();
+	protected final Map<IPreference, FieldEditorWrapper> fieldEditorMap = new HashMap<>();
 	protected Control header;
 
 	private IPreferencesCallback preferencesCallback;
@@ -239,7 +239,7 @@ public class BasePreferencePage extends FieldEditorPreferencePage {
 		for (final IPreference preference : fieldEditorMap.keySet()) { // iterate over all the preferences on the current page
 			IPreference parentPreference = preference.getParent();
 			if (parentPreference != null && !fieldEditorMap.containsKey(parentPreference)) { // if the parent is on another page
-				final Set<IPreference> parents = new HashSet<IPreference>();
+				final Set<IPreference> parents = new HashSet<>();
 
 				while (parentPreference != null) {
 					parents.add(parentPreference);

@@ -39,7 +39,7 @@ public class ClasspathResourceUtils {
 	 * @return the resources in the order they are found.
 	 */
 	public static List<Resource> getResourceList(final Pattern pattern) {
-		final List<Resource> retval = new ArrayList<Resource>();
+		final List<Resource> retval = new ArrayList<>();
 		final String classPath = System.getProperty("java.class.path", ".");
 		final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
 		for (final String element : classPathElements) {
@@ -49,7 +49,7 @@ public class ClasspathResourceUtils {
 	}
 
 	private static List<Resource> getResources(final String element, final Pattern pattern) {
-		final List<Resource> retval = new ArrayList<Resource>();
+		final List<Resource> retval = new ArrayList<>();
 		final File file = new File(element);
 		if (file.isDirectory()) {
 			retval.addAll(getResourcesFromDirectory(file, pattern));
@@ -61,7 +61,7 @@ public class ClasspathResourceUtils {
 	}
 
 	private static List<Resource> getResourcesFromJarFile(final File file, final Pattern pattern) {
-		final List<Resource> retval = new ArrayList<Resource>();
+		final List<Resource> retval = new ArrayList<>();
 		ZipFile zf = null;
 		try {
 			zf = new ZipFile(file);
@@ -105,7 +105,7 @@ public class ClasspathResourceUtils {
 	}
 
 	private static List<Resource> getResourcesFromDirectory(final File directory, final Pattern pattern) {
-		final List<Resource> retval = new ArrayList<Resource>();
+		final List<Resource> retval = new ArrayList<>();
 		final File[] fileList = directory.listFiles();
 		for (final File file : fileList) {
 			if (file.isDirectory()) {

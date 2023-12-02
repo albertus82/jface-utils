@@ -45,7 +45,7 @@ public class MapUtils {
 	 * @throws IllegalArgumentException if {@code expectedSize} is negative
 	 */
 	public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(final int expectedSize) { // NOSONAR
-		return new HashMap<K, V>(capacity(expectedSize));
+		return new HashMap<>(capacity(expectedSize));
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class MapUtils {
 	 * @throws IllegalArgumentException if {@code expectedSize} is negative
 	 */
 	public static <K, V> LinkedHashMap<K, V> newLinkedHashMapWithExpectedSize(final int expectedSize) { // NOSONAR
-		return new LinkedHashMap<K, V>(capacity(expectedSize));
+		return new LinkedHashMap<>(capacity(expectedSize));
 	}
 
 	/**

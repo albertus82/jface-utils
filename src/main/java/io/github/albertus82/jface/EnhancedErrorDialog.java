@@ -146,7 +146,7 @@ public class EnhancedErrorDialog extends ErrorDialog {
 	}
 
 	public static MultiStatus createMultiStatus(final int severity, final Throwable throwable) {
-		final Collection<IStatus> childStatuses = new ArrayList<IStatus>();
+		final Collection<IStatus> childStatuses = new ArrayList<>();
 
 		if (throwable != null) {
 			StringReader sr = null;

@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 
 	private static Collection<Resource> resources; // Lazy initialization (may be huge)
 
-	private static final Charset charset = initCharset();
+	private static final Charset charset = StandardCharsets.UTF_8;
 
 	public static final String PREFERRED_CHARSET = "UTF-8";
 
@@ -118,7 +119,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected Map<String, Object> buildSafeHeadersMap(final Headers headers) {
-		final Map<String, Object> headersToLog = new TreeMap<String, Object>();
+		final Map<String, Object> headersToLog = new TreeMap<>();
 		for (final Entry<String, List<String>> entry : headers.entrySet()) {
 			final String key = entry.getKey();
 			if (key != null) {
@@ -217,7 +218,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 	}
 
 	protected void doOptions(final HttpExchange exchange) throws IOException {
-		final Set<String> allowedMethods = new TreeSet<String>();
+		final Set<String> allowedMethods = new TreeSet<>();
 		if (httpServerConfig.isTraceMethodEnabled()) {
 			allowedMethods.add(HttpMethod.TRACE.toUpperCase());
 		}
@@ -286,18 +287,6 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 		}
 
 		return thisMethods;
-	}
-
-	private static Charset initCharset() {
-		final String charsetName = PREFERRED_CHARSET;
-		try {
-			return Charset.forName(charsetName);
-		}
-		catch (final RuntimeException e) {
-			final Charset defaultCharset = Charset.defaultCharset();
-			log.log(Level.WARNING, "Cannot determine charset for name \"" + charsetName + "\", falling back to " + defaultCharset + ':', e);
-			return defaultCharset;
-		}
 	}
 
 	/**

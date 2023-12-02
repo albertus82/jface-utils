@@ -167,7 +167,7 @@ public class LightweightHttpServer {
 			filtersList = Collections.emptyList();
 		}
 
-		final Collection<HttpContext> httpContexts = new ArrayList<HttpContext>();
+		final Collection<HttpContext> httpContexts = new ArrayList<>();
 		final Authenticator authenticator = httpServerConfiguration.getAuthenticator();
 		final HttpPathHandler[] handlersArray = createHandlers();
 		if (handlersArray != null && handlersArray.length > 0) {

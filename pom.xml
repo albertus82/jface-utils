@@ -43,7 +43,7 @@
 		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 		<maven.version.rules>${project.baseUri}maven-version-rules.xml</maven.version.rules>
-		<swt.version>3.124.100</swt.version>
+		<swt.version>3.124.200</swt.version>
 	</properties>
 
 	<profiles>
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.31.0</version>
+			<version>3.32.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.platform</groupId>
@@ -230,12 +230,12 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.core.commands</artifactId>
-			<version>3.11.100</version>
+			<version>3.11.200</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.18.100</version>
+			<version>3.18.200</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>

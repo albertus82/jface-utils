@@ -21,7 +21,7 @@ Add the following element to your project's `pom.xml` file:
 <dependency>
     <groupId>io.github.albertus82</groupId>
     <artifactId>jface-utils</artifactId>
-    <version>19.0.7</version>
+    <version>20.0.0</version>
 </dependency>
 ```
 

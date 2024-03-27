@@ -28,16 +28,7 @@ public class ConfigurationNode extends PreferenceNode {
 			try {
 				page = pageClass.getDeclaredConstructor().newInstance();
 			}
-			catch (final InstantiationException e) {
-				throw new IllegalStateException(e);
-			}
-			catch (final IllegalAccessException e) {
-				throw new IllegalStateException(e);
-			}
-			catch (final InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
-			catch (final NoSuchMethodException e) {
+			catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 				throw new IllegalStateException(e);
 			}
 		}

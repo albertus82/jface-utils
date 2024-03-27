@@ -124,10 +124,7 @@ public class LocalizedWidgets implements Map<Widget, ISupplier<String>> {
 			try {
 				setTextMethods.get(widget.getClass()).invoke(widget, String.valueOf(textSupplier.get()));
 			}
-			catch (final IllegalAccessException e) {
-				throw new IllegalStateException(e);
-			}
-			catch (final InvocationTargetException e) {
+			catch (final IllegalAccessException | InvocationTargetException e) {
 				throw new IllegalStateException(e);
 			}
 		}

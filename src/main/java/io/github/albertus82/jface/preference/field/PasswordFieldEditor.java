@@ -27,7 +27,7 @@ import io.github.albertus82.jface.JFaceMessages;
 
 public class PasswordFieldEditor extends StringFieldEditor {
 
-	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
+	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
 	private Text textField; // Do not set any value here!
 
@@ -51,7 +51,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		super(name, labelText, parent);
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			this.charset = StandardCharsets.UTF_8;
+			this.charset = DEFAULT_CHARSET;
 		}
 		init();
 	}
@@ -60,7 +60,7 @@ public class PasswordFieldEditor extends StringFieldEditor {
 		super(name, labelText, width, parent);
 		if (hashAlgorithm != null && !hashAlgorithm.isEmpty()) {
 			this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			this.charset = StandardCharsets.UTF_8;
+			this.charset = DEFAULT_CHARSET;
 		}
 		init();
 	}

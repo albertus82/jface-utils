@@ -43,6 +43,7 @@ public abstract class ScrollableConsoleExample<T extends Scrollable> {
 	};
 	// @formatter:on
 
+	@SuppressWarnings("java:S2925")
 	protected void run() {
 		final Display display = Display.getDefault();
 

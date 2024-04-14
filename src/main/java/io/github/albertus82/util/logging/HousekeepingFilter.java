@@ -1,7 +1,6 @@
 package io.github.albertus82.util.logging;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
@@ -25,20 +24,6 @@ public class HousekeepingFilter extends Observable implements Filter {
 
 	private String currentFileNamePart;
 
-	private final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
-		@Override
-		protected DateFormat initialValue() {
-			try {
-				return new SimpleDateFormat(datePattern);
-			}
-			catch (final RuntimeException e) {
-				final String defaultDatePattern = TimeBasedRollingFileHandlerConfig.DEFAULT_DATE_PATTERN;
-				log.log(Level.WARNING, JFaceMessages.get("err.logging.housekeeping.datePattern", datePattern, defaultDatePattern), e);
-				return new SimpleDateFormat(defaultDatePattern);
-			}
-		}
-	};
-
 	public HousekeepingFilter(final ILogFileManager logFileManager, final int maxHistory) {
 		this(logFileManager, maxHistory, TimeBasedRollingFileHandlerConfig.DEFAULT_DATE_PATTERN);
 	}
@@ -52,13 +37,14 @@ public class HousekeepingFilter extends Observable implements Filter {
 		else {
 			this.maxHistory = maxHistory;
 		}
+		new SimpleDateFormat(datePattern); // Enforce pattern validity
 		this.datePattern = datePattern;
 		log.log(Level.FINE, "Created new {0}", this);
 	}
 
 	@Override
 	public boolean isLoggable(final LogRecord rec) {
-		final String newFileNamePart = dateFormat.get().format(new Date());
+		final String newFileNamePart = new SimpleDateFormat(datePattern).format(new Date());
 		if (!newFileNamePart.equals(currentFileNamePart)) {
 			int keep = this.maxHistory;
 			if (currentFileNamePart == null) {

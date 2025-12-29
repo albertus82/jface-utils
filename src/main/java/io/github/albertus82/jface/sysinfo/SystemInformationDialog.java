@@ -1,6 +1,5 @@
 package io.github.albertus82.jface.sysinfo;
 
-import java.lang.management.ManagementPermission;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Map;
@@ -96,32 +95,7 @@ public class SystemInformationDialog extends Dialog {
 	 *         {@code false}.
 	 */
 	public static boolean isAvailable() {
-		final SecurityManager sm = System.getSecurityManager();
-		if (sm == null) {
-			return true;
-		}
-		try {
-			sm.checkPropertiesAccess(); // system properties
-			return true;
-		}
-		catch (final SecurityException e) {
-			log.log(Level.FINE, "The calling thread does not have permission to access the system properties:", e);
-		}
-		try {
-			sm.checkPermission(new RuntimePermission("getenv.*")); // environment variables
-			return true;
-		}
-		catch (final SecurityException e) {
-			log.log(Level.FINE, "Access to the environment variables is not permitted based on the current security policy:", e);
-		}
-		try {
-			sm.checkPermission(new ManagementPermission("monitor")); // jvm args
-			return true;
-		}
-		catch (final SecurityException e) {
-			log.log(Level.FINE, "Access to the JVM arguments is not permitted based on the current security policy:", e);
-		}
-		return false;
+		return true;
 	}
 
 	/**

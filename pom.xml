@@ -7,7 +7,7 @@
 
 	<groupId>io.github.albertus82</groupId>
 	<artifactId>jface-utils</artifactId>
-	<version>20.1.1-SNAPSHOT</version>
+	<version>20.2.0-SNAPSHOT</version>
 	<name>JFaceUtils</name>
 	<url>https://github.com/albertus82/jface-utils</url>
 	<description>Java SWT/JFace Utility Library including a Preferences Framework, Lightweight HTTP Server and macOS support.</description>
@@ -43,7 +43,7 @@
 		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 		<project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
 		<maven.version.rules>${project.baseUri}maven-version-rules.xml</maven.version.rules>
-		<swt.version>3.125.0</swt.version>
+		<swt.version>3.132.0</swt.version>
 	</properties>
 
 	<profiles>
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<version>3.33.0</version>
+			<version>3.38.100</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.platform</groupId>
@@ -230,12 +230,18 @@
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.core.commands</artifactId>
-			<version>3.12.0</version>
+			<version>3.12.500</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.19.0</version>
+			<version>3.20.300</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.platform</groupId>
+		    <artifactId>org.eclipse.swt.svg</artifactId>
+		    <version>3.131.0</version>
+		    <scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
@@ -260,7 +266,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
+			<version>2.4.240</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -272,7 +278,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.16.1</version>
+			<version>2.21.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -297,7 +303,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>3.14.1</version>
 				<configuration>
 					<compilerArgument>-Xlint:all</compilerArgument>
 				</configuration>
@@ -305,7 +311,7 @@
 			<plugin>
 				<groupId>io.github.git-commit-id</groupId>
 				<artifactId>git-commit-id-maven-plugin</artifactId>
-				<version>8.0.2</version>
+				<version>9.0.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -323,7 +329,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.4.1</version>
+				<version>3.6.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -353,7 +359,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.0</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 					<propertiesEncoding>UTF-8</propertiesEncoding>
@@ -367,7 +373,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -386,7 +392,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -400,7 +406,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.6.3</version>
+				<version>3.12.0</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -414,7 +420,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.14</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -434,7 +440,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<phase>integration-test</phase>
@@ -466,7 +472,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>3.2.8</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -488,7 +494,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-help-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.1</version>
 				<executions>
 					<execution>
 						<?m2e ignore?>
@@ -503,7 +509,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.16.2</version>
+				<version>2.20.1</version>
 				<executions>
 					<execution>
 						<phase>verify</phase>
@@ -519,7 +525,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.3</version>
 				<configuration>
 					<flattenMode>ossrh</flattenMode>
 					<pomElements>
@@ -551,7 +557,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.2.5</version>
+					<version>3.5.4</version>
+				</plugin>
+				<plugin>
+				    <groupId>org.sonarsource.scanner.maven</groupId>
+				    <artifactId>sonar-maven-plugin</artifactId>
+				    <version>5.5.0.6356</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

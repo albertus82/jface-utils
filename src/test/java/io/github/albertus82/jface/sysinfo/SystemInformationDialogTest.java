@@ -24,6 +24,15 @@ public class SystemInformationDialogTest {
 			log.log(Level.WARNING, "SecurityManager detected, ignoring test {0}.", SystemInformationDialogTest.class);
 			skip = true;
 		}
+		else {
+			try {
+				System.setSecurityManager(new SecurityManager());
+			}
+			catch (final UnsupportedOperationException e) {
+				log.log(Level.WARNING, "SecurityManager deprecated, ignoring test {0}.", SystemInformationDialogTest.class);
+				skip = true;
+			}
+		}
 	}
 
 	@AfterClass

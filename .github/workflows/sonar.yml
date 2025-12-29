@@ -16,7 +16,7 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
-    - run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=albertus82-github -B -V -e -ntp
+    - run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=albertus82-github -B -V -e -ntp
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

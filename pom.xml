@@ -550,6 +550,16 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.9.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -568,7 +578,7 @@
 		</pluginManagement>
 	</build>
 
-	<distributionManagement>
+	<!--<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh-snapshot</id>
 			<url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots</url>
@@ -577,6 +587,6 @@
 			<id>ossrh-release</id>
 			<url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement>-->
 
 </project>

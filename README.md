@@ -33,7 +33,7 @@ You can download the JARs from the [releases page](https://github.com/Albertus82
 
 The creation of a **preferences dialog** to manage the configuration of a SWT/JFace application can be an annoying and time consuming task: you have to create every single field; these fields could be a lot, so you might want to split them across multiple pages. Moreover, the basic JFace's `FieldEditor` classes aren't very flexible.
 
-This framework will allow you to create a complete preferences dialog by writing only two enums, and includes several customizable `FieldEditor` classes with localization support and other useful features.
+This framework allows you to create a complete preferences dialog by writing only two `enum`s, and includes several customizable `FieldEditor` classes with localization support and other useful features.
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/8672431/19839894/0b8fe44a-9eeb-11e6-8ff4-c3b4f321c2b8.png)
 
@@ -300,3 +300,4 @@ try (CloseableResource<GC> wrapper = new CloseableResource<>(new GC(canvas))) {
     gc.fillRectangle(0, 0, canvasBounds.width, canvasBounds.height);
 }
 ```
+

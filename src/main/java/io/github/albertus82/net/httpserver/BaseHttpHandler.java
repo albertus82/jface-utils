@@ -794,7 +794,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			final Object[] requestInfo = new Object[] { exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI() };
 			if (!Arrays.equals(requestInfo, getLastRequestInfo())) {
 				setLastRequestInfo(requestInfo);
-				log.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol() });
+				log.log(level, JFaceMessages.get("msg.httpserver.log.request"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), String.valueOf(exchange.getRequestURI()).replaceAll("[\n\r]", "_"), exchange.getProtocol() });
 			}
 		}
 	}
@@ -816,7 +816,7 @@ public abstract class BaseHttpHandler implements HttpPathHandler {
 			if (!Arrays.equals(responseInfo, getLastResponseInfo())) {
 				setLastResponseInfo(responseInfo);
 				final String textStatus = HttpStatusCodes.getDescription(exchange.getResponseCode());
-				log.log(level, JFaceMessages.get("msg.httpserver.log.response"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getProtocol(), exchange.getResponseCode(), textStatus != null ? ' ' + textStatus : "" });
+				log.log(level, JFaceMessages.get("msg.httpserver.log.response"), new Object[] { httpServerConfig.isSslEnabled() ? "HTTPS" : "HTTP", Thread.currentThread().getName(), exchange.getRemoteAddress(), exchange.getRequestMethod(), String.valueOf(exchange.getRequestURI()).replaceAll("[\n\r]", "_"), exchange.getProtocol(), exchange.getResponseCode(), textStatus != null ? ' ' + textStatus : "" });
 			}
 		}
 	}

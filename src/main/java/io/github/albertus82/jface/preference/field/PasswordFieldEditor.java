@@ -142,25 +142,27 @@ public class PasswordFieldEditor extends StringFieldEditor {
 
 	@Override
 	protected synchronized void valueChanged() {
-		if (messageDigest == null) {
-			value = textField.getTextChars();
-		}
-		else {
-			messageDigest.reset();
-			value = DatatypeConverter.printHexBinary(messageDigest.digest(textField.getText().getBytes(charset))).toLowerCase(Locale.ROOT).toCharArray();
-		}
-		setPresentsDefaultValue(false);
-		boolean oldState = isValid();
-		refreshValidState();
+		if (textField != null) {
+			if (messageDigest == null) {
+				value = textField.getTextChars();
+			}
+			else {
+				messageDigest.reset();
+				value = DatatypeConverter.printHexBinary(messageDigest.digest(textField.getText().getBytes(charset))).toLowerCase(Locale.ROOT).toCharArray();
+			}
+			setPresentsDefaultValue(false);
+			boolean oldState = isValid();
+			refreshValidState();
 
-		if (isValid() != oldState) {
-			fireStateChanged(IS_VALID, oldState, isValid());
-		}
+			if (isValid() != oldState) {
+				fireStateChanged(IS_VALID, oldState, isValid());
+			}
 
-		if (!Arrays.equals(value, oldValue)) {
-			// Avoiding String.valueOf(...)
-			fireValueChanged(VALUE, oldValue, value);
-			oldValue = value;
+			if (!Arrays.equals(value, oldValue)) {
+				// Avoiding String.valueOf(...)
+				fireValueChanged(VALUE, oldValue, value);
+				oldValue = value;
+			}
 		}
 	}
 

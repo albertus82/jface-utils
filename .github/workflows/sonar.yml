@@ -16,6 +16,12 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
+    - uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=albertus82-github -B -V -e -ntp
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

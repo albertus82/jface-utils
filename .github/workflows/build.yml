@@ -5,6 +5,8 @@ on: [ push, workflow_dispatch ]
 jobs:
   build:
     name: Build
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:

@@ -5,6 +5,8 @@ on: push
 jobs:
   analyze:
     name: Analyze
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     env:
       MAVEN_OPTS: -Dhttp.keepAlive=false

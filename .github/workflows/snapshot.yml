@@ -8,6 +8,8 @@ on:
 jobs:
   publish:
     name: Publish
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     env:
       MAVEN_OPTS: -Dhttp.keepAlive=false
